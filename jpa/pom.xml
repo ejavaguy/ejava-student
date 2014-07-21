@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>info.ejava.examples</groupId>
+        <artifactId>examples-root</artifactId>
+        <version>4.0.0-SNAPSHOT</version>
+    </parent>
+
+    <groupId>info.ejava.examples.jpa</groupId>
+    <artifactId>jpa-root</artifactId>
+    <packaging>pom</packaging>
+
+    <name>Java Persistence API Root</name>
+    <description>
+        This project is the root project for JPA materials.
+    </description>
+    <modules>
+        <module>jpa-parent</module>
+        <module>jpa-archetype</module>
+        <module>business-logic</module>
+        <module>jpa-dao</module>
+        <!--
+        <module>jpa-entitymgr</module>
+        <module>jpa-entity</module>
+        <module>jpa-validation</module>
+        <module>jpa-relation</module>
+        <module>jpa-query</module>
+        <module>jpa-cache</module>
+        <module>jpa-tuning</module>
+        <module>jpa-serverside</module>
+        <module>jpa-providers</module>
+        -->
+    </modules>
+
+    <profiles>
+        <profile>
+            <id>all-modules</id>
+            <modules>
+            </modules>
+        </profile>
+    </profiles>
+</project>

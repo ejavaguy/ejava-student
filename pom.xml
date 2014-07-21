@@ -1,0 +1,282 @@
+<?xml version="1.0"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>info.ejava.build</groupId>
+        <artifactId>dependencies</artifactId>
+        <version>4.0.0-SNAPSHOT</version>
+        <relativePath>build/dependencies/pom.xml</relativePath>
+    </parent>
+
+    <groupId>info.ejava.examples</groupId>
+    <artifactId>examples-root</artifactId>
+    <version>4.0.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <name>Student Root</name>
+    <description>
+        This project provides the root for all example and exercise source code modules.
+    </description>
+
+    <modules>
+        <module>build</module>
+        <module>javase</module>
+    </modules>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <maven-resources-plugin.version>2.6</maven-resources-plugin.version>
+        <maven-dependency-plugin.version>2.8</maven-dependency-plugin.version>        
+        <maven-antrun-plugin.version>1.7</maven-antrun-plugin.version>
+        <maven-jar-plugin.version>2.4</maven-jar-plugin.version>
+        <build-helper-maven-plugin.version>1.8</build-helper-maven-plugin.version>
+    </properties>
+
+    <repositories>
+        <repository>
+            <id>jboss-nexus</id>
+            <name>JBoss Nexus Repository</name>
+            <url>https://repository.jboss.org/nexus/content/groups/public-jboss/</url>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>never</updatePolicy>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>never</updatePolicy>
+            </snapshots>
+        </repository>
+    </repositories>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>jboss-nexus</id>
+            <name>JBoss Nexus Repository</name>
+            <url>https://repository.jboss.org/nexus/content/groups/public-jboss/</url>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>never</updatePolicy>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>never</updatePolicy>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <version>${maven-resources-plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-dependency-plugin</artifactId>
+                    <version>${maven-dependency-plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-antrun-plugin</artifactId>
+                    <version>${maven-antrun-plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>build-helper-maven-plugin</artifactId>
+                    <version>${build-helper-maven-plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>${maven-jar-plugin.version}</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+
+    <profiles>
+        <profile> <!-- H2 embedded/file-based DB -->
+            <id>h2db</id>
+            <properties>
+                  <jdbc.driver>org.h2.Driver</jdbc.driver>
+                  <jdbc.url>jdbc:h2:${basedir}/target/h2db/ejava</jdbc.url>
+                  <jdbc.user>sa</jdbc.user>
+                  <jdbc.password />
+                  <hibernate.dialect>
+                      org.hibernate.dialect.H2Dialect
+                  </hibernate.dialect>
+            </properties>
+            <dependencies>
+                <dependency>
+                    <groupId>com.h2database</groupId>
+                    <artifactId>h2</artifactId>
+                    <scope>test</scope>
+                </dependency>
+            </dependencies>
+        </profile>
+
+        <profile> <!-- H2 server-based DB -->
+            <id>h2srv</id>
+            <properties>
+                  <jdbc.driver>org.h2.Driver</jdbc.driver>
+                  <jdbc.url>jdbc:h2:tcp://${db.host}:9092/h2db/ejava</jdbc.url>
+                  <jdbc.user>sa</jdbc.user>
+                  <jdbc.password />
+                  <hibernate.dialect>
+                      org.hibernate.dialect.H2Dialect
+                  </hibernate.dialect>
+            </properties>
+            <dependencies>
+                <dependency>
+                    <groupId>com.h2database</groupId>
+                    <artifactId>h2</artifactId>
+                    <scope>test</scope>
+                </dependency>
+            </dependencies>
+        </profile>
+
+        <profile>
+            <id>hsql</id> <!-- Hypersonic server-based DB -->
+            <properties>
+                  <jdbc.driver>org.hsqldb.jdbcDriver</jdbc.driver>
+                  <jdbc.url>jdbc:hsqldb:hsql://${db.host}:9001</jdbc.url>
+                  <jdbc.user>sa</jdbc.user>
+                  <jdbc.password />
+                  <hibernate.dialect>
+                      org.hibernate.dialect.HSQLDialect
+                  </hibernate.dialect>
+            </properties>
+            <dependencies>
+                <dependency>
+                    <groupId>org.hsqldb</groupId>
+                    <artifactId>hsqldb</artifactId>
+                    <scope>test</scope>
+                </dependency>       
+            </dependencies>
+        </profile>
+
+        <profile> 
+            <id>mysql</id> <!-- MySQL server-based DB -->
+            <properties>
+                  <jdbc.driver>com.mysql.jdbc.Driver</jdbc.driver>
+                  <jdbc.url>jdbc:mysql://${db.host}:3306/test</jdbc.url>
+                  <jdbc.user>jboss</jdbc.user>
+                  <jdbc.password>password</jdbc.password>
+                  <hibernate.dialect>
+                      org.hibernate.dialect.MySQLDialect
+                  </hibernate.dialect>
+            </properties>
+            <dependencies>
+                <dependency>
+                    <groupId>mysql</groupId>
+                    <artifactId>mysql-connector-java</artifactId>
+                    <scope>test</scope>
+                </dependency>       
+            </dependencies>
+        </profile>
+
+        <profile> 
+            <id>oracledb</id> <!-- Oracle server-based DB -->
+            <properties>
+                  <oracle.host>oracledb</oracle.host>
+                  <jdbc.driver>oracle.jdbc.driver.OracleDriver</jdbc.driver>
+                  <jdbc.url>jdbc:oracle:thin:@${oracle.host}:1521:orcl</jdbc.url>
+                  <jdbc.user>ejava</jdbc.user>
+                  <jdbc.password>password</jdbc.password>
+                  <hibernate.dialect>
+                      org.hibernate.dialect.Oracle10gDialect
+                  </hibernate.dialect>
+            </properties>
+            <dependencies>
+                <dependency>
+                    <groupId>com.oracle</groupId>
+                    <artifactId>ojdbc6</artifactId>
+                    <scope>test</scope>
+                </dependency>       
+            </dependencies>
+        </profile>
+
+
+
+        <profile>
+            <id>webdev-deploy</id>
+            <properties>
+                <site.server>webdev.apl.jhu.edu</site.server>
+                <devsite.server>dev5.ejava.info</devsite.server>
+            </properties>
+            <distributionManagement>
+                <site>
+                    <id>webdev.website</id>
+                    <name>ejava JHU webdev website</name>
+                    <url>scpexe://${site.server}/home/jcs/public_html/ejava-javaee</url>
+                </site>
+                <repository>
+                    <id>webdev.repository</id>
+                    <name>ejava JHU repository</name>
+                    <url>scpexe://${site.server}/home/jcs/public_html/maven2</url>
+                </repository>
+                <snapshotRepository>
+                    <id>webdev.snapshot.repo</id>
+                    <name>ejava JHU snapshot repository</name>
+                    <url>scpexe://${site.server}/home/jcs/public_html/maven2-snapshot</url>
+                    <uniqueVersion>false</uniqueVersion>
+                </snapshotRepository>
+            </distributionManagement>
+        </profile>
+        <profile>
+            <id>localdev-deploy</id>
+            <properties>
+                <site.server>localdev.ejava.info</site.server>
+                <devsite.server>localdev.ejava.info</devsite.server>
+                <site.name>ejava-javaee</site.name>
+            </properties>
+            <distributionManagement>
+                <site>
+                    <id>localdev.website</id>
+                    <name>localdev website</name>
+                    <url>scpexe://${site.server}/var/www/ejava.info/html/sites/${site.name}</url>
+                </site>
+                <repository>
+                    <id>test-releases</id>
+                    <name>Test Releases</name>
+                    <url>https://${site.server}/nexus/content/repositories/test-releases/</url>
+                </repository>
+                <snapshotRepository>
+                    <id>test-snapshots</id>
+                    <name>Test Snapshots</name>
+                    <url>https://${site.server}/nexus/content/repositories/test-snapshots/</url>
+                    <uniqueVersion>false</uniqueVersion>
+                </snapshotRepository>
+            </distributionManagement>
+        </profile>
+        <profile>
+            <id>test-deploy</id>
+            <properties>
+                <site.server>webdev.apl.jhu.edu</site.server>
+                <devsite.server>dev5.ejava.info</devsite.server>
+            </properties>
+            <distributionManagement>
+                <site>
+                    <id>webdev.website</id>
+                    <name>ejava JHU webdev website</name>
+                    <url>scpexe://${site.server}/home/jcs/public_html/test-deploy/ejava-javaee</url>
+                </site>
+                <repository>
+                    <id>webdev.repository</id>
+                    <name>ejava JHU repository</name>
+                    <url>scpexe://${site.server}/home/jcs/public_html/test-deploy/maven2</url>
+                </repository>
+                <snapshotRepository>
+                    <id>webdev.snapshot.repo</id>
+                    <name>ejava JHU snapshot repository</name>
+                    <url>scpexe://${site.server}/home/jcs/public_html/test-deploy/maven2-snapshot</url>
+                    <uniqueVersion>false</uniqueVersion>
+                </snapshotRepository>
+            </distributionManagement>
+        </profile>
+    </profiles>
+</project>

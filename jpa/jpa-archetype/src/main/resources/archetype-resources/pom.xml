@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>ejava.jpa</groupId>
+        <artifactId>jpa-parent</artifactId>
+        <version>3.0.2014.2-SNAPSHOT</version>
+        <relativePath></relativePath>
+    </parent>
+
+    <groupId>${groupId}</groupId>
+    <artifactId>${artifactId}</artifactId>
+    <version>${version}</version>
+
+    <name>${artifactId}</name>
+    <description>
+        This project provides a starting point for developing JPA modules.
+    </description>
+
+    <!-- dependency versions are defined within parent-pom -->
+    <dependencies>
+        <dependency>
+          <groupId>commons-logging</groupId>
+          <artifactId>commons-logging</artifactId>
+          <scope>compile</scope>
+        </dependency>
+    
+        <dependency>
+            <groupId>org.hibernate.javax.persistence</groupId>
+            <artifactId>hibernate-jpa-2.1-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-entitymanager</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+          <groupId>log4j</groupId>
+          <artifactId>log4j</artifactId>
+          <scope>test</scope>
+        </dependency>    
+    </dependencies>
+
+    <build>
+        <!-- filtering will replace URLs, credentials, etc in the 
+             files copied to the target directory and used during testing.
+            -->
+        <testResources>
+            <testResource>
+                <directory>src/test/resources</directory>
+                <filtering>true</filtering>
+            </testResource>
+        </testResources>
+
+        <plugins>
+            <!-- extends the pluginManagement definition in the parent pom
+                 to generates DDL files for persistence unit.
+                 See effective-pom for full configuration -->
+            <plugin>
+                <artifactId>hibernate3-maven-plugin</artifactId>
+                <groupId>org.codehaus.mojo</groupId>
+                <configuration>
+                    <hibernatetool destdir="target/classes/ddl">
+                        <classpath>
+                            <path location="${project.build.directory}/classes" />
+                            <path location="${project.build.directory}/test-classes" />
+                        </classpath>
+                        <jpaconfiguration persistenceunit="${artifactId}-test" 
+                            propertyfile="${basedir}/target/test-classes/hibernate.properties" />
+                    </hibernatetool>
+                </configuration>
+            </plugin>
+
+            <!-- package the persistence unit in a test-jar so it can
+                 be used by downstream client tests -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>test-jar</goal>
+                        </goals>
+                        <configuration>
+                            <!-- include or exclude as appropriate -->
+                            <includes>
+                                <include>META-INF/persistence.xml</include>
+                            </includes>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <repositories>
+        <repository>
+            <id>webdev</id>
+            <name>ejava webdev repository</name>
+            <url>http://webdev.apl.jhu.edu/~jcs/maven2</url>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>never</updatePolicy>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>webdev-snapshot</id>
+            <name>ejava webdev snapshot repository</name>
+            <url>http://webdev.apl.jhu.edu/~jcs/maven2-snapshot</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>daily</updatePolicy>
+            </snapshots>
+        </repository>
+    </repositories>
+
+    <profiles>
+        <profile>
+            <id>testing</id>
+            <activation>
+                <property>
+                    <name>!skipTests</name>
+                </property>
+            </activation>
+      
+            <build>
+                <plugins>
+                    <plugin>
+                        <!-- runs schema against the DB -->
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>sql-maven-plugin</artifactId>        
+                    
+                        <executions>
+                            <execution>
+                                <id>drop-db-before-test</id>
+                                <phase>process-test-classes</phase>
+                                <goals>
+                                    <goal>execute</goal>
+                                </goals>    
+                                <configuration>              
+                                    <autocommit>true</autocommit>
+                                    <fileset>
+                                        <basedir>${basedir}</basedir>
+                                        <includes>
+                                            <include>target/classes/ddl/**/*dropJPA.ddl</include>
+                                        </includes>
+                                    </fileset>
+                                    <onError>continue</onError>
+                                </configuration>        
+                            </execution>
+                                          
+                            <execution>
+                                <id>create-db-before-test</id>
+                                <phase>process-test-classes</phase>
+                                <goals>
+                                    <goal>execute</goal>
+                                </goals>    
+                                <configuration>              
+                                    <autocommit>true</autocommit>
+                                    <fileset>
+                                        <basedir>${basedir}</basedir>
+                                        <includes>
+                                            <include>target/classes/ddl/**/*createJPA.ddl</include>                  
+                                        </includes>
+                                    </fileset>
+                                    <print>true</print>
+                                </configuration>        
+                            </execution>
+                                          
+                            <execution>
+                                <id>populate-db-before-test</id>
+                                <phase>process-test-classes</phase>
+                                <goals>
+                                    <goal>execute</goal>
+                                </goals>    
+                                <configuration>              
+                                    <autocommit>true</autocommit>
+                                    <fileset>
+                                        <basedir>${basedir}</basedir>
+                                        <includes>
+                                            <include>target/test-classes/ddl/**/*populate*.ddl</include>
+                                        </includes>
+                                    </fileset>
+                                </configuration>        
+                            </execution>
+
+                    <!-- commenting out leaves residue in DB for inspection
+                            <execution>
+                                <id>drop-db-after-test</id>
+                                <phase>test</phase>
+                                <goals>
+                                    <goal>execute</goal>
+                                </goals>    
+                                <configuration>              
+                                    <autocommit>true</autocommit>
+                                    <fileset>
+                                        <basedir>${basedir}</basedir>
+                                        <includes>
+                                            <include>target/classes/ddl/**/*dropJPA.ddl</include>
+                                        </includes>
+                                    </fileset>
+                                </configuration>        
+                            </execution>
+                    -->
+                        </executions>
+                    </plugin>          
+
+                </plugins>          
+            </build>          
+        </profile>
+    </profiles>
+</project>
