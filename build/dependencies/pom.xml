@@ -135,6 +135,25 @@
         <java.naming.factory.url.pkgs/>
     </properties>
 
+    <distributionManagement>
+        <site>
+            <id>webdev.website</id>
+            <name>ejava JHU webdev website</name>
+            <url>scpexe://webdev.apl.jhu.edu/home/jcs/public_html/ejava-javaee</url>
+        </site>
+        <repository>
+            <id>webdev.repository</id>
+            <name>ejava JHU repository</name>
+            <url>scpexe://webdev.apl.jhu.edu/home/jcs/public_html/maven2</url>
+        </repository>
+        <snapshotRepository>
+            <id>webdev.snapshot.repo</id>
+            <name>ejava JHU snapshot repository</name>
+            <url>scpexe://webdev.apl.jhu.edu/home/jcs/public_html/maven2-snapshot</url>
+            <uniqueVersion>false</uniqueVersion>
+        </snapshotRepository>
+    </distributionManagement>
+
     <repositories>
     <!--
         <repository>
@@ -757,84 +776,6 @@
     </build>
 
     <profiles>
-        <profile>
-            <id>webdev-deploy</id>
-            <properties>
-                <site.server>webdev.apl.jhu.edu</site.server>
-                <devsite.server>dev5.ejava.info</devsite.server>
-            </properties>
-            <distributionManagement>
-                <site>
-                    <id>webdev.website</id>
-                    <name>ejava JHU webdev website</name>
-                    <url>scpexe://${site.server}/home/jcs/public_html/ejava-javaee</url>
-                </site>
-                <repository>
-                    <id>webdev.repository</id>
-                    <name>ejava JHU repository</name>
-                    <url>scpexe://${site.server}/home/jcs/public_html/maven2</url>
-                </repository>
-                <snapshotRepository>
-                    <id>webdev.snapshot.repo</id>
-                    <name>ejava JHU snapshot repository</name>
-                    <url>scpexe://${site.server}/home/jcs/public_html/maven2-snapshot</url>
-                    <uniqueVersion>false</uniqueVersion>
-                </snapshotRepository>
-            </distributionManagement>
-        </profile>
-        <profile>
-            <id>localdev-deploy</id>
-            <properties>
-                <site.server>localdev.ejava.info</site.server>
-                <devsite.server>localdev.ejava.info</devsite.server>
-                <site.name>ejava-javaee</site.name>
-            </properties>
-            <distributionManagement>
-                <site>
-                    <id>localdev.website</id>
-                    <name>localdev website</name>
-                    <url>scpexe://${site.server}/var/www/ejava.info/html/sites/${site.name}</url>
-                </site>
-                <repository>
-                    <id>test-releases</id>
-                    <name>Test Releases</name>
-                    <url>https://${site.server}/nexus/content/repositories/test-releases/</url>
-                </repository>
-                <snapshotRepository>
-                    <id>test-snapshots</id>
-                    <name>Test Snapshots</name>
-                    <url>https://${site.server}/nexus/content/repositories/test-snapshots/</url>
-                    <uniqueVersion>false</uniqueVersion>
-                </snapshotRepository>
-            </distributionManagement>
-        </profile>
-        <profile>
-            <id>test-deploy</id>
-            <properties>
-                <site.server>webdev.apl.jhu.edu</site.server>
-                <devsite.server>dev5.ejava.info</devsite.server>
-            </properties>
-            <distributionManagement>
-                <site>
-                    <id>webdev.website</id>
-                    <name>ejava JHU webdev website</name>
-                    <url>scpexe://${site.server}/home/jcs/public_html/test-deploy/ejava-javaee</url>
-                </site>
-                <repository>
-                    <id>webdev.repository</id>
-                    <name>ejava JHU repository</name>
-                    <url>scpexe://${site.server}/home/jcs/public_html/test-deploy/maven2</url>
-                </repository>
-                <snapshotRepository>
-                    <id>webdev.snapshot.repo</id>
-                    <name>ejava JHU snapshot repository</name>
-                    <url>scpexe://${site.server}/home/jcs/public_html/test-deploy/maven2-snapshot</url>
-                    <uniqueVersion>false</uniqueVersion>
-                </snapshotRepository>
-            </distributionManagement>
-        </profile>
-
-
         <profile>
             <id>java6</id>
             <properties>
