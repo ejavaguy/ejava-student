@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistence/orm_2_0.xsd" version="2.0">
+
+    <entity class="myorg.entityex.mapped.Animal">
+        <attributes>
+            <id name="id"/>
+        </attributes>
+    </entity>
+
+    <entity class="myorg.entityex.mapped.Cat">
+        <table name="ENTITYEX_CAT"/>
+        <attributes>
+            <id name="id">
+                <column name="CAT_ID"/>
+                <generated-value/>
+            </id>
+            <basic name="name">
+                <column nullable="false" length="20"/>
+            </basic>
+            <basic name="dob">
+                <temporal>DATE</temporal>
+            </basic>
+            <basic name="weight" access="PROPERTY">
+                <column precision="3" scale="1"/>
+            </basic>
+        </attributes>
+    </entity>
+    
+    <entity class="myorg.entityex.annotated.Bunny">
+        <sequence-generator name="animal-sequence-gen"
+            sequence-name="animal_sequence"/>
+        <table-generator name="animal-table-gen"
+            table="animal_sequences"
+            initial-value="3"
+            allocation-size="10"
+            pk-column-name="key"
+            pk-column-value="animals"
+            value-column-name="seq"/>
+        <attributes>
+            <id name="id">
+                <!-- 
+                <generated-value strategy="SEQUENCE"
+                    generator="animal-sequence-gen"/> 
+                 -->
+                <generated-value strategy="TABLE"
+                    generator="animal-table-gen"/> 
+            </id>
+        </attributes>
+    </entity>
+
+</entity-mappings>

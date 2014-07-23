@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistence/orm_2_0.xsd"
+        version="2.0">
+
+    <!-- this descriptor provides an example of mapping an embedded object.
+    
+        Note!!! The embedded attributed-override did not with JBoss embedded
+        container-alpha8. I had to define the column mapping in the 
+        embeddable.
+        -->
+    <entity class="ejava.examples.orm.core.mapped.XRay" 
+        access="FIELD"
+        metadata-complete="true"
+        name="MappedXRay">
+        <table name="ORMCORE_XRAY"/>
+        <attributes>
+            <id name="id"/>
+            <embedded name="maker">
+                <attribute-override name="name">
+                    <column name="XRAY_MAKER"/>
+                </attribute-override>
+                <!-- address and phone will default to a column name -->
+            </embedded>
+            <!-- model will default to a column name -->
+        </attributes>
+    </entity>        
+    
+    <embeddable class="ejava.examples.orm.core.mapped.Manufacturer" access="FIELD"/>
+    
+    
+</entity-mappings>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistence/orm_2_0.xsd"
+        version="2.0">
+    
+    <!-- This provides an example of an embedded primary key where
+        the embedded class provides mapping to the database. It seems
+        odd to do it this way, but it does keep the metadata and fields
+        together.
+        -->
+    <entity class="ejava.examples.orm.core.mapped.Napsack" 
+            access="FIELD"
+            metadata-complete="true"
+            name="MappedNapsack">
+        <table name="ORMCORE_NAPSACK"/>
+        <attributes>
+            <embedded-id name="pk"/>
+        </attributes>
+    </entity>    
+
+    <embeddable class="ejava.examples.orm.core.mapped.NapsackPK">
+        <attributes>
+            <basic name="make">
+                <column name="NAPSACK_MAKE"/>
+            </basic>
+            <basic name="model">
+                <column name="NAPSACK_MODEL"/>
+            </basic>            
+        </attributes>
+    </embeddable>
+</entity-mappings>
+    
+    

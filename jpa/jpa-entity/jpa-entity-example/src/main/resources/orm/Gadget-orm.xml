@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistence/orm_2_0.xsd"
+        version="2.0">
+    
+    <!-- this descriptor provides an example of mapping the generated value
+        strategy for an entity to IDENTITY using a descriptor 
+    -->
+    <entity class="ejava.examples.orm.core.mapped.Gadget" 
+        access="FIELD"
+        metadata-complete="true"
+        name="MappedGadget">
+        <table name="ORMCORE_GADGET"/>
+        <attributes>
+            <id name="id">
+                <generated-value strategy="IDENTITY"/> 
+            </id>
+        </attributes>
+    </entity>    
+    
+</entity-mappings>

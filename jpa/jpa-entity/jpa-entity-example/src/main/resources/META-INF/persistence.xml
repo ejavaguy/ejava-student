@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd" version="2.0">
+
+    <persistence-unit name="ormCore">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+        
+        <!-- These could have been rolled into a single file. 
+            META-INF/orm.xml is the default location for a single file
+            approach.
+            -->
+        <mapping-file>orm/Bike-orm.xml</mapping-file>
+        <mapping-file>orm/Car-orm.xml</mapping-file>
+        <mapping-file>orm/Drill-orm.xml</mapping-file>
+        <mapping-file>orm/EggBeater-orm.xml</mapping-file>
+
+        <!-- this entity requires DB support for sequences
+        -->
+        <mapping-file>orm/Fan-orm.xml</mapping-file>
+
+        <mapping-file>orm/Gadget-orm.xml</mapping-file>
+        <mapping-file>orm/Mower-orm.xml</mapping-file>
+        <mapping-file>orm/Napsack-orm.xml</mapping-file>
+        <mapping-file>orm/Pen-orm.xml</mapping-file>
+        <mapping-file>orm/Tank-orm.xml</mapping-file>
+        <mapping-file>orm/Umbrella-orm.xml</mapping-file>
+        <mapping-file>orm/Vase-orm.xml</mapping-file>
+        <mapping-file>orm/Watch-orm.xml</mapping-file>
+        <mapping-file>orm/XRay-orm.xml</mapping-file>
+
+        <class>ejava.examples.orm.core.annotated.Bike</class>
+        <class>ejava.examples.orm.core.annotated.Car</class>
+        <class>ejava.examples.orm.core.annotated.Drill</class>
+        <class>ejava.examples.orm.core.annotated.EggBeater</class>
+
+        <!-- this entity requires DB support for sequences
+        -->
+        <class>ejava.examples.orm.core.annotated.Fan</class>
+
+        <class>ejava.examples.orm.core.annotated.Manufacturer</class>
+        <class>ejava.examples.orm.core.annotated.Gadget</class>
+        <class>ejava.examples.orm.core.annotated.Pen</class>
+        <class>ejava.examples.orm.core.annotated.Mower</class>
+        <class>ejava.examples.orm.core.annotated.Napsack</class>
+        <class>ejava.examples.orm.core.annotated.Tank</class>
+        <class>ejava.examples.orm.core.annotated.Umbrella</class>
+        <class>ejava.examples.orm.core.annotated.Vase</class>
+        <class>ejava.examples.orm.core.annotated.Watch</class>
+        <class>ejava.examples.orm.core.annotated.XRay</class>
+        <exclude-unlisted-classes>true</exclude-unlisted-classes>
+
+        <properties>
+        <!-- properties moved to hibernate.properties file
+            <property name="javax.persistence.jdbc.url" value="${jdbc.url}"/>
+            <property name="javax.persistence.jdbc.driver" value="${jdbc.driver}"/>
+            <property name="javax.persistence.jdbc.user" value="${jdbc.user}"/>
+            <property name="javax.persistence.jdbc.password" value="${jdbc.password}"/>
+
+            <property name="hibernate.dialect" 
+                value="${hibernate.dialect}"/>
+            <property name="hibernate.hbm2ddl.auto" value="create"/>
+            <property name="hibernate.show_sql" value="true"/>            
+            <property name="hibernate.format_sql" value="true"/>            
+            -->
+        </properties>
+    </persistence-unit>        
+    
+</persistence>

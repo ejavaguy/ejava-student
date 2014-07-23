@@ -1,0 +1,370 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>info.ejava.examples.jpa</groupId>
+    <artifactId>jpa-parent</artifactId>
+    <version>4.0.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <name>JPA Parent POM</name>
+    <description>
+        This parent pom is intended to provide common and re-usable 
+        definitions and constructs across JPA exercise projects 
+        instantiated by the jpa-archetype. Use this parent pom as
+        an example of what you might include in your parent poms to
+        help integrate JPA topics into your projects.
+    </description>
+
+    <repositories>
+        <repository>
+            <id>jboss-nexus</id>
+            <name>JBoss Nexus Repository</name>
+            <url>https://repository.jboss.org/nexus/content/groups/public-jboss/</url>
+        </repository>
+    </repositories>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <java.source.version>1.6</java.source.version>
+        <java.target.version>1.7</java.target.version>
+
+        <jboss.host>localhost</jboss.host>
+        <db.host>${jboss.host}</db.host>
+
+        <maven-compiler-plugin.version>2.5.1</maven-compiler-plugin.version>
+        <maven-jar-plugin.version>2.4</maven-jar-plugin.version>
+        <maven-surefire-plugin.version>2.12.2</maven-surefire-plugin.version>
+        <sql-maven-plugin.version>1.4</sql-maven-plugin.version>        
+
+        <commons-logging.version>1.0.4</commons-logging.version>
+        <h2db.version>1.3.168</h2db.version>
+        <hibernate-jpa-2.1-api.version>1.0.0.Final</hibernate-jpa-2.1-api.version>
+        <hibernate-entitymanager.version>4.3.4.Final</hibernate-entitymanager.version>
+        <hibernate3-maven-plugin.version>3.0</hibernate3-maven-plugin.version>
+        <hibernate3.version>3.6.0.Final</hibernate3.version>
+        <junit.version>4.10</junit.version>
+        <log4j.version>1.2.13</log4j.version>
+        <slf4j.version>1.6.1</slf4j.version>
+        <wagon-ssh-external.version>2.2</wagon-ssh-external.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+              <groupId>commons-logging</groupId>
+              <artifactId>commons-logging</artifactId>
+              <version>${commons-logging.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.hibernate.javax.persistence</groupId>
+                <artifactId>hibernate-jpa-2.1-api</artifactId>
+                <version>${hibernate-jpa-2.1-api.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-entitymanager</artifactId>
+                <version>${hibernate-entitymanager.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-log4j12</artifactId>
+                <version>${slf4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>${junit.version}</version>
+            </dependency>
+            <dependency>
+              <groupId>log4j</groupId>
+              <artifactId>log4j</artifactId>
+              <version>${log4j.version}</version>
+            </dependency>    
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <extensions> <!-- needed for site deploy over scp -->
+            <extension>
+                <groupId>org.apache.maven.wagon</groupId>
+                <artifactId>wagon-ssh-external</artifactId>
+                <version>${wagon-ssh-external.version}</version>
+            </extension>
+        </extensions>
+        <pluginManagement>
+            <plugins>
+                  <!-- make sure we are building java6 -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>${maven-compiler-plugin.version}</version>
+                    <configuration>
+                            <source>${java.source.version}</source>
+                            <target>${java.target.version}</target>
+                    </configuration>	                
+                </plugin>      
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>${maven-jar-plugin.version}</version>
+                </plugin>
+          
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>${maven-surefire-plugin.version}</version>
+                    <configuration>
+                        <argLine>${surefire.argLine}</argLine>
+                    </configuration>
+                </plugin>            
+
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>hibernate3-maven-plugin</artifactId>
+                    <version>${hibernate3-maven-plugin.version}</version>
+                    <extensions>true</extensions>
+                    <dependencies>
+                        <dependency>
+                            <groupId>org.hibernate</groupId>
+                            <artifactId>hibernate-entitymanager</artifactId>
+                            <version>${hibernate3.version}</version>
+                        </dependency>
+                    </dependencies>
+                    <executions>
+                        <execution>
+                            <id>generate-drop-ddl</id>
+                            <phase>process-test-classes</phase>
+                            <goals>
+                                <goal>run</goal>
+                            </goals>
+                            <configuration>
+                                <hibernatetool>
+                                    <hbm2ddl export="false" create="false" drop="true" format="true" outputfilename="${project.artifactId}-dropJPA.ddl" />
+                                </hibernatetool>
+                            </configuration>
+                        </execution>
+                        <execution>
+                            <id>generate-create-ddl</id>
+                            <phase>process-test-classes</phase>
+                            <goals>
+                                <goal>run</goal>
+                            </goals>
+                            <configuration>
+                                <hibernatetool>
+                                    <hbm2ddl export="false" create="true" drop="false" format="true" outputfilename="${project.artifactId}-createJPA.ddl" />
+                                </hibernatetool>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>sql-maven-plugin</artifactId>        
+                    <version>${sql-maven-plugin.version}</version>        
+                
+                    <dependencies>
+                        <dependency>
+                            <groupId>com.h2database</groupId>
+                            <artifactId>h2</artifactId>
+                            <version>${h2db.version}</version>
+                        </dependency>
+                    </dependencies>
+                
+                    <configuration>
+                        <username>${jdbc.user}</username>
+                        <password>${jdbc.password}</password>
+                        <driver>${jdbc.driver}</driver>
+                        <url>${jdbc.url}</url>          
+                    </configuration>
+                    
+                </plugin>          
+
+                <!-- skip site deploys for the exercises -->
+                <plugin> 
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-site-plugin</artifactId>
+                    <configuration>
+                        <skip>true</skip>
+                        <skipDeploy>true</skipDeploy>
+                    </configuration>
+                </plugin>
+            </plugins>    
+        </pluginManagement>
+    </build>
+
+    <profiles>
+        <profile> <!-- H2 server-based DB -->
+            <id>h2srv</id>
+            <properties>
+                  <jdbc.driver>org.h2.Driver</jdbc.driver>
+                  <jdbc.url>jdbc:h2:tcp://${db.host}:9092/h2db/ejava</jdbc.url>
+                  <jdbc.user>sa</jdbc.user>
+                  <jdbc.password />
+                  <hibernate.dialect>org.hibernate.dialect.H2Dialect</hibernate.dialect>
+            </properties>
+            <dependencies>
+                <dependency>
+                    <groupId>com.h2database</groupId>
+                    <artifactId>h2</artifactId>
+                    <version>${h2db.version}</version>
+                    <scope>test</scope>
+                </dependency>
+            </dependencies>
+        </profile>
+
+        <profile> <!-- H2 file-based DB -->
+            <id>h2db</id>
+            <properties>
+                  <jdbc.driver>org.h2.Driver</jdbc.driver>
+                  <jdbc.url>jdbc:h2:${basedir}/target/h2db/ejava</jdbc.url>
+                  <jdbc.user>sa</jdbc.user>
+                  <jdbc.password />
+                  <hibernate.dialect>org.hibernate.dialect.H2Dialect</hibernate.dialect>
+            </properties>
+            <dependencies>
+                <dependency>
+                    <groupId>com.h2database</groupId>
+                    <artifactId>h2</artifactId>
+                    <version>${h2db.version}</version>
+                    <scope>test</scope>
+                </dependency>
+            </dependencies>
+        </profile>
+
+    	<!--  tell Eclipse what to do with some of the plugins -->
+        <profile>
+            <id>m2e</id>
+            <activation>
+                <property>
+                    <name>m2e.version</name>
+                </property>
+            </activation>
+            <build>
+                <pluginManagement>
+                    <plugins>
+                        <plugin>
+                            <groupId>org.eclipse.m2e</groupId>
+                            <artifactId>lifecycle-mapping</artifactId>
+                            <version>1.0.0</version>
+                            <configuration>
+                                <lifecycleMappingMetadata>
+                                    <pluginExecutions>
+
+	                        <pluginExecution>
+	                          <pluginExecutionFilter>
+	                            <groupId>org.codehaus.mojo</groupId>
+	                            <artifactId>hibernate3-maven-plugin</artifactId>
+	                            <versionRange>[2.2,)</versionRange>
+	                            <goals>
+	                              <goal>hbm2ddl</goal>
+	                              <goal>run</goal>
+	                            </goals>
+	                          </pluginExecutionFilter>
+	                          <action>
+	                            <ignore />
+	                          </action>
+	                        </pluginExecution>
+
+	                        <pluginExecution>
+	                          <pluginExecutionFilter>
+	                            <groupId>org.codehaus.mojo</groupId>
+	                            <artifactId>sql-maven-plugin</artifactId>
+	                            <versionRange>[1.0.0,)</versionRange>
+	                            <goals>
+	                              <goal>execute</goal>
+	                            </goals>
+	                          </pluginExecutionFilter>
+	                          <action>
+	                            <ignore />
+	                          </action>
+	                        </pluginExecution>
+	
+                                  </pluginExecutions>
+                              </lifecycleMappingMetadata>
+	                  </configuration>
+                      </plugin>
+                    </plugins>
+	      	</pluginManagement>
+           </build>
+        </profile>
+
+        <profile>
+            <id>localdev-deploy</id>
+            <properties>
+                <site.server>localdev.ejava.info</site.server>
+                <devsite.server>localdev.ejava.info</devsite.server>
+                <site.name>ejava-javaee</site.name>
+            </properties>
+            <distributionManagement>
+                <site>
+                    <id>localdev.website</id>
+                    <name>localdev website</name>
+                    <url>scpexe://${site.server}/var/www/ejava.info/html/sites/${site.name}</url>
+                </site>
+                <repository>
+                    <id>test-releases</id>
+                    <name>Test Releases</name>
+                    <url>https://${site.server}/nexus/content/repositories/test-releases/</url>
+                </repository>
+                <snapshotRepository>
+                    <id>test-snapshots</id>
+                    <name>Test Snapshots</name>
+                    <url>https://${site.server}/nexus/content/repositories/test-snapshots/</url>
+                    <uniqueVersion>false</uniqueVersion>
+                </snapshotRepository>
+            </distributionManagement>
+        </profile>
+        <profile>
+            <id>webdev-deploy</id>
+            <properties>
+                <site.server>webdev.apl.jhu.edu</site.server>
+                <devsite.server>dev5.ejava.info</devsite.server>
+            </properties>
+            <distributionManagement>
+                <site>
+                    <id>webdev.website</id>
+                    <name>ejava JHU webdev website</name>
+                    <url>scpexe://${site.server}/home/jcs/public_html/ejava-javaee</url>
+                </site>
+                <repository>
+                    <id>webdev.repository</id>
+                    <name>ejava JHU repository</name>
+                    <url>scpexe://${site.server}/home/jcs/public_html/maven2</url>
+                </repository>
+                <snapshotRepository>
+                    <id>webdev.snapshot.repo</id>
+                    <name>ejava JHU snapshot repository</name>
+                    <url>scpexe://${site.server}/home/jcs/public_html/maven2-snapshot</url>
+                    <uniqueVersion>false</uniqueVersion>
+                </snapshotRepository>
+            </distributionManagement>
+        </profile>
+        <profile>
+            <id>test-deploy</id>
+            <properties>
+                <site.server>webdev.apl.jhu.edu</site.server>
+                <devsite.server>dev5.ejava.info</devsite.server>
+            </properties>
+            <distributionManagement>
+                <site>
+                    <id>webdev.website</id>
+                    <name>ejava JHU webdev website</name>
+                    <url>scpexe://${site.server}/home/jcs/public_html/test-deploy/ejava-javaee</url>
+                </site>
+                <repository>
+                    <id>webdev.repository</id>
+                    <name>ejava JHU repository</name>
+                    <url>scpexe://${site.server}/home/jcs/public_html/test-deploy/maven2</url>
+                </repository>
+                <snapshotRepository>
+                    <id>webdev.snapshot.repo</id>
+                    <name>ejava JHU snapshot repository</name>
+                    <url>scpexe://${site.server}/home/jcs/public_html/test-deploy/maven2-snapshot</url>
+                    <uniqueVersion>false</uniqueVersion>
+                </snapshotRepository>
+            </distributionManagement>
+        </profile>
+    </profiles>
+</project>

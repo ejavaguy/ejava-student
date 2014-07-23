@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistence/orm_2_0.xsd"
+        version="2.0">
+
+    <!-- this descriptor provides an example of mapping multiple tables,
+        joined by the primary key value in the main table.
+        -->
+    <entity class="ejava.examples.orm.core.mapped.Watch" 
+        access="FIELD"
+        metadata-complete="true"
+        name="MappedWatch">
+        <table name="ORMCORE_WATCH"/>
+        <secondary-table name="ORMCORE_OWNER">
+            <primary-key-join-column name="OWNER_ID"/>
+        </secondary-table>
+        <secondary-table name="ORMCORE_MAKER">
+            <primary-key-join-column name="MAKER_ID"/>
+        </secondary-table>
+        <attributes>
+            <id name="id"/>
+            <basic name="owner">
+                <column name="NAME" table="ORMCORE_OWNER"/>
+            </basic>
+            <basic name="cardnum">
+                <column table="ORMCORE_OWNER"/>
+            </basic>
+            <basic name="manufacturer">
+                <column name="NAME" table="ORMCORE_MAKER"/>
+            </basic>
+            <basic name="address">
+                <column table="ORMCORE_MAKER"/>
+            </basic>
+            <basic name="phone">
+                <column table="ORMCORE_MAKER"/>
+            </basic>
+        </attributes>
+    </entity>        
+</entity-mappings>

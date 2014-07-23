@@ -8,11 +8,11 @@
         <relativePath/>
     </parent>
 
-    <groupId>${groupId}</groupId>
-    <artifactId>${artifactId}</artifactId>
-    <version>${version}</version>
+    <groupId>myorg.entityex</groupId>
+    <artifactId>entityEx</artifactId>
+    <version>4.0.0-SNAPSHOT</version>
 
-    <name>${artifactId}</name>
+    <name>JPA::Entity::Exercise Solution</name>
     <description>
         This project provides a starting point for developing JPA modules.
     </description>
@@ -78,8 +78,7 @@
                             <path location="${project.build.directory}/classes" />
                             <path location="${project.build.directory}/test-classes" />
                         </classpath>
-                        <jpaconfiguration persistenceunit="${artifactId}-test" 
-                            propertyfile="${basedir}/target/test-classes/hibernate.properties" />
+                        <jpaconfiguration persistenceunit="entityEx-test" propertyfile="${basedir}/target/test-classes/hibernate.properties" />
                     </hibernatetool>
                 </configuration>
             </plugin>
@@ -180,7 +179,7 @@
                                     <fileset>
                                         <basedir>${basedir}</basedir>
                                         <includes>
-                                            <include>target/classes/ddl/**/*createJPA.ddl</include>                  
+                                            <include>target/classes/ddl/**/*createJPA.ddl</include> 
                                         </includes>
                                     </fileset>
                                     <print>true</print>

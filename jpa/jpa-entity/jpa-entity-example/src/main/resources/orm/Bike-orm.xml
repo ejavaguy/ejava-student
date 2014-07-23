@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistence/orm_2_0.xsd"
+        version="2.0">
+            
+    <!-- The root element defines the following. Only class is required. 
+        class - the full class name of the entity to manage
+        access - whether to use getter/setter PROPERTY or attribute FIELD
+        metadata-complete - whether to ignore annotations in class and go
+            strictly with what's in this descriptor
+        name - an alternate name to refer to the class by (i.e., in EJB-QL).
+            Note that all entity names must be unique, even though more than 
+            one entity can be mapped to the same table.
+        -->
+    <entity class="ejava.examples.orm.core.mapped.Bike" 
+            access="FIELD"
+            metadata-complete="true"
+            name="MappedBike">
+        <table name="Bike"/>
+        <attributes>
+            <id name="id"/>
+            <basic name="make" access="FIELD"/>
+        </attributes>
+    </entity>    
+</entity-mappings>
+    
+    
