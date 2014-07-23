@@ -1,0 +1,24 @@
+<constraint-mappings 
+    xmlns="http://jboss.org/xml/ns/javax/validation/mapping"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://jbss.org/xml/ns/javax/validation/mapping
+        http://jboss.org/xml/ns/javax/validation/mapping/validation-mapping-1.0.xsd">
+
+    <bean class="ejava.jpa.example.validation.Book">
+        <field name="title">
+            <constraint annotation="javax.validation.constraints.NotNull">
+                <message>title is required</message>
+            </constraint>
+            <constraint annotation="javax.validation.constraints.Size">
+                <message>title is required</message>
+                <element name="max">32</element>
+            </constraint>
+        </field>
+        <field name="pages">
+            <constraint annotation="javax.validation.constraints.Min">
+                <message>pages are required</message>
+                <element name="value">1</element>
+            </constraint>
+        </field>
+    </bean>
+</constraint-mappings>
