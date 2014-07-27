@@ -319,7 +319,7 @@
         <profile>
             <id>webdev-deploy</id>
             <properties>
-                <site.server>webdev.apl.jhu.edu</site.server>
+                <site.server>webdev.jhuep.com</site.server>
                 <devsite.server>dev5.ejava.info</devsite.server>
             </properties>
             <distributionManagement>
@@ -344,7 +344,7 @@
         <profile>
             <id>test-deploy</id>
             <properties>
-                <site.server>webdev.apl.jhu.edu</site.server>
+                <site.server>webdev.jhuep.com</site.server>
                 <devsite.server>dev5.ejava.info</devsite.server>
             </properties>
             <distributionManagement>

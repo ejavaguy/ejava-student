@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd" version="2.0">
+
+    <!-- this persistence.xml file is hosted within the src/test 
+         directory and is meant to test the entity mapping designs
+         and then be replaced by downstream persistence units that
+         are more specific to the deployment environment. Since it 
+         is not hosted in the src/main tree - the individual entities
+         must be individually named below for schema generation to 
+         work correctly -->
+    <persistence-unit name="relationEx-test">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+
+        <class>myorg.relex.Auto</class>
+        <!-- one2one uni-directional -->
+        <class>myorg.relex.one2one.Person</class>
+        <class>myorg.relex.one2one.Player</class>
+        <class>myorg.relex.one2one.Member</class>
+        <class>myorg.relex.one2one.Coach</class>
+        <class>myorg.relex.one2one.Employee</class>
+        <class>myorg.relex.one2one.ShowEvent</class>
+        <class>myorg.relex.one2one.ShowTickets</class>
+        <class>myorg.relex.one2one.BoxOffice</class>
+        <!-- one2one bi-directional -->
+        <class>myorg.relex.one2one.Applicant</class>
+        <class>myorg.relex.one2one.Application</class>
+        <class>myorg.relex.one2one.Auto</class>
+        <class>myorg.relex.one2one.Driver</class>
+        <class>myorg.relex.one2one.Auto2</class>
+        <class>myorg.relex.one2one.Driver2</class>
+        <!-- one2one cascade -->
+        <class>myorg.relex.one2one.License</class>
+        <class>myorg.relex.one2one.LicenseApplication</class>
+        <class>myorg.relex.one2one.Ticket</class>
+        <class>myorg.relex.one2one.Passenger</class>
+        <!-- one2one orphanRemoval -->
+        <class>myorg.relex.one2one.Residence</class>
+        <class>myorg.relex.one2one.Attendee</class>
+        
+        <!-- one2many uni-directional -->
+        <class>myorg.relex.one2many.Rider</class>
+        <class>myorg.relex.one2many.Bus</class>
+        <class>myorg.relex.one2many.Stop</class>
+        <class>myorg.relex.one2many.Route</class>
+        <class>myorg.relex.one2many.Suspect</class>
+        <class>myorg.relex.one2many.Basket</class>
+        <class>myorg.relex.one2many.Produce</class>
+        <class>myorg.relex.one2many.Todo</class>
+        <class>myorg.relex.one2many.TodoList</class>
+        
+        <!-- many2one uni-directional -->
+        <class>myorg.relex.many2one.State</class>
+        <class>myorg.relex.many2one.StateResident</class>
+        <class>myorg.relex.many2one.House</class>
+        <class>myorg.relex.many2one.Occupant</class>
+        <class>myorg.relex.many2one.Item</class>
+        <class>myorg.relex.many2one.ItemType</class>
+        
+        <!-- one2many/many2one bi-directional -->
+        <class>myorg.relex.one2manybi.Borrower</class>
+        <class>myorg.relex.one2manybi.Loan</class>
+        <class>myorg.relex.one2manybi.Purchase</class>
+        <class>myorg.relex.one2manybi.SaleItem</class>
+        <class>myorg.relex.one2manybi.Car</class>
+        <class>myorg.relex.one2manybi.Tire</class>
+        
+        <!--  many2many -->
+        <class>myorg.relex.many2many.Group</class>
+        <class>myorg.relex.many2many.Individual</class>
+        <class>myorg.relex.many2many.Node</class>
+        
+        <!-- collections -->
+        <class>myorg.relex.collection.Fleet</class>
+        <class>myorg.relex.collection.ShipByDefault</class>
+        <class>myorg.relex.collection.ShipByPK</class>
+        <class>myorg.relex.collection.ShipBySwitch</class>
+        <class>myorg.relex.collection.ShipByBusinessId</class>
+        <class>myorg.relex.collection.Path</class>
+        <class>myorg.relex.collection.Segment</class>
+        <class>myorg.relex.collection.Position</class>
+        <class>myorg.relex.collection.Lineup</class>
+    </persistence-unit>            
+</persistence>

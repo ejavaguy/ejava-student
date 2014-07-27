@@ -1,7 +1,7 @@
 <?xml version="1.0"?><project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>info.ejava.build</groupId>
+    <groupId>info.ejava.examples.build</groupId>
     <artifactId>dependencies</artifactId>
     <version>4.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
@@ -139,17 +139,17 @@
         <site>
             <id>webdev.website</id>
             <name>ejava JHU webdev website</name>
-            <url>scpexe://webdev.apl.jhu.edu/home/jcs/public_html/ejava-javaee</url>
+            <url>scpexe://webdev.jhuep.com/home/jcs/public_html/ejava-javaee</url>
         </site>
         <repository>
             <id>webdev.repository</id>
             <name>ejava JHU repository</name>
-            <url>scpexe://webdev.apl.jhu.edu/home/jcs/public_html/maven2</url>
+            <url>scpexe://webdev.jhuep.com/home/jcs/public_html/maven2</url>
         </repository>
         <snapshotRepository>
             <id>webdev.snapshot.repo</id>
             <name>ejava JHU snapshot repository</name>
-            <url>scpexe://webdev.apl.jhu.edu/home/jcs/public_html/maven2-snapshot</url>
+            <url>scpexe://webdev.jhuep.com/home/jcs/public_html/maven2-snapshot</url>
             <uniqueVersion>false</uniqueVersion>
         </snapshotRepository>
     </distributionManagement>
@@ -217,7 +217,7 @@
         <repository>
             <id>webdev</id>
             <name>ejava webdev repository</name>
-            <url>http://webdev.apl.jhu.edu/~jcs/maven2</url>
+            <url>http://webdev.jhuep.com/~jcs/maven2</url>
             <releases>
                 <enabled>true</enabled>
                 <updatePolicy>never</updatePolicy>
@@ -231,7 +231,7 @@
         <repository>
             <id>webdev-snapshot</id>
             <name>ejava webdev snapshot repository</name>
-            <url>http://webdev.apl.jhu.edu/~jcs/maven2-snapshot</url>
+            <url>http://webdev.jhuep.com/~jcs/maven2-snapshot</url>
             <releases>
                 <enabled>false</enabled>
             </releases>
@@ -290,7 +290,7 @@
         <pluginRepository>
             <id>webdev</id>
             <name>ejava webdev repository</name>
-            <url>http://webdev.apl.jhu.edu/~jcs/maven2</url>
+            <url>http://webdev.jhuep.com/~jcs/maven2</url>
             <releases>
                 <enabled>true</enabled>
                 <updatePolicy>never</updatePolicy>
