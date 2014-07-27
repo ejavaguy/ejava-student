@@ -1,0 +1,721 @@
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+   "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd"  [ ]>
+
+<chapter id="jpa-query-criteria">
+    <title>JPA Criteria API</title>
+    <para></para>
+        
+    <section id="jpa-query-criteria-template">
+        <title>Criteria API Demo Template</title>
+       <itemizedlist spacing="compact">
+            <listitem><para>Following sections contain but may not show the following code in all cases</para></listitem>
+       </itemizedlist>
+    
+        <figure>
+            <title>Boiler-plate code</title>
+<programlisting language="java"><![CDATA[CriteriaBuilder cb = em.getCriteriaBuilder();
+
+//example-specific criteria API definition goes here
+CriteriaQuery<T> qdef = ...
+
+//repeated display loop eliminated
+TypedQuery<T> query = em.createQuery(qdef);
+List<T> objects = query.getResultList();
+for(T o: objects) {
+   log.info("found result:" + o);
+}]]></programlisting>                        
+        </figure>
+        <itemizedlist spacing="compact">
+            <listitem><para>Get CriteriaBuilder from EntityManager</para></listitem>
+            <listitem><para>Build example-specific query definition in CriteriaQuery using CriteriaBuilder</para></listitem>
+            <listitem><para>Execute Query/Print results</para></listitem>
+        </itemizedlist>
+        
+    </section>
+
+    <section id="jpa-query-criteria-entity">
+        <title>Simple Entity Query</title>
+
+        <figure>
+            <title>Equivalent JPAQL</title>
+<programlisting language=""><![CDATA[select c from Customer c]]></programlisting>
+        </figure>
+
+        <figure>
+            <title>Criteria API Definition</title>
+<programlisting language="java"><![CDATA[CriteriaQuery<Customer> qdef = cb.createQuery(Customer.class);
+
+Root<Customer> c = qdef.from(Customer.class);        
+qdef.select(c);]]></programlisting>                        
+        </figure>
+        <itemizedlist spacing="compact">
+            <listitem><para>"from"</para>
+                <itemizedlist spacing="compact">
+                    <listitem><para>defines source of root query terms</para></listitem>
+                    <listitem><para>returns object leveraged in query body</para></listitem>
+                </itemizedlist>
+            </listitem>
+            <listitem><para>"select" defines root query objects -- all path references must start from this set</para></listitem>
+            <listitem><para>no "where" clause indicates all entities are selected</para></listitem>
+        </itemizedlist>
+
+        <figure>
+            <title>In Programming Context</title>
+<programlisting language="java"><![CDATA[CriteriaQuery<Customer> qdef = cb.createQuery(Customer.class);
+
+Root<Customer> c = qdef.from(Customer.class);        
+qdef.select(c);
+
+TypedQuery<Customer> query = em.createQuery(qdef);
+List<Customer> results = query.getResultList();]]></programlisting>                        
+        </figure>
+        
+        <figure>
+            <title>Runtime Output</title>
+<programlisting language=""><![CDATA[    select
+        customer0_.CUSTOMER_ID as CUSTOMER1_3_,
+        customer0_.FIRST_NAME as FIRST2_3_,
+        customer0_.LAST_NAME as LAST3_3_ 
+    from JPAQL_CUSTOMER customer0_
+ -found result:firstName=cat, lastName=inhat
+ -found result:firstName=thing, lastName=one
+ -found result:firstName=thing, lastName=two]]></programlisting>                            
+        </figure>
+    </section>
+
+    <section id="jpa-query-criteria-nonentity">
+        <title>Non-Entity Query</title>
+
+        <figure>
+            <title>Equivalent JPAQL</title>
+<programlisting language=""><![CDATA[select c.lastName from Customer c]]></programlisting>
+        </figure>
+
+        <figure>
+            <title>Criteria API Definition</title>
+<programlisting language="java"><![CDATA[CriteriaQuery<String> qdef = cb.createQuery(String.class);
+
+Root<Customer> c = qdef.from(Customer.class);
+qdef.select(c.<String>get("lastName"));
+]]></programlisting>                        
+        </figure>
+        <itemizedlist spacing="compact">
+            <listitem><para>Allows return of simple property</para></listitem>
+            <listitem><para>c.get("lastName") is called a "path"</para></listitem>
+            <listitem><para>All paths based from root query terms (thus requirement for Root&lt;Customer&gt; c object)</para></listitem>
+            <listitem><para>Single path selects return typed list of values</para></listitem>
+        </itemizedlist>
+
+        <figure>
+            <title>In Programming Context</title>
+<programlisting language="java"><![CDATA[CriteriaQuery<String> qdef = cb.createQuery(String.class);
+
+Root<Customer> c = qdef.from(Customer.class);
+qdef.select(c.<String>get("lastName"));
+
+TypedQuery<String> query = em.createQuery(qdef);
+List<String> results = query.getResultList();]]></programlisting>                        
+        </figure>
+        <itemizedlist spacing="compact">
+            <listitem><para>Query result is a List&lt;String&gt; because "c.lastName" is a String</para></listitem>
+        </itemizedlist>
+
+        <figure>
+            <title>Runtime Output</title>
+<programlisting language=""><![CDATA[    select customer0_.LAST_NAME as col_0_0_ 
+    from JPAQL_CUSTOMER customer0_
+ -lastName=inhat
+ -lastName=one
+ -lastName=two]]></programlisting>                            
+        </figure>
+    </section>
+
+    <section id="jpa-query-criteria-multiselect">
+        <title>Multi-select Query</title>
+
+        <section id="jpa-query-criteria-multiselect-array">
+            <title>Multi-select Query with Object[]</title>
+            <figure>
+                <title>Equivalent JPAQL</title>
+<programlisting language=""><![CDATA[select c.firstName, c.hireDate from Clerk c]]></programlisting>
+            </figure>
+
+            <figure>
+                <title>Criteria API Definition</title>
+<programlisting language="java"><![CDATA[CriteriaQuery<Object[]> qdef = cb.createQuery(Object[].class);
+
+Root<Clerk> c = qdef.from(Clerk.class);
+qdef.select(cb.array(c.get("firstName"), c.get("hireDate")));
+]]></programlisting>                        
+            </figure>
+            <itemizedlist spacing="compact">
+                <listitem><para>Select specifies multiple terms within array()</para></listitem>
+                <listitem><para>Terms are expressed thru a path expression</para></listitem>
+                <listitem><para>Terms must be based off paths from root terms in the FROM (or JOIN) clause -- thus why Root&lt;Clerk&gt; c was retained from cb.from() call</para></listitem>
+            </itemizedlist>
+
+            <figure>
+                <title>In Programming Context</title>
+<programlisting language="java"><![CDATA[CriteriaQuery<Object[]> qdef = cb.createQuery(Object[].class);
+
+Root<Clerk> c = qdef.from(Clerk.class);
+qdef.select(cb.array(c.get("firstName"), c.get("hireDate")));
+
+TypedQuery<Object[]> query = em.createQuery(qdef);
+List<Object[]> results = query.getResultList();
+assertTrue("no results", results.size() > 0);
+for(Object[] result : results) {
+    assertEquals("unexpected result length", 2, result.length);
+    String firstName = (String) result[0];
+    Date hireDate = (Date) result[1];
+    log.info("firstName=" + firstName + " hireDate=" + hireDate);
+}]]></programlisting>                        
+            </figure>
+            <itemizedlist spacing="compact">
+                <listitem><para>Query defined to return elements of select in Object[]</para></listitem>
+            </itemizedlist>
+
+            <figure>
+                <title>Runtime Output</title>
+<programlisting language=""><![CDATA[    select
+        clerk0_.FIRST_NAME as col_0_0_,
+        clerk0_.HIRE_DATE as col_1_0_ 
+    from JPAQL_CLERK clerk0_
+ -firstName=Manny hireDate=1970-01-01
+ -firstName=Moe hireDate=1970-01-01
+ -firstName=Jack hireDate=1973-03-01]]></programlisting>                            
+            </figure>
+        </section>           
+
+        <section id="jpa-query-criteria-multiselect-tuple">
+           <title>Multi-select Query with Tuple</title>
+            <figure>
+                <title>Equivalent JPAQL</title>
+<programlisting language=""><![CDATA[select c.firstName as firstName, c.hireDate as hireDate from Clerk c]]></programlisting>
+            </figure>
+
+            <figure>
+                <title>Criteria API Definition</title>
+<programlisting language="java"><![CDATA[CriteriaQuery<Tuple> qdef = cb.createTupleQuery();
+
+Root<Clerk> c = qdef.from(Clerk.class);
+qdef.select(cb.tuple(
+        c.get("firstName").alias("firstName"), 
+        c.get("hireDate").alias("hireDate")));]]></programlisting>                        
+            </figure>
+        <itemizedlist spacing="compact">
+            <listitem><para>Aliases may be assigned to select terms for named-access to results</para></listitem>
+        </itemizedlist>
+
+            <figure>
+            <title>In Programming Context</title>
+<programlisting language="java"><![CDATA[CriteriaQuery<Tuple> qdef = cb.createTupleQuery();
+
+Root<Clerk> c = qdef.from(Clerk.class);
+qdef.select(cb.tuple(
+        c.get("firstName").alias("firstName"), 
+        c.get("hireDate").alias("hireDate")));
+
+TypedQuery<Tuple> query = em.createQuery(qdef);
+List<Tuple> results = query.getResultList();
+assertTrue("no results", results.size() > 0);
+for(Tuple result : results) {
+    assertEquals("unexpected result length", 2, result.getElements().size());
+    String firstName = result.get("firstName", String.class);
+    Date hireDate = result.get("hireDate", Date.class);
+    log.info("firstName=" + firstName + " hireDate=" + hireDate);
+}]]></programlisting>                        
+        </figure>
+        <itemizedlist spacing="compact">
+            <listitem><para>Query defined to return instances of Tuple class</para></listitem>
+            <listitem><para>Tuples provide access using</para>
+                <itemizedlist spacing="compact">
+                    <listitem><para>get(index) - simular to Object[]</para></listitem>
+                    <listitem><para>get(index, Class&lt;T&gt; resultType) - typed access by index</para></listitem>
+                    <listitem><para>get(alias) - access by alias</para></listitem>
+                    <listitem><para>get(alias, Class&lt;T&gt; resultType) - typed access by alias</para></listitem>
+                    <listitem><para>getElements() - access thru collection interface</para></listitem>
+                </itemizedlist>
+            </listitem>
+        </itemizedlist>
+
+            <figure>
+                <title>Runtime Output</title>
+<programlisting language=""><![CDATA[    select
+        clerk0_.FIRST_NAME as col_0_0_,
+        clerk0_.HIRE_DATE as col_1_0_ 
+    from JPAQL_CLERK clerk0_
+ -firstName=Manny hireDate=1970-01-01
+ -firstName=Moe hireDate=1970-01-01
+ -firstName=Jack hireDate=1973-03-01]]></programlisting>                            
+            </figure>
+        </section>           
+
+        <section id="jpa-query-criteria-multiselect-constructor">
+           <title>Multi-select Query with Constructor</title>
+            <figure>
+            <title>Equivalent JPAQL</title>
+<programlisting language=""><![CDATA[select new ejava.jpa.examples.query.Receipt(s.id,s.buyerId,s.date, s.amount)
+from Sale s]]></programlisting>
+        </figure>
+
+            <figure>
+                <title>Criteria API Definition</title>
+<programlisting language="java"><![CDATA[CriteriaQuery<Receipt> qdef = cb.createQuery(Receipt.class);
+
+Root<Sale> s = qdef.from(Sale.class);
+qdef.select(cb.construct(
+                Receipt.class, 
+                s.get("id"), 
+                s.get("buyerId"),
+                s.get("date"),
+                s.get("amount")));]]></programlisting>                        
+            </figure>
+        <itemizedlist spacing="compact">
+            <listitem><para>Individual elements of select() are matched up against class constructor</para></listitem>
+        </itemizedlist>
+
+            <figure>
+                <title>In Programming Context</title>
+<programlisting language="java"><![CDATA[CriteriaQuery<Receipt> qdef = cb.createQuery(Receipt.class);
+
+Root<Sale> s = qdef.from(Sale.class);
+qdef.select(cb.construct(
+                Receipt.class, 
+                s.get("id"), 
+                s.get("buyerId"),
+                s.get("date"),
+                s.get("amount")));
+
+TypedQuery<Receipt> query = em.createQuery(qdef);
+List<Receipt> results = query.getResultList();
+assertTrue("no results", results.size() > 0);
+for(Receipt receipt : results) {
+    assertNotNull("no receipt", receipt);
+    log.info("receipt=" + receipt);
+}]]></programlisting>                        
+            </figure>
+            <itemizedlist spacing="compact">
+                <listitem><para>Constructed class may be simple POJO -- no need to be an entity</para></listitem>
+                <listitem><para>Instances are not managed</para></listitem>
+                <listitem><para>Suitable for use as Data Transfer Objects (DTOs)</para></listitem>
+            </itemizedlist>
+
+            <figure>
+            <title>Runtime Output</title>
+<programlisting language=""><![CDATA[    select
+        sale0_.SALE_ID as col_0_0_,
+        sale0_.BUYER_ID as col_1_0_,
+        sale0_.date as col_2_0_,
+        sale0_.amount as col_3_0_ 
+    from JPAQL_SALE sale0_
+ -receipt=sale=1, customer=1, date=1998-04-10 10:13:35, amount=$100.00
+ -receipt=sale=2, customer=2, date=1999-06-11 14:15:10, amount=$150.00]]></programlisting>                            
+        </figure>
+        </section>           
+    </section>
+
+
+
+    <section id="jpa-query-criteria-paths">
+       <title>Path Expressions</title>
+
+        <section id="jpa-query-criteria-paths-single">
+            <title>Single Element Path Expressions</title>  
+
+            <figure>
+                <title>Equivalent JPAQL</title>
+<programlisting language=""><![CDATA[select s.id, s.store.name from Sale s]]></programlisting>
+            </figure>
+
+            <figure>
+                <title>Criteria API Definition</title>
+<programlisting language="java"><![CDATA[CriteriaQuery<Object[]> qdef = cb.createQuery(Object[].class);
+
+Root<Sale> s = qdef.from(Sale.class);
+qdef.select(cb.array(s.get("id"),
+                     s.get("store").get("name")));]]></programlisting>                          
+            </figure>
+            <itemizedlist spacing="compact">
+                <listitem><para>All paths based off root-level FROM (or JOIN) terms</para></listitem>
+                <listitem><para>Paths use call chaining to change contexts</para></listitem>
+                <listitem><para>Paths -- used this way -- must always express a single element. Must use JOINs for paths involving collections</para></listitem>
+                <listitem><para>All paths based off root-level FROM (or JOIN) terms</para></listitem>
+            </itemizedlist>
+    
+            <figure>
+                <title>In Programming Context</title>
+<programlisting language="java"><![CDATA[CriteriaBuilder cb = em.getCriteriaBuilder();
+CriteriaQuery<Object[]> qdef = cb.createQuery(Object[].class);
+
+Root<Sale> s = qdef.from(Sale.class);
+qdef.select(cb.array(s.get("id"),
+                     s.get("store").get("name")));
+
+TypedQuery<Object[]> query = em.createQuery(qdef);
+List<Object[]> results = query.getResultList();
+assertTrue("no results", results.size() > 0);
+for(Object[] result : results) {
+    assertEquals("unexpected result length", 2, result.length);
+    Long id = (Long) result[0];
+    String name = (String) result[1];
+    log.info("sale.id=" + id + ", sale.store.name=" + name);
+}]]></programlisting>                        
+            </figure>
+
+            <figure>
+                <title>Runtime Output</title>
+<programlisting language=""><![CDATA[    select
+        sale0_.SALE_ID as col_0_0_,
+        store1_.name as col_1_0_ 
+    from JPAQL_SALE sale0_, ORMQL_STORE store1_ 
+    where sale0_.SALE_STORE=store1_.STORE_ID
+ -sale.id=1, sale.store.name=Big Al's
+ -sale.id=2, sale.store.name=Big Al's]]></programlisting>                            
+            </figure>
+             <itemizedlist spacing="compact">
+                <listitem><para>Automatic INNER JOIN formed between Sale and Store because of the cross-entity path</para></listitem>
+            </itemizedlist>
+        </section>
+        
+        <section id="jpa-query-criteria-paths-collections">
+            <title>Collection Element Path Expressions</title>
+            
+            <section id="jpa-query-criteria-paths-collections-innerjoin">
+                <title>INNER JOIN Collection Path Expressions</title>
+
+                <figure>
+                    <title>Equivalent JPAQL</title>
+<programlisting language=""><![CDATA[select sale.date from Clerk c JOIN c.sales sale]]></programlisting>
+                </figure>
+
+                <figure>
+                    <title>Criteria API Definition</title>
+<programlisting language="java"><![CDATA[CriteriaQuery<Date> qdef = cb.createQuery(Date.class);
+
+Root<Clerk> c = qdef.from(Clerk.class);
+Join<Clerk, Sale> sale = c.join("sales", JoinType.INNER);
+qdef.select(sale.<Date>get("date"));]]></programlisting>                        
+                </figure>
+                <itemizedlist spacing="compact">
+                    <listitem><para>Collection is brought in as a root term of the query through a JOIN expression</para></listitem>
+                    <listitem><para>JOINs will match entities by their defined primary/foreign keys</para></listitem>
+                    <listitem><para>INNER JOIN will return only those entities where there is a match</para></listitem>
+                    <listitem><para>INNER JOIN is default JoinType when none specified</para></listitem>
+                </itemizedlist>
+
+                <figure>
+                    <title>Runtime Output</title>
+<programlisting language=""><![CDATA[    select sale2_.date as col_0_0_ 
+    from JPAQL_CLERK clerk0_ 
+    inner join JPAQL_SALE_CLERK_LINK sales1_ on clerk0_.CLERK_ID=sales1_.CLERK_ID 
+    inner join JPAQL_SALE sale2_ on sales1_.SALE_ID=sale2_.SALE_ID
+
+ -found result:1998-04-10 10:13:35.0
+ -found result:1999-06-11 14:15:10.0
+ -found result:1999-06-11 14:15:10.0]]></programlisting>                            
+                </figure>
+                <itemizedlist spacing="compact">
+                    <listitem><para>(Many-to-Many) Link table used during JOIN</para></listitem>
+                    <listitem><para>Tables automatically joined on primary keys</para></listitem>
+                    <listitem><para>Only Sales sold by our Clerks are returned</para></listitem>
+                </itemizedlist>
+            </section>  
+
+
+
+            <section id="jpa-query-criteria-paths-collections-leftjoin">
+                <title>LEFT OUTER JOIN Collection Path Expressions</title>
+                
+                <figure>
+                    <title>Equivalent JPAQL</title>
+<programlisting language=""><![CDATA[select c.id, c.firstName, sale.amount 
+from Clerk c 
+LEFT JOIN c.sales sale]]></programlisting>
+                </figure>
+
+                <figure>
+                    <title>Criteria API Definition</title>
+<programlisting language="java"><![CDATA[CriteriaQuery<Object[]> qdef = cb.createQuery(Object[].class);
+
+Root<Clerk> c = qdef.from(Clerk.class);
+Join<Clerk, Sale> sale = c.join("sales", JoinType.LEFT);
+qdef.select(cb.array(c.get("id"),
+                     c.get("firstName"),
+                     sale.get("amount")));]]></programlisting>                        
+                </figure>
+                <itemizedlist spacing="compact">
+                    <listitem><para>LEFT OUTER JOIN will return root with or without related entities</para></listitem>
+                </itemizedlist>
+
+                <figure>
+                    <title>Runtime Output</title>
+<programlisting language=""><![CDATA[    select
+        clerk0_.CLERK_ID as col_0_0_,
+        clerk0_.FIRST_NAME as col_1_0_,
+        sale2_.amount as col_2_0_ 
+    from JPAQL_CLERK clerk0_ 
+    left outer join JPAQL_SALE_CLERK_LINK sales1_ on clerk0_.CLERK_ID=sales1_.CLERK_ID 
+    left outer join JPAQL_SALE sale2_ on sales1_.SALE_ID=sale2_.SALE_ID
+ -clerk.id=1, clerk.firstName=Manny, amount=100.00
+ -clerk.id=1, clerk.firstName=Manny, amount=150.00
+ -clerk.id=2, clerk.firstName=Moe, amount=150.00
+ -clerk.id=3, clerk.firstName=Jack, amount=null]]></programlisting>                            
+                </figure>
+                <itemizedlist spacing="compact">
+                    <listitem><para>(Many-to-Many) Link table used during JOIN</para></listitem>
+                    <listitem><para>Tables automatically joined on primary keys</para></listitem>
+                    <listitem><para>All clerks, with or without a Sale, are returned</para></listitem>
+                </itemizedlist>
+            </section>  
+
+            <section id="jpa-query-criteria-paths-collections-crossjoin">
+                <title>Explicit Collection Path Expressions</title>
+
+                <figure>
+                    <title>Equivalent JPAQL</title>
+<programlisting language=""><![CDATA[select c from Sale s, Customer c 
+where c.id = s.buyerId]]></programlisting>
+                </figure>
+
+                <figure>
+                    <title>Criteria API Definition</title>
+<programlisting language="java"><![CDATA[CriteriaQuery<Customer> qdef = cb.createQuery(Customer.class);
+
+Root<Sale> s = qdef.from(Sale.class);
+Root<Customer> c = qdef.from(Customer.class);
+qdef.select(c)
+    .where(cb.equal(c.get("id"), s.get("buyerId")));]]></programlisting>                        
+                </figure>
+                <itemizedlist spacing="compact">
+                    <listitem><para>Permits JOINs without relationship in entity model</para></listitem>
+                </itemizedlist>
+
+                <figure>
+                    <title>Runtime Output</title>
+<programlisting language=""><![CDATA[    select
+        customer1_.CUSTOMER_ID as CUSTOMER1_3_,
+        customer1_.FIRST_NAME as FIRST2_3_,
+        customer1_.LAST_NAME as LAST3_3_ 
+    from JPAQL_SALE sale0_ cross 
+    join JPAQL_CUSTOMER customer1_ 
+    where customer1_.CUSTOMER_ID=sale0_.BUYER_ID
+        
+ -found result:firstName=cat, lastName=inhat
+ -found result:firstName=thing, lastName=one]]></programlisting>                            
+                </figure>
+                <itemizedlist spacing="compact">
+                    <listitem><para>Returns all Customers that are identified by a Sale</para></listitem>
+                </itemizedlist>
+            </section>  
+
+        </section>
+
+    </section>    
+
+
+    <section id="jpa-query-criteria-fetchjoins">
+        <title>Eager Fetching through JOINs</title>
+
+
+        <section id="jpa-query-criteria-fetchjoins-problem">
+            <title>Lazy Fetch Problem</title>
+
+            <figure>
+                <title>Equivalent JPAQL</title>
+<programlisting language=""><![CDATA[select s from Store s JOIN s.sales
+where s.name='Big Al''s']]></programlisting>
+            </figure>
+
+            <figure>
+                <title>Criteria API Definition</title>
+<programlisting language="java"><![CDATA[CriteriaQuery<Store> qdef = cb.createQuery(Store.class);
+
+Root<Store> s = qdef.from(Store.class);
+s.join("sales");
+qdef.select(s)
+    .where(cb.equal(s.get("name"), "Big Al's"));]]></programlisting>                        
+            </figure>
+            <itemizedlist spacing="compact">
+                <listitem><para>A normal JOIN (implicit or explicit) may honor the fetch=LAZY property setting of the relation</para></listitem>
+                <listitem><para>Can be exactly what is desired</para></listitem>
+                <listitem><para>Can also cause problems or extra work if not desired</para></listitem>
+            </itemizedlist>
+
+            <figure>
+                <title>In Programming Context</title>
+<programlisting language="java"><![CDATA[@Entity @Table(name="ORMQL_STORE")
+public class Store {
+...
+    @OneToMany(mappedBy="store", 
+            cascade={CascadeType.REMOVE}, 
+            fetch=FetchType.LAZY)
+    private List<Sale> sales = new ArrayList<Sale>();]]></programlisting>                        
+            </figure>
+            <itemizedlist spacing="compact">
+                <listitem><para>Sales are lazily fetched when obtaining Store</para></listitem>
+            </itemizedlist>
+
+            <figure>
+                <title>In Programming Context (con.t)</title>
+<programlisting language="java"><![CDATA[CriteriaBuilder cb = em2.getCriteriaBuilder();
+CriteriaQuery<Store> qdef = cb.createQuery(Store.class);
+
+Root<Store> s = qdef.from(Store.class);
+s.join("sales");
+qdef.select(s)
+    .where(cb.equal(s.get("name"), "Big Al's"));
+
+Store store = em2.createQuery(qdef).getSingleResult();
+em2.close();
+try {
+    store.getSales().get(0).getAmount();
+    fail("did not trigger lazy initialization exception");
+} catch (LazyInitializationException expected) {
+    log.info("caught expected exception:" + expected);
+}]]></programlisting>
+            </figure>                        
+    <itemizedlist spacing="compact">
+        <listitem><para>Accessing the Sale properties causes a LazyInitializationException when persistence context no longer active or accessible</para></listitem>
+    </itemizedlist>
+
+            <figure>
+                <title>Runtime Output</title>
+<programlisting language=""><![CDATA[    select
+        store0_.STORE_ID as STORE1_0_,
+        store0_.name as name0_ 
+    from ORMQL_STORE store0_ 
+    inner join JPAQL_SALE sales1_ on store0_.STORE_ID=sales1_.SALE_STORE 
+    where store0_.name=? limit ?
+ -caught expected exception:org.hibernate.LazyInitializationException: 
+     failed to lazily initialize a collection of role: 
+     ejava.jpa.examples.query.Store.sales, no session or session was closed]]></programlisting>                            
+            </figure>
+            <note>
+                <title>One Row per Parent is Returned for fetch=LAZY</title>
+                <para>Note that only a single row is required to be returned from the database
+                    for a fetch=LAZY relation. Although it requires more queries to the database,
+                    it eliminates duplicate parent information for each child row and can 
+                    eliminate the follow-on query all together when not accessed.</para>
+            </note>
+        </section>    
+
+
+        <section id="jpa-query-criteria-fetchjoins-solution">
+            <title>Adding Eager Fetch during Query</title>
+
+            <figure>
+                <title>Equivalent JPAQL</title>
+<programlisting language=""><![CDATA[select s from Store s JOIN FETCH s.sales
+where s.name='Big Al''s']]></programlisting>
+            </figure>
+
+            <figure>
+                <title>Criteria API Definition</title>
+<programlisting language="java"><![CDATA[CriteriaQuery<Store> qdef = cb.createQuery(Store.class);
+
+Root<Store> s = qdef.from(Store.class);
+s.fetch("sales");
+qdef.select(s)
+    .where(cb.equal(s.get("name"), "Big Al's"));
+]]></programlisting>                        
+            </figure>
+            <itemizedlist spacing="compact">
+                <listitem><para>A JOIN FETCH used to eager load related entities as side-effect of query</para></listitem>
+                <listitem><para>Can be used as substitute for fetch=EAGER specification on relation</para></listitem>
+            </itemizedlist>
+
+            <figure>
+                <title>Runtime Output</title>
+<programlisting language=""><![CDATA[    select
+        store0_.STORE_ID as STORE1_0_0_,
+        sales1_.SALE_ID as SALE1_1_1_,
+        store0_.name as name0_0_,
+        sales1_.amount as amount1_1_,
+        sales1_.BUYER_ID as BUYER3_1_1_,
+        sales1_.date as date1_1_,
+        sales1_.SALE_STORE as SALE5_1_1_,
+        sales1_.SALE_STORE as SALE5_0_0__,
+        sales1_.SALE_ID as SALE1_0__ 
+    from ORMQL_STORE store0_ 
+    inner join JPAQL_SALE sales1_ on store0_.STORE_ID=sales1_.SALE_STORE 
+    where store0_.name=?]]></programlisting>                            
+            </figure>
+            <itemizedlist spacing="compact">
+                <listitem><para>Sales are eagerly fetched when obtaining Store</para></listitem>
+            </itemizedlist>
+            <note>
+                <title>Parent Rows Repeated for each Child for fetch=EAGER</title>
+                <para>Note that adding JOIN FETCH to parent query causes the parent rows to 
+                    be repeated for each eagerly loaded child row and eliminated by the provider.
+                    This requires fewer database queries but results in more (and redundant) data
+                    to be returned from the query.</para>
+            </note>
+        </section>    
+
+    </section>
+
+    <section id="jpa-query-criteria-distinct">
+        <title>Distinct Results</title>
+
+        <figure>
+            <title>Equivalent JPAQL</title>
+<programlisting language=""><![CDATA[select DISTINCT c.lastName from Customer c]]></programlisting>
+        </figure>
+
+        <figure>
+            <title>Criteria API Definition</title>
+<programlisting language="java"><![CDATA[CriteriaQuery<String> qdef = cb.createQuery(String.class);
+
+Root<Customer> c = qdef.from(Customer.class);
+qdef.select(c.<String>get("lastName"))
+    .distinct(true);]]></programlisting>                        
+        </figure>
+        <itemizedlist spacing="compact">
+            <listitem><para>Limits output to unique value combinations</para></listitem>
+        </itemizedlist>
+
+        <figure>
+            <title>Runtime Output</title>
+<programlisting language=""><![CDATA[    select distinct customer0_.LAST_NAME as col_0_0_ 
+    from JPAQL_CUSTOMER customer0_
+ -found result:two
+ -found result:inhat
+ -found result:one]]></programlisting>
+        </figure>
+
+        <figure>
+            <title>Equivalent JPAQL</title>
+<programlisting language=""><![CDATA[select DISTINCT c.firstName from Customer c]]></programlisting>
+        </figure>
+
+        <figure>
+            <title>Criteria API Definition</title>
+<programlisting language="java"><![CDATA[CriteriaQuery<String> qdef = cb.createQuery(String.class);
+
+Root<Customer> c = qdef.from(Customer.class);
+qdef.select(c.<String>get("firstName"))
+    .distinct(true);]]></programlisting>                        
+        </figure>
+
+        <figure>
+            <title>Runtime Output</title>
+<programlisting language=""><![CDATA[    select distinct customer0_.FIRST_NAME as col_0_0_ 
+    from JPAQL_CUSTOMER customer0_
+ -found result:cat
+ -found result:thing]]></programlisting>                            
+        </figure>                             
+    </section>
+
+    <section id="jpa-query-criteria-summary">
+       <title>Summary</title>
+        <itemizedlist spacing="compact">
+            <listitem><para>Entity Queries</para></listitem>
+            <listitem><para>Non-Entity (value) and Multi-select Queries</para></listitem>
+            <listitem><para>Path Expressions (Root and Join)</para></listitem>
+            <listitem><para>Join Fetch</para></listitem>
+            <listitem><para>Distinct Results</para></listitem>
+        </itemizedlist>
+    </section>    
+</chapter>
+  

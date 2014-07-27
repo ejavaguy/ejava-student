@@ -1,0 +1,470 @@
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+   "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd"  [ ]>
+
+<chapter id="jpa-query-queries">
+    <title>JPA Query Overview</title>
+    
+    <section id="jpa-query-queries-entitymgr">
+       <title>EntityManager Query Methods</title>
+        <itemizedlist spacing="compact">
+            <listitem><para>Create query using JPA-QL String</para>
+<programlisting language="java"><![CDATA[javax.persistence.Query createQuery(String jpaql);
+<T extends Object> javax.persistence.TypedQuery<T> createQuery(String jpaql, Class<T>);]]></programlisting>                        
+            </listitem>
+
+            <listitem><para>Create query using native SQL</para>
+<programlisting language="java"><![CDATA[javax.persistence.Query createNativeQuery(String sql);
+javax.persistence.Query createNativeQuery(String sql, Class sqlMapping);
+javax.persistence.Query createNativeQuery(String sql, String sqlMapping);]]></programlisting>                        
+            </listitem>
+
+            <listitem><para>Create query using Criteria API</para>
+<programlisting language="java"><![CDATA[javax.persistence.criteria.CriteriaBuilder getCriteriaBuilder();
+javax.persistence.metamodel.Metamodel getMetamodel();
+<T extends Object> javax.persistence.TypedQuery<T> createQuery(javax.persistence.criteria.CriteriaQuery<T>);]]></programlisting>                        
+            </listitem>
+            
+            <listitem><para>Create query from Named Query</para>
+<programlisting language="java"><![CDATA[javax.persistence.Query createNamedQuery(String queryName);
+<T extends java/lang/Object> javax.persistence.TypedQuery<T> createNamedQuery(String queryName, Class<T>);]]></programlisting>                        
+            </listitem>
+        </itemizedlist>
+    </section>
+    
+
+    <section id="jpa-query-queries-singleresult">
+        <title>Query.getSingleResult()</title>
+        <itemizedlist spacing="compact">
+            <listitem><para>Obtains exactly one result</para></listitem>
+            <listitem><para>TypedQuery returns type-safe result</para></listitem>            
+        </itemizedlist>
+
+        <figure>
+            <title>Get a Unique Object based on Query</title>
+<programlisting language="java"><![CDATA[TypedQuery<Store> query = em.createQuery(
+        "select s from Store s where s.name='Big Al''s'", Store.class);
+Store store = query.getSingleResult();]]></programlisting>
+                        
+<programlisting language=""><![CDATA[select
+    store0_.STORE_ID as STORE1_4_,
+    store0_.name as name2_4_ 
+from ORMQL_STORE store0_ 
+where store0_.name='Big Al''s']]></programlisting>                        
+
+        </figure>
+        
+        <figure>
+            <title>Throws NoResultException when not Found</title>
+<programlisting language="java"><![CDATA[try {
+    store = em.createQuery(
+       "select s from Store s where s.name='A1 Sales'", Store.class)
+       .getSingleResult();
+}
+catch (NoResultException ex) { ... }]]></programlisting>                        
+        </figure>
+ 
+        
+        <figure>
+            <title>Throws NonUniqueResultException when multiple Found</title>
+<programlisting language="java"><![CDATA[try {
+    Clerk clerk = em.createQuery(
+        "select c from Clerk c where lastName='Pep'", Clerk.class)
+        .getSingleResult();
+}
+catch (NonUniqueResultException ex) { ... }
+]]></programlisting>                        
+        </figure>        
+    </section>    
+
+    <section id="jpa-query-queries-results">
+        <title>Query.getResultList</title>
+        <itemizedlist spacing="compact">
+            <listitem><para>Returns zero or more results</para></listitem>
+            <listitem><para>TypedQuery returns type-safe result</para></listitem>            
+        </itemizedlist>
+
+        <figure>
+            <title>Returns List of Results Based on Query</title>
+<programlisting language="java"><![CDATA[TypedQuery<Clerk> query = em.createQuery(
+    "select c from Clerk c where lastName='Pep'", Clerk.class);
+List<Clerk> clerks = query.getResultList();
+assertTrue("unexpected number of clerks:" + clerks.size(), clerks.size() > 1);
+for(Clerk c : clerks) {
+    log.info("found clerk:" + c);
+}]]></programlisting>
+
+<programlisting language=""><![CDATA[select
+    clerk0_.CLERK_ID as CLERK1_0_,
+    clerk0_.FIRST_NAME as FIRST2_0_,
+    clerk0_.HIRE_DATE as HIRE3_0_,
+    clerk0_.LAST_NAME as LAST4_0_,
+    clerk0_.TERM_DATE as TERM5_0_ 
+from JPAQL_CLERK clerk0_ 
+where clerk0_.LAST_NAME='Pep'
+...
+-found clerk:firstName=Manny, lastName=Pep, hireDate=1970-01-01, termDate=null, sales(2)={1, 2, }
+-found clerk:firstName=Moe, lastName=Pep, hireDate=1970-01-01, termDate=null, sales(1)={2, }
+-found clerk:firstName=Jack, lastName=Pep, hireDate=1973-03-01, termDate=null, sales(0)={}
+]]></programlisting>                        
+        </figure>
+    </section>    
+
+    <section id="jpa-query-queries-parameters">
+       <title>Parameters</title>
+        <itemizedlist spacing="compact">
+            <listitem><para>Runtime query parameters passed into query</para></listitem>
+        </itemizedlist>
+
+        <figure>
+            <title>Name-based Query Parameters</title>
+<programlisting language="java"><![CDATA[TypedQuery<Customer> query = em.createQuery(
+        "select c from Customer c " +
+        "where c.firstName=:firstName and c.lastName=:lastName",
+        Customer.class);
+query.setParameter("firstName", "cat");
+query.setParameter("lastName", "inhat");
+
+Customer customer = query.getSingleResult();
+assertNotNull(customer);
+log.info("found customer for param names:" + customer);
+]]></programlisting>
+
+<programlisting language=""><![CDATA[select
+    customer0_.CUSTOMER_ID as CUSTOMER1_1_,
+    customer0_.FIRST_NAME as FIRST2_1_,
+    customer0_.LAST_NAME as LAST3_1_ 
+from JPAQL_CUSTOMER customer0_ 
+where customer0_.FIRST_NAME=? and customer0_.LAST_NAME=?
+
+-found customer for param names:firstName=cat, lastName=inhat]]></programlisting>                        
+        </figure>
+        <itemizedlist spacing="compact">
+            <listitem><para>:firstName and :lastName act as placeholders for runtime query parameters</para></listitem>
+            <listitem><para>Runtime parameters supplied using placeholder names</para></listitem>
+            <listitem><para>A parameter for each placeholder must be supplied - no defaults</para></listitem>
+            <listitem><para>A placeholder must exist for each parameter supplied - no extras</para></listitem>
+        </itemizedlist>
+        
+        <figure>
+            <title>Ordinal-based Parameters</title>
+<programlisting language="java"><![CDATA[query = em.createQuery(
+        "select c from Customer c " +
+        "where c.firstName=?1 and c.lastName like ?2", Customer.class);
+query.setParameter(1, "thing");
+query.setParameter(2, "%");
+List<Customer> customers = query.getResultList();
+assertTrue("unexpected number of customers:" + customers.size(),
+        customers.size() == 2);
+for(Customer c : customers) {
+    log.info("found customer for param position:" + c);
+}
+]]></programlisting>                        
+
+<programlisting language=""><![CDATA[    select
+        customer0_.CUSTOMER_ID as CUSTOMER1_1_,
+        customer0_.FIRST_NAME as FIRST2_1_,
+        customer0_.LAST_NAME as LAST3_1_ 
+    from JPAQL_CUSTOMER customer0_ 
+    where customer0_.FIRST_NAME=?  and ( customer0_.LAST_NAME like ? )
+-found customer for param position:firstName=thing, lastName=one
+-found customer for param position:firstName=thing, lastName=two]]></programlisting>                        
+        </figure>
+        <itemizedlist spacing="compact">
+            <listitem><para>Appended numbers (?1) assign an ordinal value</para></listitem>
+            <listitem><para>No numbers supplied (?) cause default value based on order</para></listitem>
+        </itemizedlist>
+       
+       
+        <figure>
+            <title>Date-based Parameters</title>
+<programlisting language="java"><![CDATA[Calendar hireDate = Calendar.getInstance();
+hireDate.set(Calendar.YEAR, 1972);
+TypedQuery<Clerk> query = em.createQuery(
+        "select c from Clerk c " +
+        "where c.hireDate > :date", Clerk.class);
+query.setParameter("date", hireDate.getTime(), TemporalType.DATE);
+
+Clerk clerk = query.getSingleResult();
+log.info("found clerk by date(" + hireDate.getTime() + "):" + clerk);
+]]></programlisting>
+
+<programlisting language=""><![CDATA[    select
+        clerk0_.CLERK_ID as CLERK1_0_,
+        clerk0_.FIRST_NAME as FIRST2_0_,
+        clerk0_.HIRE_DATE as HIRE3_0_,
+        clerk0_.LAST_NAME as LAST4_0_,
+        clerk0_.TERM_DATE as TERM5_0_ 
+    from JPAQL_CLERK clerk0_ 
+    where clerk0_.HIRE_DATE>?
+...    
+-found clerk by date(Fri Oct 06 20:28:08 EDT 1972):firstName=Jack, lastName=Pep, hireDate=1973-03-01, termDate=null, sales(0)={}
+]]></programlisting>                        
+        </figure>
+        <itemizedlist spacing="compact">
+            <listitem><para>Dates are specified as DATE, TIME, or TIMESTAMP</para></listitem>
+        </itemizedlist>
+    </section>    
+
+    <section id="jpa-query-queries-paging">
+        <title>Paging Properties</title>
+
+        <figure>
+            <title></title>
+<programlisting language="java"><![CDATA[TypedQuery<Sale> query = em.createQuery(
+        "select s from Sale s", Sale.class);
+for(int i=0; i<2; i++) {
+    List<Sale> sales = query.setMaxResults(10)
+                            .setFirstResult(i)
+                            .getResultList();
+    for(Sale s: sales) {
+        log.info("found sale in page(" + i + "):" + s);
+        em.detach(s); //we are done with this
+    }
+}]]></programlisting>
+
+<programlisting language=""><![CDATA[    select
+        sale0_.SALE_ID as SALE1_2_,
+        sale0_.amount as amount2_2_,
+        sale0_.BUYER_ID as BUYER3_2_,
+        sale0_.date as date4_2_,
+        sale0_.SALE_STORE as SALE5_2_ 
+    from
+        JPAQL_SALE sale0_ limit ?
+...
+-found sale in page(0):date=1998-04-10 10:13:35, amount=$100.00, buyer=1, clerks(1)={1, }
+-found sale in page(0):date=1999-06-11 14:15:10, amount=$150.00, buyer=2, clerks(2)={1, 2, }
+    select
+        sale0_.SALE_ID as SALE1_2_,
+        sale0_.amount as amount2_2_,
+        sale0_.BUYER_ID as BUYER3_2_,
+        sale0_.date as date4_2_,
+        sale0_.SALE_STORE as SALE5_2_ 
+    from
+        JPAQL_SALE sale0_ limit ? offset ?
+...
+-found sale in page(1):date=1999-06-11 14:15:10, amount=$150.00, buyer=2, clerks(2)={1, 2, }
+]]></programlisting>
+        </figure>
+        <itemizedlist spacing="compact">
+            <listitem><para>Offset and limits passed to database</para></listitem>
+            <listitem><para>Database provides specified subset of rows</para></listitem>
+        </itemizedlist>
+    </section>    
+
+    <section id="jpa-query-queries-plocking">
+        <title>Pessimistic Locking</title>
+        <itemizedlist spacing="compact">
+            <listitem><para>Obtain a locked copy of entity -- ready for modification</para></listitem>
+            <listitem><para>Required for some concurrent interactions with database</para></listitem>
+        </itemizedlist>
+
+        <figure>
+            <title>Obtaining a Pessimistic Write Lock</title>
+<programlisting language="java"><![CDATA[//get a list of clerks to update -- locked so others cannot change
+List<Clerk> clerks = em.createQuery(
+        "select c from Clerk c " +
+        "where c.hireDate > :date", Clerk.class)
+        .setParameter("date", new GregorianCalendar(1972,Calendar.JANUARY,1).getTime())
+        .setLockMode(LockModeType.PESSIMISTIC_WRITE)
+        .setHint("javax.persistence.lock.timeout", 0)
+        .getResultList(); 
+//make changes
+for (Clerk c: clerks) {
+    c.setHireDate(new GregorianCalendar(1972, Calendar.FEBRUARY, 1).getTime());
+}]]></programlisting>                        
+
+<programlisting language=""><![CDATA[select
+    clerk0_.CLERK_ID as CLERK1_0_,
+    clerk0_.FIRST_NAME as FIRST2_0_,
+    clerk0_.HIRE_DATE as HIRE3_0_,
+    clerk0_.LAST_NAME as LAST4_0_,
+    clerk0_.TERM_DATE as TERM5_0_ 
+from JPAQL_CLERK clerk0_ 
+where clerk0_.HIRE_DATE>? 
+for update
+...]]></programlisting>                        
+        </figure>
+        <itemizedlist spacing="compact">
+            <listitem><para>Provider adds database-specific technique for lock</para></listitem>
+            <listitem><para>Lock timeout (in msecs) can be expressed through query hint</para></listitem>
+        </itemizedlist>
+        <note>
+            <para>Not all databases support lock timeouts</para>
+        </note>
+    </section>    
+
+    <section id="jpa-query-queries-bulkupdates">
+       <title>Bulk Updates</title>
+        <itemizedlist spacing="compact">
+            <listitem><para>Change database -- not query it</para></listitem>
+            <listitem><para>Bypasses cache -- cached entities out of sync with database changes</para></listitem>
+            <listitem><para>Criteria API updates/deletes added in JPA 2.1</para></listitem>
+        </itemizedlist>
+        
+        <figure>
+            <title>JPA-QL Bulk Update Example</title>
+<programlisting language="java"><![CDATA[Query update = em.createQuery(
+        "update Clerk c set c.lastName=:newlast where c.lastName=:last");
+update.setParameter("last", "Pep");
+update.setParameter("newlast", "Peppy");
+int rows = update.executeUpdate();
+assertEquals("unexpected rows updated:" + rows, clerks.size(), rows);]]></programlisting>                        
+
+<programlisting language=""><![CDATA[update JPAQL_CLERK 
+set LAST_NAME=? 
+where LAST_NAME=?]]></programlisting>                        
+        </figure>
+        <itemizedlist spacing="compact">
+            <listitem><para>Change directly applied to database, not the cached entity</para></listitem>
+            <listitem><para>Number of entities changed returned</para></listitem>
+        </itemizedlist>
+        
+        <figure>
+            <title>Criteria API Bulk Update Example</title>
+<programlisting language="java"><![CDATA[CriteriaBuilder cb = em.getCriteriaBuilder();
+CriteriaUpdate<Clerk> qdef2=cb.createCriteriaUpdate(Clerk.class);
+
+//"update Clerk c set c.lastName=:newlast where c.lastName=:last"
+Root<Clerk> c2 = qdef2.from(Clerk.class);
+qdef2.set("lastName", "Peppy")
+     .where(cb.equal(c2.get("lastName"), "Pep"));
+
+Query update = em.createQuery(qdef2);
+int rows = update.executeUpdate();
+assertEquals("unexpected rows updated:" + rows, clerks.size(), rows);]]></programlisting>                        
+        </figure>
+        
+        
+        <figure>
+            <title>JPA-QL Bulk Delete Example</title>
+<programlisting language="java"><![CDATA[Query update = em.createQuery(
+        "delete from Customer c " +
+        "where c.firstName like :first AND c.lastName like :last");
+int rows = update.setParameter("first", "thing")
+                 .setParameter("last", "%")
+                 .executeUpdate();
+assertTrue("no rows updated", rows > 0);]]></programlisting>
+
+<programlisting language=""><![CDATA[delete from JPAQL_CUSTOMER 
+where ( FIRST_NAME like ? ) and ( LAST_NAME like ? )]]></programlisting>                        
+        </figure>
+        <itemizedlist spacing="compact">
+            <listitem><para>Bulk deletes do not trigger cascades</para></listitem>
+            <listitem><para>Entity instance exists in memory even after deleted from database</para></listitem>
+        </itemizedlist>
+
+        <figure>
+            <title>Criteria API Bulk Update Example</title>
+<programlisting language="java"><![CDATA[CriteriaBuilder cb = em.getCriteriaBuilder();
+CriteriaDelete<Customer> delete = cb.createCriteriaDelete(Customer.class);
+
+//"delete from Customer c " +
+//"where c.firstName like :first AND c.lastName like :last");
+Root<Customer> c2 = delete.from(Customer.class);
+delete.where(cb.and(
+        cb.like(c.<String>get("firstName"), "thing"),
+        cb.like(c.<String>get("lastName"), "%")
+        ));
+
+Query update = em.createQuery(delete);
+int rows = update.executeUpdate();
+assertTrue("no rows updated", rows > 0);]]></programlisting>                        
+        </figure>
+        
+        <figure>
+            <title>Refresh/Clear/Detach Stale Entit(ies)</title>
+<programlisting language="java"><![CDATA[//re-sync entity with DB changes
+em.refresh(clerk);
+//evict all managed entities in persistence context
+em.clear();
+//remove entity from persistence context
+em.detach(clerk);]]></programlisting>                        
+        </figure>
+        <itemizedlist spacing="compact">
+            <listitem><para>Keeping stale entities around will produce confusing results</para></listitem>
+            <listitem><para>"em.clear()" should be avoided except at end of transaction since un-manages everything</para></listitem>
+        </itemizedlist>
+    </section>    
+
+    <section id="jpa-query-queries-named">
+        <title>Named Queries</title>
+        <itemizedlist spacing="compact">
+            <listitem><para>Register query with provider rather than ad-hoc</para></listitem>
+            <listitem><para>Available for JPA-QL and Native SQL -- not available with Criteria API</para></listitem>
+            <listitem><para>Can be registered using class annotations and orm.xml descriptor</para></listitem>
+            <listitem><para>LockMode and hints can be specified in declaration</para></listitem>
+        </itemizedlist>
+        
+        <figure>
+            <title>Named Query Annotations Applied to (any) Entity Class</title>
+<programlisting language="java"><![CDATA[@Entity 
+@Table(name="JPAQL_CUSTOMER")
+@NamedQueries({
+    @NamedQuery(name="Customer.getCustomersByName",
+            query="select c from Customer c " +
+                    "where c.firstName like :first AND c.lastName like :last"),
+    @NamedQuery(name="Customer.getCustomerPurchases",
+            query="select s from Sale s " +
+                    "where s.buyerId=:custId")
+})
+public class Customer {]]></programlisting>                        
+        </figure>
+
+        <figure>
+            <title>Using Named Query</title>
+<programlisting language="java"><![CDATA[Customer customer = 
+    em.createNamedQuery("Customer.getCustomersByName", Customer.class)
+      .setParameter("first", "cat")
+      .setParameter("last", "inhat")
+      .getResultList()
+      .get(0);
+assertNotNull("no customer found", customer);]]></programlisting>                        
+        </figure>
+
+        <figure>
+            <title>Named Native Query Annotation Example</title>
+<programlisting language="java"><![CDATA[@Entity 
+@Table(name="JPAQL_CUSTOMER")
+@NamedNativeQueries({
+    @NamedNativeQuery(name="Customer.getCustomerRows", 
+            query="select * from JPAQL_CUSTOMER c " +
+                  "where c.FIRST_NAME = ?1")
+})
+public class Customer {]]></programlisting>                        
+        </figure>
+        <itemizedlist spacing="compact">
+            <listitem><para>Example query uses Native SQL to return all columns for table</para></listitem>
+        </itemizedlist>
+
+        <figure>
+            <title>Using Named Native Query</title>
+<programlisting language="java"><![CDATA[@SuppressWarnings("unchecked")
+List<Object[]> rows = em.createNamedQuery("Customer.getCustomerRows")
+        .setParameter(1, "cat")
+        .getResultList();
+assertEquals("unexpected customers found", 1, rows.size());
+log.info("found customer:" + Arrays.toString(rows.get(0)));]]></programlisting>
+
+<programlisting language=""><![CDATA[    select * from JPAQL_CUSTOMER c 
+    where c.FIRST_NAME = ?
+-found customer:[1, cat, inhat]]]></programlisting>                        
+        </figure>
+      
+    </section>    
+
+
+    <section id="jpa-query-queries-summary">
+       <title>Summary</title>
+        <itemizedlist spacing="compact">
+            <listitem><para>Untyped (JPA 1.0) and Typed (JPA 2.0) Queries</para></listitem>
+            <listitem><para>Single and multiple results</para></listitem>
+            <listitem><para>Named and ordinal parameters</para></listitem>
+            <listitem><para>DATE, TIME, and TIMSTAMP parameters</para></listitem>
+            <listitem><para>Offset(firstResult) and limit(maxResults) paging</para></listitem>
+            <listitem><para>Locking</para></listitem>
+            <listitem><para>JPA-QL and (JPA 2.1) Criteria Bulk Updates </para></listitem>
+            <listitem><para>Named Queries</para></listitem>
+        </itemizedlist>
+    </section>    
+</chapter>
+  

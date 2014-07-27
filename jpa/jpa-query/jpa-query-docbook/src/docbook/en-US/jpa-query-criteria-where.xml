@@ -1,0 +1,1043 @@
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+   "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd"  [ ]>
+
+<chapter id="jpa-query-criteria-where">
+    <title>Criteria Where Clauses</title>
+    <para></para>
+
+    <section id="jpa-query-criteria-where-equals">
+        <title>Equality Test</title>
+
+        <figure>
+            <title>Equivalent JPAQL</title>
+<programlisting language=""><![CDATA[select c from Customer c 
+where c.firstName='cat']]></programlisting>
+        </figure>
+
+        <figure>
+            <title>Criteria API Definition</title>
+<programlisting language="java"><![CDATA[CriteriaQuery<Customer> qdef = cb.createQuery(Customer.class);
+
+Root<Customer> c = qdef.from(Customer.class);
+qdef.select(c)
+    .where(cb.equal(c.get("firstName"), "cat"));]]></programlisting>                        
+        </figure>
+        <itemizedlist spacing="compact">
+            <listitem><para>Return entities where there is an equality match</para></listitem>
+        </itemizedlist>
+
+        <figure>
+            <title>Runtime Output</title>
+<programlisting language=""><![CDATA[    select
+        customer0_.CUSTOMER_ID as CUSTOMER1_3_,
+        customer0_.FIRST_NAME as FIRST2_3_,
+        customer0_.LAST_NAME as LAST3_3_ 
+    from JPAQL_CUSTOMER customer0_ 
+    where customer0_.FIRST_NAME=?
+ -found result:firstName=cat, lastName=inhat]]></programlisting>                            
+        </figure>
+
+
+        <figure>
+            <title>Equivalent JPAQL</title>
+<programlisting language=""><![CDATA[select s from Store s 
+where s.name='Big Al''s']]></programlisting>
+        </figure>
+        <itemizedlist spacing="compact">
+            <listitem><para>JPAQL requires special characters to be escaped</para></listitem>
+        </itemizedlist>
+
+        <figure>
+            <title>Criteria API Definition</title>
+<programlisting language="java"><![CDATA[CriteriaQuery<Store> qdef = cb.createQuery(Store.class);
+
+Root<Store> s = qdef.from(Store.class);
+qdef.select(s)
+    .where(cb.equal(s.get("name"), "Big Al's"));]]></programlisting>                        
+        </figure>
+        <itemizedlist spacing="compact">
+            <listitem><para>Literal values automatically escaped</para></listitem>
+        </itemizedlist>
+
+        <figure>
+            <title>Runtime Output</title>
+<programlisting language=""><![CDATA[    select
+        store0_.STORE_ID as STORE1_0_,
+        store0_.name as name0_ 
+    from ORMQL_STORE store0_ 
+    where store0_.name=?
+...
+ -found result:name=Big Al's, sales(2)={1, 2, }]]></programlisting>
+        </figure>
+
+    </section>
+
+
+    <section id="jpa-query-criteria-where-like">
+        <title>Like Test</title>
+        
+        <section id="jpa-query-criteria-where-like-literal">
+            <title>Like Test Literal</title>
+
+            <figure>
+                <title>Equivalent JPAQL</title>
+<programlisting language=""><![CDATA[select c from Clerk c 
+where c.firstName like 'M%']]></programlisting>
+            </figure>
+
+            <figure>
+                <title>Criteria API Definition</title>
+<programlisting language="java"><![CDATA[CriteriaQuery<Clerk> qdef = cb.createQuery(Clerk.class);
+
+Root<Clerk> c = qdef.from(Clerk.class);
+qdef.select(c)
+    .where(cb.like(c.<String>get("firstName"), "M%"));]]></programlisting>                        
+            </figure>
+
+            <figure>
+                <title>Runtime Output</title>
+<programlisting language=""><![CDATA[    select
+        clerk0_.CLERK_ID as CLERK1_2_,
+        clerk0_.FIRST_NAME as FIRST2_2_,
+        clerk0_.HIRE_DATE as HIRE3_2_,
+        clerk0_.LAST_NAME as LAST4_2_,
+        clerk0_.TERM_DATE as TERM5_2_ 
+    from JPAQL_CLERK clerk0_ 
+    where clerk0_.FIRST_NAME like ?
+...
+ -found result:firstName=Manny, lastName=Pep, hireDate=1970-01-01, termDate=null, sales(2)={1, 2, }
+ -found result:firstName=Moe, lastName=Pep, hireDate=1970-01-01, termDate=null, sales(1)={2, }]]></programlisting>                            
+            </figure>
+         </section>    
+
+        <section id="jpa-query-criteria-where-like-literalparam">
+           <title>Like Test Literal Parameter</title>
+
+            <figure>
+                <title>Equivalent JPAQL</title>
+<programlisting language=""><![CDATA[select c from Clerk c
+where c.firstName like :firstName]]></programlisting>
+            </figure>
+
+            <figure>
+                <title>Criteria API Definition</title>
+<programlisting language="java"><![CDATA[CriteriaQuery<Clerk> qdef = cb.createQuery(Clerk.class);
+
+Root<Clerk> c = qdef.from(Clerk.class);
+qdef.select(c)
+    .where(cb.like(c.<String>get("firstName"), 
+                   cb.parameter(String.class, "firstName")));]]></programlisting>                        
+            </figure>
+
+            <figure>
+                <title>In Programming Context</title>
+<programlisting language="java"><![CDATA[CriteriaQuery<Clerk> qdef = cb.createQuery(Clerk.class);
+
+Root<Clerk> c = qdef.from(Clerk.class);
+qdef.select(c)
+    .where(cb.like(c.<String>get("firstName"), 
+                   cb.parameter(String.class, "firstName")));
+
+TypedQuery<Clerk> query = em.createQuery(qdef)
+        .setParameter("firstName", "M%");
+List<Clerk> results = query.getResultList();]]></programlisting>                        
+            </figure>
+
+            <figure>
+                <title>Runtime Output</title>
+<programlisting language=""><![CDATA[    select
+        clerk0_.CLERK_ID as CLERK1_2_,
+        clerk0_.FIRST_NAME as FIRST2_2_,
+        clerk0_.HIRE_DATE as HIRE3_2_,
+        clerk0_.LAST_NAME as LAST4_2_,
+        clerk0_.TERM_DATE as TERM5_2_ 
+    from JPAQL_CLERK clerk0_ 
+    where clerk0_.FIRST_NAME like ?
+ -found result:firstName=Manny, lastName=Pep, hireDate=1970-01-01, termDate=null, sales(2)={1, 2, }
+ -found result:firstName=Moe, lastName=Pep, hireDate=1970-01-01, termDate=null, sales(1)={2, }]]></programlisting>                            
+            </figure>
+        </section>    
+
+        <section id="jpa-query-criteria-where-like-concat">
+           <title>Like Test Concatenated String</title>
+
+            <figure>
+                <title>Equivalent JPAQL</title>
+<programlisting language=""><![CDATA[select c from Clerk c
+where c.firstName like concat(:firstName,'%')]]></programlisting>
+            </figure>
+
+            <figure>
+                <title>Criteria API Definition</title>
+<programlisting language="java"><![CDATA[CriteriaQuery<Clerk> qdef = cb.createQuery(Clerk.class);
+
+Root<Clerk> c = qdef.from(Clerk.class);
+qdef.select(c)
+    .where(cb.like(c.<String>get("firstName"),
+                   cb.concat(cb.parameter(String.class, "firstName"), "%")));]]></programlisting>                        
+            </figure>
+
+            <figure>
+                <title>In Programming Context</title>
+<programlisting language="java"><![CDATA[CriteriaQuery<Clerk> qdef = cb.createQuery(Clerk.class);
+
+Root<Clerk> c = qdef.from(Clerk.class);
+qdef.select(c)
+    .where(cb.like(c.<String>get("firstName"),
+                   cb.concat(cb.parameter(String.class, "firstName"), "%")));
+
+TypedQuery<Clerk> query = em.createQuery(qdef)
+        .setParameter("firstName", "M");
+List<Clerk> results = query.getResultList();]]></programlisting>                        
+            </figure>
+
+            <figure>
+                <title>Runtime Output</title>
+<programlisting language=""><![CDATA[    select
+        clerk0_.CLERK_ID as CLERK1_2_,
+        clerk0_.FIRST_NAME as FIRST2_2_,
+        clerk0_.HIRE_DATE as HIRE3_2_,
+        clerk0_.LAST_NAME as LAST4_2_,
+        clerk0_.TERM_DATE as TERM5_2_ 
+    from JPAQL_CLERK clerk0_ 
+    where clerk0_.FIRST_NAME like (?||?)
+ -found result:firstName=Manny, lastName=Pep, hireDate=1970-01-01, termDate=null, sales(2)={1, 2, }
+ -found result:firstName=Moe, lastName=Pep, hireDate=1970-01-01, termDate=null, sales(1)={2, }
+]]></programlisting>                            
+            </figure>
+        </section>    
+
+        <section id="jpa-query-criteria-where-like-singlechar">
+           <title>Like Test Single Character Wildcard</title>
+
+            <figure>
+                <title>Equivalent JPAQL</title>
+<programlisting language=""><![CDATA[select c from Clerk c
+where c.firstName like '_anny']]></programlisting>
+            </figure>
+
+            <figure>
+                <title>Criteria API Definition</title>
+<programlisting language="java"><![CDATA[CriteriaQuery<Clerk> qdef = cb.createQuery(Clerk.class);
+
+Root<Clerk> c = qdef.from(Clerk.class);
+qdef.select(c)
+    .where(cb.like(c.<String>get("firstName"),"_anny"));]]></programlisting>                        
+            </figure>
+
+            <figure>
+                <title>In Programming Context</title>
+<programlisting language="java"><![CDATA[CriteriaQuery<Clerk> qdef = cb.createQuery(Clerk.class);
+
+Root<Clerk> c = qdef.from(Clerk.class);
+qdef.select(c)
+    .where(cb.like(c.<String>get("firstName"),"_anny"));
+
+TypedQuery<Clerk> query = em.createQuery(qdef);
+List<Clerk> results = query.getResultList();]]></programlisting>                        
+            </figure>
+
+            <figure>
+                <title>Runtime Output</title>
+<programlisting language=""><![CDATA[    select
+        clerk0_.CLERK_ID as CLERK1_2_,
+        clerk0_.FIRST_NAME as FIRST2_2_,
+        clerk0_.HIRE_DATE as HIRE3_2_,
+        clerk0_.LAST_NAME as LAST4_2_,
+        clerk0_.TERM_DATE as TERM5_2_ 
+    from JPAQL_CLERK clerk0_ 
+    where clerk0_.FIRST_NAME like ?
+
+ -found result:firstName=Manny, lastName=Pep, hireDate=1970-01-01, termDate=null, sales(2)={1, 2, }
+]]></programlisting>                            
+            </figure>
+        </section>    
+    </section>
+
+    <section id="jpa-query-criteria-where-formulas">
+        <title>Formulas</title>  
+
+        <figure>
+            <title>Equivalent JPAQL</title>
+<programlisting language=""><![CDATA[select s from Sale s 
+where (s.amount * :tax) > :amount]]></programlisting>
+        </figure>
+
+        <figure>
+            <title>Criteria API Definition</title>
+<programlisting language="java"><![CDATA[CriteriaQuery<Number> qdef = cb.createQuery(Number.class); 
+
+Root<Sale> s = qdef.from(Sale.class);
+qdef.select(cb.count(s))
+    .where(cb.greaterThan(
+        cb.prod(s.<BigDecimal>get("amount"), cb.parameter(BigDecimal.class, "tax")), 
+        new BigDecimal(10.0)));]]></programlisting>                        
+        </figure>
+  
+        <figure>
+            <title>In Programming Context</title>
+<programlisting language="java"><![CDATA[CriteriaQuery<Number> qdef = cb.createQuery(Number.class); 
+
+//select count(s) from Sale s 
+//where (s.amount * :tax) > :amount"
+Root<Sale> s = qdef.from(Sale.class);
+qdef.select(cb.count(s))
+    .where(cb.greaterThan(
+        cb.prod(s.<BigDecimal>get("amount"), cb.parameter(BigDecimal.class, "tax")), 
+        new BigDecimal(10.0)));
+TypedQuery<Number> query = em.createQuery(qdef);
+        
+//keep raising taxes until somebody pays $10.00 in tax
+double tax = 0.05;
+for (;query.setParameter("tax", new BigDecimal(tax))
+           .getSingleResult().intValue()==0;
+      tax += 0.01) {
+    log.debug("tax=" + NumberFormat.getPercentInstance().format(tax));
+}
+log.info("raise taxes to: " + NumberFormat.getPercentInstance().format(tax));]]></programlisting>                            
+        </figure>
+
+        <figure>
+            <title>Runtime Output</title>
+<programlisting language=""><![CDATA[
+    select count(*) as col_0_0_ 
+    from JPAQL_SALE sale0_ 
+    where sale0_.amount*?>10 limit ?
+ -tax=5%
+    select count(*) as col_0_0_ 
+    from JPAQL_SALE sale0_ 
+    where sale0_.amount*?>10 limit ?
+ -tax=6%
+    select count(*) as col_0_0_ 
+    from JPAQL_SALE sale0_ 
+    where sale0_.amount*?>10 limit ?
+ -raise taxes to: 7%]]></programlisting>                            
+        </figure>
+    </section>
+
+
+    <section id="jpa-query-criteria-where-logic">
+        <title>Logic Operators</title>
+  
+        <figure>
+            <title>Equivalent JPAQL</title>
+<programlisting language=""><![CDATA[select c from Customer c
+where (c.firstName='cat' AND c.lastName='inhat')
+    OR c.firstName='thing']]></programlisting>
+        </figure>
+
+        <figure>
+            <title>Criteria API Definition</title>
+<programlisting language="java"><![CDATA[CriteriaQuery<Customer> qdef = cb.createQuery(Customer.class);
+
+Root<Customer> c = qdef.from(Customer.class);
+qdef.select(c)
+    .where(cb.or(
+            cb.and(cb.equal(c.get("firstName"), "cat"), 
+                   cb.equal(c.get("lastName"), "inhat")),
+            cb.equal(c.get("firstName"), "thing")));]]></programlisting>                        
+        </figure>
+
+        <figure>
+            <title>Runtime Output</title>
+<programlisting language=""><![CDATA[    select
+        customer0_.CUSTOMER_ID as CUSTOMER1_3_,
+        customer0_.FIRST_NAME as FIRST2_3_,
+        customer0_.LAST_NAME as LAST3_3_ 
+    from JPAQL_CUSTOMER customer0_ 
+    where customer0_.FIRST_NAME=? and customer0_.LAST_NAME=? or customer0_.FIRST_NAME=?
+ -found result:firstName=cat, lastName=inhat
+ -found result:firstName=thing, lastName=one
+ -found result:firstName=thing, lastName=two]]></programlisting>                            
+        </figure>
+
+        <figure>
+            <title>Equivalent JPAQL</title>
+<programlisting language=""><![CDATA[select c from Customer c 
+where (NOT (c.firstName='cat' AND c.lastName='inhat')) 
+    OR c.firstName='thing']]></programlisting>
+        </figure>
+
+        <figure>
+            <title>Criteria API Definition</title>
+<programlisting language="java"><![CDATA[CriteriaQuery<Customer> qdef = cb.createQuery(Customer.class);
+
+Root<Customer> c = qdef.from(Customer.class);
+qdef.select(c)
+    .where(cb.or(
+            cb.not(cb.and(cb.equal(c.get("firstName"), "cat"), 
+                          cb.equal(c.get("lastName"), "inhat"))),
+            cb.equal(c.get("firstName"), "thing"))
+        );]]></programlisting>                        
+        </figure>
+
+        <figure>
+            <title>Runtime Output</title>
+<programlisting language=""><![CDATA[    select
+        customer0_.CUSTOMER_ID as CUSTOMER1_3_,
+        customer0_.FIRST_NAME as FIRST2_3_,
+        customer0_.LAST_NAME as LAST3_3_ 
+    from JPAQL_CUSTOMER customer0_ 
+    where customer0_.FIRST_NAME<>? or customer0_.LAST_NAME<>? or customer0_.FIRST_NAME=?
+ -found result:firstName=thing, lastName=one
+ -found result:firstName=thing, lastName=two]]></programlisting>                            
+        </figure>
+
+    </section>
+
+    <section id="jpa-query-criteria-where-equality">
+        <title>Equality Tests</title>
+        
+        <itemizedlist spacing="compact">
+            <listitem><para>Must compare values</para>
+                <itemizedlist spacing="compact">
+                    <listitem><para>Of same type</para></listitem>
+                    <listitem><para>Of legal promotion type</para>
+                        <itemizedlist spacing="compact">
+                            <listitem><para>Can compare 123:int to 123:long</para></listitem>
+                            <listitem><para>Cannot compare 123:int to "123":string</para></listitem>
+                        </itemizedlist>
+                    </listitem>
+                    <listitem><para>Can compare entities</para></listitem>
+                </itemizedlist>
+            </listitem>
+        </itemizedlist>
+
+        <figure>
+            <title>Equivalent JPAQL</title>
+<programlisting language=""><![CDATA[select c from Clerk c 
+where c.firstName = 'Manny']]></programlisting>
+<programlisting language=""><![CDATA[select s from Sale s JOIN s.clerks c 
+where c = :clerk]]></programlisting>
+        </figure>
+
+        <figure>
+            <title>Criteria API Definition</title>
+<programlisting language="java"><![CDATA[CriteriaQuery<Clerk> qdef = cb.createQuery(Clerk.class);
+Root<Clerk> c = qdef.from(Clerk.class);
+qdef.select(c)
+    .where(cb.equal(c.get("firstName"), "Manny"));]]></programlisting>                        
+<programlisting language="java"><![CDATA[
+CriteriaQuery<Sale> qdef2 = cb.createQuery(Sale.class);
+Root<Sale> s = qdef2.from(Sale.class);
+Join<Sale, Clerk> c2 = s.join("clerks");
+qdef2.select(s)
+     .where(cb.equal(c2, clerk));]]></programlisting>                        
+        </figure>
+        <itemizedlist spacing="compact">
+            <listitem><para>Compare entities and not primary/foreign key values</para></listitem>
+        </itemizedlist>
+
+        <figure>
+                <title>In Programming Context</title>
+<programlisting language="java"><![CDATA[//find clerk of interest 
+CriteriaQuery<Clerk> qdef = cb.createQuery(Clerk.class);
+Root<Clerk> c = qdef.from(Clerk.class);
+qdef.select(c)
+    .where(cb.equal(c.get("firstName"), "Manny"));
+Clerk clerk = em.createQuery(qdef).getSingleResult();
+
+//find all sales that involve this clerk
+CriteriaQuery<Sale> qdef2 = cb.createQuery(Sale.class);
+Root<Sale> s = qdef2.from(Sale.class);
+Join<Sale, Clerk> c2 = s.join("clerks");
+qdef2.select(s)
+     .where(cb.equal(c2, clerk));
+
+List<Sale> sales = em.createQuery(qdef2).getResultList();]]></programlisting>                            
+            </figure>
+
+        <figure>
+            <title>Runtime Output</title>
+<programlisting language=""><![CDATA[    select
+        clerk0_.CLERK_ID as CLERK1_2_,
+        clerk0_.FIRST_NAME as FIRST2_2_,
+        clerk0_.HIRE_DATE as HIRE3_2_,
+        clerk0_.LAST_NAME as LAST4_2_,
+        clerk0_.TERM_DATE as TERM5_2_ 
+    from JPAQL_CLERK clerk0_ 
+    where clerk0_.FIRST_NAME='Manny' limit ?
+]]></programlisting>                        
+<programlisting language=""><![CDATA[    select
+        sale0_.SALE_ID as SALE1_1_,
+        sale0_.amount as amount1_,
+        sale0_.BUYER_ID as BUYER3_1_,
+        sale0_.date as date1_,
+        sale0_.SALE_STORE as SALE5_1_ 
+    from JPAQL_SALE sale0_ 
+    inner join JPAQL_SALE_CLERK_LINK clerks1_ on sale0_.SALE_ID=clerks1_.SALE_ID 
+    inner join JPAQL_CLERK clerk2_ on clerks1_.CLERK_ID=clerk2_.CLERK_ID 
+    where clerk2_.CLERK_ID=?
+...
+ -found=date=1998-04-10 10:13:35, amount=$100.00, buyer=1, clerks(1)={1, }
+...
+ -found=date=1999-06-11 14:15:10, amount=$150.00, buyer=2, clerks(2)={1, 2, }]]></programlisting>                        
+        </figure>
+
+    </section>
+
+
+    <section id="jpa-query-criteria-where-between">
+        <title>Between</title>
+  
+        <figure>
+            <title>Equivalent JPAQL</title>
+<programlisting language=""><![CDATA[select s from Sale s
+where s.amount BETWEEN :low AND :high]]></programlisting>
+        </figure>
+
+        <figure>
+            <title>Criteria API Definition</title>
+<programlisting language="java"><![CDATA[CriteriaQuery<Sale> qdef = cb.createQuery(Sale.class);
+Root<Sale> s = qdef.from(Sale.class);
+qdef.select(s)
+    .where(cb.between(s.<BigDecimal>get("amount"), 
+                new BigDecimal(90.00), 
+                new BigDecimal(110.00)));]]></programlisting>                        
+        </figure>
+
+        <figure>
+            <title>Runtime Output</title>
+<programlisting language=""><![CDATA[    select
+        sale0_.SALE_ID as SALE1_1_,
+        sale0_.amount as amount1_,
+        sale0_.BUYER_ID as BUYER3_1_,
+        sale0_.date as date1_,
+        sale0_.SALE_STORE as SALE5_1_ 
+    from JPAQL_SALE sale0_ 
+    where sale0_.amount between 90 and 110
+...
+ -found=date=1998-04-10 10:13:35, amount=$100.00, buyer=1, clerks(1)={1, }]]></programlisting>                            
+        </figure>
+
+        <figure>
+            <title>Equivalent JPAQL</title>
+<programlisting language=""><![CDATA[select s from Sale s
+where s.amount NOT BETWEEN :low AND :high]]></programlisting>
+        </figure>
+
+        <figure>
+            <title>Criteria API Definition</title>
+<programlisting language="java"><![CDATA[CriteriaQuery<Sale> qdef = cb.createQuery(Sale.class);
+Root<Sale> s = qdef.from(Sale.class);
+qdef.select(s)
+    .where(cb.not(cb.between(s.<BigDecimal>get("amount"), 
+                new BigDecimal(90.00), 
+                new BigDecimal(110.00))));]]></programlisting>                        
+        </figure>
+
+        <figure>
+            <title>Runtime Output</title>
+<programlisting language=""><![CDATA[    select
+        sale0_.SALE_ID as SALE1_1_,
+        sale0_.amount as amount1_,
+        sale0_.BUYER_ID as BUYER3_1_,
+        sale0_.date as date1_,
+        sale0_.SALE_STORE as SALE5_1_ 
+    from JPAQL_SALE sale0_ 
+    where sale0_.amount not between 90 and 110
+...
+ -found=date=1999-06-11 14:15:10, amount=$150.00, buyer=2, clerks(2)={1, 2, }]]></programlisting>                            
+        </figure>
+    </section>
+
+
+
+
+    <section id="jpa-query-criteria-where-null">
+        <title>Testing for Null</title>
+        <para>Can be used to test for unassigned value or relationship</para>
+  
+        <figure>
+            <title>Equivalent JPAQL</title>
+<programlisting language=""><![CDATA[select s from Sale s 
+where s.store IS NULL]]></programlisting>
+        </figure>
+
+        <figure>
+            <title>Criteria API Definition</title>
+<programlisting language="java"><![CDATA[CriteriaQuery<Sale> qdef = cb.createQuery(Sale.class);
+Root<Sale> s = qdef.from(Sale.class);
+qdef.select(s)
+    .where(cb.isNull(s.get("store")));
+    //.where(cb.equal(s.get("store"), cb.nullLiteral(Store.class)));]]></programlisting>                        
+        </figure>
+
+        <figure>
+            <title>Runtime Output</title>
+<programlisting language=""><![CDATA[    select
+        sale0_.SALE_ID as SALE1_1_,
+        sale0_.amount as amount1_,
+        sale0_.BUYER_ID as BUYER3_1_,
+        sale0_.date as date1_,
+        sale0_.SALE_STORE as SALE5_1_ 
+    from JPAQL_SALE sale0_ 
+    where sale0_.SALE_STORE is null]]></programlisting>                            
+        </figure>
+
+        <figure>
+            <title>Equivalent JPAQL</title>
+<programlisting language=""><![CDATA[select s from Sale s 
+where s.store IS NOT NULL]]></programlisting>
+        </figure>
+
+        <figure>
+            <title>Criteria API Definition</title>
+<programlisting language="java"><![CDATA[CriteriaQuery<Sale> qdef = cb.createQuery(Sale.class);
+Root<Sale> s = qdef.from(Sale.class);
+qdef.select(s)
+    .where(cb.isNotNull(s.get("store")));
+    //.where(cb.not(cb.equal(s.get("store"), cb.nullLiteral(Store.class))));]]></programlisting>                        
+        </figure>
+
+        <figure>
+            <title>Runtime Output</title>
+<programlisting language=""><![CDATA[    select
+        sale0_.SALE_ID as SALE1_1_,
+        sale0_.amount as amount1_,
+        sale0_.BUYER_ID as BUYER3_1_,
+        sale0_.date as date1_,
+        sale0_.SALE_STORE as SALE5_1_ 
+    from JPAQL_SALE sale0_ 
+    where sale0_.SALE_STORE is not null
+...
+ -found result:date=1998-04-10 10:13:35, amount=$100.00, buyer=1, clerks(1)={1, }
+...
+ -found result:date=1999-06-11 14:15:10, amount=$150.00, buyer=2, clerks(2)={1, 2, }
+]]></programlisting>                            
+        </figure>
+    </section>
+
+
+    <section id="jpa-query-criteria-where-empty">
+        <title>Testing Empty Collection</title>
+        <para>Can be used to test for an empty collection</para>
+  
+        <figure>
+            <title>Equivalent JPAQL</title>
+<programlisting language=""><![CDATA[select c from Clerk c
+where c.sales IS EMPTY]]></programlisting>
+        </figure>
+
+        <figure>
+            <title>Criteria API Definition</title>
+<programlisting language="java"><![CDATA[CriteriaQuery<Clerk> qdef = cb.createQuery(Clerk.class);
+Root<Clerk> c = qdef.from(Clerk.class);
+qdef.select(c)
+    .where(cb.isEmpty(c.<List<Sale>>get("sales")));]]></programlisting>                        
+        </figure>
+
+        <figure>
+            <title>Runtime Output</title>
+<programlisting language=""><![CDATA[    select
+        clerk0_.CLERK_ID as CLERK1_2_,
+        clerk0_.FIRST_NAME as FIRST2_2_,
+        clerk0_.HIRE_DATE as HIRE3_2_,
+        clerk0_.LAST_NAME as LAST4_2_,
+        clerk0_.TERM_DATE as TERM5_2_ 
+    from JPAQL_CLERK clerk0_ 
+    where not (exists (
+        select sale2_.SALE_ID 
+        from JPAQL_SALE_CLERK_LINK sales1_, JPAQL_SALE sale2_ 
+        where clerk0_.CLERK_ID=sales1_.CLERK_ID and sales1_.SALE_ID=sale2_.SALE_ID)
+    )
+...
+ -found result:firstName=Jack, lastName=Pep, hireDate=1973-03-01, termDate=null, sales(0)={}]]></programlisting>                            
+        </figure>
+        <itemizedlist spacing="compact">
+            <listitem><para>Sub-select returns values from collection under test</para></listitem>
+            <listitem><para>Outer query tests for no existing (EMPTY)values</para></listitem>
+        </itemizedlist>
+
+        <figure>
+            <title>Equivalent JPAQL</title>
+<programlisting language=""><![CDATA[select c from Clerk c
+where c.sales IS NOT EMPTY]]></programlisting>                        
+        </figure>
+
+        <figure>
+            <title>Criteria API Definition</title>
+<programlisting language="java"><![CDATA[CriteriaQuery<Clerk> qdef = cb.createQuery(Clerk.class);
+
+Root<Clerk> c = qdef.from(Clerk.class);
+qdef.select(c)
+    .where(cb.isNotEmpty(c.<List<Sale>>get("sales")));]]></programlisting>                        
+        </figure>
+
+        <figure>
+            <title>Runtime Output</title>
+<programlisting language=""><![CDATA[    select
+        clerk0_.CLERK_ID as CLERK1_2_,
+        clerk0_.FIRST_NAME as FIRST2_2_,
+        clerk0_.HIRE_DATE as HIRE3_2_,
+        clerk0_.LAST_NAME as LAST4_2_,
+        clerk0_.TERM_DATE as TERM5_2_ 
+    from JPAQL_CLERK clerk0_ 
+    where exists (
+            select sale2_.SALE_ID 
+            from JPAQL_SALE_CLERK_LINK sales1_, JPAQL_SALE sale2_ 
+            where clerk0_.CLERK_ID=sales1_.CLERK_ID and sales1_.SALE_ID=sale2_.SALE_ID
+        )
+...
+ -found result:firstName=Manny, lastName=Pep, hireDate=1970-01-01, termDate=null, sales(2)={1, 2, }
+...
+ -found result:firstName=Moe, lastName=Pep, hireDate=1970-01-01, termDate=null, sales(1)={2, }]]></programlisting>                            
+        </figure>
+        <itemizedlist spacing="compact">
+            <listitem><para>Sub-select returns values from collection under test</para></listitem>
+            <listitem><para>Outer query tests for existing (NOT EMPTY)values</para></listitem>
+        </itemizedlist>
+
+    </section>
+
+
+    <section id="jpa-query-criteria-where-memberof">
+        <title>Membership Test</title>
+        <para>Can be used to determine membership in a collection</para>
+  
+        <figure>
+            <title>Equivalent JPAQL</title>
+<programlisting language=""><![CDATA[select c from Clerk c 
+where c.firstName = 'Manny']]></programlisting>
+<programlisting language=""><![CDATA[select s from Sale s
+where :clerk MEMBER OF s.clerks]]></programlisting>
+        </figure>
+
+        <figure>
+            <title>Criteria API Definition</title>
+<programlisting language="java"><![CDATA[CriteriaQuery<Clerk> qdef = cb.createQuery(Clerk.class);
+Root<Clerk> c = qdef.from(Clerk.class);
+qdef.select(c)
+    .where(cb.equal(c.get("firstName"), "Manny"));]]></programlisting>
+
+<programlisting language="java"><![CDATA[CriteriaQuery<Sale> qdef2 = cb.createQuery(Sale.class);
+Root<Sale> s = qdef2.from(Sale.class);
+qdef2.select(s)
+     .where(cb.isMember(clerk, s.<List<Clerk>>get("clerks")));]]></programlisting>                        
+        </figure>
+                        
+        <itemizedlist spacing="compact">
+            <listitem><para>Defines a shorthand for a subquery</para></listitem>
+        </itemizedlist>
+
+        <figure>
+                <title>In Programming Context</title>
+<programlisting language="java"><![CDATA[CriteriaQuery<Clerk> qdef = cb.createQuery(Clerk.class);
+Root<Clerk> c = qdef.from(Clerk.class);
+qdef.select(c)
+    .where(cb.equal(c.get("firstName"), "Manny"));
+Clerk clerk = em.createQuery(qdef).getSingleResult();
+
+//find all sales that involve this clerk
+CriteriaQuery<Sale> qdef2 = cb.createQuery(Sale.class);
+Root<Sale> s = qdef2.from(Sale.class);
+qdef2.select(s)
+     .where(cb.isMember(clerk, s.<List<Clerk>>get("clerks")));
+List<Sale> sales = em.createQuery(qdef2).getResultList();]]></programlisting>                        
+            </figure>
+
+        <figure>
+            <title>Runtime Output</title>
+<programlisting language=""><![CDATA[    select
+        clerk0_.CLERK_ID as CLERK1_2_,
+        clerk0_.FIRST_NAME as FIRST2_2_,
+        clerk0_.HIRE_DATE as HIRE3_2_,
+        clerk0_.LAST_NAME as LAST4_2_,
+        clerk0_.TERM_DATE as TERM5_2_ 
+    from JPAQL_CLERK clerk0_ 
+    where clerk0_.FIRST_NAME=? limit ?
+]]></programlisting>                            
+<programlisting language=""><![CDATA[    select
+        sale0_.SALE_ID as SALE1_1_,
+        sale0_.amount as amount1_,
+        sale0_.BUYER_ID as BUYER3_1_,
+        sale0_.date as date1_,
+        sale0_.SALE_STORE as SALE5_1_ 
+    from JPAQL_SALE sale0_ 
+    where ? in (
+            select clerk2_.CLERK_ID 
+            from JPAQL_SALE_CLERK_LINK clerks1_, JPAQL_CLERK clerk2_ 
+            where sale0_.SALE_ID=clerks1_.SALE_ID and clerks1_.CLERK_ID=clerk2_.CLERK_ID
+        )
+...
+ -found=date=1998-04-10 10:13:35, amount=$100.00, buyer=1, clerks(1)={1, }
+...
+ -found=date=1999-06-11 14:15:10, amount=$150.00, buyer=2, clerks(2)={1, 2, }]]></programlisting>                            
+        </figure>
+    </section>
+
+    <section id="jpa-query-criteria-where-subquery">
+        <title>Subqueries</title>
+        <para>Useful when query cannot be expressed through JOINs</para>
+  
+        <figure>
+            <title>Equivalent JPAQL</title>
+<programlisting language=""><![CDATA[select c from Customer c
+where c.id IN
+    (select s.buyerId from Sale s
+     where s.amount > 100)]]></programlisting>
+        </figure>
+
+        <figure>
+            <title>Criteria API Definition</title>
+<programlisting language="java"><![CDATA[CriteriaQuery<Customer> qdef = cb.createQuery(Customer.class);
+
+    //form subquery
+Subquery<Long> sqdef = qdef.subquery(Long.class);
+Root<Sale> s = sqdef.from(Sale.class);
+sqdef.select(s.<Long>get("buyerId"))
+    .where(cb.greaterThan(s.<BigDecimal>get("amount"), new BigDecimal(100)));
+
+    //form outer query
+Root<Customer> c = qdef.from(Customer.class);
+qdef.select(c)
+   .where(cb.in(c.get("id")).value(sqdef));]]></programlisting>                        
+        </figure>
+
+        <figure>
+            <title>Runtime Output</title>
+<programlisting language=""><![CDATA[    select
+        customer0_.CUSTOMER_ID as CUSTOMER1_3_,
+        customer0_.FIRST_NAME as FIRST2_3_,
+        customer0_.LAST_NAME as LAST3_3_ 
+    from JPAQL_CUSTOMER customer0_ 
+    where customer0_.CUSTOMER_ID in (
+            select sale1_.BUYER_ID 
+            from JPAQL_SALE sale1_ 
+            where sale1_.amount>100
+        )
+        
+ -found result:firstName=thing, lastName=one]]></programlisting>                            
+        </figure>
+    </section>
+
+    <section id="jpa-query-criteria-where-all">
+        <title>All</title>
+        <itemizedlist spacing="compact">
+            <listitem><para>All existing values must meet criteria (i.e., no value may fail criteria)</para></listitem>
+            <listitem><para>Zero values is the lack of failure (i.e., meets criteria)</para></listitem>
+        </itemizedlist>
+  
+        <figure>
+            <title>Equivalent JPAQL</title>
+<programlisting language=""><![CDATA[select c from Clerk c
+where 125 < ALL
+(select s.amount from c.sales s)]]></programlisting>
+        </figure>
+
+        <figure>
+            <title>Criteria API Definition</title>
+<programlisting language="java"><![CDATA[CriteriaQuery<Clerk> qdef = cb.createQuery(Clerk.class);
+Root<Clerk> c = qdef.from(Clerk.class);
+qdef.select(c);
+
+Subquery<BigDecimal> sqdef = qdef.subquery(BigDecimal.class);
+Root<Clerk> c1 = sqdef.from(Clerk.class);
+Join<Clerk,Sale> s = c1.join("sales");
+sqdef.select(s.<BigDecimal>get("amount"))
+     .where(cb.equal(c, c1));
+
+Predicate p1 = cb.lessThan(
+        cb.literal(new BigDecimal(125)), 
+        cb.all(sqdef));
+qdef.where(p1);]]></programlisting>                        
+        </figure>
+        <itemizedlist spacing="compact">
+            <listitem><para>List all clerks that have all sales above $125.00 or none at all</para></listitem>
+            <listitem><para>-or- List all clerks with no sale &lt;= $125.00</para></listitem>
+        </itemizedlist>
+
+        <figure>
+            <title>Runtime Output</title>
+<programlisting language=""><![CDATA[    select
+        clerk0_.CLERK_ID as CLERK1_2_,
+        clerk0_.FIRST_NAME as FIRST2_2_,
+        clerk0_.HIRE_DATE as HIRE3_2_,
+        clerk0_.LAST_NAME as LAST4_2_,
+        clerk0_.TERM_DATE as TERM5_2_ 
+    from JPAQL_CLERK clerk0_ 
+    where 125<all (
+            select sale3_.amount 
+            from JPAQL_CLERK clerk1_ 
+            inner join JPAQL_SALE_CLERK_LINK sales2_ on clerk1_.CLERK_ID=sales2_.CLERK_ID 
+            inner join JPAQL_SALE sale3_ on sales2_.SALE_ID=sale3_.SALE_ID 
+            where clerk0_.CLERK_ID=clerk1_.CLERK_ID
+        )
+...
+ -found result:firstName=Moe, lastName=Pep, hireDate=1970-01-01, termDate=null, sales(1)={2, }
+...
+ -found result:firstName=Jack, lastName=Pep, hireDate=1973-03-01, termDate=null, sales(0)={}]]></programlisting>                            
+        </figure>
+            <itemizedlist spacing="compact">
+                <listitem><para>Manny excluded because has 1 sale below $125.00</para></listitem>
+                <listitem><para>Moe included because has only $150.00 sale</para></listitem>
+                <listitem><para>Jack included because has no sales that fail criteria</para></listitem>
+            </itemizedlist>
+
+        <figure>
+            <title>Equivalent JPAQL</title>
+<programlisting language=""><![CDATA[select c from Clerk c
+where 125 > ALL
+(select s.amount from c.sales s)]]></programlisting>
+        </figure>
+
+        <figure>
+            <title>Criteria API Definition</title>
+<programlisting language="java"><![CDATA[Predicate p2 = cb.greaterThan(
+        cb.literal(new BigDecimal(125)), 
+        cb.all(sqdef));
+
+qdef.where(p2);]]></programlisting>                        
+        </figure>
+        <itemizedlist spacing="compact">
+            <listitem><para>List all clerks that have all sales below $125.00 or none at all</para></listitem>
+            <listitem><para>-or- List all clerks with no sale >= $125.00</para></listitem>
+        </itemizedlist>
+
+        <figure>
+            <title>Runtime Output</title>
+<programlisting language=""><![CDATA[    select
+        clerk0_.CLERK_ID as CLERK1_2_,
+        clerk0_.FIRST_NAME as FIRST2_2_,
+        clerk0_.HIRE_DATE as HIRE3_2_,
+        clerk0_.LAST_NAME as LAST4_2_,
+        clerk0_.TERM_DATE as TERM5_2_ 
+    from JPAQL_CLERK clerk0_ 
+    where 125>all (
+            select sale3_.amount 
+            from JPAQL_CLERK clerk1_ 
+            inner join JPAQL_SALE_CLERK_LINK sales2_ on clerk1_.CLERK_ID=sales2_.CLERK_ID 
+            inner join JPAQL_SALE sale3_ on sales2_.SALE_ID=sale3_.SALE_ID 
+            where clerk0_.CLERK_ID=clerk1_.CLERK_ID
+        )
+
+ -found result:firstName=Jack, lastName=Pep, hireDate=1973-03-01, termDate=null, sales(0)={}]]></programlisting>                            
+        </figure>
+            <itemizedlist spacing="compact">
+                <listitem><para>Manny excluded because has 1 sale above $125.00</para></listitem>
+                <listitem><para>Moe excluded because has only $150.00 sale</para></listitem>
+                <listitem><para>Jack included because has no sales that fail criteria</para></listitem>
+            </itemizedlist>
+    </section>
+
+
+    <section id="jpa-query-criteria-where-any">
+        <title>Any</title>
+        <itemizedlist spacing="compact">
+            <listitem><para>Any matching value meets criteria (i.e., one match and you are in)</para></listitem>
+            <listitem><para>Zero values fails to meet the criteria (i.e., must have at least one matching value)</para></listitem>
+        </itemizedlist>
+  
+        <figure>
+            <title>Equivalent JPAQL</title>
+<programlisting language=""><![CDATA[select c from Clerk c
+where 125 < ANY
+(select s.amount from c.sales s)]]></programlisting>
+        </figure>
+
+        <figure>
+            <title>Criteria API Definition</title>
+<programlisting language="java"><![CDATA[CriteriaQuery<Clerk> qdef = cb.createQuery(Clerk.class);
+Root<Clerk> c = qdef.from(Clerk.class);
+qdef.select(c);
+
+//select c from Clerk c
+//where 125 < ALL " +
+//(select s.amount from c.sales s)",
+Subquery<BigDecimal> sqdef = qdef.subquery(BigDecimal.class);
+Root<Clerk> c1 = sqdef.from(Clerk.class);
+Join<Clerk,Sale> s = c1.join("sales");
+sqdef.select(s.<BigDecimal>get("amount"))
+     .where(cb.equal(c, c1));
+
+Predicate p1 = cb.lessThan(
+        cb.literal(new BigDecimal(125)), 
+        cb.any(sqdef));
+
+qdef.where(p1);]]></programlisting>                        
+        </figure>
+        <itemizedlist spacing="compact">
+            <listitem><para>List all clerks that have at least one sale above $125.00</para></listitem>
+        </itemizedlist>
+
+        <figure>
+            <title>Runtime Output</title>
+<programlisting language=""><![CDATA[    select
+        clerk0_.CLERK_ID as CLERK1_2_,
+        clerk0_.FIRST_NAME as FIRST2_2_,
+        clerk0_.HIRE_DATE as HIRE3_2_,
+        clerk0_.LAST_NAME as LAST4_2_,
+        clerk0_.TERM_DATE as TERM5_2_ 
+    from JPAQL_CLERK clerk0_ 
+    where 125<any (
+            select sale3_.amount 
+            from JPAQL_CLERK clerk1_ 
+            inner join JPAQL_SALE_CLERK_LINK sales2_ on clerk1_.CLERK_ID=sales2_.CLERK_ID 
+            inner join JPAQL_SALE sale3_ on sales2_.SALE_ID=sale3_.SALE_ID 
+            where clerk0_.CLERK_ID=clerk1_.CLERK_ID
+        )
+...
+ -found result:firstName=Manny, lastName=Pep, hireDate=1970-01-01, termDate=null, sales(2)={1, 2, }
+...
+ -found result:firstName=Moe, lastName=Pep, hireDate=1970-01-01, termDate=null, sales(1)={2, }]]></programlisting>                            
+        </figure>
+        <itemizedlist spacing="compact">
+            <listitem><para>Manny included because has 1 sale above $125.00</para></listitem>
+            <listitem><para>Moe included because $150.00 sale qualifies him as well</para></listitem>
+            <listitem><para>Jack excluded because has no sales that meet criteria</para></listitem>
+        </itemizedlist>
+
+        <figure>
+            <title>Equivalent JPAQL</title>
+<programlisting language=""><![CDATA[select c from Clerk c
+where 125 > ANY
+(select s.amount from c.sales s)]]></programlisting>
+        </figure>
+
+        <figure>
+            <title>Criteria API Definition</title>
+<programlisting language="java"><![CDATA[Predicate p2 = cb.greaterThan(
+        cb.literal(new BigDecimal(125)), 
+        cb.any(sqdef));
+
+qdef.where(p2);]]></programlisting>                        
+        </figure>
+        <itemizedlist spacing="compact">
+            <listitem><para>List all clerks that have at least one sale below $125.00</para></listitem>
+        </itemizedlist>
+
+        <figure>
+            <title>Runtime Output</title>
+<programlisting language=""><![CDATA[    select
+        clerk0_.CLERK_ID as CLERK1_2_,
+        clerk0_.FIRST_NAME as FIRST2_2_,
+        clerk0_.HIRE_DATE as HIRE3_2_,
+        clerk0_.LAST_NAME as LAST4_2_,
+        clerk0_.TERM_DATE as TERM5_2_ 
+    from JPAQL_CLERK clerk0_ 
+    where 125>any (
+            select sale3_.amount 
+            from JPAQL_CLERK clerk1_ 
+            inner join JPAQL_SALE_CLERK_LINK sales2_ on clerk1_.CLERK_ID=sales2_.CLERK_ID 
+            inner join JPAQL_SALE sale3_ on sales2_.SALE_ID=sale3_.SALE_ID 
+            where clerk0_.CLERK_ID=clerk1_.CLERK_ID
+        )
+
+ -found result:firstName=Manny, lastName=Pep, hireDate=1970-01-01, termDate=null, sales(2)={1, 2, }]]></programlisting>                            
+        </figure>
+        <itemizedlist spacing="compact">
+            <listitem><para>Manny included because has 1 sale below $125.00</para></listitem>
+            <listitem><para>Moe excluded because his only $150.00 sale above criteria</para></listitem>
+            <listitem><para>Jack excluded because has no sales that meet criteria</para></listitem>
+        </itemizedlist>
+
+    </section>
+
+    <section id="jpa-query-criteria-where-summary">
+       <title>Summary</title>
+        <itemizedlist spacing="compact">
+            <listitem><para>Full featured set of where clause capability</para></listitem>
+        </itemizedlist>
+    </section>    
+</chapter>
+  

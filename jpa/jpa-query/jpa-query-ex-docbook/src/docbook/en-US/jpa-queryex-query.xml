@@ -1,0 +1,874 @@
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+   "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd"  [ ]>
+
+<chapter id="jpa-queryex-query">
+    <title>Creating JPA Queries</title>
+    <para>In this chapter you will create simple JPAQL queries and work mostly with the 
+       outer JPA query framework.</para>
+        
+    <section id="jpa-queryex-query-setup">
+        <title>Setup</title>
+        <para>In this section you will setup a JUnit test case to do work within this 
+           chapter.</para>
+  
+       <orderedlist>
+            <listitem><para>Create a JUnit test case in src/test called QueryTest. Have this class
+                extend QueryBase. Create an initial test method to verify the setup/teardown works 
+                correctly.</para>
+<programlisting language="java"><![CDATA[
+package myorg.queryex;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.junit.Test;
+
+public class QueryTest extends QueryBase {
+    private static final Log log = LogFactory.getLog(QueryTest.class);
+    @Test
+    public void test() {}
+}]]></programlisting>                        
+            </listitem>
+            <listitem><para>Build the module and run the test case.</para>
+<programlisting language=""><![CDATA[
+$ mvn clean test -P\!h2db -Ph2srv -Dtest=myorg.queryex.QueryTest
+...
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0
+
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+]]></programlisting>                        
+            </listitem>
+            <listitem><para>You may remove the sample @Test at this time since we will be adding more below.</para></listitem>
+       </orderedlist>
+    </section>
+
+    <section id="jpa-queryex-query-result">
+        <title>Create/Execute Query</title>
+        <para>In this section you will execute a query that produces different types
+            of results. </para>
+  
+        <section id="jpa-queryex-query-result-multi">
+           <title>Multiple Results</title>
+           <para>Create a query that will return multiple results.</para>
+           
+           <orderedlist>
+                <listitem><para>Add the following test method to the test case to return multiple 
+                   results from a JPAQL query.</para>
+<programlisting language="java"><![CDATA[
+@Test
+public void testMulti() {
+    log.info("*** testMulti ***");
+    
+    List<Movie> movies = em.createQuery(
+            "select m from Movie m " +
+            "order by title ASC", Movie.class)
+            .getResultList();
+    log.debug("result=" + movies);
+    assertEquals("unexpected number of movies", 7, movies.size());
+}]]></programlisting>
+                    <para>Notice...</para>
+                    <itemizedlist spacing="compact">
+                        <listitem><para>createQuery() accepts JPAQL syntax</para></listitem>
+                        <listitem><para>supplying a type (Movie.class) for the second argument produces a type-safe assignment and
+                            eliminates the need to perform a cast</para></listitem>
+                        <listitem><para>getResultList() - returns with zero to many elements</para></listitem>
+                        <listitem><para>we have added an "order by" to get results in a specified order</para></listitem>
+                        <listitem><para>getResultList() - returns with zero to many elements</para></listitem>
+                    </itemizedlist>
+                </listitem>
+                <listitem><para>Run the new test method. This should produce a query of the 
+                   entity class' table and return multiple rows -- which we can display.</para>
+<programlisting language=""><![CDATA[
+$ mvn clean test -P\!h2db -Ph2srv -Dtest=myorg.queryex.QueryTest#testMulti
+...
+Hibernate: 
+    select
+        movie0_.ID as ID3_,
+        movie0_.DIRECTOR_ID as DIRECTOR6_3_,
+        movie0_.MINUTES as MINUTES3_,
+        movie0_.RATING as RATING3_,
+        movie0_.RELEASE_DATE as RELEASE4_3_,
+        movie0_.TITLE as TITLE3_ 
+    from
+        QUERYEX_MOVIE movie0_
+ -result=[Animal House (1978), Apollo 13 (1995), Diner (1982), Footloose (1984), Sleepers (1996), Tremors (1990), Wag The Dog (1997)]
+...
+[INFO] BUILD SUCCESS]]></programlisting>                        
+                </listitem>
+           </orderedlist>
+           
+        </section>
+
+        <section id="jpa-queryex-query-result-single">
+           <title>Single Result</title>
+           <para>Create a query that will return a single result.</para>
+           
+           <orderedlist>
+                <listitem><para>Add the following test method to the test case to return a single
+                   result from a JPAQL query.</para>
+<programlisting language="java"><![CDATA[
+@Test
+public void testSingle() {
+    log.info("*** testSingle ***");
+    
+    Movie movie = em.createQuery(
+            "select m from Movie m " +
+            "where m.title='Animal House'", Movie.class)
+            .getSingleResult();
+    log.debug("result=" + movie);
+    assertNotNull("no movie", movie);
+}]]></programlisting>
+                    <para>Notice...</para>
+                    <itemizedlist spacing="compact">
+                        <listitem><para>getSingleResult() - returns exactly one result</para></listitem>
+                    </itemizedlist>
+                </listitem>
+                <listitem><para>Run the new test method. This should produce a query of the 
+                   entity class' table and return a single row -- which we can display.</para>
+<programlisting language=""><![CDATA[
+$ mvn clean test -P\!h2db -Ph2srv -Dtest=myorg.queryex.QueryTest#testSingle
+...
+ -*** testSingle ***
+Hibernate: 
+    select
+        movie0_.ID as ID3_,
+        movie0_.DIRECTOR_ID as DIRECTOR6_3_,
+        movie0_.MINUTES as MINUTES3_,
+        movie0_.RATING as RATING3_,
+        movie0_.RELEASE_DATE as RELEASE4_3_,
+        movie0_.TITLE as TITLE3_ 
+    from
+        QUERYEX_MOVIE movie0_ 
+    where
+        movie0_.TITLE='Animal House' limit ?
+ -result=Animal House (1978)
+...
+[INFO] BUILD SUCCESS]]></programlisting>
+                </listitem>
+           </orderedlist>
+        </section>
+
+        <section id="jpa-queryex-query-single-noresult">
+           <title>Single Result - NoResultException</title>
+           <para>Create a query that fails in its attempt to locate a single result because
+               no result is found.</para>
+           
+           <orderedlist>
+                <listitem><para>Add the following test method to the test case.</para>
+<programlisting language="java"><![CDATA[
+@Test(expected=NoResultException.class)
+public void testSingleNoResult() {
+    log.info("*** testSingleNoResult ***");
+    
+    em.createQuery(
+            "select m from Movie m " +
+            "where m.title='Animal Hut'", Movie.class)
+            .getSingleResult();
+    log.debug("query did not produce expected exception");
+}]]></programlisting>
+                </listitem>
+                <listitem><para>Run the new test method. This should produce a query of the 
+                   entity class' table, return no rows, and throw an expected javax.persistence.NoResultException</para>
+<programlisting language=""><![CDATA[
+$ mvn clean test -P\!h2db -Ph2srv -Dtest=myorg.queryex.QueryTest#testSingleNoResult
+
+...
+ -*** testSingle ***
+Hibernate: 
+    select
+        movie0_.ID as ID3_,
+        movie0_.DIRECTOR_ID as DIRECTOR6_3_,
+        movie0_.MINUTES as MINUTES3_,
+        movie0_.RATING as RATING3_,
+        movie0_.RELEASE_DATE as RELEASE4_3_,
+        movie0_.TITLE as TITLE3_ 
+    from
+        QUERYEX_MOVIE movie0_ 
+    where
+        movie0_.TITLE='Animal Hut' limit ?
+...
+[INFO] BUILD SUCCESS]]></programlisting>                        
+                </listitem>
+           </orderedlist>           
+        </section>
+
+
+
+        <section id="jpa-queryex-query-single-nonuniqueresult">
+           <title>Single Result - NonUniqueResultException</title>
+           <para>Create a query that fails in its attempt to locate a single result because
+              too many results are found</para>
+           
+           <orderedlist>
+                <listitem><para>Add the following test method to the test case.</para>
+<programlisting language="java"><![CDATA[
+public void testSingleNonUniqueResult() {
+    log.info("*** testSingleNonUniqueResult ***");
+    
+    em.createQuery(
+            "select m from Movie m " +
+            "where m.rating='R'", Movie.class)
+            .getSingleResult();
+    log.debug("query did not produce expected exception");
+}]]></programlisting>
+                </listitem>
+                <listitem><para>Run the new test method. This should produce a query of the 
+                   entity class' table, locate multiple rows, and throw an expected javax.persistence.NonUniqueResultException</para>
+<programlisting language=""><![CDATA[
+$ mvn clean test -P\!h2db -Ph2srv -Dtest=myorg.queryex.QueryTest#testSingleNonUniqueResult
+...
+-*** testSingleNonUniqueResult ***
+Hibernate: 
+    select
+        movie0_.ID as ID3_,
+        movie0_.DIRECTOR_ID as DIRECTOR6_3_,
+        movie0_.MINUTES as MINUTES3_,
+        movie0_.RATING as RATING3_,
+        movie0_.RELEASE_DATE as RELEASE4_3_,
+        movie0_.TITLE as TITLE3_ 
+    from
+        QUERYEX_MOVIE movie0_ 
+    where
+        movie0_.RATING='R' limit ?
+...
+[INFO] BUILD SUCCESS]]></programlisting>                        
+                </listitem>
+           </orderedlist>           
+        </section>
+    </section>
+
+
+    <section id="jpa-queryex-query-params">
+        <title>Query Parameters</title>
+        <para>In this section you will pass in parameters to the JPAQL query.</para>
+
+           <orderedlist>
+                <listitem><para>Add the following test method to your existing test case to 
+                    execute a query with a provided parameter argument.</para>
+<programlisting language="java"><![CDATA[
+@Test
+public void testParameters() {
+    log.info("*** testParameters ***");
+    
+    List<Movie> movies = em.createQuery(
+            "select m from Movie m " +
+            "where m.rating=:rating", Movie.class)
+            .setParameter("rating", MovieRating.R)
+            .getResultList();
+    log.debug("result=" + movies);
+    assertEquals("unexpected number of movies", 4, movies.size());
+}]]></programlisting>
+                    <para>Notice the parameter name is passed in the setParameter() call and is 
+                        prefaced within the query with the ":" character. A single parameter can 
+                        appear in the query multiple times.</para>                        
+                </listitem>
+                <listitem><para></para>
+<programlisting language=""><![CDATA[
+$ mvn clean test -P\!h2db -Ph2srv -Dtest=myorg.queryex.QueryTest#testParameters
+...
+ -*** testParameters ***
+Hibernate: 
+    select
+        movie0_.ID as ID3_,
+        movie0_.DIRECTOR_ID as DIRECTOR6_3_,
+        movie0_.MINUTES as MINUTES3_,
+        movie0_.RATING as RATING3_,
+        movie0_.RELEASE_DATE as RELEASE4_3_,
+        movie0_.TITLE as TITLE3_ 
+    from
+        QUERYEX_MOVIE movie0_ 
+    where
+        movie0_.RATING=?
+ -result=[Animal House (1978), Sleepers (1996), Wag The Dog (1997), Diner (1982)]
+...
+[INFO] BUILD SUCCESS
+]]></programlisting>                        
+                </listitem>
+                <listitem><para>Updated the query specification to include items that match 
+                    a date comparison. Be sure to update the expected count.</para>
+<programlisting language="java"><![CDATA[
+List<Movie> movies = em.createQuery(
+        "select m from Movie m " +
+        "where m.rating=:rating " +
+        "and m.releaseDate > :date", Movie.class)
+        .setParameter("rating", MovieRating.R)
+        .setParameter("date", new GregorianCalendar(1980, 0, 0).getTime(), TemporalType.DATE)
+        .getResultList();
+log.debug("result=" + movies);
+assertEquals("unexpected number of movies", 3, movies.size());
+]]></programlisting>                        
+                </listitem>
+                <listitem><para>Re-run the test method. Notice the 
+                    extra statement within the WHERE clause and fewer matches as a result
+                    of the updated query.</para>
+<programlisting language=""><![CDATA[
+$ mvn clean test -P\!h2db -Ph2srv -Dtest=myorg.queryex.QueryTest#testParameters
+...
+ -*** testParameters ***
+Hibernate: 
+    select
+        movie0_.ID as ID3_,
+        movie0_.DIRECTOR_ID as DIRECTOR6_3_,
+        movie0_.MINUTES as MINUTES3_,
+        movie0_.RATING as RATING3_,
+        movie0_.RELEASE_DATE as RELEASE4_3_,
+        movie0_.TITLE as TITLE3_ 
+    from
+        QUERYEX_MOVIE movie0_ 
+    where
+        movie0_.RATING=? 
+        and movie0_.RELEASE_DATE>?
+ -result=[Sleepers (1996), Wag The Dog (1997), Diner (1982)]
+...
+[INFO] BUILD SUCCESS
+]]></programlisting>                        
+                </listitem>
+                <listitem><para>Update the query spec to include a LIKE search for 
+                   text supplied by a parameter. Concatenate JPAQL wildcards to 
+                   the beginning and ending of the supplied parameter.</para>
+<programlisting language="java"><![CDATA[
+List<Movie> movies = em.createQuery(
+        "select m from Movie m " +
+        "where m.rating=:rating " +
+        "and m.releaseDate > :date " +
+        "and m.title like concat(concat('%',:title),'%')", Movie.class)
+        .setParameter("rating", MovieRating.R)
+        .setParameter("date", new GregorianCalendar(1980, 0, 0).getTime(), TemporalType.DATE)
+        .setParameter("title", "The")
+        .getResultList();
+log.debug("result=" + movies);
+assertEquals("unexpected number of movies", 1, movies.size());
+]]></programlisting>                        
+                </listitem>
+                <listitem><para>Re-run test the test method with 
+                    the additional search string.</para>
+<programlisting language="java"><![CDATA[
+$ mvn clean test -P\!h2db -Ph2srv -Dtest=myorg.queryex.QueryTest#testParameters
+...
+ -*** testParameters ***
+Hibernate: 
+    select
+        movie0_.ID as ID3_,
+        movie0_.DIRECTOR_ID as DIRECTOR6_3_,
+        movie0_.MINUTES as MINUTES3_,
+        movie0_.RATING as RATING3_,
+        movie0_.RELEASE_DATE as RELEASE4_3_,
+        movie0_.TITLE as TITLE3_ 
+    from
+        QUERYEX_MOVIE movie0_ 
+    where
+        movie0_.RATING=? 
+        and movie0_.RELEASE_DATE>? 
+        and (
+            movie0_.TITLE like (('%'||?)||'%')
+        )
+ -result=[Wag The Dog (1997)]
+...
+[INFO] BUILD SUCCESS
+]]></programlisting>                        
+                </listitem>
+                <listitem><para>Update the query spec to make the text search case-insensitive</para>
+<programlisting language="java"><![CDATA[
+List<Movie> movies = em.createQuery(
+        "select m from Movie m " +
+        "where m.rating=:rating " +
+        "and m.releaseDate > :date " +
+        "and lower(m.title) like concat(concat('%',lower(:title)),'%')", Movie.class)
+        .setParameter("rating", MovieRating.R)
+        .setParameter("date", new GregorianCalendar(1980, 0, 0).getTime(), TemporalType.DATE)
+        .setParameter("title", "wag")
+        .getResultList();
+log.debug("result=" + movies);
+assertEquals("unexpected number of movies", 1, movies.size());
+]]></programlisting>                        
+                </listitem>
+                <listitem><para>Re-run test the test method with 
+                    the case-insensitive search.</para>
+<programlisting language="java"><![CDATA[
+$ mvn clean test -P\!h2db -Ph2srv -Dtest=myorg.queryex.QueryTest#testParameters
+...
+ -*** testParameters ***
+Hibernate: 
+    select
+        movie0_.ID as ID3_,
+        movie0_.DIRECTOR_ID as DIRECTOR6_3_,
+        movie0_.MINUTES as MINUTES3_,
+        movie0_.RATING as RATING3_,
+        movie0_.RELEASE_DATE as RELEASE4_3_,
+        movie0_.TITLE as TITLE3_ 
+    from
+        QUERYEX_MOVIE movie0_ 
+    where
+        movie0_.RATING=? 
+        and movie0_.RELEASE_DATE>? 
+        and (
+            lower(movie0_.TITLE) like (('%'||lower(?))||'%')
+        )
+ -result=[Wag The Dog (1997)]
+...
+[INFO] BUILD SUCCESS
+]]></programlisting>                        
+            </listitem>
+           </orderedlist>
+    </section>    
+
+
+    <section id="jpa-queryex-query-pagingt">
+       <title>Paging Query Results</title>
+       <para>In this section you will control the amount of rows returned by 
+           using paging parameters.</para>
+           
+           <orderedlist>
+                <listitem><para>Add the following test method to the existing test case to demonstrate paging
+                   capabilities.</para>
+<programlisting language="java"><![CDATA[
+@Test
+public void testPaging() {
+    log.info("*** testPaging ***");
+
+    List<Movie> movies = new LinkedList<Movie>();
+]]></programlisting>                 
+                    <para>Setup to constant portion of the query up front.</para>       
+<programlisting language="java"><![CDATA[
+    TypedQuery<Movie> query = em.createQuery(
+            "select m from Movie m " +
+            "order by title", Movie.class)
+            .setMaxResults(2);
+]]></programlisting>          
+                    <para>Loop thru each page until an empty page is returned</para>              
+<programlisting language="java"><![CDATA[
+    List<Movie> page=null;
+    int offset=0;
+    do {
+        page = query.setFirstResult(offset).getResultList();
+        log.debug("page=" + page);
+        movies.addAll(page);
+        offset += page.size();
+        log.debug("page.size=" + page.size() + ", offset=" + offset);
+    } while (page.size() > 0);
+]]></programlisting>
+                    <para>Evaluate the count of rows returned.</para>                        
+<programlisting language="java"><![CDATA[    
+    log.debug("result=" + movies);
+    assertEquals("unexpected number of movies", 7, movies.size());
+}
+]]></programlisting>
+                    <note>
+                        <para>It is recommended that you provide an "order by" with
+                            a consistent ordering when working with paging to assure the
+                            follow-on page uses the same sort as the prior page. Properties
+                            like "createTime" are good default choices when present.</para>
+                    </note>                        
+                </listitem>
+                <listitem><para>Run the new test method to 
+                   demonstrate paging.</para>
+<programlisting language=""><![CDATA[
+$ mvn clean test -P\!h2db -Ph2srv -Dtest=myorg.queryex.QueryTest#testPaging
+...
+ -*** testPaging ***
+Hibernate: 
+    select
+        movie0_.ID as ID3_,
+        movie0_.DIRECTOR_ID as DIRECTOR6_3_,
+        movie0_.MINUTES as MINUTES3_,
+        movie0_.RATING as RATING3_,
+        movie0_.RELEASE_DATE as RELEASE4_3_,
+        movie0_.TITLE as TITLE3_ 
+    from
+        QUERYEX_MOVIE movie0_ 
+    order by
+        movie0_.TITLE limit ?
+ -page=[Animal House (1978), Apollo 13 (1995), Diner (1982)]
+ -page.size=3, offset=3
+]]></programlisting>
+                    <para>The first page finishes with 3 rows. The row count is added to the offset
+                        for the next query.</para>                        
+<programlisting language=""><![CDATA[
+Hibernate: 
+    select
+        movie0_.ID as ID3_,
+        movie0_.DIRECTOR_ID as DIRECTOR6_3_,
+        movie0_.MINUTES as MINUTES3_,
+        movie0_.RATING as RATING3_,
+        movie0_.RELEASE_DATE as RELEASE4_3_,
+        movie0_.TITLE as TITLE3_ 
+    from
+        QUERYEX_MOVIE movie0_ 
+    order by
+        movie0_.TITLE limit ? offset ?
+ -page=[Footloose (1984), Sleepers (1996), Tremors (1990)]
+ -page.size=3, offset=6
+]]></programlisting>                        
+                    <para>The second page finishes with 3 rows. The row count is added to the offset
+                        for the next query.</para>                        
+<programlisting language=""><![CDATA[
+Hibernate: 
+    select
+        movie0_.ID as ID3_,
+        movie0_.DIRECTOR_ID as DIRECTOR6_3_,
+        movie0_.MINUTES as MINUTES3_,
+        movie0_.RATING as RATING3_,
+        movie0_.RELEASE_DATE as RELEASE4_3_,
+        movie0_.TITLE as TITLE3_ 
+    from
+        QUERYEX_MOVIE movie0_ 
+    order by
+        movie0_.TITLE limit ? offset ?
+ -page=[Wag The Dog (1997)]
+ -page.size=1, offset=7
+]]></programlisting>                        
+                    <para>The third page finishes with 1 row. The row count is added to the offset
+                        for the next query.</para>                        
+<programlisting language=""><![CDATA[
+Hibernate: 
+    select
+        movie0_.ID as ID3_,
+        movie0_.DIRECTOR_ID as DIRECTOR6_3_,
+        movie0_.MINUTES as MINUTES3_,
+        movie0_.RATING as RATING3_,
+        movie0_.RELEASE_DATE as RELEASE4_3_,
+        movie0_.TITLE as TITLE3_ 
+    from
+        QUERYEX_MOVIE movie0_ 
+    order by
+        movie0_.TITLE limit ? offset ?
+ -page=[]
+ -page.size=0, offset=7
+]]></programlisting>                        
+                    <para>The fourth page finishes with 0 rows. This signals the loop to complete.
+                        The result is printed.</para>                        
+<programlisting language=""><![CDATA[
+ -result=[Animal House (1978), Apollo 13 (1995), Diner (1982), Footloose (1984), Sleepers (1996), Tremors (1990), Wag The Dog (1997)]
+...
+[INFO] BUILD SUCCESS
+]]></programlisting>                        
+                </listitem>
+           </orderedlist>
+    </section>    
+
+
+    <section id="jpa-queryex-query-namedquery">
+       <title>Named Query</title>
+       <para>Use a named query to register re-usable queries.</para>
+       <orderedlist>
+            <listitem><para>Observe the @NamedQuery defined within the Movie entity.</para>
+<programlisting language="java"><![CDATA[
+@Entity
+@Table(name="QUERYEX_MOVIE")
+@NamedQueries(value = { 
+    @NamedQuery(name="Movie.findByTitle", query=
+        "select m from Movie m " +
+        "where lower(m.title) like concat(concat('%',lower(:title)),'%')")
+})
+public class Movie implements Comparable<Movie>{
+})]]></programlisting>                        
+            </listitem>
+            
+            <listitem><para>Add the following test method to your existing test case to 
+                demonstrate calling a named query.</para>
+<programlisting language="java"><![CDATA[
+@Test
+public void testNamedQuery() {
+    log.info("*** testNamedQuery ***");
+    
+    Movie movie = em.createNamedQuery("Movie.findByTitle", Movie.class)
+            .setParameter("title", "wag")
+            .getSingleResult();
+    log.debug("result=" + movie);
+    assertNotNull("no movie", movie);
+}]]></programlisting>                        
+            </listitem>
+            
+            <listitem><para>Re-run the new test method to show the execution of the 
+               named query with a parameter supplied at runtime.</para>
+<programlisting language="java"><![CDATA[
+$ mvn clean test -P\!h2db -Ph2srv -Dtest=myorg.queryex.QueryTest#testNamedQuery
+...
+-*** testNamedQuery ***
+Hibernate: 
+    select
+        movie0_.ID as ID3_,
+        movie0_.DIRECTOR_ID as DIRECTOR6_3_,
+        movie0_.MINUTES as MINUTES3_,
+        movie0_.RATING as RATING3_,
+        movie0_.RELEASE_DATE as RELEASE4_3_,
+        movie0_.TITLE as TITLE3_ 
+    from
+        QUERYEX_MOVIE movie0_ 
+    where
+        lower(movie0_.TITLE) like (('%'||lower(?))||'%') limit ?
+ -result=Wag The Dog (1997)
+...
+]]></programlisting>                        
+            </listitem>
+       </orderedlist>
+    </section>    
+    
+    <section id="jpa-queryex-query-values">
+       <title>Value Queries</title>
+       <para>Retrieving an entity by its property values and having that entity 
+           be managed is a powerful capability provided by JPAQL queries. However,
+           there are times when retrieving a simple value -- rather than the complete entity --
+           is a better solution.
+       </para>
+
+            <section id="jpa-queryex-query-values-single">
+               <title>Retrieve Value</title>
+               <para>In this section we will form a query to return a list of 
+                   values from a single entity property that has a known type.
+                   This allows the query result to be placed into a convenient List
+                   for processing.</para>
+               <orderedlist>
+                    <listitem><para>Add the following test method to demonstrate querying
+                        an entity model and a collection of values.</para>
+<programlisting language="java"><![CDATA[
+@Test
+public void testValueQuery() {
+    log.info("*** testValueQuery ***");
+
+    List<String> titles = em.createQuery(
+            "select m.title from Movie m " +
+            "order by title ASC", String.class)
+            .getResultList();
+    for (String title : titles) {
+        log.debug(title);
+    }
+    assertEquals("unexpected number of titles", 7, titles.size());
+}]]></programlisting>
+                        <para>Notice...</para>
+                        <itemizedlist spacing="compact">
+                            <listitem><para>The data type returned in the list is declared in the query</para></listitem>
+                            <listitem><para>The result is returned as a simple list of values</para></listitem>
+                        </itemizedlist>
+                    </listitem>
+                    <listitem><para>Run the new test method and observe that only the
+                       requested value from the entity is returned and not the entire 
+                       entity.</para>
+<programlisting language=""><![CDATA[
+$ mvn clean test -P\!h2db -Ph2srv -Dtest=myorg.queryex.QueryTest#testValueQuery
+...
+ -*** testValueQuery ***
+Hibernate: 
+    select
+        movie0_.TITLE as col_0_0_ 
+    from
+        QUERYEX_MOVIE movie0_ 
+    order by
+        movie0_.TITLE ASC
+ -Animal House
+ -Apollo 13
+ -Diner
+ -Footloose
+ -Sleepers
+ -Tremors
+ -Wag The Dog
+...
+[INFO] BUILD SUCCESS]]></programlisting>
+                    </listitem>
+               </orderedlist>
+
+            </section>    
+            <section id="jpa-queryex-query-values-result">
+               <title>Retrieve Function Result Value</title>
+               <para>In the previous section we performed a query on a single property and 
+                   the result returned a list. From that list we had the capability to get its 
+                   size to determine how many entities we had that matched the criteria. If
+                   that was our only purpose -- that would be inefficient. Lets delegate the 
+                   counting to the database and simply returned the result.</para>
+                   
+               <orderedlist>
+                    <listitem><para>Add the following test method to demonstrate querying
+                        an entity model and returning a single function result.</para>
+<programlisting language="java"><![CDATA[
+@Test
+public void testResultValueQuery() {
+    log.info("*** testResultValueQuery ***");
+
+    int titleCount = em.createQuery(
+            "select count(m) from Movie m", Number.class)
+            .getSingleResult().intValue();
+    log.debug("titleCount=" + titleCount);
+    assertEquals("unexpected number of titles", 7, titleCount);
+}]]></programlisting>          
+                        <para>Notice...</para>
+                        <itemizedlist spacing="compact">
+                            <listitem><para>The query returns the result of a JPAQL function</para></listitem>
+                            <listitem><para>Adding the return type to the query function allows for type-safe usage of the result</para></listitem>
+                            <listitem><para>The value can be retrieved using the getSingleResult()</para></listitem>
+                        </itemizedlist>
+                    </listitem>
+
+                    <listitem><para>Run the new test method and observe the query produced.</para>
+<programlisting language=""><![CDATA[
+$ mvn clean test -P\!h2db -Ph2srv -Dtest=myorg.queryex.QueryTest#testResultValueQuery
+...
+ -*** testResultValueQuery ***
+Hibernate: 
+    select
+        count(movie0_.ID) as col_0_0_ 
+    from
+        QUERYEX_MOVIE movie0_ limit ?
+ -titleCount=7
+...
+[INFO] BUILD SUCCESS
+]]></programlisting>                        
+                    <para>Notice how the count() of rows is calculated in the database and only the 
+                       result is returned.</para>
+                    </listitem>
+               </orderedlist>
+            </section>    
+
+
+            <section id="jpa-queryex-query-values-multi">
+               <title>Retrieve Multiple Values</title>
+               <para>In this section you will query for multiple values for the entity. Results for 
+                    multiple values are returned in a Java Array[]. In the case of the properties being
+                    multiple types, the array is an Object[] array.</para>
+               <orderedlist>
+                    <listitem><para>Add the following test method to demonstrate querying
+                        an entity model and returning multiple values of different types.</para>
+<programlisting language="java"><![CDATA[
+@Test
+public void testMultiValueQuery() {
+    log.info("*** testMultiValueQuery ***");
+
+    List<Object[]> results = em.createQuery(
+            "select m.title, m.releaseDate from Movie m " +
+            "order by title ASC", Object[].class)
+            .getResultList();
+    for (Object[] result : results) {
+        String title = (String)result[0];
+        Date releaseDate = (Date)result[1];
+        log.debug(String.format("%s (%s)", title, releaseDate));
+    }
+    assertEquals("unexpected number of results", 7, results.size());
+}]]></programlisting>
+                        <para>Notice...</para>                        
+                        <itemizedlist spacing="compact">
+                            <listitem><para>The query requests multiple values to be returned</para></listitem>
+                            <listitem><para>The query is declared to return an Object[]</para></listitem>
+                            <listitem><para>The query returns a List with each element in the List containing an Object[]</para></listitem>
+                            <listitem><para>The elements of the Object[] are in the order expressed by the query</para></listitem>
+                        </itemizedlist>
+                    </listitem>
+                    <listitem><para>Run the new test method and observe the database query produced.</para>
+<programlisting language=""><![CDATA[
+$ mvn clean test -P\!h2db -Ph2srv -Dtest=myorg.queryex.QueryTest#testMultiValueQuery
+...
+ -*** testMultiValueQuery ***
+Hibernate: 
+    select
+        movie0_.TITLE as col_0_0_,
+        movie0_.RELEASE_DATE as col_1_0_ 
+    from
+        QUERYEX_MOVIE movie0_ 
+    order by
+        movie0_.TITLE ASC
+ -Animal House (1978-06-01)
+ -Apollo 13 (1995-06-30)
+ -Diner (1982-04-02)
+ -Footloose (1984-02-17)
+ -Sleepers (1996-10-18)
+ -Tremors (1990-01-19)
+ -Wag The Dog (1997-12-25)
+...
+[INFO] BUILD SUCCESS]]></programlisting>
+                        <para>Notice how the database query resulted in a request for multiple values of
+                            different type and the provider made these values available to the application
+                            using their assigned type.
+                        </para>                        
+                    </listitem>
+               </orderedlist>
+            </section>
+            
+            <section id="jpa-queryex-query-values-resultclass">
+               <title>Encapsulate Row Values with ResultClass</title>
+               <para>Using Object[] arrays is functional but it can lead to some errors or 
+                   less than desired query result handling. In this section you will encapsulate
+                   each row of values returned from the query with an instance of a result
+                   class. The result class will provide type-safe access to the returned 
+                   values as well as any additional functionality we wish to assign.</para>
+               <orderedlist>
+                    <listitem><para>Add the following result class as a static nested class 
+                        within your test case. Notice it contains an attribute for each 
+                        value we expect in the query response and contains a constructor
+                        that will process them in a specific order.</para>
+<programlisting language="java"><![CDATA[
+private static class MovieRelease {
+    public final String title;
+    public final Date releaseDate;
+    @SuppressWarnings("unused")
+    public MovieRelease(String title, Date releaseDate) {
+        this.title = title;
+        this.releaseDate = releaseDate;
+    }
+}]]></programlisting>                        
+                    </listitem>
+                    <listitem><para>Add the following test method to your test case.
+                        This test method will issue a similar query as before --
+                        except this time will supply a result class expression for 
+                        the values to be handled by.</para>
+<programlisting language="java"><![CDATA[
+@Test
+public void testResultClass() {
+    log.info("*** testResultClass ***");
+
+    String query = String.format("select new %s(m.title, m.releaseDate) " +
+            "from Movie m order by title ASC", 
+            MovieRelease.class.getName());
+    List<MovieRelease> results = em.createQuery(query, MovieRelease.class)
+            .getResultList();
+    for (MovieRelease movie: results) {
+        log.debug(String.format("%s (%s)", movie.title, movie.releaseDate));
+    }
+    assertEquals("unexpected number of results", 7, results.size());
+}]]></programlisting>
+                        <para>Notice each row of the query result creates an instance
+                           of our result class, passing the values into the constructor
+                           in a particular order. Our result class is not an entity
+                           and will not be managed within the persistence context.</para>                        
+                    </listitem>
+                    <listitem><para>Run the new test method and observe the JPAQL issued 
+                        to the entity manager contains a constructor specification for the 
+                        result class and query values desired. The resultant database query
+                        is identical to the one produced in the Object[] array case. The 
+                        only difference is the provider handles the Object[] array processing
+                        for us.</para>
+<programlisting language=""><![CDATA[
+$ mvn clean test -P\!h2db -Ph2srv -Dtest=myorg.queryex.QueryTest#testResultClass
+...
+ -select new myorg.queryex.QueryTest$MovieRelease(m.title, m.releaseDate) from Movie m order by title ASC
+Hibernate: 
+    select
+        movie0_.TITLE as col_0_0_,
+        movie0_.RELEASE_DATE as col_1_0_ 
+    from
+        QUERYEX_MOVIE movie0_ 
+    order by
+        movie0_.TITLE ASC
+ -Animal House (1978-06-01)
+ -Apollo 13 (1995-06-30)
+ -Diner (1982-04-02)
+ -Footloose (1984-02-17)
+ -Sleepers (1996-10-18)
+ -Tremors (1990-01-19)
+ -Wag The Dog (1997-12-25)
+...
+[INFO] BUILD SUCCESS]]></programlisting>                        
+                    </listitem>
+               </orderedlist>
+            </section>    
+                
+    </section>    
+
+       
+
+    <section id="jpa-queryex-query-summary">
+       <title>Summary</title>
+       <para>In this chapter you formed different types of queries that accepted
+           JPAQL. We didn't get into specific query capabilities of JPAQL -- just how
+           to interface with it. In in the next section we will look at implementing
+           queries within JPA using straight SQL. 
+       </para>
+    </section>    
+</chapter>

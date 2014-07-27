@@ -1,0 +1,566 @@
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+   "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd"  [ ]>
+
+<chapter id="jpa-queryex-sqlquery">
+    <title>SQL Queries</title>
+    <para>In the previous chapter we formed queries based on JPAQL -- which are based on 
+        entity and property names and the relationships defined within the entity class
+        structure. In a real application, there is also a need to form queries that go 
+        outside the boundaries of the entity class model -- but should still be pushed 
+        to the database to be performed. JPA provides us an escape hatch to execute raw SQL
+        queries. Unlike JPAQL, SQL queries need not have a direct relation to the JPA entity 
+        model. We will start with something simple and then move to more complex
+        usage of the SQL query capability within JPA.
+        </para>
+        
+    <section id="jpa-queryex-sqlquery-setup">
+        <title>Setup</title>
+        <para>In this section you will setup a JUnit test case to do work within this 
+           chapter.</para>
+  
+       <orderedlist>
+            <listitem><para>Create a JUnit test case in src/test called SQLQueryTest. Have this class
+                extend QueryBase. Create an initial test method to verify the setup/teardown works 
+                correctly.</para>
+<programlisting language="java"><![CDATA[
+package myorg.queryex;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.junit.Test;
+
+public class SQLQueryTest extends QueryBase {
+    private static final Log log = LogFactory.getLog(SQLQueryTest.class);
+    @Test
+    public void test() {}
+}]]></programlisting>                        
+            </listitem>
+            <listitem><para>Build the module and run the test case.</para>
+<programlisting language=""><![CDATA[
+$ mvn clean test -P\!h2db -Ph2srv -Dtest=myorg.queryex.SQLQueryTest
+...
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0
+
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+]]></programlisting>                        
+            </listitem>
+            <listitem><para>You may remove the sample @Test at this time since we will be adding more tests below.</para></listitem>
+       </orderedlist>
+    </section>
+
+        
+        
+    <section id="jpa-queryex-sqlquery-query">
+        <title>Create/Execute SQL Query</title>
+        <para>In this section you will create a simple SQL Query using the entity manager. 
+        </para>
+  
+        <orderedlist>
+            <listitem><para>Add the following test method to your JUnit test case. This 
+                test case will form a native SQL query, have it executed by the 
+                entity manager, and be provided with result values. There is no need
+                to open/close SQL Connections, create/close SQL Statements, or work 
+                with SQL ResultSets. The results are provided in a List for getResultList()
+                or a value in getSingleResult() that we must cast to the appropriate type.</para>
+<programlisting language="java"><![CDATA[
+@Test
+public void testSQLQuery() {
+    log.info("*** testSQLQuery ***");       
+    @SuppressWarnings("unchecked")
+    List<String> titles = em.createNativeQuery(
+            "select title from queryex_movie " +
+            "order by title ASC").getResultList();
+    for (String title : titles) {
+        log.debug(title);
+    }
+    assertEquals("unexpected number of titles", 7, titles.size());
+}]]></programlisting>                
+                <para>Notice the query expressed is in terms of tables and columns in the 
+                    database schema and not JPA entity and property names.</para>        
+            </listitem>
+            <listitem><para>Run the new test method and observe the database query that 
+                resulted.</para>
+<programlisting language=""><![CDATA[
+$ mvn clean test -P\!h2db -Ph2srv -Dtest=myorg.queryex.SQLQueryTest#testSQLQuery
+...
+ -*** testSQLQuery ***
+Hibernate: 
+    select
+        title 
+    from
+        queryex_movie 
+    order by
+        title ASC
+ -Animal House
+ -Apollo 13
+ -Diner
+ -Footloose
+ -Sleepers
+ -Tremors
+ -Wag The Dog
+...
+[INFO] BUILD SUCCESS]]></programlisting>
+                <para>Notice the query issued to the database is exactly what 
+                    you entered.</para>                        
+            </listitem>
+        </orderedlist>
+        <para>You have completed issuing a native SQL query using the entity manager. 
+            Native SQL queries support many of the same features as JPAQL queries</para>
+            <itemizedlist spacing="compact">
+                <listitem><para>Single/Multiple Results</para></listitem>
+                <listitem><para>Parameters -- although the JPA spec limits this to ordinal parameters. 
+                    Using named parameters for native SQL queries is not portable.</para></listitem>
+                <listitem><para>Named Queries</para></listitem>
+            </itemizedlist>
+        <para>As you will see in the follow-on sections -- we can also use SQL
+            queries to return managed entities. This will allow you to tweak the 
+            SQL used within a query and not give up receiving a managed entity in 
+            what is returned.</para>
+    </section>
+
+    <section id="jpa-queryex-sqlquery-entitymapping">
+       <title>SQL Query Entity Result Mapping</title>
+       <para>Since JPAQL queries can only be expressed in terms of the entity
+           model, there may be times when a more complicated native SQL query
+           is required to obtain the entities you wish to work with. In this
+           section you will use the simplest form of this capability -- where 
+           nothing additional is needed except the specification of the entity.
+           We can use this form when the result returns a single entity class.</para>
+       <orderedlist>
+            <listitem><para>Add the following test method to your existing JUnit test case.
+                We will form a query that takes advantage of the knowledge that DIRECTOR
+                and PERSON have a primary key join relationship and share the same 
+                primary key value. The select provided skips an unnecessary join of the
+                intermediate DIRECTOR table and performs a join from MOVIE straight to the 
+                PERSON table -- where a column value is being evaluated.</para>
+<programlisting language="java"><![CDATA[
+@Test
+public void testSQLResultMapping() {
+    log.info("*** testSQLResultMapping ***");       
+    @SuppressWarnings("unchecked")
+    List<Movie> movies = em.createNativeQuery(
+            "select m.* from queryex_movie m " +
+            "join queryex_person p on p.id = m.director_id " +
+            "where p.first_name = 'Ron'" +
+            "order by title ASC", Movie.class).getResultList();
+    log.debug("result=" + movies);
+    for (Movie movie: movies) {
+        log.debug("em.contains(" + movie + ")=" + em.contains(movie));
+        assertTrue(movie + " not managed", em.contains(movie));
+    }
+    assertEquals("unexpected number of movies", 2, movies.size());
+}]]></programlisting>
+                <para>Notice...</para>                        
+                <itemizedlist spacing="compact">
+                    <listitem><para>The native SQL query is free to do whatever it takes to identify the entity of interest</para></listitem>
+                    <listitem><para>The native SQL query is required to supply all columns required by the entity</para></listitem>
+                    <listitem><para>The returned entity is managed</para></listitem>
+                </itemizedlist>
+                <para>Note -- the example used above is not outside the capability
+                   of a JPAQL query. We are using it as a decent example
+                   showing some SQL complexity.</para>
+            </listitem>
+            <listitem><para>Run the new test method.</para>
+<programlisting language=""><![CDATA[
+$ mvn clean test -P\!h2db -Ph2srv -Dtest=myorg.queryex.SQLQueryTest#testSQLResultMapping
+  -*** testSQLResultMapping ***
+Hibernate: 
+    select
+        m.* 
+    from
+        queryex_movie m 
+    join
+        queryex_person p 
+            on p.id = m.director_id 
+    where
+        p.first_name = 'Ron'
+    order by
+        title ASC
+ -result=[Apollo 13 (1995), Tremors (1990)]
+ -em.contains(Apollo 13 (1995))=true
+ -em.contains(Tremors (1990))=true
+ ...
+[INFO] BUILD SUCCESS
+]]></programlisting>
+                <para>Notice the query executes whatever is in the native SQL and 
+                    returns the columns required by the default entity mapping.
+                    The returned entity instances are managed by the persistence 
+                    context -- any changes to these entities will cause a database
+                    update.</para>                        
+            </listitem>
+
+            <listitem><para>Add the following lines to access an object related
+                to the returned entity.</para>
+<programlisting language=""><![CDATA[
+log.debug("checking unmapped entity name");
+assertEquals("unexpected director first name", 
+        "Ron", movies.get(0).getDirector().getPerson().getFirstName());]]></programlisting>
+                <para>Notice that we are going to be traversing a few relationships during the 
+                    above call. These entities will have to be loaded if they are not yet 
+                    loaded in the persistence context.</para>                        
+            </listitem>
+            
+            <listitem><para>Re-run the unit test and notice the extra calls to the 
+               database to retrieve the related entities on demand since they were 
+               not previously loaded into the persistence context during the previous
+               query.</para>
+<programlisting language=""><![CDATA[
+$ mvn clean test -Ph2db -Dtest=myorg.queryex.SQLQueryTest#testSQLResultMapping
+...
+ -result=[Apollo 13 (1995), Tremors (1990)]
+ -em.contains(Apollo 13 (1995))=true
+ -em.contains(Tremors (1990))=true
+ -checking unmapped entity name
+Hibernate: 
+    select
+        director0_.PERSON_ID as PERSON1_2_0_ 
+    from
+        QUERYEX_DIRECTOR director0_ 
+    where
+        director0_.PERSON_ID=?
+Hibernate: 
+    select
+        person0_.ID as ID0_0_,
+        person0_.BIRTH_DATE as BIRTH2_0_0_,
+        person0_.FIRST_NAME as FIRST3_0_0_,
+        person0_.LAST_NAME as LAST4_0_0_ 
+    from
+        QUERYEX_PERSON person0_ 
+    where
+        person0_.ID=?
+ ...
+[INFO] BUILD SUCCESS]]></programlisting>                        
+            </listitem>
+       </orderedlist>
+        <para>You have finished a quick look at loading a single entity using
+           using a SQL query. In the next section we will look at eagerly fetching
+           more of the object graph into the persistence context during the initial
+           query.
+        </para>
+    </section>    
+
+    <section id="jpa-queryex-sqlquery-resultmapping">
+       <title>SQL Result Set Mapping</title>
+       <para>In the previous section you mapped a native SQL query to a single entity
+           and had to do very little work besides specifying the targeted entity
+           and supplying a query that would result in the targeted entity to be 
+           populated and managed on return. In this section we will expand our requirements
+           to loading a graph of related entity types during a single query. To do
+           that we must leverage a @SqlResultSetMapping</para>
+            <orderedlist>
+                <listitem><para>Define the following SqlResultSetMapping on the Movie
+                    entity. This will define a SqlResultSetMapping called "Movie.movieMapping"
+                    that will include Movie, Director, and Person entities. All will use
+                    their default column mapping.</para>
+<programlisting language="java"><![CDATA[
+@Entity
+...
+@SqlResultSetMappings({
+    @SqlResultSetMapping(name="Movie.movieMapping", entities={
+            @EntityResult(entityClass=Movie.class),
+            @EntityResult(entityClass=Director.class),
+            @EntityResult(entityClass=Person.class)
+    })
+})
+public class Movie implements Comparable<Movie>{]]></programlisting>                        
+                </listitem>
+                <listitem><para>Add the following test method to your existing test case.</para>
+<programlisting language="java"><![CDATA[
+@Test
+public void testSQLMultiResultMapping() {
+    log.info("*** testSQLMultiResultMapping ***");      
+    @SuppressWarnings("unchecked")
+    List<Object[]> results = em.createNativeQuery(
+            "select * from queryex_movie m " +
+            "join queryex_director dir on dir.person_id = m.director_id " +
+            "join queryex_person p on p.id = dir.person_id " +
+            "where p.first_name = 'Ron'" +
+            "order by title ASC", "Movie.movieMapping").getResultList();
+    log.debug("query returned " + results.size() + " results");
+    for (Object[] result: results) {
+        Movie movie = (Movie)result[0];
+        Director director = (Director) result[1];
+        Person person = (Person)result[2];
+        log.debug("em.contains(" + movie + ")=" + em.contains(movie));
+        log.debug("em.contains(" + director + ")=" + em.contains(director));
+        log.debug("em.contains(" + person + ")=" + em.contains(person));
+        assertTrue(movie + " not managed", em.contains(movie));
+        assertTrue(director + " not managed", em.contains(director));
+        assertTrue(person + " not managed", em.contains(person));
+    }
+    assertEquals("unexpected number of movies", 2, results.size());
+}]]></programlisting>                        
+                    <para>Notice...</para>              
+                    <itemizedlist spacing="compact">
+                        <listitem><para>We have replaced the specification of the Movie.class entity
+                            with a SqlResultSetMapping that includes Movie.class and several other
+                            entities</para></listitem>
+                        <listitem><para>The query now returns a List of Object[] with each element
+                            in the Object[] containing an entity instance we specified in the 
+                            @SqlResultSetMapping</para></listitem>
+                        <listitem><para>What we get returned is a set of entities that are now
+                            managed by the container. The query is the same as in the previous
+                            section -- we are now instructing the provider to map those results to
+                            entity instances and have them managed.</para></listitem>
+                    </itemizedlist>
+                </listitem>
+                <listitem><para>Run the test method and observe the result.</para>
+<programlisting language=""><![CDATA[
+$ mvn clean test -Ph2db -Dtest=myorg.queryex.SQLQueryTest#testSQLMultiResultMapping
+...
+ -*** testSQLMultiResultMapping ***
+Hibernate: 
+    select
+        * 
+    from
+        queryex_movie m 
+    join
+        queryex_director dir 
+            on dir.person_id = m.director_id 
+    join
+        queryex_person p 
+            on p.id = dir.person_id 
+    where
+        p.first_name = 'Ron'
+    order by
+        title ASC
+]]></programlisting>
+                        <para>Up to here, we have what we expected. However in the next statements we
+                            see the PERSON being re-fetched for each row.</para>                        
+<programlisting language=""><![CDATA[
+Hibernate: 
+    select
+        person0_.ID as ID0_0_,
+        person0_.BIRTH_DATE as BIRTH2_0_0_,
+        person0_.FIRST_NAME as FIRST3_0_0_,
+        person0_.LAST_NAME as LAST4_0_0_ 
+    from
+        QUERYEX_PERSON person0_ 
+    where
+        person0_.ID=?
+Hibernate: 
+    select
+        person0_.ID as ID0_0_,
+        person0_.BIRTH_DATE as BIRTH2_0_0_,
+        person0_.FIRST_NAME as FIRST3_0_0_,
+        person0_.LAST_NAME as LAST4_0_0_ 
+    from
+        QUERYEX_PERSON person0_ 
+    where
+        person0_.ID=?
+ -query returned 2 results
+ -em.contains(Apollo 13 (1995))=true
+ -em.contains(Ron Howard)=true
+ -em.contains(Ron Howard)=true
+ -em.contains(Tremors (1990))=true
+ -em.contains(Ron Underwood)=true
+ -em.contains(Ron Underwood)=true
+...
+[INFO] BUILD SUCCESS]]></programlisting>                        
+                </listitem>
+
+            <listitem><para>Re-write the query to enumerate each column being selected in an attempt to 
+                expose the issue with the above query.</para>
+<programlisting language="java"><![CDATA[
+List<Object[]> results = em.createNativeQuery(
+        "select " +
+                "m.id, m.minutes, m.rating, m.release_date, m.title, m.director_id, " +
+                "dir.person_id, " +
+                "p.id, p.first_name, p.last_name, p.birth_date " +
+        "from queryex_movie m " +
+        "join queryex_director dir on dir.person_id = m.director_id " +
+        "join queryex_person p on p.id = dir.person_id " +
+        "where p.first_name = 'Ron'" +
+        "order by title ASC", "Movie.movieMapping").getResultList();
+]]></programlisting> 
+                <para>Notice there are two columns labeled "ID"; MOVIE.ID and PERSON.ID.</para>                       
+            </listitem>
+
+            <listitem><para>If you re-run the updated query you will observe the same results as before
+                except for the explicit fields in the select. However, with the explicit naming of 
+                the fields -- you can now see the overlap between m.id and p.id.</para>
+<programlisting language=""><![CDATA[
+$ mvn clean test -Ph2db -Dtest=myorg.queryex.SQLQueryTest#testSQLMultiResultMapping1
+ -*** testSQLMultiResultMapping ***
+Hibernate: 
+    select
+        m.id,
+        m.minutes,
+        m.rating,
+        m.release_date,
+        m.title,
+        m.director_id,
+        dir.person_id,
+        p.id,
+        p.first_name,
+        p.last_name,
+        p.birth_date 
+    from
+        queryex_movie m 
+    join
+        queryex_director dir 
+            on dir.person_id = m.director_id 
+    join
+        queryex_person p 
+            on p.id = dir.person_id 
+    where
+        p.first_name = 'Ron'
+    order by
+        title ASC
+Hibernate: 
+    select
+        person0_.ID as ID0_0_,
+...
+Hibernate: 
+    select
+        person0_.ID as ID0_0_,
+...
+ -query returned 2 results
+ -em.contains(Apollo 13 (1995))=true
+ -em.contains(Ron Howard)=true
+ -em.contains(Ron Howard)=true
+ -em.contains(Tremors (1990))=true
+ -em.contains(Ron Underwood)=true
+ -em.contains(Ron Underwood)=true
+[INFO] BUILD SUCCESS]]></programlisting>                        
+            </listitem>
+
+            <listitem><para>Leverage the @FieldResult specification within the @EntityResult fields
+                attribute to be able to specify an alias for the "p.id" result as "p_id" to distinguish 
+                it from "m.id". The other
+                columns for PERSON are fine with their default but re-specifying them seems to be 
+                required once one of the columns is specified.</para>
+<programlisting language="java"><![CDATA[
+@Entity
+...
+@SqlResultSetMappings({
+...
+    @SqlResultSetMapping(name="Movie.movieMapping2", entities={
+            @EntityResult(entityClass=Movie.class),
+            @EntityResult(entityClass=Director.class),
+            @EntityResult(entityClass=Person.class, fields={
+                @FieldResult(name="id", column="p_id"),
+                @FieldResult(name="firstName", column="first_name"),
+                @FieldResult(name="lastName", column="last_name"),
+                @FieldResult(name="birthDate", column="birth_date")
+            })
+    })
+})
+public class Movie implements Comparable<Movie>{]]></programlisting>                        
+            </listitem>
+
+            <listitem><para>Update the SQL query with the alias defined above. Make sure
+                you update the @SqlResultMapping.name in the query to match what you 
+                either added or updated above.</para>
+<programlisting language="java"><![CDATA[
+List<Object[]> results = em.createNativeQuery(
+        "select " +
+                "m.id, m.minutes, m.rating, m.release_date, m.title, m.director_id, " +
+                "dir.person_id, " +
+                "p.id as p_id, " + //NOTICE: the alias for PERSON.ID
+                "p.first_name, p.last_name, p.birth_date " +
+        "from queryex_movie m " +
+        "join queryex_director dir on dir.person_id = m.director_id " +
+        "join queryex_person p on p.id = dir.person_id " +
+        "where p.first_name = 'Ron'" +
+        "order by title ASC", "Movie.movieMapping2").getResultList();]]></programlisting>                        
+            </listitem>
+
+            <listitem><para>Re-run the query with the alias in place and observe that 
+               everything is resolved within the results of the first query.</para>
+<programlisting language=""><![CDATA[
+$ mvn clean test -Ph2db -Dtest=myorg.queryex.SQLQueryTest#testSQLMultiResultMapping2
+...
+ -*** testSQLMultiResultMapping ***
+Hibernate: 
+    select
+        m.id,
+        m.minutes,
+        m.rating,
+        m.release_date,
+        m.title,
+        m.director_id,
+        dir.person_id,
+        p.id as p_id,
+        p.first_name,
+        p.last_name,
+        p.birth_date 
+    from
+        queryex_movie m 
+    join
+        queryex_director dir 
+            on dir.person_id = m.director_id 
+    join
+        queryex_person p 
+            on p.id = dir.person_id 
+    where
+        p.first_name = 'Ron'
+    order by
+        title ASC
+ -query returned 2 results
+ -em.contains(Apollo 13 (1995))=true
+ -em.contains(Ron Howard)=true
+ -em.contains(Ron Howard)=true
+ -em.contains(Tremors (1990))=true
+ -em.contains(Ron Underwood)=true
+ -em.contains(Ron Underwood)=true
+[INFO] BUILD SUCCESS]]></programlisting>                        
+            </listitem>
+
+            <listitem><para>Add the following statements to the test method to verify that
+                all related objects have been eagerly fetched/resolved within the initial
+                query.</para>
+<programlisting language="java"><![CDATA[
+log.debug("checking unmapped entity name");
+assertEquals("unexpected director first name", 
+        "Ron", ((Movie)((Object[])results.get(0))[0]).getDirector().getPerson().getFirstName());
+]]></programlisting>                        
+            </listitem>
+
+            <listitem><para>Re-run the test method to show that no additional queries are issued
+                to the database when navigating the relationships within the object graph.</para>
+<programlisting language=""><![CDATA[
+$ mvn clean test -Ph2db -Dtest=myorg.queryex.SQLQueryTest#testSQLMultiResultMapping2
+ -query returned 2 results
+ -em.contains(Apollo 13 (1995))=true
+ -em.contains(Ron Howard)=true
+ -em.contains(Ron Howard)=true
+ -em.contains(Tremors (1990))=true
+ -em.contains(Ron Underwood)=true
+ -em.contains(Ron Underwood)=true
+ -checking unmapped entity name
+...
+[INFO] BUILD SUCCESS]]></programlisting>                        
+            </listitem>
+        </orderedlist>
+        <para>You have completed querying the main points for querying for entities 
+            using native SQL.</para>
+    </section>    
+
+
+    <section id="jpa-queryex-sqlquery-summary">
+       <title>Summary</title>
+       <para>In this chapter you used native SQL queries to get both values and managed entities
+           from the database. Although you can do the same thing through JPAQL and this way is 
+           not portable across database dialects, using native SQL does provide open-ended optimization
+           or specialization of your database queries. While JPAQL is restricted to queries that are 
+           consistent with the entity model, the native SQL extension can allow you to form query
+           that bypasses unnecessary joins or navigates both directions of a uni-directional relationship.
+       </para>
+       <para>Clearly the power of customization is not always worth the extra effort, but definitely keep
+           this capability in mind when you find yourself using native SQL to locate primary key values
+           and then following up that query with an JPAQL query or entity manager command to get a managed
+           object using that primary key.</para>
+        <note>
+            <title>Leverage XML Mapping Files for Platform-specific Implementations</title>
+            <para>We leveraged Java Strings and class @Annotations to express the native
+                SQL within this exercise. However, if you find the native SQL being written
+                is too platform-specific and you need to flexibility to run against different
+                database platforms, it is recommended the native SQL be placed in  
+                @NamedNativeQueries and defined within an XML mapping file. Once abstracted 
+                into the XML mapping file -- platform specific versions of the XML mapping
+                file can be created and used to keep the core DAO platform neutral.</para>
+        </note>
+    </section>    
+</chapter>

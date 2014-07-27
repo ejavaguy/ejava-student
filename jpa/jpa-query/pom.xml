@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>info.ejava.examples.jpa</groupId>
+        <artifactId>jpa-root</artifactId>
+        <version>4.0.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>jpa-query</artifactId>
+    <packaging>pom</packaging>
+
+    <name>JPA::Query</name>
+    <description>
+        This project provides the home for JPA Query materials
+    </description>
+
+    <modules>
+        <module>ormJPAQL</module>
+        <module>jpa-query-example</module>
+        <module>jpa-queryex-archetype</module>
+        <module>queryEx</module>
+    </modules>
+</project>

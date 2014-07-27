@@ -1,0 +1,39 @@
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+   "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd"  [ ]>
+
+<chapter id="jpa-query-chapter">
+    <title>jpa-query Chapter</title>
+    <para></para>
+        
+    <section id="jpa-query-section1">
+        <title>jpa-query Section 1</title>
+        <para></para>
+  
+        <itemizedlist spacing="compact">
+            <listitem><para></para> </listitem>
+            <listitem><para></para> </listitem>
+            <listitem><para></para> </listitem>
+        </itemizedlist>
+        <para></para>
+    </section>
+
+    <section id="jpa-query-section2">
+        <title>jpa-query Section 2</title>
+        <para></para>
+  
+        <itemizedlist spacing="compact">
+            <listitem><para></para> </listitem>
+            <listitem><para></para> </listitem>
+            <listitem><para></para> </listitem>
+        </itemizedlist>
+        <para></para>
+    </section>
+
+
+    <section id="jpa-query-summary">
+       <title>Summary</title>
+       <para>In this chapter we
+       </para>
+    </section>    
+</chapter>
+  

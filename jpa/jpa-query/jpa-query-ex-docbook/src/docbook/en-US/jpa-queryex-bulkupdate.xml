@@ -1,0 +1,416 @@
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+   "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd"  [ ]>
+
+<chapter id="jpa-queryex-bulkupdate">
+    <title>Bulk Updates</title>
+    <para>In most of the other chapters we primary show different ways to us JPA to query the 
+        database. In this chapter we will use JPA query to perform bulk updates to the 
+        database. This capability eliminates the need to query for entire entities, change a 
+        few properties, and perform a follow-on update -- which would be very inefficient for 
+        a large number of entities. It this chapter we will bypass the persistence context
+        and perform work directly on the database.</para>
+    <note>
+        <title>Bulk Updates bypass Persistence Context and Invalidate Entities in Cache</title>
+        <para>It is worth noting that bulk updates bypass the cache entities in the persistence
+             context and will not update their state or leverage defined constructs like cascade
+             delete. You are responsible for either detaching, refreshing, or deleting the impacted 
+             entities when performing a bulk update.</para>
+    </note>
+    
+    
+    <section id="jpa-queryex-bulkupdate-setup">
+        <title>Setup</title>
+        <para>In this section you will setup a JUnit test case to do work within this 
+           chapter.</para>
+  
+       <orderedlist>
+            <listitem><para>Create a JUnit test case in src/test called BulkUpdateTest. Have this class
+                extend QueryBase. Create an initial test method to verify the setup/teardown works 
+                correctly.</para>
+<programlisting language="java"><![CDATA[
+package myorg.queryex;
+
+import static org.junit.Assert.*;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.junit.Test;
+
+public class BulkUpdateTest extends QueryBase {
+    private static final Log log = LogFactory.getLog(BulkUpdateTest.class);
+    
+    @Test 
+    public void test(){}
+}]]></programlisting>                        
+            </listitem>
+            <listitem><para>Build the module and run the test case.</para>
+<programlisting language=""><![CDATA[
+$ mvn clean test -P\!h2db -Ph2srv -Dtest=myorg.queryex.BulkUpdateTest
+...
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0
+
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+]]></programlisting>                        
+            </listitem>
+            <listitem><para>You may remove the sample @Test at this time since we will be adding more tests below.</para></listitem>
+       </orderedlist>
+    </section>
+
+    <section id="jpa-queryex-bulkupdate-setup2">
+       <title>Additional Setup</title>
+       <para>This test case will be changing the database -- so we need to execute the normal 
+           test case cleanup/populate in-between test methods to get back to a known state.</para>
+        <orderedlist>
+            <listitem><para>Add the following JUnit @Before method to your test case. This will perform the cleanup/populate 
+                methods in 
+                between each test method since test methods in this test case change the database. The parent
+                class will take care of cleanup/populate prior to running the next test case.
+            </para>
+<programlisting language="java"><![CDATA[
+@Before
+public void setUpLocksTest() {
+    em.getTransaction().commit();
+    cleanup(em);
+    populate(em);
+    em.getTransaction().begin();
+}]]></programlisting>                        
+            </listitem>
+        </orderedlist>
+    </section>    
+        
+    <section id="jpa-queryex-bulkupdate-jpaql">
+        <title>Using JPQL Bulk Update</title>
+        <para>In this section we will update the properties of an entity directly in the database.
+            To demonstrate the bulk query bypasses and invalidates the cache, a copy of the 
+            entity being changed will be purposely brought into the persistence context and
+            queried at different points during the process.</para>
+  
+        <orderedlist>
+
+            <listitem><para>Add the following test method to your existing test case. The test method
+                starts out by getting a copy of the entity to be updated and placing it in the 
+                persistence context cache.</para>
+<programlisting language="java"><![CDATA[
+@Test
+public void testUpdate() {
+    log.info("*** testUpdate ***");
+    
+    log.debug("get a copy of the entity into the persistence context cache for demo");
+    String oldFirst = "Ron";
+    String oldLast = "Howard";
+    Director d = em.createQuery("select d from Director d JOIN FETCH d.person p " +
+            "where p.firstName=:firstName and p.lastName=:lastName", Director.class)
+            .setParameter("firstName", oldFirst)
+            .setParameter("lastName", oldLast)
+            .getSingleResult();
+    log.debug("entity in cache=" + d);
+}]]></programlisting>
+            </listitem>
+            
+            <listitem><para>Run the test method and notice we found the entity  
+                we queried for. Since we used a JOIN FETCH -- the default LAZY fetch 
+                was ignored and both entities were loaded by the initial query.</para>
+<programlisting language=""><![CDATA[
+$ mvn clean test -Dtest=myorg.queryex.BulkUpdateTest#testUpdate
+...
+ -*** testUpdate ***
+ -get a copy of the entity into the persistence context cache for demo
+Hibernate: 
+    select
+        director0_.PERSON_ID as PERSON1_2_0_,
+        person1_.ID as ID0_1_,
+        person1_.BIRTH_DATE as BIRTH2_0_1_,
+        person1_.FIRST_NAME as FIRST3_0_1_,
+        person1_.LAST_NAME as LAST4_0_1_ 
+    from
+        QUERYEX_DIRECTOR director0_ 
+    inner join
+        QUERYEX_PERSON person1_ 
+            on director0_.PERSON_ID=person1_.ID 
+    where
+        person1_.FIRST_NAME=? 
+        and person1_.LAST_NAME=? limit ?
+ -entity in cache=Ron Howard
+...
+[INFO] BUILD SUCCESS]]></programlisting>                        
+            </listitem>            
+
+            <listitem><para>Add the following lines to the test method. This will 
+                perform the actual bulk update. Note the call will return the 
+                number of rows updated.</para>
+<programlisting language="java"><![CDATA[
+    String newFirst = "Opie";
+    String newLast = "Taylor";
+    log.debug("performing bulk update");
+    int changes=em.createQuery("update Person p " +
+            "set p.firstName=:newFirst, p.lastName=:newLast " +
+            "where p.firstName=:oldFirst and p.lastName=:oldLast")
+            .setParameter("newFirst", newFirst)
+            .setParameter("newLast", newLast)
+            .setParameter("oldFirst", oldFirst)
+            .setParameter("oldLast", oldLast)
+            .executeUpdate();
+    log.debug("changes=" + changes);
+    assertEquals("unexpected changes", 1, changes);]]></programlisting>
+            </listitem>
+
+            <listitem><para>Re-run the test method and note the database update command 
+                executed and the number of changes returned.</para>
+<programlisting language=""><![CDATA[
+$ mvn clean test -Dtest=myorg.queryex.BulkUpdateTest#testUpdate
+...
+ -performing bulk update
+Hibernate: 
+    update
+        QUERYEX_PERSON 
+    set
+        FIRST_NAME=?,
+        LAST_NAME=? 
+    where
+        FIRST_NAME=? 
+        and LAST_NAME=?
+ -changes=1
+...
+[INFO] BUILD SUCCESS]]></programlisting>                        
+            </listitem>
+
+            <listitem><para>Add the following lines to the test method to inspect
+                the entity still in the persistence context cache.</para>
+<programlisting language="java"><![CDATA[
+    log.debug("entity still in cache has old values=" + d);
+    assertEquals("unexpected cache change", oldFirst, d.getFirstName());
+    assertEquals("unexpected cache change", oldLast, d.getLastName());]]></programlisting>                        
+            </listitem>
+
+            <listitem><para>Re-run the test method to show the cache was bypassed 
+                and invalidated by the bulk database updated.</para>
+<programlisting language=""><![CDATA[
+$ mvn clean test -Dtest=myorg.queryex.BulkUpdateTest#testUpdate
+...
+ -entity still in cache has old values=Ron Howard
+...
+[INFO] BUILD SUCCESS]]></programlisting>                        
+            </listitem>
+
+            <listitem><para>Add the following lines to the test method to 
+                refresh the stale entities in the persistence context with changes
+                to the database. We must reference each entity we want refreshed 
+                unless the relationship has defined cascade=REFRESH.</para>
+<programlisting language="java"><![CDATA[
+    log.debug("refreshing cache with changes to database");
+    em.refresh(d.getPerson());
+    log.debug("refreshed entity in cache has new values=" + d);
+    assertEquals("unexpected cache change", newFirst, d.getFirstName());
+    assertEquals("unexpected cache change", newLast, d.getLastName());
+}]]></programlisting>                        
+            </listitem>
+
+            <listitem><para>Re-run the test method and observe how the entity within 
+                the persistence context has been updated with the current state 
+                of the database.</para>
+<programlisting language=""><![CDATA[
+$ mvn clean test -Dtest=myorg.queryex.BulkUpdateTest#testUpdate
+...
+ -refreshing cache with changes to database
+Hibernate: 
+    select
+        person0_.ID as ID0_0_,
+        person0_.BIRTH_DATE as BIRTH2_0_0_,
+        person0_.FIRST_NAME as FIRST3_0_0_,
+        person0_.LAST_NAME as LAST4_0_0_ 
+    from
+        QUERYEX_PERSON person0_ 
+    where
+        person0_.ID=?
+ -refreshed entity in cache has new values=Opie Taylor
+...
+[INFO] BUILD SUCCESS]]></programlisting>                        
+            </listitem>
+        </orderedlist>        
+        <para>You have finished taking a quick look at performing bulk updates using JPAQL.
+            In the next section we will do much the same thing except use native SQL.</para>
+    </section>
+
+        
+    <section id="jpa-queryex-bulkupdate-sql">
+        <title>Using Native SQL Bulk Update</title>
+        <para>In the previous section we used JPAQL to issue a bulk update to the database. 
+            In this section we will assume the SQL task to be performed is above and beyond
+            what we can express in the portable JPAQL and must express in native SQL. That 
+            may not be the case in this example -- but you will get the point that anything
+            goes with the bulk SQL update.</para>
+  
+        <orderedlist>
+
+            <listitem><para>Add the following test method to your existing test case. This first 
+               part will query the database using JPAQL to determine which entities will be updated
+               and to again demonstrate the issues with bulk updates and entries in the cache.</para>
+<programlisting language="java"><![CDATA[
+@Test   
+public void testSQLUpdate() {
+    log.info("*** testSQLUpdate ***");
+    
+    log.debug("get a copies of the entities into the persistence context cache for demo");
+    String genre="Crime Drama";
+    @SuppressWarnings("unchecked")
+    List<Movie> movies = em.createQuery("select m from Movie m JOIN m.genres g " +
+            "where g = :genre")
+            .setParameter("genre", genre)
+            .getResultList();
+    int genreCount=0;
+    for (Movie movie : movies) {
+        log.debug("entity in cache=" + movie + ", genres=" + movie.getGenres());
+        genreCount += movie.getGenres().contains(genre)?1:0;
+    }
+    assertTrue("no movies found for genre", movies.size()>0);
+    assertTrue("unexpected genre count", genreCount > 0);
+}]]></programlisting>                        
+            </listitem>
+
+
+            <listitem><para>Run the test method to load the targeted entities into the cache.</para>
+<programlisting language=""><![CDATA[
+$ mvn clean test -Dtest=myorg.queryex.BulkUpdateTest#testUpdate
+...
+ -*** testSQLUpdate ***
+ -get a copies of the entities into the persistence context cache for demo
+Hibernate: 
+    select
+        movie0_.ID as ID3_,
+        movie0_.DIRECTOR_ID as DIRECTOR6_3_,
+        movie0_.MINUTES as MINUTES3_,
+        movie0_.RATING as RATING3_,
+        movie0_.RELEASE_DATE as RELEASE4_3_,
+        movie0_.TITLE as TITLE3_ 
+    from
+        QUERYEX_MOVIE movie0_ 
+    inner join
+        QUERYEX_MOVIEGENRE genres1_ 
+            on movie0_.ID=genres1_.MOVIE_ID 
+    where
+        genres1_.GENRE=?
+ -entity in cache=Sleepers (1996), genres=[Buddy Film, Courtroom Drama, Crime, Crime Drama, Drama, Reunion Films]
+...
+[INFO] BUILD SUCCESS]]></programlisting>                        
+            </listitem>
+
+
+            <listitem><para>Add the following lines to the test method to perform the bulk update.
+                Notice that we are using native table and column names in this update command.</para>
+<programlisting language="java"><![CDATA[
+log.debug("performing bulk update to remove genre=" + genre);
+int changes=em.createNativeQuery("delete from QUERYEX_MOVIEGENRE g " +
+        "where g.genre=?1")
+        .setParameter(1, genre)
+        .executeUpdate();
+log.debug("changes=" + changes);
+assertEquals("unexpected changes", 1, changes);]]></programlisting>                        
+            </listitem>
+
+
+            <listitem><para>Re-run the test method and observe the update issued to the database and the 
+                number of changed rows that are returned.</para>
+<programlisting language=""><![CDATA[
+$ mvn clean test -Dtest=myorg.queryex.BulkUpdateTest#testUpdate
+...
+ -performing bulk update to remove genre=Crime Drama
+Hibernate: 
+    delete 
+    from
+        QUERYEX_MOVIEGENRE g 
+    where
+        g.genre=?
+ -changes=1
+...
+[INFO] BUILD SUCCESS]]></programlisting>                        
+            </listitem>
+
+
+            <listitem><para>Add the following lines to your test method to inspect the entity
+                still in the persistence context.</para>
+<programlisting language="java"><![CDATA[
+for (Movie movie : movies) {
+    log.debug("entity still in cache=" + movie + ", genres=" + movie.getGenres());
+}]]></programlisting>                        
+            </listitem>
+
+
+
+            <listitem><para>Re-run the test method to show the cached entity is still in 
+                its original fetched state.</para>
+<programlisting language=""><![CDATA[
+$ mvn clean test -Dtest=myorg.queryex.BulkUpdateTest#testUpdate
+...
+ -entity still in cache=Sleepers (1996), genres=[Buddy Film, Courtroom Drama, Crime, Crime Drama, Drama, Reunion Films]
+...
+[INFO] BUILD SUCCESS]]></programlisting>                        
+            </listitem>
+
+
+
+            <listitem><para>Add the following lines to the test method to refresh the 
+                stale entities.</para>
+<programlisting language="java"><![CDATA[
+log.debug("refreshing cached objects");
+genreCount=0;
+for (Movie movie : movies) {
+    em.refresh(movie);
+    log.debug("entity in cache=" + movie + ", genres=" + movie.getGenres());
+    genreCount += movie.getGenres().contains(genre)?1:0;
+}
+assertEquals("unexpected cache change", 0, genreCount);]]></programlisting>                        
+            </listitem>
+
+
+            <listitem><para>Re-run the test method and observe how the REFRESH from the 
+                parent object is cascaded to the child elements because of a built-in
+                rule for @ElementCollections to cascade all commands from parent to child.</para>
+<programlisting language=""><![CDATA[
+$ mvn clean test -Dtest=myorg.queryex.BulkUpdateTest#testUpdate
+...
+ -refreshing cached objects
+Hibernate: 
+    select
+        movie0_.ID as ID3_0_,
+        movie0_.DIRECTOR_ID as DIRECTOR6_3_0_,
+        movie0_.MINUTES as MINUTES3_0_,
+        movie0_.RATING as RATING3_0_,
+        movie0_.RELEASE_DATE as RELEASE4_3_0_,
+        movie0_.TITLE as TITLE3_0_ 
+    from
+        QUERYEX_MOVIE movie0_ 
+    where
+        movie0_.ID=?
+Hibernate: 
+    select
+        genres0_.MOVIE_ID as MOVIE1_3_0_,
+        genres0_.GENRE as GENRE0_ 
+    from
+        QUERYEX_MOVIEGENRE genres0_ 
+    where
+        genres0_.MOVIE_ID=?
+ -entity in cache=Sleepers (1996), genres=[Reunion Films, Crime, Courtroom Drama, Drama, Buddy Film]
+...
+[INFO] BUILD SUCCESS]]></programlisting>                        
+            </listitem>
+        </orderedlist>        
+        <para>You have completed an initial look at performing bulk database updates using 
+            SQL queries. This is very similar to the JPAQL technique -- except there is 
+            no constraint on how to form the database queries. One use I specifically 
+            have found for using native SQL bulk updates is to execute database SQL
+            scripts created by SQL schema generation tools.</para>
+    </section>
+
+    <section id="jpa-queryex-bulkupdate-summary">
+       <title>Summary</title>
+       <para>In this chapter we provided two basic examples of bulk database updates. This provides
+           a very efficient way to make changes to the database since it bypasses the entity model
+           and other business logic because you are directly working with data in the database.
+           The capability does come at a price. As the exercises showed, the entities within the 
+           cache are bypassed and made stale by the direct interaction within the database. This 
+           can make it very difficult to work with both persistence contexts and bulk updates at the 
+           same time. Bulk updates should be limited to their own transaction or the beginning of 
+           transactions using hybrid techniques. 
+       </para>
+    </section>    
+</chapter>
