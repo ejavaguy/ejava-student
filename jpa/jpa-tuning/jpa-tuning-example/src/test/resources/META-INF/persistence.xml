@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd" version="2.0">
+
+    <!-- this persistence.xml file is hosted within the src/test 
+         directory and is meant to test the entity mapping designs
+         and then be replaced by downstream persistence units that
+         are more specific to the deployment environment. Since it 
+         is not hosted in the src/main tree - the individual entities
+         must be individually named below for schema generation to 
+         work correctly -->
+    <persistence-unit name="movietune-test">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+        <class>ejava.jpa.examples.tuning.bo.Person</class>
+        <class>ejava.jpa.examples.tuning.bo.Actor</class>
+        <class>ejava.jpa.examples.tuning.bo.Director</class>
+        <class>ejava.jpa.examples.tuning.bo.Movie</class>
+        <class>ejava.jpa.examples.tuning.bo.MovieRole</class>
+    </persistence-unit>            
+
+    <!-- this persistence unit maps the title column to a column with unique values -->
+    <persistence-unit name="movietune-test-utitle">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+        <mapping-file>jpa/orm-utitle.xml</mapping-file>
+        <class>ejava.jpa.examples.tuning.bo.Person</class>
+        <class>ejava.jpa.examples.tuning.bo.Actor</class>
+        <class>ejava.jpa.examples.tuning.bo.Director</class>
+        <class>ejava.jpa.examples.tuning.bo.Movie</class>
+        <class>ejava.jpa.examples.tuning.bo.MovieRole</class>
+    </persistence-unit>            
+
+    <!-- this persistence unit scales down the size of the movie to determine if performance
+         numbers thrown off by retrieval of large data sizes -->
+    <persistence-unit name="movietune-test-thin">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+        <mapping-file>jpa/orm-thinmovie.xml</mapping-file>
+        <class>ejava.jpa.examples.tuning.bo.Person</class>
+        <class>ejava.jpa.examples.tuning.bo.Actor</class>
+        <class>ejava.jpa.examples.tuning.bo.Director</class>
+        <class>ejava.jpa.examples.tuning.bo.Movie</class>
+        <class>ejava.jpa.examples.tuning.bo.MovieRole</class>
+    </persistence-unit>            
+
+    <!-- this persistence unit declares eager fetch for relationships 
+        and does not map the plot -->
+    <persistence-unit name="movietune-test-thineager">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+        <mapping-file>jpa/orm-thineager.xml</mapping-file>
+        <class>ejava.jpa.examples.tuning.bo.Person</class>
+        <class>ejava.jpa.examples.tuning.bo.Actor</class>
+        <class>ejava.jpa.examples.tuning.bo.Director</class>
+        <class>ejava.jpa.examples.tuning.bo.Movie</class>
+        <class>ejava.jpa.examples.tuning.bo.MovieRole</class>
+    </persistence-unit>            
+
+    <!-- this persistence unit declares eager fetch for relationships 
+        and does map the plot-->
+    <persistence-unit name="movietune-test-thickeager">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+        <mapping-file>jpa/orm-thickeager.xml</mapping-file>
+        <class>ejava.jpa.examples.tuning.bo.Person</class>
+        <class>ejava.jpa.examples.tuning.bo.Actor</class>
+        <class>ejava.jpa.examples.tuning.bo.Director</class>
+        <class>ejava.jpa.examples.tuning.bo.Movie</class>
+        <class>ejava.jpa.examples.tuning.bo.MovieRole</class>
+    </persistence-unit>            
+</persistence>

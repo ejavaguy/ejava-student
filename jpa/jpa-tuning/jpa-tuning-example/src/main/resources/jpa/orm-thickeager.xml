@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistence/orm_2_0.xsd" version="2.0">
+
+    <entity class="ejava.jpa.examples.tuning.bo.Movie">
+        <attributes>
+            <many-to-one name="director" fetch="EAGER">
+                <join-column name="DIRECTOR_ID"/>
+            </many-to-one>
+            <one-to-many name="cast" fetch="EAGER" mapped-by="movie"/>
+            
+            <element-collection name="genres" fetch="EAGER">
+                <column name="GENRE"/>
+                <collection-table name="JPATUNE_MOVIEGENRE">
+                    <join-column name="MOVIE_ID"/>
+                    <unique-constraint>
+                        <column-name>MOVIE_ID</column-name>
+                        <column-name>GENRE</column-name>
+                    </unique-constraint>
+                </collection-table>
+            </element-collection>
+        </attributes>
+    </entity>
+
+    <entity class="ejava.jpa.examples.tuning.bo.MovieRole">
+        <attributes>
+            <many-to-one name="actor" fetch="EAGER">
+                <join-column name="ACTOR_ID"/>
+            </many-to-one>
+        </attributes>
+    </entity>
+</entity-mappings>
+    
+    

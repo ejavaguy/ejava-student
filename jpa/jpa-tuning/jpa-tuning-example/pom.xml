@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>info.ejava.examples.jpa</groupId>
+        <artifactId>jpa-tuning</artifactId>
+        <version>4.0.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>jpa-tuning-example</artifactId>
+
+    <name>JPA::Tuning::Example</name>
+    <description>This project provides materials used in tuning examples.</description>
+
+    <!-- dependency versions are defined within parent-pom -->
+    <dependencies>
+        <dependency>
+          <groupId>commons-logging</groupId>
+          <artifactId>commons-logging</artifactId>
+          <scope>compile</scope>
+        </dependency>
+    
+        <dependency>
+            <groupId>org.hibernate.javax.persistence</groupId>
+            <artifactId>hibernate-jpa-2.1-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-entitymanager</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.carrotsearch</groupId>
+            <artifactId>junit-benchmarks</artifactId>
+            <version>0.7.0</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+          <groupId>log4j</groupId>
+          <artifactId>log4j</artifactId>
+          <scope>test</scope>
+        </dependency>    
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <!-- filtering will replace URLs, credentials, etc in the 
+             files copied to the target directory and used during testing.
+            -->
+        <testResources>
+            <testResource>
+                <directory>src/test/resources</directory>
+                <filtering>true</filtering>
+            </testResource>
+        </testResources>
+
+        <plugins>
+            <!-- extends the pluginManagement definition in the parent pom
+                 to generates DDL files for persistence unit.
+                 See effective-pom for full configuration -->
+            <plugin>
+                <artifactId>hibernate3-maven-plugin</artifactId>
+                <groupId>org.codehaus.mojo</groupId>
+                <configuration>
+                    <hibernatetool destdir="target/classes/ddl">
+                        <classpath>
+                            <path location="${project.build.directory}/classes" />
+                            <path location="${project.build.directory}/test-classes" />
+                        </classpath>
+                        <jpaconfiguration persistenceunit="movietune-test" propertyfile="${basedir}/target/test-classes/hibernate.properties" />
+                    </hibernatetool>
+                </configuration>
+            </plugin>
+
+            <!-- package the persistence unit in a test-jar so it can
+                 be used by downstream client tests -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>test-jar</goal>
+                        </goals>
+                        <configuration>
+                            <!-- include or exclude as appropriate -->
+                            <includes>
+                                <include>META-INF/persistence.xml</include>
+                            </includes>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <configuration>
+                       <includes>
+                            <!-- exclude all tests since they are run against a special DB instance -->
+                           <include>**/Nothing.java</include>
+                           <!-- 
+                           <include>**/FullTableScanTest.java</include>
+                            -->
+                           <!-- 
+                            <include>**/JoinTest.java</include>
+                            <include>**/ForeignKeyIndexTest.java</include>
+                           -->
+                           <!--
+                           <include>**/CompositeIndexTest.java</include>
+                           <include>**/IndexTest.java</include>
+                           <include>**/ValueQueryTest.java</include>
+                           -->
+                       </includes>
+                    </configuration>
+                </plugin>
+        </plugins>
+    </build>
+
+</project>

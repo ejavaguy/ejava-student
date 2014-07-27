@@ -25,9 +25,9 @@
         <module>jpa-validation</module>
         <module>jpa-relation</module>
         <module>jpa-query</module>
-        <!--
         <module>jpa-cache</module>
         <module>jpa-tuning</module>
+        <!--
         <module>jpa-serverside</module>
         <module>jpa-providers</module>
         -->
