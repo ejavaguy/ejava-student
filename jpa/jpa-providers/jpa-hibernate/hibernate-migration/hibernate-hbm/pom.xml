@@ -1,0 +1,141 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>info.ejava.examples.jpa.hibernate.migration</groupId>
+        <artifactId>migration-root</artifactId>
+        <version>4.0.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>hibernate-hbm</artifactId>
+
+    <name>Hibernate Migration::Legacy HBM files</name>
+    <description>
+        This project provides an example legacy Hibernate project that uses Hibernate Session,
+        the Hibernate API, and mappings using HBM files.
+    </description>
+
+    <dependencies>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>hibernate-model</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    
+        <dependency>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-entitymanager</artifactId>
+            <version>${legacy-hibernate.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>hibernate-model</artifactId>
+            <version>${project.version}</version>
+            <classifier>tests</classifier>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <scope>test</scope>
+        </dependency>    
+    </dependencies>
+
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <excludes>
+                    <exclude>hibernate.cfg.xml</exclude>
+                </excludes>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>hibernate.cfg.xml</include>
+                </includes>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+
+        <testResources>
+            <testResource>
+                <directory>src/test/resources</directory>
+                <excludes>
+                    <exclude>hibernate.properties</exclude>
+                </excludes>
+            </testResource>
+            <testResource>
+                <directory>src/test/resources</directory>
+                <includes>
+                    <include>hibernate.properties</include>
+                </includes>
+                <filtering>true</filtering>
+            </testResource>
+        </testResources>
+
+        <plugins>
+            <!-- generates a DDL file for persistence unit using an older version of the plugin -->
+            <plugin>
+                <artifactId>hibernate3-maven-plugin</artifactId>
+                <groupId>org.codehaus.mojo</groupId>
+                <version>${legacy-hibernate3-maven-plugin.version}</version>
+                <configuration>
+                    <components>
+                        <component>
+                            <name>hbm2ddl</name>
+                            <outputDirectory>target/classes/ddl</outputDirectory>
+                        </component>
+                    </components>
+                    <componentProperties>
+                        <configurationfile>target/classes/hibernate.cfg.xml</configurationfile>
+                        <export>false</export>
+                        <format>true</format>
+                    </componentProperties>
+                </configuration>
+                <executions>
+
+                    <execution>
+                        <id>generate-drop-hbm</id>
+                        <phase>process-test-resources</phase>
+                        <goals>
+                            <goal>hbm2ddl</goal>
+                        </goals>
+                        <configuration>
+                            <componentProperties>
+                                <outputfilename>${project.artifactId}-dropHBM.ddl</outputfilename>
+                                <drop>true</drop>
+                                <create>false</create>
+                            </componentProperties>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>generate-create-hbm</id>
+                        <phase>process-test-resources</phase>
+                        <goals>
+                            <goal>hbm2ddl</goal>
+                        </goals>
+                        <configuration>
+                            <componentProperties>
+                                <outputfilename>${project.artifactId}-createHBM.ddl</outputfilename>
+                                <drop>false</drop>
+                                <create>true</create>
+                            </componentProperties>
+                        </configuration>
+                    </execution>
+
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>

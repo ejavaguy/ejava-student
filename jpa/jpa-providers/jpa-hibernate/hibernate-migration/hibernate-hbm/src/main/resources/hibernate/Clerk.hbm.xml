@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="ejava.jpa.hibernatemigration.legacyhbm">
+    <class name="Clerk" table="HMIG_CLERK">
+        <id name="id" access="field">
+            <generator class="identity"/>
+        </id>
+        <property name="name" 
+            access="field"
+            not-null="true" 
+            length="32"/>
+        <property name="hireDate" 
+            access="field"
+            not-null="true" 
+            type="date" 
+            column="HIRE_DATE"/>
+        <property name="termDate" 
+            access="field"
+            type="date" 
+            column="TERM_DATE"/>
+
+        <set name="sales" table="HMIG_SALE_CLERK" access="field" inverse="true">
+            <key column="CLERK_ID"/>
+            <many-to-many column="SALE_ID" class="Sale"/>
+        </set>            
+    </class>
+</hibernate-mapping>

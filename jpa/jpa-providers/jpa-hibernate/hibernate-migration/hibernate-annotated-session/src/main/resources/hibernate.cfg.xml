@@ -1,0 +1,30 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+
+    <session-factory>
+
+        <!-- defined in src/test/resources/hibernate.properties
+        <property name="connection.driver_class">${jdbc.driver}</property>
+        <property name="connection.url">${jdbc.url}</property>
+        <property name="connection.username">${jdbc.user}</property>
+        <property name="connection.password">${jdbc.password}</property>
+        <property name="connection.pool_size">1</property>
+        <property name="dialect">${hibernate.dialect}</property>
+        <property name="show_sql">true</property>
+        <property name="hbm2ddl.auto">create</property>
+        <property name="current_session_context_class">thread</property>
+        <property name="cache.provider_class">org.hibernate.cache.NoCacheProvider</property>
+             -->
+
+        <!-- some of the classes use annotations -->
+        <mapping class="ejava.jpa.hibernatemigration.annotated.Clerk"/>
+        <mapping class="ejava.jpa.hibernatemigration.annotated.Customer"/>
+        <!-- this class does not use annotations -->
+        <mapping resource="hibernate/Sale.hbm.xml"/>
+    </session-factory>
+
+</hibernate-configuration>

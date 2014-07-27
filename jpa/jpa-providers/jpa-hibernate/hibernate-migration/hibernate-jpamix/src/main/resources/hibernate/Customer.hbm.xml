@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="ejava.jpa.hibernatemigration.legacyhbm">
+    <class name="Customer" table="HMIG_CUSTOMER">
+        <id name="id" access="field">
+            <generator class="identity"/>
+        </id>
+        <property name="name"
+            access="field" 
+            not-null="true" 
+            length="32"/>
+        <property name="email"
+            access="field" 
+            length="32"/>
+        <property name="level"
+            access="field"
+            length="8">
+            <type name="org.hibernate.type.EnumType">
+              <param name="enumClass">ejava.jpa.hibernatemigration.legacyhbm.CustomerLevel</param>
+              <param name="type">12</param> 
+            </type>             
+        </property>
+        
+        <set name="purchases" access="field" inverse="true">
+            <key column="CUSTOMER_ID"/>
+            <one-to-many class="Sale"/>
+        </set>
+    </class>
+</hibernate-mapping>

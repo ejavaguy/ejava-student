@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd" 
+    version="1.0">
+
+    <persistence-unit name="hibernate-migration-sales">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+        
+        <mapping-file>jpa/Person-orm.xml</mapping-file>
+        <mapping-file>jpa/Customer-orm.xml</mapping-file>
+        <mapping-file>jpa/Clerk-orm.xml</mapping-file>
+        <mapping-file>jpa/Sale-orm.xml</mapping-file>
+
+        <properties>
+        <!-- properties moved to hibernate.properties file
+            <property name="connection.driver_class" value="${jdbc.driver}"/>
+            <property name="connection.url" value="${jdbc.url}"/>
+            <property name="connection.username" value="${jdbc.user}"/>
+            <property name="connection.password" value="${jdbc.password}"/>
+            <property name="connection.pool_size" value="1"/>
+            <property name="dialect" value="${hibernate.dialect}"/>
+            <property name="show_sql" value="true"/>
+            <property name="hbm2ddl.auto" value="create"/>
+            <property name="current_session_context_class" value="thread"/>
+            <property name="cache.provider_class" value="org.hibernate.cache.NoCacheProvider"/>
+            -->
+        </properties>
+    </persistence-unit>        
+    
+</persistence>

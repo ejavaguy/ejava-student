@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="ejava.jpa.hibernatemigration.legacyhbm">
+    <class name="Sale" table="HMIG_SALE">
+        <id name="id" access="field" length="36"/>
+        <property name="amount"
+            access="field" 
+            not-null="true" 
+            precision="7"
+            scale="2"/>
+        <property name="dateTime" 
+            access="field"
+            not-null="true" 
+            type="timestamp" 
+            column="SALE_TIME"/>
+
+        <many-to-one name="customer" access="field" 
+            class="Customer" 
+            column="CUSTOMER_ID"
+            not-null="true"/>
+        <set name="salesClerks" access="field" table="HMIG_SALE_CLERK">
+            <key column="SALE_ID"/>
+            <many-to-many column="CLERK_ID" class="Clerk"/>
+        </set>            
+    </class>
+</hibernate-mapping>
