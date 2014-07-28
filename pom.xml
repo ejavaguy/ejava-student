@@ -20,10 +20,14 @@
         This project provides the root for all example and exercise source code modules.
     </description>
 
+
     <modules>
         <module>build</module>
         <module>javase</module>
+        <!--
         <module>jpa</module>
+        -->
+        <module>coursedocs</module>
     </modules>
 
     <properties>
@@ -34,7 +38,10 @@
         <maven-antrun-plugin.version>1.7</maven-antrun-plugin.version>
         <maven-jar-plugin.version>2.4</maven-jar-plugin.version>
         <build-helper-maven-plugin.version>1.8</build-helper-maven-plugin.version>
+        <site.server>webdev.jhuep.com</site.server>
     </properties>
+
+    <url>http://${site.server}/ejava-javaee</url>
 
     <build>
         <pluginManagement>
@@ -66,6 +73,65 @@
                 </plugin>
             </plugins>
         </pluginManagement>
+        <plugins> 
+            <plugin> 
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-site-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-descriptor</id>
+                        <phase>pre-site</phase>
+                        <goals>
+                            <goal>attach-descriptor</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <siteDirectory>${basedir}/src/site</siteDirectory>
+                    <reportPlugins>
+                        <plugin> 
+                            <artifactId>maven-project-info-reports-plugin</artifactId>
+                            <groupId>org.apache.maven.plugins</groupId>
+                            <version>${maven-project-info-reports-plugin.version}</version>
+                        </plugin>
+                        <plugin> 
+                            <artifactId>maven-surefire-report-plugin</artifactId>
+                            <groupId>org.apache.maven.plugins</groupId>
+                            <version>${maven-surefire-report-plugin.version}</version>
+                            <configuration>
+                                <aggregate>true</aggregate>
+                            </configuration>
+                        </plugin>
+                        <plugin> 
+                            <artifactId>maven-javadoc-plugin</artifactId>
+                            <groupId>org.apache.maven.plugins</groupId>
+                            <version>${maven-javadoc-plugin.version}</version>
+                            <configuration>
+                                <detectLinks>false</detectLinks>
+                                <detectOfflineLinks>true</detectOfflineLinks>
+                                <show>private</show>
+                                <source>1.7</source>
+                                <links>
+                                    <link>http://download.oracle.com/javaee/7/api/</link>
+                                    <link>http://download.oracle.com/javase/7/docs/api/</link>
+                                </links>
+                            </configuration>
+                            <reports>
+                                <report>javadoc</report>
+                            </reports>
+                        </plugin>
+                        <plugin> 
+                            <artifactId>maven-jxr-plugin</artifactId>
+                            <version>${maven-jxr-plugin.version}</version>
+                            <groupId>org.apache.maven.plugins</groupId>
+                            <configuration>
+                                <aggregate>true</aggregate>
+                            </configuration>
+                        </plugin>
+                    </reportPlugins>
+                </configuration>
+            </plugin>
+        </plugins>
     </build>
 
     <profiles>
@@ -168,6 +234,141 @@
                     <scope>test</scope>
                 </dependency>       
             </dependencies>
+        </profile>
+
+        <profile>
+            <id>java</id>
+            <activation>
+                <file>
+                    <exists>${basedir}/src/main/java</exists>
+                </file>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                      <groupId>org.apache.maven.plugins</groupId>
+                      <artifactId>maven-source-plugin</artifactId>
+                      <executions>
+                        <execution>
+                          <id>attach-sources</id>
+                          <goals>
+                            <goal>jar</goal>
+                          </goals>
+                        </execution>
+                      </executions>
+                    </plugin>
+                    <plugin> 
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-site-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>attach-descriptor</id>
+                                <phase>pre-site</phase>
+                                <goals>
+                                    <goal>attach-descriptor</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <reportPlugins>
+                                <plugin> 
+                                    <artifactId>maven-project-info-reports-plugin</artifactId>
+                                    <groupId>org.apache.maven.plugins</groupId>
+                                    <version>${maven-project-info-reports-plugin.version}</version>
+                                </plugin>
+                                <plugin> 
+                                    <artifactId>maven-surefire-report-plugin</artifactId>
+                                    <groupId>org.apache.maven.plugins</groupId>
+                                    <version>${maven-surefire-report-plugin.version}</version>
+                                    <configuration>
+                                        <aggregate>false</aggregate>
+                                    </configuration>
+                                </plugin>
+
+                                <plugin> 
+                                    <artifactId>maven-javadoc-plugin</artifactId>
+                                    <groupId>org.apache.maven.plugins</groupId>
+                                    <version>${maven-javadoc-plugin.version}</version>
+                                    <configuration>
+                                        <detectLinks>false</detectLinks>
+                                        <detectOfflineLinks>true</detectOfflineLinks>
+                                        <show>private</show>
+                                        <source>1.7</source>
+                                        <links>
+                                            <link>http://download.oracle.com/javaee/7/api/</link>
+                                            <link>http://download.oracle.com/javase/7/docs/api/</link>
+                                        </links>
+                                    </configuration>
+                                    <reports>
+                                        <report>javadoc</report>
+                                    </reports>
+                                </plugin>
+                                <plugin>
+                                    <groupId>org.codehaus.mojo</groupId>
+                                    <artifactId>findbugs-maven-plugin</artifactId>
+                                    <version>${findbugs-maven-plugin.version}</version>
+                                    <configuration>
+                                        <xmlOutput>true</xmlOutput>
+                                        <effort>Max</effort>
+                                    </configuration>
+                                </plugin>
+
+                                <plugin> 
+                                    <artifactId>maven-jxr-plugin</artifactId>
+                                    <version>${maven-jxr-plugin.version}</version>
+                                    <groupId>org.apache.maven.plugins</groupId>
+                                    <configuration>
+                                        <aggregate>false</aggregate>
+                                    </configuration>
+                                </plugin>
+                                <plugin>
+                                    <groupId>org.codehaus.mojo</groupId>
+                                    <artifactId>cobertura-maven-plugin</artifactId>
+                                    <version>${cobertura-maven-plugin.version}</version>
+                                </plugin>
+                            </reportPlugins>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
+            <id>jenkins</id>
+            <activation>
+                <property>
+                    <name>env.BUILD_NUMBER</name>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                      <groupId>org.apache.maven.plugins</groupId>
+                      <artifactId>maven-javadoc-plugin</artifactId>
+                      <version>${maven-javadoc-plugin.version}</version>
+                      <executions>
+                        <execution>
+                          <id>attach-javadocs</id>
+                          <goals>
+                            <goal>jar</goal>
+                          </goals>
+                        </execution>
+                      </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
+            <id>cobertura</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>cobertura-maven-plugin</artifactId>
+                    </plugin>
+                </plugins>
+            </build>
         </profile>
     </profiles>
 </project>
