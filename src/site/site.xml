@@ -3,12 +3,12 @@
     <publishDate position="navigation-bottom" format="MMM-dd-yyyy"/>
     <bannerLeft>
         <name>Enterprise Java (605.784.31)</name>
-        <src>${project.url}/coursedocs/enterprise-java/images/605-784-white.png</src>
+        <src>${project.url}/coursedocs/enterprise-java/content/html/images/ejava-white.png</src>
         <href>${project.url}/index.html</href>
     </bannerLeft>
     <bannerRight>
         <name>Fall 2014</name>
-        <src>${project.url}/coursedocs/enterprise-java/images/semester-white.png</src>
+        <src>${project.url}/coursedocs/enterprise-java/content/html/images/semester-white.png</src>
         <href>http://ep.jhu.edu/</href>
     </bannerRight>
 
@@ -29,8 +29,8 @@
         <item name="Docs" href="./coursedocs/enterprise-java/content"/>
         <item name="Course Description"
         href="${project.url}/coursedocs/enterprise-java/content/html/cs-784-course-description.html"/>
-        <item name="Syllabus (Paged)" href="${project.url}/coursedocs/enterprise-java/content/html/cs-784-syllabus.html"/>
-        <item name="Syllabus (Full)" href="${project.url}/coursedocs/enterprise-java/content/html_single/605-784.html#cs-784-syllabus"/>
+        <item name="Syllabus (Paged)" href="${project.url}/coursedocs/enterprise-java/content/html/enterprise-java-syllabus.html"/>
+        <item name="Syllabus (Full)" href="${project.url}/coursedocs/enterprise-java/content/html_single/enterprise-java.html#cs-784-syllabus"/>
         <item name="Course Javadoc" href="${project.url}/apidocs/index.html"/>
         <item name="Course Source Code" href="${project.url}/xref/index.html"/>
         <item name="Course Test Source Code" href="${project.url}/xref-test/index.html"/>
