@@ -24,7 +24,9 @@
     <modules>
         <module>build</module>
         <module>javase</module>
+        <!--
         <module>jpa</module>
+        -->
         <module>coursedocs</module>
     </modules>
 

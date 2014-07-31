@@ -126,6 +126,13 @@
 
         <dependency>
             <groupId>info.ejava.docs.courses</groupId>
+            <artifactId>enterprise-java-syllabus</artifactId>
+            <version>${project.version}</version>
+            <type>war</type>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>info.ejava.docs.courses</groupId>
             <artifactId>enterprise-java-notes</artifactId>
             <version>${project.version}</version>
             <type>war</type>
@@ -247,6 +254,12 @@
                     <targetPath>../site/docs/content</targetPath>
                 </overlay>
 
+                <overlay>
+                    <groupId>info.ejava.docs.courses</groupId>
+                    <artifactId>enterprise-java-syllabus</artifactId>
+                    <type>war</type>
+                    <targetPath>../site/docs/content</targetPath>
+                </overlay>
                 <overlay>
                     <groupId>info.ejava.docs.courses</groupId>
                     <artifactId>enterprise-java-notes</artifactId>
