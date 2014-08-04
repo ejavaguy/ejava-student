@@ -26,7 +26,7 @@
     </breadcrumbs>
 
     <menu name="Quick Links" inherit="top">
-        <item name="Docs" href="./coursedocs/enterprise-java/content"/>
+        <item name="Docs" href="./content"/>
         <item name="Course Description"
         href="${project.url}/coursedocs/enterprise-java/content/html/cs-784-course-description.html"/>
         <item name="Syllabus (Paged)" href="${project.url}/coursedocs/enterprise-java/content/html/enterprise-java-syllabus.html"/>

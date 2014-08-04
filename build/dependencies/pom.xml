@@ -23,7 +23,7 @@
         <maven-failsafe-plugin.version>2.16</maven-failsafe-plugin.version>
         <maven-install-plugin.version>2.4</maven-install-plugin.version>
         <maven-resources-plugin.version>2.6</maven-resources-plugin.version>
-        <maven-site-plugin.version>3.3</maven-site-plugin.version>
+        <maven-site-plugin.version>3.4</maven-site-plugin.version>
         <maven-surefire-plugin.version>2.16</maven-surefire-plugin.version>
         <maven-verifier-plugin.version>1.0</maven-verifier-plugin.version>
 
@@ -796,6 +796,107 @@
                 <java.src.version>1.8</java.src.version>
                 <java.target.version>1.8</java.target.version>
             </properties>
+        </profile>
+
+        <profile> <!-- H2 embedded/file-based DB -->
+            <id>h2db</id>
+            <properties>
+                  <jdbc.driver>org.h2.Driver</jdbc.driver>
+                  <jdbc.url>jdbc:h2:${basedir}/target/h2db/ejava</jdbc.url>
+                  <jdbc.user>sa</jdbc.user>
+                  <jdbc.password />
+                  <hibernate.dialect>
+                      org.hibernate.dialect.H2Dialect
+                  </hibernate.dialect>
+            </properties>
+            <dependencies>
+                <dependency>
+                    <groupId>com.h2database</groupId>
+                    <artifactId>h2</artifactId>
+                    <scope>test</scope>
+                </dependency>
+            </dependencies>
+        </profile>
+
+        <profile> <!-- H2 server-based DB -->
+            <id>h2srv</id>
+            <properties>
+                  <jdbc.driver>org.h2.Driver</jdbc.driver>
+                  <jdbc.url>jdbc:h2:tcp://${db.host}:9092/h2db/ejava</jdbc.url>
+                  <jdbc.user>sa</jdbc.user>
+                  <jdbc.password />
+                  <hibernate.dialect>
+                      org.hibernate.dialect.H2Dialect
+                  </hibernate.dialect>
+            </properties>
+            <dependencies>
+                <dependency>
+                    <groupId>com.h2database</groupId>
+                    <artifactId>h2</artifactId>
+                    <scope>test</scope>
+                </dependency>
+            </dependencies>
+        </profile>
+
+        <profile>
+            <id>hsql</id> <!-- Hypersonic server-based DB -->
+            <properties>
+                  <jdbc.driver>org.hsqldb.jdbcDriver</jdbc.driver>
+                  <jdbc.url>jdbc:hsqldb:hsql://${db.host}:9001</jdbc.url>
+                  <jdbc.user>sa</jdbc.user>
+                  <jdbc.password />
+                  <hibernate.dialect>
+                      org.hibernate.dialect.HSQLDialect
+                  </hibernate.dialect>
+            </properties>
+            <dependencies>
+                <dependency>
+                    <groupId>org.hsqldb</groupId>
+                    <artifactId>hsqldb</artifactId>
+                    <scope>test</scope>
+                </dependency>       
+            </dependencies>
+        </profile>
+
+        <profile> 
+            <id>mysql</id> <!-- MySQL server-based DB -->
+            <properties>
+                  <jdbc.driver>com.mysql.jdbc.Driver</jdbc.driver>
+                  <jdbc.url>jdbc:mysql://${db.host}:3306/test</jdbc.url>
+                  <jdbc.user>jboss</jdbc.user>
+                  <jdbc.password>password</jdbc.password>
+                  <hibernate.dialect>
+                      org.hibernate.dialect.MySQLDialect
+                  </hibernate.dialect>
+            </properties>
+            <dependencies>
+                <dependency>
+                    <groupId>mysql</groupId>
+                    <artifactId>mysql-connector-java</artifactId>
+                    <scope>test</scope>
+                </dependency>       
+            </dependencies>
+        </profile>
+
+        <profile> 
+            <id>oracledb</id> <!-- Oracle server-based DB -->
+            <properties>
+                  <oracle.host>oracledb</oracle.host>
+                  <jdbc.driver>oracle.jdbc.driver.OracleDriver</jdbc.driver>
+                  <jdbc.url>jdbc:oracle:thin:@${oracle.host}:1521:orcl</jdbc.url>
+                  <jdbc.user>ejava</jdbc.user>
+                  <jdbc.password>password</jdbc.password>
+                  <hibernate.dialect>
+                      org.hibernate.dialect.Oracle10gDialect
+                  </hibernate.dialect>
+            </properties>
+            <dependencies>
+                <dependency>
+                    <groupId>com.oracle</groupId>
+                    <artifactId>ojdbc6</artifactId>
+                    <scope>test</scope>
+                </dependency>       
+            </dependencies>
         </profile>
 
         <profile>
