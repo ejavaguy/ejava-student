@@ -110,9 +110,14 @@
                                     <artifactId>maven-jxr-plugin</artifactId>
                                     <version>${maven-jxr-plugin.version}</version>
                                     <groupId>org.apache.maven.plugins</groupId>
-                                    <configuration>
-                                        <aggregate>true</aggregate>
-                                    </configuration>
+                                    <reportSets>
+                                        <reportSet>
+                                            <id>aggregate</id>
+                                            <reports>
+                                                <report>aggregate</report>
+                                            </reports>
+                                        </reportSet>
+                                    </reportSets>
                                 </plugin>
                                 <plugin>
                                     <groupId>org.codehaus.mojo</groupId>
