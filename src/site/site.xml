@@ -3,12 +3,12 @@
     <publishDate position="navigation-bottom" format="MMM-dd-yyyy"/>
     <bannerLeft>
         <name>Enterprise Java (605.784.31)</name>
-        <src>${project.url}/coursedocs/enterprise-java/content/html/images/ejava-white.png</src>
+        <src>${project.url}/coursedocs/content/html/images/ejava-white.png</src>
         <href>${project.url}/index.html</href>
     </bannerLeft>
     <bannerRight>
         <name>Fall 2014</name>
-        <src>${project.url}/coursedocs/enterprise-java/content/html/images/semester-white.png</src>
+        <src>${project.url}/coursedocs/content/html/images/semester-white.png</src>
         <href>http://ep.jhu.edu/</href>
     </bannerRight>
 
@@ -26,16 +26,12 @@
     </breadcrumbs>
 
     <menu name="Quick Links" inherit="top">
-        <item name="Docs" href="./content"/>
+        <item name="Docs" href="${project.url}/coursedocs/content"/>
         <!--
-        <item name="Course Description"
-        href="${project.url}/coursedocs/enterprise-java/content/html/cs-784-course-description.html"/>
+        <item name="Course Description" href="${project.url}/coursedocs/enterprise-java/content/html/cs-784-course-description.html"/>
         -->
-        <item name="Syllabus (Paged)" href="${project.url}/coursedocs/enterprise-java/content/html/enterprise-java-syllabus.html"/>
-        <item name="Syllabus (Full)" href="${project.url}/coursedocs/enterprise-java/content/html_single/enterprise-java-syllabus-book.html#enterprise-java-syllabus"/>
-        <item name="Course Javadoc" href="${project.url}/apidocs/index.html"/>
-        <item name="Course Source Code" href="${project.url}/xref/index.html"/>
-        <item name="Course Test Source Code" href="${project.url}/xref-test/index.html"/>
+        <item name="Syllabus (Paged)" href="${project.url}/coursedocs/content/html/enterprise-java-syllabus.html"/>
+        <item name="Syllabus (Full)" href="${project.url}/coursedocs/content/html_single/enterprise-java-syllabus-book.html#enterprise-java-syllabus"/>
     </menu>
 
     <menu ref="modules" inherit="bottom"/>

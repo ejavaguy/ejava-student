@@ -22,16 +22,6 @@
         -->
     </modules>
 
-    <profiles>
-        <profile>
-            <id>docs</id>
-            <activation>
-            </activation>
-            <modules>
-            </modules>
-        </profile>
-    </profiles>
-
     <build>
         <plugins>
                 <!-- don't need these projects in the site HTML -->
