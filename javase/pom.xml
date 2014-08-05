@@ -8,7 +8,7 @@
     </parent>
 
     <groupId>info.ejava.examples.javase</groupId>
-    <artifactId>javase-root</artifactId>
+    <artifactId>javase</artifactId>
     <packaging>pom</packaging>
 
     <name>JavaSE</name>

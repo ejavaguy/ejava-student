@@ -8,7 +8,7 @@
     </parent>
 
     <groupId>info.ejava.examples.build</groupId>
-    <artifactId>build-root</artifactId>
+    <artifactId>build</artifactId>
     <packaging>pom</packaging>
 
     <name>EJava Build</name>
