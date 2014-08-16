@@ -1213,7 +1213,7 @@
                 <id>dev5</id>
                 <distributionManagement>
                     <site>
-                        <id>dev5.ejava.info</id>
+                        <id>dev5.website</id>
                         <name>Test Site</name>
                         <url>scpexe://dev5.ejava.info/var/www/ejava.info/html/sites/enterprise-java</url>
                     </site>
