@@ -142,24 +142,6 @@
         <java.naming.factory.url.pkgs/>
     </properties>
 
-    <distributionManagement>
-        <site>
-            <id>webdev.website</id>
-            <name>ejava JHU webdev website</name>
-            <url>scpexe://webdev.jhuep.com/home/jcs/public_html/ejava-javaee</url>
-        </site>
-        <repository>
-            <id>webdev.repository</id>
-            <name>ejava JHU repository</name>
-            <url>scpexe://webdev.jhuep.com/home/jcs/public_html/maven2</url>
-        </repository>
-        <snapshotRepository>
-            <id>webdev.snapshot.repo</id>
-            <name>ejava JHU snapshot repository</name>
-            <url>scpexe://webdev.jhuep.com/home/jcs/public_html/maven2-snapshot</url>
-            <uniqueVersion>false</uniqueVersion>
-        </snapshotRepository>
-    </distributionManagement>
 
     <repositories>
     <!--
@@ -1206,5 +1188,36 @@
 		   </build>
 	    </profile>
 
+            <profile>
+                <id>webdev</id>
+                <distributionManagement>
+                    <site>
+                        <id>webdev.website</id>
+                        <name>ejava JHU webdev website</name>
+                        <url>scpexe://webdev.jhuep.com/home/jcs/public_html/ejava-javaee</url>
+                    </site>
+                    <repository>
+                        <id>webdev.repository</id>
+                        <name>ejava JHU repository</name>
+                        <url>scpexe://webdev.jhuep.com/home/jcs/public_html/maven2</url>
+                    </repository>
+                    <snapshotRepository>
+                        <id>webdev.snapshot.repo</id>
+                        <name>ejava JHU snapshot repository</name>
+                        <url>scpexe://webdev.jhuep.com/home/jcs/public_html/maven2-snapshot</url>
+                        <uniqueVersion>false</uniqueVersion>
+                    </snapshotRepository>
+                </distributionManagement>
+            </profile>
+            <profile>
+                <id>dev5</id>
+                <distributionManagement>
+                    <site>
+                        <id>dev5.ejava.info</id>
+                        <name>Test Site</name>
+                        <url>scpexe://dev5.ejava.info/var/www/ejava.info/html/sites/enterprise-java</url>
+                    </site>
+                </distributionManagement>
+            </profile>
     </profiles>
 </project>
