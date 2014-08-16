@@ -1215,7 +1215,7 @@
                     <site>
                         <id>dev5.website</id>
                         <name>Test Site</name>
-                        <url>scpexe://dev5.ejava.info/var/www/ejava.info/html/sites/enterprise-java</url>
+                        <url>scpexe://${site.server}/var/www/ejava.info/html/sites/enterprise-java</url>
                     </site>
                 </distributionManagement>
             </profile>
