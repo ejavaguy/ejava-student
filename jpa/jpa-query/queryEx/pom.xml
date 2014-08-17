@@ -71,6 +71,16 @@
         </testResources>
 
         <plugins>
+            <!-- exclude this modules from site generation -->
+            <plugin> 
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-site-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                    <skipDeploy>true</skipDeploy>
+                </configuration>
+            </plugin>
+
             <!-- extends the pluginManagement definition in the parent pom
                  to generates DDL files for persistence unit.
                  See effective-pom for full configuration -->
