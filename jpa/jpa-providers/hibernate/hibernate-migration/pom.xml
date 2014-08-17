@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>info.ejava.examples.jpa.hibernate.migration</groupId>
-    <artifactId>migration-root</artifactId>
+    <artifactId>hibernate-migration</artifactId>
     <version>4.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
@@ -243,6 +243,27 @@
                     <scope>test</scope>
                 </dependency>       
             </dependencies>
+        </profile>
+
+        <profile>
+            <id>webdev</id>
+            <distributionManagement>
+                <site>
+                    <id>webdev.website</id>
+                    <name>ejava JHU webdev website</name>
+                    <url>scpexe://webdev.jhuep.com/home/jcs/public_html/enterprise-java</url>
+                </site>
+            </distributionManagement>
+        </profile>
+        <profile>
+            <id>dev5</id>
+            <distributionManagement>
+                <site>
+                    <id>dev5.website</id>
+                    <name>Test Site</name>
+                    <url>scpexe://dev5.ejava.info/var/www/ejava.info/html/sites/enterprise-java</url>
+                </site>
+            </distributionManagement>
         </profile>
     </profiles>
 </project>

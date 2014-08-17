@@ -8,7 +8,7 @@
     </parent>
 
     <groupId>info.ejava.examples.jpa.hibernate</groupId>
-    <artifactId>hibernate-root</artifactId>
+    <artifactId>hibernate</artifactId>
     <packaging>pom</packaging>
 
     <name>JPA::Providers::Hibernate Root</name>
