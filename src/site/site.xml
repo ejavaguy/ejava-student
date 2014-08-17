@@ -27,11 +27,9 @@
 
     <menu name="Quick Links" inherit="top">
         <item name="Docs" href="${project.url}/coursedocs/content"/>
-        <!--
-        <item name="Course Description" href="${project.url}/coursedocs/enterprise-java/content/html/cs-784-course-description.html"/>
-        -->
-        <item name="Syllabus (Paged)" href="${project.url}/coursedocs/content/html/enterprise-java-syllabus.html"/>
-        <item name="Syllabus (Full)" href="${project.url}/coursedocs/content/html_single/enterprise-java-syllabus-book.html#enterprise-java-syllabus"/>
+        <item name="Course Description" href="${project.url}/coursedocs/content/html/enterprise-java-syllabus-intro.html"/>
+        <item name="Syllabus (Paged)" href="${project.url}/coursedocs/content/html/enterprise-java-syllabus-schedule.html"/>
+        <item name="Syllabus (Full)" href="${project.url}/coursedocs/content/html_single/enterprise-java-notes-book.html#enterprise-java-syllabus-schedule"/>
     </menu>
 
     <menu ref="modules" inherit="bottom"/>

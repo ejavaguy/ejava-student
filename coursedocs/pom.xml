@@ -18,6 +18,21 @@
     
     <dependencies>
         <dependency>
+            <groupId>info.ejava.docs.courses</groupId>
+            <artifactId>enterprise-java-notes</artifactId>
+            <version>${project.version}</version>
+            <type>war</type>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>info.ejava.docs.courses</groupId>
+            <artifactId>enterprise-java-lab</artifactId>
+            <version>${project.version}</version>
+            <type>war</type>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
             <groupId>info.ejava.docs.intro</groupId>
             <artifactId>javaee-intro-notes</artifactId>
             <version>${project.version}</version>
@@ -132,20 +147,6 @@
             <type>war</type>
             <scope>runtime</scope>
         </dependency>
-        <dependency>
-            <groupId>info.ejava.docs.courses</groupId>
-            <artifactId>enterprise-java-notes</artifactId>
-            <version>${project.version}</version>
-            <type>war</type>
-            <scope>runtime</scope>
-        </dependency>
-        <dependency>
-            <groupId>info.ejava.docs.courses</groupId>
-            <artifactId>enterprise-java-lab</artifactId>
-            <version>${project.version}</version>
-            <type>war</type>
-            <scope>runtime</scope>
-        </dependency>
     </dependencies>
 
     <build>
@@ -162,6 +163,25 @@
                 </execution>
             </executions>
             <configuration>
+                <overlay>
+                    <groupId>info.ejava.docs.courses</groupId>
+                    <artifactId>enterprise-java-notes</artifactId>
+                    <type>war</type>
+                    <targetPath>../site/docs/content</targetPath>
+                </overlay>
+                <overlay>
+                    <groupId>info.ejava.docs.courses</groupId>
+                    <artifactId>enterprise-java-lab</artifactId>
+                    <type>war</type>
+                    <targetPath>../site/docs/content</targetPath>
+                </overlay>
+
+                <overlay>
+                    <groupId>info.ejava.docs.courses</groupId>
+                    <artifactId>enterprise-java-syllabus</artifactId>
+                    <type>war</type>
+                    <targetPath>../site/docs/content</targetPath>
+                </overlay>
                 <overlay>
                     <groupId>info.ejava.docs.intro</groupId>
                     <artifactId>javaee-intro-notes</artifactId>
@@ -251,25 +271,6 @@
                 <overlay>
                     <groupId>info.ejava.docs.jpa</groupId>
                     <artifactId>jpa-query-lab</artifactId>
-                    <type>war</type>
-                    <targetPath>../site/docs/content</targetPath>
-                </overlay>
-
-                <overlay>
-                    <groupId>info.ejava.docs.courses</groupId>
-                    <artifactId>enterprise-java-syllabus</artifactId>
-                    <type>war</type>
-                    <targetPath>../site/docs/content</targetPath>
-                </overlay>
-                <overlay>
-                    <groupId>info.ejava.docs.courses</groupId>
-                    <artifactId>enterprise-java-notes</artifactId>
-                    <type>war</type>
-                    <targetPath>../site/docs/content</targetPath>
-                </overlay>
-                <overlay>
-                    <groupId>info.ejava.docs.courses</groupId>
-                    <artifactId>enterprise-java-lab</artifactId>
                     <type>war</type>
                     <targetPath>../site/docs/content</targetPath>
                 </overlay>
