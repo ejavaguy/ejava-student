@@ -1203,7 +1203,7 @@
                     <site>
                         <id>webdev.website</id>
                         <name>ejava JHU webdev website</name>
-                        <url>scpexe://webdev.jhuep.com/home/jcs/public_html/ejava-javaee</url>
+                        <url>scpexe://webdev.jhuep.com/home/jcs/public_html/enterprise-java</url>
                     </site>
                     <repository>
                         <id>webdev.repository</id>
