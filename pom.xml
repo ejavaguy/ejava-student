@@ -24,9 +24,7 @@
     <modules>
         <module>build</module>
         <module>javase</module>
-        <!--
         <module>jpa</module>
-        -->
         <module>coursedocs</module>
     </modules>
 
@@ -182,6 +180,29 @@
                     <name>env.BUILD_NUMBER</name>
                 </property>
             </activation>
+        </profile>
+
+        <profile>
+            <id>cobertura</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>cobertura-maven-plugin</artifactId>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
+            <id>dev5</id>
+            <distributionManagement>
+                <site>
+                    <id>dev5.website</id>
+                    <name>Test Site</name>
+                    <url>scpexe://dev5.ejava.info/var/www/ejava.info/html/sites/enterprise-java</url>
+                </site>
+            </distributionManagement>
         </profile>
 
     </profiles>
