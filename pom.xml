@@ -191,6 +191,7 @@
                         </reportSets>
                     </plugin>
 
+                    <!-- Not playing well with surefire report and JDOM
                     <plugin>
                         <groupId>org.codehaus.mojo</groupId>
                         <artifactId>findbugs-maven-plugin</artifactId>
@@ -207,6 +208,7 @@
                             </reportSet>
                         </reportSets>
                     </plugin>
+                    -->
 
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
