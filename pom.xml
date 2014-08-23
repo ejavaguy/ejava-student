@@ -35,14 +35,49 @@
             <id>reports</id>
             <reporting>
                 <plugins>
+                <!--
                     <plugin> 
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-site-plugin</artifactId>
                     </plugin>
+                    -->
 
                     <plugin>
                         <artifactId>maven-project-info-reports-plugin</artifactId>
                         <groupId>org.apache.maven.plugins</groupId>
+                    </plugin>
+
+                    <plugin> 
+                        <artifactId>maven-checkstyle-plugin</artifactId>
+                        <groupId>org.apache.maven.plugins</groupId>
+                    </plugin>
+
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>javancss-maven-plugin</artifactId>
+                    </plugin>
+
+
+                    <plugin> 
+                        <artifactId>maven-jxr-plugin</artifactId>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <reportSets>
+                            <reportSet>
+                                <id>jxr-report</id>
+                                <reports>
+                                    <report>jxr</report>
+                                    <report>test-jxr</report>
+                                </reports>
+                            </reportSet>
+                            <reportSet>
+                                <id>jxr-aggregate</id>
+                                <inherited>false</inherited>
+                                <reports>
+                                    <report>aggregate</report>
+                                    <report>test-aggregate</report>
+                                </reports>
+                            </reportSet>
+                        </reportSets>
                     </plugin>
 
                     <plugin> 
@@ -60,14 +95,14 @@
                         </configuration>
                         <reportSets>
                             <reportSet>
-                                <id>non-aggregate</id>
+                                <id>javadoc-report</id>
                                 <reports>
                                     <report>javadoc</report>
                                     <report>test-javadoc</report>
                                 </reports>
                             </reportSet>
                             <reportSet>
-                                <id>aggregate</id>
+                                <id>javadoc-aggregate</id>
                                 <inherited>false</inherited>
                                 <reports>
                                     <report>aggregate</report>
@@ -76,25 +111,73 @@
                         </reportSets>
                     </plugin>
 
-                    <plugin> 
-                        <artifactId>maven-jxr-plugin</artifactId>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>taglist-maven-plugin</artifactId>
+                        <reportSets>
+                            <reportSet>
+                                <id>taglist-report</id>
+                                <reports>
+                                    <report>taglist</report>
+                                </reports>
+                            </reportSet>
+
+                            <reportSet>
+                                <id>taglist-aggregate</id>
+                                <inherited>false</inherited>
+                                <reports>
+                                    <report>taglist</report>
+                                </reports>
+                                <configuration>
+                                    <aggregate>true</aggregate>
+                                </configuration>
+                            </reportSet>
+                        </reportSets>
+                    </plugin>
+
+                    <plugin>
+                        <artifactId>maven-pmd-plugin</artifactId>
                         <groupId>org.apache.maven.plugins</groupId>
                         <reportSets>
                             <reportSet>
-                                <id>non-aggregate</id>
+                                <!-- defines pmd reports in the modules -->
+                                <id>pmd-report</id>
                                 <reports>
-                                    <report>jxr</report>
-                                    <report>test-jxr</report>
+                                    <report>pmd</report>
                                 </reports>
                             </reportSet>
+
                             <reportSet>
-                                <id>aggregate</id>
+                                <!-- defines pmd aggregate report -->
+                                <id>pmd-aggregate</id>
                                 <inherited>false</inherited>
                                 <reports>
-                                    <report>aggregate</report>
-                                    <report>test-aggregate</report>
+                                    <report>pmd</report>
+                                </reports>
+                                <configuration>
+                                    <aggregate>true</aggregate>
+                                </configuration>
+                            </reportSet>
+
+                            <reportSet>
+                                <!-- defines cpd reports in the modules -->
+                                <id>cpd-report</id>
+                                <reports>
+                                    <report>cpd</report>
                                 </reports>
                             </reportSet>
+
+                            <reportSet>
+                                <!-- defines cpd aggregate report -->
+                                <id>cpd-aggregate</id>
+                                <inherited>false</inherited>
+                                <reports>
+                                    <report>cpd</report>
+                                </reports>
+                                <configuration>
+                                    <aggregate>true</aggregate>
+                                </configuration>
+                                </reportSet>
                         </reportSets>
                     </plugin>
 
@@ -107,13 +190,66 @@
                         </configuration>
                         <reportSets>
                             <reportSet>
-                                <id>non-aggregate</id>
+                                <id>findbugs-report</id>
                                 <reports>
                                     <report>findbugs</report>
                                 </reports>
                             </reportSet>
                         </reportSets>
                     </plugin>
+
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-surefire-report-plugin</artifactId>
+                        <reportSets>
+                            <reportSet>
+                                <!-- defines unit test reports in the modules -->
+                                <id>unit-tests</id>
+                                <reports>
+                                    <report>report</report>
+                                </reports>
+                                <configuration>
+                                    <alwaysGenerateSurefireReport>false</alwaysGenerateSurefireReport>
+                                </configuration>
+                            </reportSet>
+
+                            <reportSet>
+                                <!-- defines aggregate unit test report -->
+                                <id>unit-tests-aggregate</id>
+                                <inherited>false</inherited>
+                                <reports>
+                                    <report>report</report>
+                                </reports>
+                                <configuration>
+                                    <aggregate>true</aggregate>
+                                </configuration>
+                            </reportSet>
+
+                            <reportSet>
+                                <!-- defines integration test reports in the modules -->
+                                <id>integration-tests</id>
+                                <reports>
+                                    <report>failsafe-report-only</report>
+                                </reports>
+                                <configuration>
+                                    <alwaysGenerateSurefireReport>false</alwaysGenerateSurefireReport>
+                                </configuration>
+                            </reportSet>
+
+                            <reportSet>
+                                <!-- defines aggregate integration test report -->
+                                <id>integration-tests-aggregate</id>
+                                <inherited>false</inherited>
+                                <reports>
+                                    <report>failsafe-report-only</report>
+                                </reports>
+                                <configuration>
+                                    <aggregate>true</aggregate>
+                                </configuration>
+                            </reportSet>
+                        </reportSets>
+                    </plugin>
+
                 </plugins>
             </reporting>
         </profile>
@@ -183,14 +319,25 @@
                             </formats>
                         </configuration>
                         <reportSets>
+                            <!--
                             <reportSet>
-                                <id>non-aggregate</id>
+                                <id>cobertura</id>
+                                <reports>
+                                    <report>cobertura</report>
+                                </reports>
+                                <configuration>
+                                    <aggregate>true</aggregate>
+                                </configuration>
+                            </reportSet>
+                            -->
+                            <reportSet>
+                                <id>cobertura</id>
                                 <reports>
                                     <report>cobertura</report>
                                 </reports>
                             </reportSet>
                             <reportSet>
-                                <id>aggregate</id>
+                                <id>cobertura-aggregate</id>
                                 <inherited>false</inherited>
                                 <reports>
                                     <report>cobertura</report>
