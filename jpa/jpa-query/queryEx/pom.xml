@@ -81,6 +81,16 @@
                 </configuration>
             </plugin>
 
+            <!-- add compiler option to avoid duplicate class issues
+                 coming from jpamodelgen -->
+            <plugin> 
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <compilerArgument>-proc:none</compilerArgument>
+                </configuration>
+            </plugin>
+
             <!-- extends the pluginManagement definition in the parent pom
                  to generates DDL files for persistence unit.
                  See effective-pom for full configuration -->
