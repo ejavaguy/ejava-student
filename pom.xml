@@ -33,6 +33,16 @@
     <profiles>
         <profile>
             <id>reports</id>
+            <!--
+            <dependencies>
+                <dependency>
+                    <groupId>com.ibm.icu</groupId>
+                    <artifactId>icu4j</artifactId>
+                    <version>53.1</version>
+                    <scope>runtime</scope>
+                </dependency>
+            </dependencies>
+            -->
             <reporting>
                 <plugins>
                 <!--
@@ -291,6 +301,7 @@
 
         <profile>
             <id>cobertura</id>
+<!--
             <build>
                 <plugins>
                     <plugin>
@@ -307,6 +318,7 @@
                     <scope>runtime</scope>
                 </dependency>
             </dependencies>
+-->
             <reporting>
                 <plugins>
                     <plugin>
