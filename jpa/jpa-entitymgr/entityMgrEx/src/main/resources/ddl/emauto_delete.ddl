@@ -1,0 +1,1 @@
+DELETE * FROM EM_AUTO;

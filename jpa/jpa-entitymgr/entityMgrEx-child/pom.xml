@@ -1,0 +1,195 @@
+<?xml version="1.0"?>
+<project
+    xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>info.ejava.examples.jpa</groupId>
+        <artifactId>jpa-parent</artifactId>
+        <version>4.0.0-SNAPSHOT</version>
+        <relativePath/>
+    </parent>
+    <!-- lets use a parent in repo used by follow-on exercises
+    <parent>
+        <groupId>myorg.jpa</groupId>
+        <artifactId>jpa-parent</artifactId>
+        <version>1.0-SNAPSHOT</version>
+        <relativePath>../jpa-parent</relativePath>
+    </parent>
+    -->
+
+    <groupId>myorg.jpa</groupId>
+    <artifactId>entityMgrEx-child</artifactId>
+
+    <name>JPA::Entity Manager::Exercise::Solution</name>
+    <description>
+        This example is functionally the same as entityMgrEx
+        except that it has factored out all common properties into
+        a parent (jpa-parent) and left only module-specific properties
+        and constructs here. Rather than defining a separate jpa-parent,
+        a dependency on the class exercise jpa-parent was used above.
+    </description>
+    <build>
+        <!-- filtering will replace URLs, credentials, etc in the 
+             files copied to the target directory and used during testing.
+            -->
+        <testResources>
+            <testResource>
+                <directory>src/test/resources</directory>
+                <filtering>true</filtering>
+            </testResource>
+        </testResources>
+
+        <plugins>
+            <plugin>
+                <artifactId>hibernate3-maven-plugin</artifactId>
+                <groupId>org.codehaus.mojo</groupId>
+                <configuration>
+                    <hibernatetool destdir="target/classes/ddl">
+                        <classpath>
+                            <path location="${project.build.directory}/classes" />
+                            <path location="${project.build.directory}/test-classes" />
+                        </classpath>
+                        <jpaconfiguration persistenceunit="entityMgrEx"
+                            propertyfile="${basedir}/target/test-classes/hibernate.properties" />
+                    </hibernatetool>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <dependencies>
+        <dependency>
+          <groupId>commons-logging</groupId>
+          <artifactId>commons-logging</artifactId>
+          <scope>compile</scope>
+        </dependency>
+    
+        <dependency>
+            <groupId>org.hibernate.javax.persistence</groupId>
+            <artifactId>hibernate-jpa-2.1-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-entitymanager</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+          <groupId>log4j</groupId>
+          <artifactId>log4j</artifactId>
+          <scope>test</scope>
+        </dependency>    
+    </dependencies>
+
+    <profiles>
+        <profile>
+            <id>testing</id>
+            <activation>
+                <property>
+                    <name>!skipTests</name>
+                </property>
+            </activation>
+      
+            <build>
+                <plugins>
+                    <plugin>
+                        <!-- runs schema against the DB -->
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>sql-maven-plugin</artifactId>        
+
+                        <executions>
+
+                            <!-- place execution elements here  -->
+                            <execution>
+                                <id>drop-db-before-test</id>
+                                <phase>process-test-classes</phase>
+                                <goals>
+                                    <goal>execute</goal>
+                                </goals>
+                                <configuration>
+                                    <autocommit>true</autocommit>
+                                    <fileset>
+                                        <basedir>${basedir}/src</basedir>
+                                        <includes>
+                                            <include>main/resources/ddl/**/*drop*.ddl</include>
+                                        </includes>
+                                    </fileset>
+                                    <onError>continue</onError>
+                                </configuration>
+                            </execution>
+
+                            <execution>
+                                <id>create-db-before-test</id>
+                                <phase>process-test-classes</phase>
+                                <goals>
+                                    <goal>execute</goal>
+                                </goals>
+                                <configuration>
+                                    <autocommit>true</autocommit>
+                                    <fileset>
+                                        <basedir>${basedir}/src</basedir>
+                                        <includes>
+                                            <include>main/resources/ddl/**/*create*.ddl</include>
+
+                                        </includes>
+                                    </fileset>
+                                    <print>true</print>
+                                </configuration>
+                            </execution>
+
+                            <execution>
+                                <id>populate-db-before-test</id>
+                                <phase>process-test-classes</phase>
+                                <goals>
+                                    <goal>execute</goal>
+                                </goals>
+                                <configuration>
+                                    <autocommit>true</autocommit>
+                                    <fileset>
+                                        <basedir>${basedir}/src</basedir>
+                                        <includes>
+                                            <include>test/resources/ddl/**/*populate*.ddl</include>
+                                        </includes>
+                                    </fileset>
+                                </configuration>
+                            </execution>
+
+                            <!--
+                            <execution>
+                                <id>drop-db-after-test</id>
+                                <phase>test</phase>
+                                <goals>
+                                    <goal>execute</goal>
+                                </goals>
+                                <configuration>
+                                    <autocommit>true</autocommit>
+                                    <fileset>
+                                        <basedir>${basedir}/src</basedir>
+                                        <includes>
+                                            <include>main/resources/ddl/**/*drop*.ddl</include>     
+                                            </includes>
+                                    </fileset>
+                                </configuration>
+                            </execution>
+                            -->
+                        </executions>
+                    </plugin>          
+                </plugins>          
+            </build>          
+        </profile>
+    </profiles>
+</project> 

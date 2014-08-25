@@ -17,5 +17,15 @@
 
     <modules>
         <module>jpa-entitymgr-example</module>
+        <module>entityMgrEx-child</module>
     </modules>
+
+    <profiles>
+        <profile>
+            <id>all-modules</id>
+            <modules>
+                <module>entityMgrEx</module>
+            </modules>
+        </profile>
+    </profiles>
 </project>
