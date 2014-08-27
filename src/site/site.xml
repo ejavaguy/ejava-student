@@ -29,7 +29,9 @@
         <item name="Docs" href="${project.url}/coursedocs/content"/>
         <item name="Course Description" href="${project.url}/coursedocs/content/html/enterprise-java-syllabus-intro.html"/>
         <item name="Syllabus (Paged)" href="${project.url}/coursedocs/content/html/enterprise-java-syllabus-schedule.html"/>
-        <item name="Syllabus (Full)" href="${project.url}/coursedocs/content/html_single/enterprise-java-notes-book.html#enterprise-java-syllabus-schedule"/>
+        <item name="Syllabus (Book)" href="${project.url}/coursedocs/content/html_single/enterprise-java-notes-book.html#enterprise-java-syllabus-schedule"/>
+        <item name="Exercises (Paged)" href="${project.url}/coursedocs/content/html/enterprise-java-lab-labs.html"/>
+        <item name="Exercises (Book)" href="${project.url}/coursedocs/content/html_single/enterprise-java-lab-book.html#enterprise-java-lab-labs"/>
     </menu>
 
     <menu ref="modules" inherit="bottom"/>

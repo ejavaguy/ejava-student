@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8" ?> 
+<!-- ex1 build.xml 
+-->
+<project name="ex1" default="test" basedir=".">
+    <property file="build.properties"/>
+
+    <property name="artifactId" value="ex1"/>
+    <property name="src.dir"    value="${basedir}/src"/>
+    <property name="build.dir"  value="${basedir}/target"/>
+
+    <target name="echo">
+        <echo>basedir=${basedir}</echo>
+        <echo>artifactId=${artifactId}</echo>
+        <echo>src.dir=${src.dir}</echo>
+        <echo>build.dir=${build.dir}</echo>
+        <echo>junit.classpath=${junit.classpath}</echo>
+        <echo>commons-logging.classpath=${commons-logging.classpath}</echo>
+        <echo>log4j.classpath=${log4j.classpath}</echo>
+    </target>
+
+    <target name="package">
+        <mkdir dir="${build.dir}/classes"/>
+        <javac srcdir="${src.dir}/main/java"
+               destdir="${build.dir}/classes"
+               debug="true"
+               source="1.7"
+               target="1.7"
+               includeantruntime="false">
+               <classpath>
+                   <pathelement path="${commons-logging.classpath}"/>
+               </classpath>
+        </javac>
+
+        <jar destfile="${build.dir}/${artifactId}.jar">
+            <fileset dir="${build.dir}/classes"/>
+        </jar>
+    </target>
+
+    <target name="test" depends="package">
+        <mkdir dir="${build.dir}/test-classes"/>
+        <javac srcdir="${src.dir}/test/java"
+               destdir="${build.dir}/test-classes"
+               debug="true"
+               source="1.7"
+               target="1.7"
+               includeantruntime="false">
+               <classpath>
+                   <pathelement location="${build.dir}/${artifactId}.jar"/>
+                   <pathelement path="${junit.classpath}"/>
+                   <pathelement path="${commons-logging.classpath}"/>
+               </classpath>
+        </javac>
+
+        <copy todir="${build.dir}/test-classes">
+            <fileset dir="${src.dir}/test/resources"/>
+        </copy>
+
+        <mkdir dir="${build.dir}/test-reports"/>
+        <junit printsummary="true" fork="true">
+               <classpath>
+                   <pathelement path="${junit.classpath}"/>
+                   <pathelement location="${build.dir}/${artifactId}.jar"/>
+                   <pathelement location="${build.dir}/test-classes"/>
+                   <pathelement path="${commons-logging.classpath}"/>
+                   <pathelement path="${log4j.classpath}"/>
+               </classpath>
+
+            <batchtest fork="true" todir="${build.dir}/test-reports">
+                <fileset dir="${build.dir}/test-classes">
+                    <include name="**/*Test*.class"/>
+                </fileset>
+            </batchtest>
+
+            <formatter type="plain"/>
+            <formatter type="xml"/>
+        </junit>
+    </target>
+
+    <target name="clean">
+        <delete dir="${build.dir}"/>
+    </target>
+</project>
