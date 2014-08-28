@@ -144,7 +144,7 @@
             <plugin>
                 <groupId>org.bsc.maven</groupId>
                 <artifactId>maven-processor-plugin</artifactId>
-                <version>2.1.0</version>
+                <version>2.2.4</version>
                 <executions>
                     <execution>
                         <id>process</id>
@@ -153,9 +153,12 @@
                         </goals>
                         <phase>generate-sources</phase>
                         <configuration>
+                            <!-- plugin can locate automatically
                             <processors>
                                 <processor>org.hibernate.jpamodelgen.JPAMetaModelEntityProcessor</processor>
                             </processors>
+                            -->
+                            <failOnError>false</failOnError>
                         </configuration>
                     </execution>
                 </executions>
@@ -167,6 +170,7 @@
                     </dependency>
                 </dependencies>
             </plugin>
+
         </plugins>
     </build>
 
