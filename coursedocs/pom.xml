@@ -19,14 +19,14 @@
     <dependencies>
         <dependency>
             <groupId>info.ejava.docs.courses</groupId>
-            <artifactId>enterprise-java-notes</artifactId>
+            <artifactId>jhu784-notes</artifactId>
             <version>${project.version}</version>
             <type>war</type>
             <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>info.ejava.docs.courses</groupId>
-            <artifactId>enterprise-java-lab</artifactId>
+            <artifactId>jhu784-lab</artifactId>
             <version>${project.version}</version>
             <type>war</type>
             <scope>runtime</scope>
@@ -113,7 +113,7 @@
 
         <dependency>
             <groupId>info.ejava.docs.intro</groupId>
-            <artifactId>605-784-devenv-setup-lab</artifactId>
+            <artifactId>jhu784-devenv-setup-lab</artifactId>
             <version>${project.version}</version>
             <type>war</type>
             <scope>runtime</scope>
@@ -266,7 +266,7 @@
 
                 <overlay>
                     <groupId>info.ejava.docs.intro</groupId>
-                    <artifactId>605-784-devenv-setup-lab</artifactId>
+                    <artifactId>jhu784-devenv-setup-lab</artifactId>
                     <type>war</type>
                     <targetPath>../site/docs/content</targetPath>
                 </overlay>

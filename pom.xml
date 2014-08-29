@@ -372,7 +372,7 @@
                 <site>
                     <id>dev5.website</id>
                     <name>Test Site</name>
-                    <url>scpexe://dev5.ejava.info/var/www/ejava.info/html/sites/enterprise-java</url>
+                    <url>scpexe://dev5.ejava.info/var/www/ejava.info/html/sites/ejava-javaee</url>
                 </site>
             </distributionManagement>
         </profile>
