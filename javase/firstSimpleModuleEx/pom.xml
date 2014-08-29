@@ -56,6 +56,16 @@
                     <target>1.7</target>
                 </configuration>
             </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.17</version>
+                <configuration>
+                    <argLine>${surefire.argLine}</argLine>
+                </configuration>
+            </plugin>
+
             <plugin> 
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-project-info-reports-plugin</artifactId>
@@ -66,6 +76,7 @@
             <plugin> 
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-site-plugin</artifactId>
+                <version>3.4</version>
                 <configuration>
                     <skip>true</skip>
                     <skipDeploy>true</skipDeploy>
@@ -92,4 +103,19 @@
             </plugin>
         </plugins>
     </reporting>
+    
+    <profiles>
+        <profile> <!-- tells surefire to run JUnit tests with remote debug -->
+            <id>debugger</id>
+            <activation>
+                <property>
+                    <name>debugger</name>
+                </property>
+            </activation>
+            <properties>
+                <surefire.argLine>-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=8000 -Xnoagent -Djava.compiler=NONE</surefire.argLine>
+            </properties>       
+        </profile>            
+    
+    </profiles>
 </project>
