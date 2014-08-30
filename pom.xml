@@ -29,6 +29,13 @@
     </modules>
 
     <url>http://webdev.jhuep.com/ejava-javaee</url>
+    <distributionManagement>
+        <site>
+            <id>local</id>
+            <name>Local Site</name>
+            <url>file://tmp/ejava-javaee</url>
+        </site>
+    </distributionManagement>
 
     <profiles>
         <profile>
@@ -191,7 +198,6 @@
                         </reportSets>
                     </plugin>
 
-                    <!-- Not playing well with surefire report and JDOM
                     <plugin>
                         <groupId>org.codehaus.mojo</groupId>
                         <artifactId>findbugs-maven-plugin</artifactId>
@@ -208,7 +214,6 @@
                             </reportSet>
                         </reportSets>
                     </plugin>
-                    -->
 
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
