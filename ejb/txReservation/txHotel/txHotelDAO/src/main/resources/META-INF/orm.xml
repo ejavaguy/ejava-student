@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistence/orm_2_0.xsd" version="2.0">
+
+    <entity class="ejava.examples.txhotel.bo.Reservation" 
+            access="FIELD"
+            metadata-complete="true"
+            name="Reservation">
+        <table name="TXHOTEL_RESERVATION"/>
+        <named-query name="getAllReservations">
+            <query><![CDATA[
+            select r from Reservation r
+            ]]></query>
+        </named-query>
+        <named-query name="getReservationsByConfirmation">
+            <query><![CDATA[
+            select r from Reservation r
+            where r.confirmation = :confirmation 
+            ]]></query>
+        </named-query>
+        <named-query name="getReservationsByName">
+            <query><![CDATA[
+            select r from Reservation r
+            where r.person.firstName like :firstName and 
+                  r.person.lastName like :lastName
+            ]]></query>
+        </named-query>
+        <attributes>
+            <id name="id">
+                <generated-value/>
+            </id>
+            <basic name="confirmation">
+                <column unique="true"/>
+            </basic>
+            <basic name="startDate">
+                <temporal>DATE</temporal>
+            </basic>
+            <basic name="endDate">
+                <temporal>DATE</temporal>
+            </basic>
+            <!-- used for optimistic locking -->
+            <version name="version"/>            
+            <many-to-one name="person">
+                <join-column name="PERSON_ID"/>
+                <cascade>
+                    <cascade-persist/>
+                </cascade>
+            </many-to-one>
+        </attributes>       
+    </entity>        
+    
+    <entity class="ejava.examples.txhotel.bo.Person"
+            metadata-complete="true"
+            access="FIELD"
+            name="Person">
+        <table name="TXHOTEL_PERSON"/>
+        <named-query name="getPersonByName">
+            <query><![CDATA[
+            select p from Person p
+            where p.firstName like :firstName and
+                  p.lastName like :lastName
+            ]]></query>
+        </named-query>
+        <attributes>
+            <id name="id">
+                <generated-value/>
+            </id>
+            <basic name="creationDate">
+                <column insertable="true" updatable="false"/>
+                <temporal>TIMESTAMP</temporal>
+            </basic>
+        </attributes>        
+    </entity>
+</entity-mappings>

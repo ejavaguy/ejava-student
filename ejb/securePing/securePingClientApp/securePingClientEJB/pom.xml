@@ -1,0 +1,65 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <parent>
+        <groupId>info.ejava.examples.ejb</groupId>
+        <artifactId>securePingClientApp</artifactId>
+        <version>4.0.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>securePingClientEJB</artifactId>
+    <packaging>ejb</packaging>
+
+    <name>EJB::Security::Secure Ping Client::EJB</name>
+    <dependencies>
+        <!-- core dependencies -->
+        <dependency>
+          <groupId>commons-logging</groupId>
+          <artifactId>commons-logging</artifactId>
+          <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+          <groupId>${project.groupId}</groupId>
+          <artifactId>securePingEJB</artifactId>
+          <version>${project.version}</version>
+          <type>ejb-client</type>
+          <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>javax</groupId>
+            <artifactId>javaee-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- test dependencies -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+          <groupId>log4j</groupId>
+          <artifactId>log4j</artifactId>
+          <scope>test</scope>
+        </dependency>    
+    </dependencies>
+
+    <build>
+        <plugins>
+              <!-- tell the EJB plugin we are using EJB3  and configure client-jar -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-ejb-plugin</artifactId>
+                <configuration>
+                    <generateClient>true</generateClient>
+                    <clientExcludes>
+                        <clientExclude>**/*EJB.class</clientExclude>
+                        <clientExclude>META-INF/*.xml</clientExclude>
+                    </clientExcludes>
+                </configuration>
+            </plugin>      
+        </plugins>      
+    </build>
+
+</project>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <parent>
+        <groupId>info.ejava.examples.async</groupId>
+        <artifactId>async</artifactId>
+        <version>4.0.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>asyncMarket</artifactId>
+    <packaging>pom</packaging>
+
+    <name>Async::Async Market</name>
+    <description>
+        This project is the root project for the core Asynchronous EJB
+        example; Async Market. From a problem domain perspective, it is a 
+        gathering place for buyers and sellers of items. From a technology
+        perspective, it forms an example usage of JMS and EJB Timers within
+        the EJB server tier.
+    </description>
+    <modules>
+        <module>asyncMarketImpl</module>
+        <module>asyncMarketEJB</module>
+        <module>asyncMarketWAR</module>
+        <module>asyncMarketEAR</module>
+        <module>asyncMarketTest</module>
+    </modules>
+</project>

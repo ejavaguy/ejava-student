@@ -1,0 +1,93 @@
+<web-app 
+    xmlns="http://java.sun.com/xml/ns/javaee" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+    version="2.5">
+    
+    <display-name>Web Tier Sample Application</display-name>
+
+    <servlet>
+        <servlet-name>RegistrarAdmin</servlet-name>
+        <servlet-class>ejava.examples.webtier.web.RegistrarHandlerServlet
+        </servlet-class>
+        <init-param>
+            <param-name>level</param-name>            
+            <param-value>admin</param-value>            
+        </init-param>
+    </servlet>    
+    <servlet-mapping>
+        <servlet-name>RegistrarAdmin</servlet-name>
+        <url-pattern>/admin/jpa/registrarAdmin</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>RegistrarUser</servlet-name>
+        <servlet-class>ejava.examples.webtier.web.RegistrarHandlerServlet
+        </servlet-class>
+        <init-param>
+            <param-name>level</param-name>            
+            <param-value>user</param-value>            
+        </init-param>
+    </servlet>    
+    <servlet-mapping>
+        <servlet-name>RegistrarUser</servlet-name>
+        <url-pattern>/user/jpa/registrarUser</url-pattern>
+    </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>Registrar</servlet-name>
+        <servlet-class>ejava.examples.webtier.web.RegistrarHandlerServlet
+        </servlet-class>
+        <init-param>
+            <param-name>level</param-name>            
+            <param-value>general</param-value>            
+        </init-param>
+    </servlet>    
+    <servlet-mapping>
+        <servlet-name>Registrar</servlet-name>
+        <url-pattern>/jpa/registrar</url-pattern>
+    </servlet-mapping>
+    
+    <filter>
+        <filter-name>JPAFilter</filter-name>
+        <filter-class>ejava.examples.webtier.web.JPAFilter</filter-class>
+        <!--
+        <init-param>      
+           <param-name>hibernate.jndi.naming.factory.initial</param-name>
+           <param-value>org.jnp.interfaces.LocalOnlyContextFactory</param-value>
+        </init-param>
+        <init-param>
+           <param-name>hibernate.jndi.java.naming.factory.url.pkgs</param-name> 
+           <param-value>org.jboss.naming:org.jnp.interfaces</param-value>
+        </init-param>
+        -->
+    </filter>
+    
+    <filter-mapping>
+        <filter-name>JPAFilter</filter-name>
+        <url-pattern>/jpa/*</url-pattern>
+        <url-pattern>/admin/jpa/*</url-pattern>
+        <url-pattern>/user/jpa/*</url-pattern>
+    </filter-mapping>
+
+<!--
+    <persistence-context-ref>
+        <persistence-context-ref-name>
+            persistence/webtier
+        </persistence-context-ref-name>
+        <persistence-unit-name>webtier</persistence-unit-name>
+        <injection-target>
+            <injection-target-class>
+                ejava.examples.webtier.web.JPADAOInit
+            </injection-target-class>
+            <injection-target-name>em</injection-target-name>
+        </injection-target>
+        <injection-target>
+            <injection-target-class>
+                ejava.examples.webtier.web.JPAFilter
+            </injection-target-class>
+            <injection-target-name>pc</injection-target-name>
+        </injection-target>
+    </persistence-context-ref>    
+    -->
+</web-app>

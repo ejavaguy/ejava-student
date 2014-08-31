@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<log4j:configuration 
+    xmlns:log4j="http://jakarta.apache.org/log4j/" 
+    debug="false">
+
+    <appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
+        <param name="Target" value="System.out"/>
+
+        <layout class="org.apache.log4j.PatternLayout">
+        <!--
+            <param name="ConversionPattern" 
+                   value="(%F:%M:%L)  -%m%n"/>
+                   -->
+            <param name="ConversionPattern" value="%d{HH:mm:ss,SSS} %-5p (%F:%L) -%m%n"/>
+        </layout>
+    </appender>
+
+    <appender name="logfile" class="org.apache.log4j.RollingFileAppender">
+        <param name="File" value="target/log4j-out.txt"/>
+        <param name="Append" value="false"/>
+        <param name="MaxFileSize" value="100KB"/>
+        <param name="MaxBackupIndex" value="1"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" 
+                   value="%-5p %d{dd-MM HH:mm:ss,SSS} [%c] (%F:%M:%L)  -%m%n"/>
+        </layout>
+   </appender>
+
+   <logger name="ejava">
+      <level value="debug"/>
+      <appender-ref ref="logfile"/>  
+   </logger>
+
+   <root>
+      <priority value="info"/>    
+      <appender-ref ref="CONSOLE"/>  
+   </root>   
+   
+</log4j:configuration>

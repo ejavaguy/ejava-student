@@ -1,0 +1,115 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <parent>
+        <groupId>info.ejava.examples.ejb</groupId>
+        <artifactId>ejbsessionBank</artifactId>
+        <version>4.0.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>ejbsessionBankEAR</artifactId>
+    <packaging>ear</packaging>
+    <name>EJB::Session EJB Bank::EAR</name>
+    <description>
+      This projects provides an example EAR for the EJB Session Bank Project.
+      This EAR is assembled here, but tested as a part of the
+      function/integration testing in a sibling project.
+    </description>
+
+    <dependencies>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>ejbsessionBankEJB</artifactId>
+            <version>${project.version}</version>
+            <type>ejb</type>
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-logging</groupId>
+                    <artifactId>commons-logging</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>ejbsessionBankWAR</artifactId>
+            <version>${project.version}</version>
+            <type>war</type>
+        </dependency>
+
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>ejbsessionBankImpl</artifactId>
+            <version>${project.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-logging</groupId>
+                    <artifactId>commons-logging</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>info.ejava.examples.common</groupId>
+            <artifactId>ejava-util</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-ear-plugin</artifactId>
+                <configuration>
+                    <description>
+                        Example Session Bean Bank Application
+                    </description>
+                    <defaultLibBundleDir>lib</defaultLibBundleDir>
+                    <!-- eliminates use of version in EAR JNDI name portion -->
+                    <applicationName>${project.artifactId}</applicationName>
+                    <modules>
+                        <webModule>
+                            <groupId>${project.groupId}</groupId>
+                            <artifactId>ejbsessionBankWAR</artifactId>
+                            <contextRoot>ejbsessionBank</contextRoot>
+                        </webModule>
+                        <!-- eliminates use of the version in the EJB JNDI name -->
+                        <ejbModule>
+                            <groupId>${project.groupId}</groupId>
+                            <artifactId>ejbsessionBankEJB</artifactId>
+                            <bundleFileName>ejbsessionBankEJB.jar</bundleFileName>
+                        </ejbModule>
+                    </modules>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <profiles>
+    <!-- this profiles allow the EAR to be undeployed before it is deleted
+        during the clean target. This behavior requires the EAR to be
+        present, so it cannot be part of the default behavior. It is
+        only activated when -Dundeploy or -Pundeploy is present so that
+        normal cleans do not fail.  -->
+        <profile>
+            <id>undeploy</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.cargo</groupId>
+                        <artifactId>cargo-maven2-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>undeploy-ear</id>
+                                <phase>pre-clean</phase>
+                                <goals>
+                                    <goal>undeploy</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>                    
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+</project>

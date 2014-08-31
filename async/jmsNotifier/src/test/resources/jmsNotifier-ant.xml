@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="jmsNotifier" basedir="..">
+
+    <property file="test-classes/${ant.project.name}.properties"/>
+
+    <loadfile property="dependency-classpath" srcFile="test-classes/dependency-classpath" failonerror="false"/>
+
+    <path id="demo.classpath">
+        <pathelement path="test-classes"/>
+        <pathelement path="classes"/>
+        <fileset dir="." includes="dependency/*.jar"/>
+        <pathelement path="${dependency-classpath}"/>
+    </path>
+
+    <description>
+    This Ant script will run each of the JMS Notifier test programs. There
+    are two main programs: Publisher and Subscriber.  The Publisher only has 
+    one target; publisher. The subscriber has several; subscriber,
+    subscriberd, subscriber1, subscriber2, subscriber2d, subscriber3,
+    and subscriber4.
+
+    Each of the targets take the following arguments
+    -Djndi.naming.connFactory - connection factory JNDI name
+    -Djndi.name.destination   - destination JNDI name
+    -Dxxx.name                - connectionID and durable topic name
+    -Dxxx.sleep               - delay between processing next message
+    -Dxxx.max                 - max messages before existing;0=unlimited
+
+    xxx stands for the target name.  
+    
+    Putting a sleep time on the publisher slows the rate of messages
+    published. Putting a sleep time on the subscribers slows the rate
+    of processing each message; potentially causing backlogs.
+    </description>
+
+    <target name="echo">
+        <property name="demo-classpath" refid="demo.classpath"/>
+        <echo>basedir=${basedir}</echo>
+        <echo>commons.logging.classpath=${commons.logging.classpath}</echo>
+        <echo>demo.classpath=${demo-classpath}</echo>
+    </target>
+
+    <target name="init">
+        <!-- replace the integration test jndi.properties with the demo
+            copy referencing the live JBoss instance -->
+        <copy tofile="test-classes/jndi.properties"
+              file="test-classes/jboss-jndi.properties"
+              overwrite="true"/>
+    </target>
+
+    <target name="publisher" depends="init">
+        <java classname="ejava.examples.jmsnotifier.Publisher"
+            fork="true">
+            <classpath>
+                <path refid="demo.classpath"/>
+            </classpath>
+            <arg value="-jndi.name.connFactory"/>
+            <arg value="${jndi.name.connFactory}"/>
+            <arg value="-jndi.name.destination"/>
+            <arg value="${jndi.name.testTopic}"/>
+            <arg value="-name"/>
+            <arg value="${publisher.name}"/>
+            <arg value="-sleep"/>
+            <arg value="${publisher.sleep}"/>
+            <arg value="-max"/>
+            <arg value="${publisher.max}"/>
+            <arg value="-username"/>
+            <arg value="${publisher.username}"/>
+            <arg value="-password"/>
+            <arg value="${publisher.password}"/>
+        </java>
+    </target>
+
+    <target name="subscriber" depends="init">
+        <java classname="ejava.examples.jmsnotifier.Subscriber"
+            fork="true">
+            <classpath>
+                <path refid="demo.classpath"/>
+            </classpath>
+            <arg value="-jndi.name.connFactory"/>
+            <arg value="${jndi.name.connFactory}"/>
+            <arg value="-jndi.name.destination"/>
+            <arg value="${jndi.name.testTopic}"/>
+            <arg value="-name"/>
+            <arg value="${subscriber.name}"/>
+            <arg value="-sleep"/>
+            <arg value="${subscriber.sleep}"/>
+            <arg value="-max"/>
+            <arg value="${subscriber.max}"/>
+            <arg value="-durable"/>
+            <arg value="${subscriber.durable}"/>
+            <arg value="-selector"/>
+            <arg value="${subscriber.selector}"/>
+            <arg value="-username"/>
+            <arg value="${subscriber.username}"/>
+            <arg value="-password"/>
+            <arg value="${subscriber.password}"/>
+        </java>
+    </target>
+
+    <target name="subscriberd">
+        <java classname="ejava.examples.jmsnotifier.Subscriber"
+            fork="true">
+            <classpath>
+                <path refid="demo.classpath"/>
+            </classpath>
+            <arg value="-jndi.name.connFactory"/>
+            <arg value="${jndi.name.connFactory}"/>
+            <arg value="-jndi.name.destination"/>
+            <arg value="${jndi.name.testTopic}"/>
+            <arg value="-name"/>
+            <arg value="${subscriberd.name}"/>
+            <arg value="-sleep"/>
+            <arg value="${subscriberd.sleep}"/>
+            <arg value="-max"/>
+            <arg value="${subscriberd.max}"/>
+            <arg value="-durable"/>
+            <arg value="${subscriberd.durable}"/>
+            <arg value="-selector"/>
+            <arg value="${subscriberd.selector}"/>
+            <arg value="-username"/>
+            <arg value="${subscriber.username}"/>
+            <arg value="-password"/>
+            <arg value="${subscriber.password}"/>
+        </java>
+    </target>
+
+    <target name="subscriber1">
+        <java classname="ejava.examples.jmsnotifier.Subscriber"
+            fork="true">
+            <classpath>
+                <path refid="demo.classpath"/>
+            </classpath>
+            <arg value="-jndi.name.connFactory"/>
+            <arg value="${jndi.name.connFactory}"/>
+            <arg value="-jndi.name.destination"/>
+            <arg value="${jndi.name.testTopic}"/>
+            <arg value="-name"/>
+            <arg value="${subscriber1.name}"/>
+            <arg value="-sleep"/>
+            <arg value="${subscriber1.sleep}"/>
+            <arg value="-max"/>
+            <arg value="${subscriber1.max}"/>
+            <arg value="-durable"/>
+            <arg value="${subscriber1.durable}"/>
+            <arg value="-selector"/>
+            <arg value="${subscriber1.selector}"/>
+            <arg value="-username"/>
+            <arg value="${subscriber.username}"/>
+            <arg value="-password"/>
+            <arg value="${subscriber.password}"/>
+        </java>
+    </target>
+
+    <target name="subscriber2">
+        <java classname="ejava.examples.jmsnotifier.Subscriber"
+            fork="true">
+            <classpath>
+                <path refid="demo.classpath"/>
+            </classpath>
+            <arg value="-jndi.name.connFactory"/>
+            <arg value="${jndi.name.connFactory}"/>
+            <arg value="-jndi.name.destination"/>
+            <arg value="${jndi.name.testTopic}"/>
+            <arg value="-name"/>
+            <arg value="${subscriber2.name}"/>
+            <arg value="-sleep"/>
+            <arg value="${subscriber2.sleep}"/>
+            <arg value="-max"/>
+            <arg value="${subscriber2.max}"/>
+            <arg value="-durable"/>
+            <arg value="${subscriber2.durable}"/>
+            <arg value="-selector"/>
+            <arg value="${subscriber2.selector}"/>
+            <arg value="-username"/>
+            <arg value="${subscriber.username}"/>
+            <arg value="-password"/>
+            <arg value="${subscriber.password}"/>
+        </java>
+    </target>
+
+    <target name="subscriber2d">
+        <java classname="ejava.examples.jmsnotifier.Subscriber"
+            fork="true">
+            <classpath>
+                <path refid="demo.classpath"/>
+            </classpath>
+            <arg value="-jndi.name.connFactory"/>
+            <arg value="${jndi.name.connFactory}"/>
+            <arg value="-jndi.name.destination"/>
+            <arg value="${jndi.name.testTopic}"/>
+            <arg value="-name"/>
+            <arg value="${subscriber2d.name}"/>
+            <arg value="-sleep"/>
+            <arg value="${subscriber2d.sleep}"/>
+            <arg value="-max"/>
+            <arg value="${subscriber2d.max}"/>
+            <arg value="-durable"/>
+            <arg value="${subscriber2d.durable}"/>
+            <arg value="-selector"/>
+            <arg value="${subscriber2d.selector}"/>
+            <arg value="-username"/>
+            <arg value="${subscriber.username}"/>
+            <arg value="-password"/>
+            <arg value="${subscriber.password}"/>
+        </java>
+    </target>
+
+    <target name="subscriber3">
+        <java classname="ejava.examples.jmsnotifier.Subscriber"
+            fork="true">
+            <classpath>
+                <path refid="demo.classpath"/>
+            </classpath>
+            <arg value="-jndi.name.connFactory"/>
+            <arg value="${jndi.name.connFactory}"/>
+            <arg value="-jndi.name.destination"/>
+            <arg value="${jndi.name.testTopic}"/>
+            <arg value="-name"/>
+            <arg value="${subscriber3.name}"/>
+            <arg value="-sleep"/>
+            <arg value="${subscriber3.sleep}"/>
+            <arg value="-max"/>
+            <arg value="${subscriber3.max}"/>
+            <arg value="-durable"/>
+            <arg value="${subscriber3.durable}"/>
+            <arg value="-selector"/>
+            <arg value="${subscriber3.selector}"/>
+            <arg value="-username"/>
+            <arg value="${subscriber.username}"/>
+            <arg value="-password"/>
+            <arg value="${subscriber.password}"/>
+        </java>
+    </target>
+
+    <target name="subscriber4">
+        <java classname="ejava.examples.jmsnotifier.Subscriber"
+            fork="true">
+            <classpath>
+                <path refid="demo.classpath"/>
+            </classpath>
+            <arg value="-jndi.name.connFactory"/>
+            <arg value="${jndi.name.connFactory}"/>
+            <arg value="-jndi.name.destination"/>
+            <arg value="${jndi.name.testTopic}"/>
+            <arg value="-name"/>
+            <arg value="${subscriber4.name}"/>
+            <arg value="-sleep"/>
+            <arg value="${subscriber4.sleep}"/>
+            <arg value="-max"/>
+            <arg value="${subscriber4.max}"/>
+            <arg value="-durable"/>
+            <arg value="${subscriber4.durable}"/>
+            <arg value="-selector"/>
+            <arg value="${subscriber4.selector}"/>
+            <arg value="-username"/>
+            <arg value="${subscriber.username}"/>
+            <arg value="-password"/>
+            <arg value="${subscriber.password}"/>
+        </java>
+    </target>
+</project>

@@ -1,0 +1,17 @@
+<configuration xmlns="urn:hornetq" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+               xsi:schemaLocation="urn:hornetq /schema/hornetq-users.xsd">
+    <!-- the default user.  this is used where username is null-->
+    <defaultuser name="guest" password="guest">
+        <role name="guest"/>
+    </defaultuser>
+
+    <user name="publisher1" password="password1!">
+        <role name="publisher"/>      
+    </user>
+    <user name="subscriber1" password="password1!">
+        <role name="subscriber"/>      
+    </user>
+    <user name="admin1" password="password1!">
+        <role name="admin"/>      
+    </user>
+</configuration>

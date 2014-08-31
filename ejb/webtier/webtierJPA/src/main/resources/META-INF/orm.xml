@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistence/orm_2_0.xsd" version="2.0">
+
+    <!-- hibernate bug requires we declare mapped-upperclass with annotation    
+    <mapped-superclass class="ejava.javaee.webtier.bo.Person"
+        metadata-complete="false">
+        <attributes>
+            <id name="id">
+                <generated-value/>
+            </id>
+        </attributes>
+    </mapped-superclass>
+    -->
+    <entity class="ejava.examples.webtier.bo.Student" 
+            access="PROPERTY"
+            metadata-complete="true"
+            name="Student">
+        <table name="WEBTIER_STUDENT"/>
+        <named-query name="getStudentsByName">
+            <query>
+                select s from Student s
+                where s.firstName like :firstName AND s.lastName like :lastName
+            </query>
+        </named-query>
+        <named-query name="getNewStudents">
+            <query>
+                select s from Student s
+                where s.grades IS EMPTY
+            </query>
+        </named-query>
+        <named-query name="getGraduatingStudents">
+            <query><![CDATA[
+                select s from Student s
+                where 10 <= (select count(g) from s.grades g 
+                             where g.grade < 'C')                 
+                ]]> 
+            </query>
+        </named-query>
+        <attributes>
+            <one-to-many name="grades">
+                <cascade>
+                    <cascade-all/>
+                </cascade>
+            </one-to-many>            
+        </attributes>
+    </entity>    
+    
+    <entity class="ejava.examples.webtier.bo.Grade"
+            access="PROPERTY"
+            metadata-complete="true"
+            name="Grade">
+        <table name="WEBTIER_GRADE"/>
+        <attributes>
+            <id name="id">
+                <generated-value/>
+            </id>
+            <basic name="semester">
+                <temporal>DATE</temporal>
+            </basic>
+        </attributes>
+    </entity>
+</entity-mappings>
+    
+    

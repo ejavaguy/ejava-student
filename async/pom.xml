@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <parent>
+        <groupId>info.ejava.examples</groupId>
+        <artifactId>examples-root</artifactId>
+        <version>4.0.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>info.ejava.examples.async</groupId>
+    <artifactId>async</artifactId>
+    <packaging>pom</packaging>
+
+    <name>Asynchronous Topics Root</name>
+    <description>
+        This project is the root project for async materials.
+    </description>
+    <modules>
+        <module>jmsMechanics</module>
+        <module>jmsNotifier</module>
+        <module>jmsScheduler</module>
+        <module>asyncMarket</module>
+    </modules>
+</project>

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistence/orm_2_0.xsd" version="2.0">
+
+    <entity class="ejava.examples.ejbsessionbank.bo.Account" 
+            access="PROPERTY"
+            metadata-complete="true"
+            name="Account">
+        <table name="EJBSESSIONBANK_ACCOUNT"/>
+        <named-query name="getAccounts">
+            <query><![CDATA[
+                select a from Account a
+                ]]>
+            </query>
+        </named-query>
+        <named-query name="getAccountsByAccountNumber">
+            <query><![CDATA[
+                select a from Account a
+                where a.accountNumber = :accountNumber
+                ]]>
+            </query>
+        </named-query>
+        <named-query name="getOverdrawnAccounts">
+            <query><![CDATA[
+                select a from Account a
+                where a.balance < 0
+                ]]>
+            </query>
+        </named-query>
+        <named-query name="getLedgerAveBalance">
+            <query><![CDATA[
+                select avg(a.balance) from Account a
+                ]]>
+            </query>
+        </named-query>
+        <named-query name="getLedgerSum">
+            <query><![CDATA[
+                select sum(a.balance) from Account a
+                ]]>
+            </query>
+        </named-query>
+        <named-query name="getLedgerCount">
+            <query><![CDATA[
+                select count(a) from Account a
+                ]]>
+            </query>
+        </named-query>
+        <named-query name="getLedger">
+            <query><![CDATA[
+                select new ejava.examples.ejbsessionbank.bo.Ledger(
+                count(a), sum(a.balance), avg(a.balance)) from Account a
+                ]]>
+            </query>
+        </named-query>
+        <named-query name="countAccountReferences">
+        	<query><![CDATA[
+	        	select count(o) from Owner o 
+	            where :account MEMBER OF o.accounts
+        	]]>
+        	</query>
+        </named-query>
+        <attributes>
+            <id name="id">
+                <generated-value/>
+            </id>
+            <basic name="accountNumber" optional="false">
+                <column unique="true" updatable="false"/>
+            </basic>
+        </attributes>
+    </entity>
+    
+    <entity class="ejava.examples.ejbsessionbank.bo.Owner" 
+        access="PROPERTY"
+        metadata-complete="true"
+        name="Owner">
+        <table name="EJBSESSIONBANK_OWNER"/>
+        <named-query name="getAccountOwners">
+            <query><![CDATA[
+                select o from Owner o
+                ]]>
+            </query>
+        </named-query>
+        <named-query name="getAccountOwner">
+            <query><![CDATA[
+                select o from Owner o, IN (o.accounts) acct
+                where acct = :account
+                ]]>
+            </query>
+        </named-query>
+        <attributes>
+            <id name="id">
+                <generated-value/>
+            </id>
+            <basic name="firstName" optional="false"/>
+            <basic name="lastName" optional="false"/>
+            <basic name="ssn" optional="false">
+            	<column unique="true"/>
+            </basic>
+            <many-to-many name="accounts">
+                <join-table name="EJBSESSIONBANK_OWNER_ACCOUNTS"/>
+            	<cascade>
+            		<cascade-persist/>
+            		<cascade-merge/>
+            	</cascade>
+            </many-to-many>
+        </attributes>
+    </entity>        
+</entity-mappings>
+    
+    

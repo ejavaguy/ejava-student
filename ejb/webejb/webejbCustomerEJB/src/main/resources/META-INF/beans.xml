@@ -1,0 +1,12 @@
+<beans xmlns="http://java.sun.com/xml/ns/javaee" 
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+       xmlns:weld="http://jboss.org/schema/weld/beans" 
+       xsi:schemaLocation="
+          http://java.sun.com/xml/ns/javaee http://docs.jboss.org/cdi/beans_1_0.xsd
+          http://jboss.org/schema/weld/beans http://jboss.org/schema/weld/beans_1_1.xsd">
+          <!-- this file is required to exist to turn on CDI features -->
+    <weld:scan>
+        <!-- this client class, when deployed as part of the WAR gives CDI fits -->
+        <weld:exclude name="ejava.examples.ejbwar.customer.client.CustomerClientImpl"/>
+    </weld:scan>
+</beans>

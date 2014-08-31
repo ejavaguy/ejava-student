@@ -1,0 +1,127 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <parent>
+        <groupId>info.ejava.examples.ejb</groupId>
+        <artifactId>webejb</artifactId>
+        <version>4.0.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>jaxrsInventoryWAR</artifactId>
+    <packaging>war</packaging>
+
+    <name>EJB::Web-oriented EJB::JAX-RS Inventory WAR</name>
+    <description>
+        This project provides a demonstration of flexible EJB
+        deployment of EJBs within a WAR and the exposure of 
+        those EJBs through the web as resources using JAX-RS
+        and JAXB.
+    </description>
+
+    <dependencies>
+        <!-- integrate self-contained external EJB module -->
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>webejbCustomerEJB</artifactId>
+            <version>${project.version}</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- HTTP web client is implemented in HttpClient -->
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <scope>provided</scope>
+        </dependency>        
+
+        <!-- JPA provider for annotations -->        
+        <dependency>
+            <groupId>org.hibernate.javax.persistence</groupId>
+            <artifactId>hibernate-jpa-2.1-api</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <!-- JAX-RS provider -->
+        <dependency>
+            <groupId>org.jboss.resteasy</groupId>
+            <artifactId>resteasy-jaxrs</artifactId>
+            <scope>test</scope>
+        </dependency>                
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+        
+        <!-- Needs to go last in classpath so provider versions used first -->
+        <dependency>
+            <groupId>javax</groupId>
+            <artifactId>javaee-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <finalName>jaxrsInventoryWAR</finalName>
+
+        <!-- filter test/resource files for profile-specific valies -->
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+        <testResources>
+            <testResource>
+                <directory>src/test/resources</directory>
+                <filtering>true</filtering>
+            </testResource>
+        </testResources>
+
+        <plugins>
+            <!-- deploy this artifact to server -->
+            <plugin>
+                <groupId>org.codehaus.cargo</groupId>
+                <artifactId>cargo-maven2-plugin</artifactId>
+            </plugin>
+            
+            <!-- run IT tests within this module -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <configuration>
+                    <systemProperties>
+                        <cargo.startstop>${cargo-startstop}</cargo.startstop>
+                    </systemProperties>
+                </configuration>
+            </plugin>
+
+            <!-- create an archive for external clients to use -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                        <configuration>
+                            <classifier>client</classifier>
+                            <includes>
+                                <include>**/bo/*</include>
+                                <include>**/rs/*Resource.class</include>
+                                <include>**/client/**/*</include>
+                                <include>**/rmi/*Remote.class</include>
+                            </includes>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>

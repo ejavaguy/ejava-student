@@ -23,8 +23,13 @@
 
     <modules>
         <module>build</module>
+        <module>common</module>
         <module>javase</module>
         <module>jpa</module>
+        <!--
+        <module>ejb</module>
+        <module>async</module>
+        -->
         <module>coursedocs</module>
     </modules>
 
@@ -380,6 +385,19 @@
                     <url>scpexe://dev5.ejava.info/var/www/ejava.info/html/sites/ejava-javaee</url>
                 </site>
             </distributionManagement>
+        </profile>
+
+        <profile>
+            <id>all-modules</id>
+            <modules>
+                <module>build</module>
+                <module>common</module>
+                <module>javase</module>
+                <module>jpa</module>
+                <module>ejb</module>
+                <module>async</module>
+                <module>coursedocs</module>
+            </modules>
         </profile>
 
     </profiles>

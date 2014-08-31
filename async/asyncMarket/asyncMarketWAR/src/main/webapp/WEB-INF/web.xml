@@ -1,0 +1,111 @@
+<web-app 
+    xmlns="http://java.sun.com/xml/ns/javaee" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+    version="2.5">
+    
+  <display-name>Async Market Web Application</display-name>
+    
+        <!-- the following properties are used when EJB wasn't injected by
+            container. This will occur when running externally within Jetty
+            or some other development environment separate from business logic
+            -->
+    <context-param>
+        <param-name>java.naming.factory.initial</param-name>
+        <param-value>org.jboss.naming.remote.client.InitialContextFactory</param-value>
+    </context-param>        
+    <context-param>
+        <param-name>java.naming.provider.url</param-name>
+        <param-value>remote://127.0.0.5:4447</param-value>
+    </context-param>        
+    <context-param>
+        <param-name>java.naming.factory.url.pkgs</param-name> 
+        <param-value></param-value>
+    </context-param>        
+    <context-param>
+        <param-name>auctionmgmt.local</param-name> 
+        <param-value>
+            ejava/examples/asyncMarket/AuctionMgmtEJB/local
+        </param-value>
+    </context-param>        
+    <context-param>
+        <param-name>auctionmgmt.remote</param-name> 
+        <param-value>
+            ejava/examples/asyncMarket/AuctionMgmtEJB/remote
+        </param-value>
+    </context-param>        
+    <context-param>
+        <param-name>seller.local</param-name> 
+        <param-value>
+            ejava/examples/asyncMarket/SellerEJB/local
+        </param-value>
+    </context-param>        
+    <context-param>
+        <param-name>seller.remote</param-name> 
+        <param-value>
+            ejava/examples/asyncMarket/SellerEJB/remote
+        </param-value>
+    </context-param>        
+    <context-param>
+        <param-name>buyer.local</param-name> 
+        <param-value>
+            ejava/examples/asyncMarket/BuyerEJB/local
+        </param-value>
+    </context-param>        
+    <context-param>
+        <param-name>buyer.remote</param-name> 
+        <param-value>
+            ejava/examples/asyncMarket/BuyerEJB/remote
+        </param-value>
+    </context-param>        
+    <context-param>
+        <param-name>usermgmt.local</param-name> 
+        <param-value>
+            ejava/examples/asyncMarket/UserMgmtEJB/local
+        </param-value>
+    </context-param>        
+    <context-param>
+        <param-name>usermgmt.remote</param-name> 
+        <param-value>
+            ejava/examples/asyncMarket/UserMgmtEJB/remote
+        </param-value>
+    </context-param>        
+    
+    <servlet>
+        <!-- this servlet takes care of making sure the AuctionMgmtEJB timers
+            been fully initialized -->
+        <servlet-name>Init</servlet-name>
+        <servlet-class>ejava.examples.asyncmarket.web.InitServlet
+        </servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet>
+        <servlet-name>AdminHandler</servlet-name>
+        <servlet-class>ejava.examples.asyncmarket.web.AuctionAdminHandlerServlet
+        </servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SellerHandler</servlet-name>
+        <servlet-class>ejava.examples.asyncmarket.web.SellerHandlerServlet
+        </servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>BuyerHandler</servlet-name>
+        <servlet-class>ejava.examples.asyncmarket.web.BuyerHandlerServlet
+        </servlet-class>
+    </servlet>
+    
+    <servlet-mapping>
+        <servlet-name>AdminHandler</servlet-name>
+        <url-pattern>/model/admin/handler</url-pattern>
+    </servlet-mapping>    
+    <servlet-mapping>
+        <servlet-name>SellerHandler</servlet-name>
+        <url-pattern>/model/seller/handler</url-pattern>
+    </servlet-mapping>    
+    <servlet-mapping>
+        <servlet-name>BuyerHandler</servlet-name>
+        <url-pattern>/model/buyer/handler</url-pattern>
+    </servlet-mapping>    
+    
+</web-app>

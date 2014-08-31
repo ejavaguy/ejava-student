@@ -1,0 +1,36 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <parent>
+        <groupId>info.ejava.examples.ejb</groupId>
+        <artifactId>securePing</artifactId>
+        <version>4.0.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>securePingClientApp</artifactId>
+    <packaging>pom</packaging>
+
+    <name>EJB::Security::Secure Ping ClientApp</name>
+    <description>
+        This project is the root project for the example 
+        Application that makes use of run-As security features of Java EE
+    </description>
+
+    <modules>
+        <module>securePingClientEJB</module>
+        <module>securePingClientEAR</module>
+    </modules>
+
+    <profiles>
+        <profile>
+            <id>functional-tests</id>
+            <activation>
+                <property>
+                    <name>!maven.test.skip</name>
+                </property>
+            </activation>
+            <modules>
+                <module>securePingClientTest</module>
+            </modules>
+        </profile>
+    </profiles>
+</project>

@@ -1,0 +1,24 @@
+<configuration xmlns="urn:hornetq"
+               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+               xsi:schemaLocation="urn:hornetq /schema/hornetq-jms.xsd">
+    <!--the connection factory used by the example-->
+    <connection-factory name="ConnectionFactory">
+        <connectors>
+            <connector-ref connector-name="in-vm"/>
+        </connectors>
+        <entries>
+            <entry name="ConnectionFactory"/>
+            <entry name="/jms/RemoteConnectionFactory"/>
+        </entries>
+
+        <!-- makes sure clients do not buffer messages and get better round-robin -->
+        <consumer-window-size>0</consumer-window-size>
+    </connection-factory>
+
+    <!-- topics used by client(s) 
+    <topic name="jmsMechanics-topic1">
+        <entry name="/topic/ejava/examples/jmsMechanics/topic1"/>
+    </topic>
+    -->
+
+</configuration>

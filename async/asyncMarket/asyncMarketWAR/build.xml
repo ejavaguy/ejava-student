@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8" ?> 
+<project name="javaeeExWAR" default="test" basedir="..">
+    <property file="build.properties"/>
+
+    <property name="artifactId" value="${ant.project.name}"/>
+    <property name="src.dir"    value="${basedir}/${artifactId}/src"/>
+    <property name="build.dir"  value="${basedir}/${artifactId}/target"/>
+
+    <path id="compile.classpath"> 
+        <pathelement path="${commons.logging.classpath}"/>
+        <pathelement path="${javaeeExDA.classpath}"/>
+        <pathelement path="${javaeeExEJB-client.classpath}"/>
+
+    </path>
+
+    <path id="test.classpath"> 
+        <pathelement path="${log4j.classpath}"/>
+        <pathelement path="${junit.classpath}"/>
+        <pathelement path="${jboss.embedded.classpath}"/>
+    </path>
+
+    <path id="provided.classpath"> 
+        <pathelement path="${javaee.classpath}"/>
+    </path>
+
+
+    <target name="echo">
+        <echo>basedir=${basedir}</echo>
+        <echo>artifactId=${artifactId}</echo>
+        <echo>src.dir=${src.dir}</echo>
+        <echo>build.dir=${build.dir}</echo>
+        <echo>junit.classpath=${junit.classpath}</echo>
+        <echo>commons.logging.classpath=${commons.logging.classpath}</echo>
+        <echo>log4j.classpath=${log4j.classpath}</echo>
+        <echo>jdbc.classpath=${jdbc.classpath}</echo>
+        <echo>jdbc.driver=${jdbc.driver}</echo>
+        <echo>jdbc.url=${jdbc.url}</echo>
+        <echo>jdbc.user=${jdbc.user}</echo>
+        <echo>jdbc.password=${jdbc.password}</echo>
+        <echo>javaee.classpath=${javaee.classpath}</echo>
+        <echo>jboss.embedded.classpath=${jboss.embedded.classpath}</echo>
+
+        <echo>javaeeExDA.classpath=${javaeeExDA.classpath}</echo>
+        <echo>javaeeExEJB-client.classpath=${javaeeExEJB-client.classpath}</echo>
+    </target>
+
+    <target name="check">
+        <condition property="main.skip">
+            <or>
+                <not><available file="${src.dir}/main/java"/></not>
+            </or>
+        </condition>
+
+        <condition property="test.skip">
+            <or>
+                <not><available file="${src.dir}/test/java"/></not>
+                <istrue value="${maven.test.skip}"/>
+            </or>
+        </condition>
+
+        <echo>main.skip=${main.skip}</echo>
+        <echo>test.skip=${test.skip}</echo>
+    </target>
+
+    <target name="package" depends="package-war"/>
+
+    <target name="package-war" depends="check" unless="main.skip">
+        <mkdir dir="${build.dir}/classes"/>
+        <javac srcdir="${src.dir}/main/java"
+               destdir="${build.dir}/classes"
+               debug="true"
+               source="1.5"
+               target="1.5">
+               <classpath>
+                   <path refid="compile.classpath"/>
+                   <path refid="provided.classpath"/>
+               </classpath>
+        </javac>
+
+        <copy todir="${build.dir}/classes">
+            <fileset dir="${src.dir}/main/resources"/>
+        </copy>
+
+        <war destfile="${build.dir}/${artifactId}.war"
+             webxml="${src.dir}/main/webapp/WEB-INF/web.xml">
+             <fileset dir="${src.dir}/main/webapp"
+                      excludes="**/WEB-INF/web.xml"/>
+             <classes dir="${build.dir}/classes"/>
+        </war>
+    </target>
+
+    <target name="test" depends="package,doTest"/>
+
+    <target name="doTest" depends="check" unless="test.skip">
+        <mkdir dir="${build.dir}/test-classes"/>
+        <javac srcdir="${src.dir}/test/java"
+               destdir="${build.dir}/test-classes"
+               debug="true"
+               source="1.5"
+               target="1.5">
+               <classpath>
+                   <pathelement location="${build.dir}/${artifactId}.jar"/>
+                   <path refid="compile.classpath"/>
+                   <path refid="test.classpath"/>
+                   <path refid="provided.classpath"/>
+               </classpath>
+        </javac>
+
+        <copy todir="${build.dir}/test-classes">
+            <fileset dir="${src.dir}/test/resources"/>
+        </copy>
+
+        <sql driver="${jdbc.driver}"
+            url="${jdbc.url}"
+            userid="${jdbc.user}"
+            password="${jdbc.password}"
+            classpath="${jdbc.classpath}"
+            onerror="continue">
+            <fileset dir="${src.dir}">
+                <include name="main/resources/ddl/**/*drop.ddl"/>
+            </fileset>
+        </sql>
+        <sql driver="${jdbc.driver}"
+            url="${jdbc.url}"
+            userid="${jdbc.user}"
+            password="${jdbc.password}"
+            classpath="${jdbc.classpath}">
+            <fileset dir="${src.dir}">
+                <include name="main/resources/ddl/**/*create.ddl"/>
+            </fileset>
+        </sql>
+        <sql driver="${jdbc.driver}"
+            url="${jdbc.url}"
+            userid="${jdbc.user}"
+            password="${jdbc.password}"
+            classpath="${jdbc.classpath}">
+            <fileset dir="${src.dir}">
+                <include name="main/resources/ddl/**/*populate.ddl"/>
+            </fileset>
+        </sql>
+
+
+        <mkdir dir="${build.dir}/test-reports"/>
+        <junit printsummary="true" fork="true">
+               <classpath>
+                   <pathelement location="${build.dir}/${artifactId}.jar"/>
+                   <pathelement location="${build.dir}/test-classes"/>
+                   <path refid="compile.classpath"/>
+                   <path refid="test.classpath"/>
+                   <path refid="provided.classpath"/>
+               </classpath>
+
+            <batchtest fork="true" todir="${build.dir}/test-reports">
+                <fileset dir="${build.dir}/test-classes">
+                    <include name="**/*Test*.class"/>
+                </fileset>
+            </batchtest>
+
+            <formatter type="plain"/>
+            <formatter type="xml"/>
+        </junit>
+
+        <sql driver="${jdbc.driver}"
+            url="${jdbc.url}"
+            userid="${jdbc.user}"
+            password="${jdbc.password}"
+            classpath="${jdbc.classpath}">
+            <fileset dir="${src.dir}">
+                <include name="main/resources/ddl/**/*drop.ddl"/>
+            </fileset>
+        </sql>
+    </target>
+
+    <target name="clean">
+        <delete dir="${build.dir}"/>
+    </target>
+
+</project>

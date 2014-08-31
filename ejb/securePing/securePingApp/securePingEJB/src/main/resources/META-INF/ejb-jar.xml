@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<ejb-jar
+    xmlns="http://java.sun.com/xml/ns/javaee" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/ejb-jar_3_1.xsd"
+    version="3.1">
+
+    <enterprise-beans>
+        <session>
+            <ejb-name>SecurePingEJB</ejb-name>
+            <security-role-ref>
+                <description>role-name checked within EJB</description>
+                <role-name>internalRole</role-name>
+                <role-link>admin</role-link>
+            </security-role-ref>
+        </session>
+    </enterprise-beans>    
+    <assembly-descriptor>
+        <security-role>
+            <role-name>admin</role-name>
+        </security-role>
+        <security-role>
+            <role-name>user</role-name>
+        </security-role>
+        <!--
+        <method-permission>
+            <unchecked/>
+            <method>
+                <ejb-name>SecurePingEJB</ejb-name>
+                <method-name>*</method-name>
+            </method>
+        </method-permission>
+        -->
+    </assembly-descriptor>
+</ejb-jar>
