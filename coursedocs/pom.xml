@@ -132,6 +132,13 @@
         </dependency>
         <dependency>
             <groupId>info.ejava.docs.ejb</groupId>
+            <artifactId>webtier</artifactId>
+            <version>${project.version}</version>
+            <type>war</type>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>info.ejava.docs.ejb</groupId>
             <artifactId>webejb-notes</artifactId>
             <version>${project.version}</version>
             <type>war</type>
@@ -140,6 +147,20 @@
         <dependency>
             <groupId>info.ejava.docs.ejb</groupId>
             <artifactId>securePing</artifactId>
+            <version>${project.version}</version>
+            <type>war</type>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>info.ejava.docs.async</groupId>
+            <artifactId>jmsCore</artifactId>
+            <version>${project.version}</version>
+            <type>war</type>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>info.ejava.docs.async</groupId>
+            <artifactId>asyncEJB</artifactId>
             <version>${project.version}</version>
             <type>war</type>
             <scope>runtime</scope>
@@ -317,6 +338,12 @@
                 </overlay>
                 <overlay>
                     <groupId>info.ejava.docs.ejb</groupId>
+                    <artifactId>webtier</artifactId>
+                    <type>war</type>
+                    <targetPath>../site/docs/content</targetPath>
+                </overlay>
+                <overlay>
+                    <groupId>info.ejava.docs.ejb</groupId>
                     <artifactId>webejb-notes</artifactId>
                     <type>war</type>
                     <targetPath>../site/docs/content</targetPath>
@@ -324,6 +351,18 @@
                 <overlay>
                     <groupId>info.ejava.docs.ejb</groupId>
                     <artifactId>securePing</artifactId>
+                    <type>war</type>
+                    <targetPath>../site/docs/content</targetPath>
+                </overlay>
+                <overlay>
+                    <groupId>info.ejava.docs.async</groupId>
+                    <artifactId>jmsCore</artifactId>
+                    <type>war</type>
+                    <targetPath>../site/docs/content</targetPath>
+                </overlay>
+                <overlay>
+                    <groupId>info.ejava.docs.async</groupId>
+                    <artifactId>asyncEJB</artifactId>
                     <type>war</type>
                     <targetPath>../site/docs/content</targetPath>
                 </overlay>
