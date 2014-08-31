@@ -3,7 +3,7 @@
     <publishDate position="navigation-bottom" format="MMM-dd-yyyy"/>
     <bannerLeft>
         <name>Enterprise Java (605.784.31)</name>
-        <src>${project.url}/coursedocs/content/html/images/ejava-white.png</src>
+        <src>${project.url}/coursedocs/content/html/images/jhu784-white.png</src>
         <href>${project.url}/index.html</href>
     </bannerLeft>
     <bannerRight>
@@ -27,11 +27,11 @@
 
     <menu name="Quick Links" inherit="top">
         <item name="Docs" href="${project.url}/coursedocs/content"/>
-        <item name="Course Description" href="${project.url}/coursedocs/content/html/enterprise-java-syllabus-intro.html"/>
-        <item name="Syllabus (Paged)" href="${project.url}/coursedocs/content/html/enterprise-java-syllabus-schedule.html"/>
-        <item name="Syllabus (Book)" href="${project.url}/coursedocs/content/html_single/enterprise-java-notes-book.html#enterprise-java-syllabus-schedule"/>
-        <item name="Exercises (Paged)" href="${project.url}/coursedocs/content/html/enterprise-java-lab-labs.html"/>
-        <item name="Exercises (Book)" href="${project.url}/coursedocs/content/html_single/enterprise-java-lab-book.html#enterprise-java-lab-labs"/>
+        <item name="Course Description" href="${project.url}/coursedocs/content/html/jhu784-syllabus-intro.html"/>
+        <item name="Syllabus (Paged)" href="${project.url}/coursedocs/content/html/jhu784-syllabus-schedule.html"/>
+        <item name="Syllabus (Book)" href="${project.url}/coursedocs/content/html_single/jhu784-notes-book.html#jhu784-syllabus-schedule"/>
+        <item name="Exercises (Paged)" href="${project.url}/coursedocs/content/html/jhu784-lab-labs.html"/>
+        <item name="Exercises (Book)" href="${project.url}/coursedocs/content/html_single/jhu784-lab-book.html#jhu784-lab-labs"/>
     </menu>
 
     <menu ref="modules" inherit="bottom"/>
