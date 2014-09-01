@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- ===================================================================== -->
+<!--                                                                       -->
+<!--  Log4j Configuration                                                  -->
+<!--                                                                       -->
+<!-- ===================================================================== -->
+
+<!-- $Id: log4j.xml,v 1.1 2006/01/12 02:44:08 bill Exp $ -->
+
+<!--
+   | For more configuration infromation and examples see the Jakarta Log4j
+   | owebsite: http://jakarta.apache.org/log4j
+ -->
+
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/" debug="false">
+   
+   <appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
+         <param name="Target" value="System.out"/>
+   
+         <layout class="org.apache.log4j.PatternLayout">
+            <!-- The default pattern: Date Priority [Category] Messagen -->
+            <!--
+            <param name="ConversionPattern" value="%d{ABSOLUTE} %-5p [%c{1}] %m%n"/>
+            <param name="ConversionPattern" value="(%F:%M:%L)  -%m%n"/>
+            -->
+            <param name="ConversionPattern" value=" -%m%n"/>
+         </layout>
+   </appender>
+
+   <appender name="logfile" class="org.apache.log4j.RollingFileAppender">
+      <param name="File" value="/tmp/log4j-out.txt"/>
+      <param name="Append" value="false"/>
+      <param name="MaxFileSize" value="100KB"/>
+      <param name="MaxBackupIndex" value="1"/>
+      <layout class="org.apache.log4j.PatternLayout">
+         <param name="ConversionPattern" value="%-5p %d{dd-MM HH:mm:ss,SSS} [%c] (%F:%M:%L)  -%m%n"/>
+      </layout>
+      
+   </appender>
+
+   <logger name="ejava">
+      <level value="debug"/>
+   </logger>
+   <root>
+      <priority value="fatal"/>    
+      <appender-ref ref="CONSOLE"/>  
+   </root>   
+   
+</log4j:configuration>

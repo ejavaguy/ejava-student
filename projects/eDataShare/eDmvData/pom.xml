@@ -1,0 +1,58 @@
+<?xml version="1.0"?><project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <parent>
+        <groupId>info.ejava.examples.projects.eDataShare</groupId>
+        <artifactId>eDataShare</artifactId>
+        <version>4.0.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>eDmvData</artifactId>
+    <packaging>pom</packaging>
+
+    <name>Projects::Data Share::DMV Data</name>
+    <description>
+        This project provides the test data and parser 
+        for the class project. Students will create a dependency on the
+        eLeagueTestUtil project and ingest Java obejcts returned from the
+        provided parser. You can find an example of how to setup and use the
+        parser within the eSalesBLImpl sub-project.
+    </description>
+
+    <modules>
+        <module>eDmvDTO</module>
+        <module>eDmvTestUtil</module>
+    </modules>
+
+    <profiles>
+        <profile>
+            <id>devel</id>
+            <activation>
+                <property>
+                    <name>devel</name>
+                    <value>true</value>
+                </property>
+            </activation>
+            <modules>
+                <module>eDmvDTO</module>
+                <module>eDmvDataGen</module>
+                <module>eDmvTestUtil</module>
+            </modules>
+        </profile>
+        <profile>
+            <id>serverTest</id>
+            <modules>
+                <module>eDmvTestEJB</module>
+                <module>eDmvTestEAR</module>
+                <module>eDmvRMITest</module>
+            </modules>
+        </profile>
+        <profile>
+            <id>all-modules</id>
+            <modules>
+                <module>eDmvTestEJB</module>
+                <module>eDmvTestEAR</module>
+                <module>eDmvRMITest</module>
+            </modules>
+        </profile>
+    </profiles>
+</project>

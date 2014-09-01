@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://www.it.ojp.gov/jxdm/ansi_d20/1.0.1" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <xsd:simpleType name="JurisdictionAuthorityCodeType">
+    <xsd:restriction base="xsd:token"/>
+  </xsd:simpleType>
+</xsd:schema>

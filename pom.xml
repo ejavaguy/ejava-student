@@ -25,6 +25,7 @@
         <module>build</module>
         <module>common</module>
         <module>javase</module>
+        <module>projects</module>
         <module>jpa</module>
         <!--
         <module>ejb</module>
@@ -34,6 +35,24 @@
     </modules>
 
     <url>http://webdev.jhuep.com/ejava-javaee</url>
+    <organization>
+        <name>
+            John's Hopkins University, Engineering Programs for Professionals 
+        </name>
+        <url>http://ep.jhu.edu</url>
+    </organization>
+    <mailingLists>
+        <mailingList>
+            <name>class newsgroup (for class use)</name>
+            <subscribe>http://groups.yahoo.com/group/ejava_class/</subscribe>
+        </mailingList>
+    </mailingLists>
+    <scm>
+        <url>https://github.com/ejavaguy/ejava-student/tree/master</url>
+        <connection>scm:git:git@github.com:ejavaguy/ejava-student.git</connection>
+        <developerConnection>scm:git:git@github-ejavaguy:ejavaguy/ejava-student.git</developerConnection>
+        <tag>HEAD</tag>
+    </scm>
     <distributionManagement>
         <site>
             <id>local</id>
@@ -393,6 +412,7 @@
                 <module>build</module>
                 <module>common</module>
                 <module>javase</module>
+                <module>projects</module>
                 <module>jpa</module>
                 <module>ejb</module>
                 <module>async</module>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://www.it.ojp.gov/jxdm/ncic_2000/1.0.2" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <xsd:simpleType name="EYEType">
+    <xsd:restriction base="xsd:token"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="RACType">
+    <xsd:restriction base="xsd:token"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="SEXType">
+    <xsd:restriction base="xsd:token"/>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="VCOType">
+    <xsd:restriction base="xsd:token"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="VMAType">
+    <xsd:restriction base="xsd:token"/>
+  </xsd:simpleType>
+  <xsd:simpleType name="VMOType">
+    <xsd:restriction base="xsd:token"/>
+  </xsd:simpleType>
+</xsd:schema>

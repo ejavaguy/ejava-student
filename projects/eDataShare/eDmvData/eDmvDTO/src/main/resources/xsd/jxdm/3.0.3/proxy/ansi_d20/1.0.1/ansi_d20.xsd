@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://www.it.ojp.gov/jxdm/3.0.3/proxy/ansi_d20/1.0.1" xmlns:ansi_d20="http://www.it.ojp.gov/jxdm/ansi_d20/1.0.1" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:j="http://www.it.ojp.gov/jxdm/3.0.3">
+  <xsd:import namespace="http://www.it.ojp.gov/jxdm/ansi_d20/1.0.1" schemaLocation="../../../../ansi_d20/1.0.1/ansi_d20.xsd"/>
+  <xsd:import namespace="http://www.it.ojp.gov/jxdm/3.0.3" schemaLocation="../../../jxdm.xsd"/>
+  <xsd:complexType name="JurisdictionAuthorityCodeType">
+    <xsd:simpleContent>
+      <xsd:extension base="ansi_d20:JurisdictionAuthorityCodeType">
+        <xsd:attributeGroup ref="j:SuperTypeMetadata"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+</xsd:schema>
