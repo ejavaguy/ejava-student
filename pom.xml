@@ -426,7 +426,7 @@
                 <site>
                     <id>webdev.website</id>
                     <name>Test Site</name>
-                    <url>scpexe://webdev.jhuep.com/home/jcs/test-deploy/sites/ejava-javaee</url>
+                    <url>scpexe://webdev.jhuep.com/home/jcs/public_html/test-deploy/sites/ejava-javaee</url>
                 </site>
             </distributionManagement>
         </profile>
