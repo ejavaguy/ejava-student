@@ -53,13 +53,6 @@
         <developerConnection>scm:git:git@github-ejavaguy:ejavaguy/ejava-student.git</developerConnection>
         <tag>HEAD</tag>
     </scm>
-    <distributionManagement>
-        <site>
-            <id>local</id>
-            <name>Local Site</name>
-            <url>file://tmp/ejava-javaee</url>
-        </site>
-    </distributionManagement>
 
     <profiles>
         <profile>
@@ -410,6 +403,21 @@
             </modules>
         </profile>
 
+        <profile>
+            <id>local-deploy</id>
+            <activation>
+                <property>
+                    <name>!local-deploy</name>
+                </property>
+            </activation>
+            <distributionManagement>
+                <site>
+                    <id>local</id>
+                    <name>Local Site</name>
+                    <url>file://tmp/ejava-javaee</url>
+                </site>
+            </distributionManagement>
+        </profile>
         <profile>
             <id>dev5</id>
             <distributionManagement>
