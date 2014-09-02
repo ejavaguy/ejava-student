@@ -395,16 +395,6 @@
             </reporting>
         </profile>
 
-        <profile>
-            <id>dev5</id>
-            <distributionManagement>
-                <site>
-                    <id>dev5.website</id>
-                    <name>Test Site</name>
-                    <url>scpexe://dev5.ejava.info/var/www/ejava.info/html/sites/ejava-javaee</url>
-                </site>
-            </distributionManagement>
-        </profile>
 
         <profile>
             <id>all-modules</id>
@@ -420,5 +410,25 @@
             </modules>
         </profile>
 
+        <profile>
+            <id>dev5</id>
+            <distributionManagement>
+                <site>
+                    <id>dev5.website</id>
+                    <name>Test Site</name>
+                    <url>scpexe://dev5.ejava.info/var/www/ejava.info/html/sites/ejava-javaee</url>
+                </site>
+            </distributionManagement>
+        </profile>
+        <profile>
+            <id>test-deploy</id>
+            <distributionManagement>
+                <site>
+                    <id>webdev.website</id>
+                    <name>Test Site</name>
+                    <url>scpexe://webdev.jhuep.com/home/jcs/test-deploy/sites/ejava-javaee</url>
+                </site>
+            </distributionManagement>
+        </profile>
     </profiles>
 </project>
