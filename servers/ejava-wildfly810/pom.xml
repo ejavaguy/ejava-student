@@ -33,7 +33,7 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>ejava.common</groupId>
+            <groupId>info.ejava.examples.common</groupId>
             <artifactId>jboss-rmi-client</artifactId>
             <version>${project.version}</version>
             <type>pom</type>
