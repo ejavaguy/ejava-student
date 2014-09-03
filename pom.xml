@@ -407,7 +407,7 @@
             <id>local-deploy</id>
             <activation>
                 <property>
-                    <name>!local-deploy</name>
+                    <name>!remote-deploy</name>
                 </property>
             </activation>
             <distributionManagement>
@@ -435,6 +435,16 @@
                     <id>webdev.website</id>
                     <name>Test Site</name>
                     <url>scpexe://webdev.jhuep.com/home/jcs/public_html/test-deploy/sites/ejava-javaee</url>
+                </site>
+            </distributionManagement>
+        </profile>
+        <profile>
+            <id>webdev</id>
+            <distributionManagement>
+                <site>
+                    <id>webdev.website</id>
+                    <name>ejava JHU webdev website</name>
+                    <url>scpexe://webdev.jhuep.com/home/jcs/public_html/ejava-javaee</url>
                 </site>
             </distributionManagement>
         </profile>

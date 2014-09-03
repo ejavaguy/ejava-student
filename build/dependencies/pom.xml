@@ -1286,11 +1286,6 @@
             <profile>
                 <id>webdev</id>
                 <distributionManagement>
-                    <site>
-                        <id>webdev.website</id>
-                        <name>ejava JHU webdev website</name>
-                        <url>scpexe://webdev.jhuep.com/home/jcs/public_html/ejava-javaee</url>
-                    </site>
                     <repository>
                         <id>webdev.repository</id>
                         <name>ejava JHU repository</name>
