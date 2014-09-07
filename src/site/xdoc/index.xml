@@ -40,8 +40,8 @@
           <li>2013-09-23: Posted Core JPA TODOs with updated Entity Notes</li>
           <li>2013-09-21: Updated EntityManager Exercise with current versions and schema tuning</li>
           <li>2013-09-16: Posted DAO Materials and EntityManager TODOs</li>
-          <li>2013-09-09: Posted Project descriptions and Business Logic TODOs</li>
           -->
+          <li>2014-09-09: Posted Project 1 description and Business Logic TODOs</li>
           <li>2014-09-02: Posted initial class site</li>
       </ul>
       </subsection>
@@ -495,7 +495,7 @@
       </ul></li>
       -->
 
-      <!-- week 02: DevEnv and Business Logic
+      <!-- week 02: DevEnv and Business Logic -->
       <li><ul> 
             <li>Project
                 <ul>
@@ -531,7 +531,12 @@
                 </ul>
             </li>
       </ul></li>
-       -->
+
+      </ul>
+      </subsection>
+
+      <subsection name="Things you should have finished!" id="completed">
+      <ul>
 
       <!-- week 01: Course Intro -->
       <li><ul> 
@@ -540,12 +545,6 @@
           <li>setup development environment by going through exercises 0 and 1</li>
           <li>post your weekly newsgroup contribution based on development environment setup</li>
       </ul></li>
-
-      </ul>
-      </subsection>
-
-      <subsection name="Things you should have finished!" id="completed">
-      <ul>
 
       <li><ul>
           <li>had a nice break!</li>
