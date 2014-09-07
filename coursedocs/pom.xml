@@ -217,6 +217,14 @@
             <type>war</type>
             <scope>runtime</scope>
         </dependency>
+
+        <dependency>
+            <groupId>info.ejava.docs.projects</groupId>
+            <artifactId>edatashare-project</artifactId>
+            <version>${project.version}</version>
+            <type>war</type>
+            <scope>runtime</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -401,6 +409,13 @@
                 <overlay>
                     <groupId>info.ejava.docs.jpa</groupId>
                     <artifactId>jpa-query-lab</artifactId>
+                    <type>war</type>
+                    <targetPath>../site/docs/content</targetPath>
+                </overlay>
+
+                <overlay>
+                    <groupId>info.ejava.docs.projects</groupId>
+                    <artifactId>edatashare-project</artifactId>
                     <type>war</type>
                     <targetPath>../site/docs/content</targetPath>
                 </overlay>
