@@ -20,6 +20,7 @@ public class CowPK implements Serializable { //required to be Serializable
 	
 	public String getHerd() { return herd; }
 	public String getName() { return name; }
+	public void setName(String name) { this.name = name; }
 	
 	@Override
 	public int hashCode() { //required hashCode method

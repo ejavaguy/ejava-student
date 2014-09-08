@@ -14,6 +14,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
+import myorg.entityex.annotated.Address;
 import myorg.entityex.annotated.Bear;
 import myorg.entityex.annotated.Bear2;
 import myorg.entityex.annotated.Bunny;
@@ -22,7 +23,9 @@ import myorg.entityex.annotated.Cow2;
 import myorg.entityex.annotated.CowPK;
 import myorg.entityex.annotated.Dog;
 import myorg.entityex.annotated.Horse;
+import myorg.entityex.annotated.Name;
 import myorg.entityex.annotated.Shark;
+import myorg.entityex.annotated.Street;
 import myorg.entityex.mapped.Animal;
 
 import org.apache.commons.logging.Log;
@@ -83,12 +86,18 @@ public class AnimalTest {
     public void cleanup() {
         em.getTransaction().begin();
         //delete what we need to here
+        em.createQuery("delete from Animal").executeUpdate();
+        em.createQuery("delete from Animal2").executeUpdate();
+        em.createQuery("delete from Cow").executeUpdate();
+        em.createQuery("delete from Cow2").executeUpdate();
         em.getTransaction().commit();
     }
 
     @Test
     public void testCreateAnimal() {
         log.info("testCreateAnimal");
+        log.info(em.createQuery("select a from Animal a").getResultList());
+        
     	Animal animal = new Animal("bessie", 
     			new GregorianCalendar(1960, 1, 1).getTime(), 1400.2);
         em.persist(animal);        
@@ -258,11 +267,11 @@ public class AnimalTest {
     public void testEmbeddedObject() {
     	log.info("testEmbeddedObject");
     	Bear bear = new Bear();
-    	bear.setName(new Bear.Name().setFirstName("Yogi").setLastName("Bear"));
-    	bear.setAddress(new Bear.Address()
+    	bear.setName(new Name().setFirstName("Yogi").setLastName("Bear"));
+    	bear.setAddress(new Address()
     		.setCity("Jellystone Park")
     		.setState("???")
-    	    .setStreet(new Bear.Street().setNumber(1).setName("Picnic")));
+    	    .setStreet(new Street().setNumber(1).setName("Picnic")));
     	em.persist(bear);
     	
     	//flush to DB and get a new instance
