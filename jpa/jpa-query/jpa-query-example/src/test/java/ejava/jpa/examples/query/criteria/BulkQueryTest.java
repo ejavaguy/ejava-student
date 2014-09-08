@@ -94,7 +94,7 @@ public class BulkQueryTest extends QueryBase {
         //"delete from Customer c " +
         //"where c.firstName like :first AND c.lastName like :last");
         CriteriaDelete<Customer> delete = cb.createCriteriaDelete(Customer.class);
-        Root<Customer> c2 = delete.from(Customer.class);
+		delete.from(Customer.class);
         delete.where(cb.and(
     			cb.like(c.<String>get("firstName"), "thing"),
     			cb.like(c.<String>get("lastName"), "%")
