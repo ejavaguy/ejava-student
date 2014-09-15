@@ -39,8 +39,8 @@
           <li>2013-10-01: Posted Updated ORM Relationship notes and TODOs</li>
           <li>2013-09-23: Posted Core JPA TODOs with updated Entity Notes</li>
           <li>2013-09-21: Updated EntityManager Exercise with current versions and schema tuning</li>
-          <li>2013-09-16: Posted DAO Materials and EntityManager TODOs</li>
           -->
+          <li>2014-09-16: Posted EntityManager TODOs</li>
           <li>2014-09-09: Addressed many JPA Eclipse warnings in examples</li>
           <li>2014-09-09: Posted Project 1 description and Business Logic TODOs</li>
           <li>2014-09-02: Posted initial class site</li>
@@ -418,7 +418,7 @@
       </ul></li>
       -->
 
-      <!-- week 03: DAOs and EntityManager
+      <!-- week 03: DAOs and EntityManager -->
       <li><ul> 
             <li>Project Sanity Check
             <ul>
@@ -435,7 +435,7 @@
                   the details to create a maven module for data tier classes as it is about the JPA 
                   EntityManager.</li>          
               <li>Look over the class project example implementation under the 
-                projects/eSport/eLeague directory as it relates to integrating
+                projects/eDatashare/eDmv directory as it relates to integrating
                 JPA within the individual modules.
               </li>
             </ul>
@@ -494,7 +494,12 @@
             </ul>
             </li>
       </ul></li>
-      -->
+
+      </ul>
+      </subsection>
+
+      <subsection name="Things you should have finished!" id="completed">
+      <ul>
 
       <!-- week 02: DevEnv and Business Logic -->
       <li><ul> 
@@ -532,12 +537,6 @@
                 </ul>
             </li>
       </ul></li>
-
-      </ul>
-      </subsection>
-
-      <subsection name="Things you should have finished!" id="completed">
-      <ul>
 
       <!-- week 01: Course Intro -->
       <li><ul> 
