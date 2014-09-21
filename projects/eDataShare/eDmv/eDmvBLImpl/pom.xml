@@ -38,11 +38,11 @@
                follow-on dependency
             * use scope=compile if you want to include this in downstream processing, 
                 such as in the EJB/EAR
+            * version is specified in root pom's dependencyManagement
         -->
         <dependency>
             <groupId>info.ejava.examples.projects.eDataShare</groupId>
             <artifactId>eDmvTestUtil</artifactId>
-            <version>4.0.0-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         

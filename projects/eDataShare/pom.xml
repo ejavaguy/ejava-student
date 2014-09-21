@@ -35,6 +35,13 @@
 
     <dependencyManagement>
         <dependencies>
+            <!-- THIS IS A REAL DEPENDENCY THAT YOU WOULD COPY INTO YOUR POM.XML -->
+            <dependency>
+                <groupId>info.ejava.examples.projects.eDataShare</groupId>
+                <artifactId>eDmvTestUtil</artifactId>
+                <version>4.0.0-SNAPSHOT</version>
+                <scope>provided</scope>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
