@@ -2,7 +2,6 @@ package ejava.projects.edmv.jdbc;
 
 import static org.junit.Assert.*;
 
-
 import java.sql.ResultSet;
 import java.sql.Statement;
 
@@ -54,6 +53,7 @@ public class JDBCVehicleDAOTest extends JDBCDAOTestBase {
 	 * 
 	 * @throws Exception
 	 */
+	@SuppressWarnings("resource")
 	@Test
 	public void testJDBCCreate() throws Exception {
 		log.info("*** testJDBCCreate ***");
