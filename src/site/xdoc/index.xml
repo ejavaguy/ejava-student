@@ -368,7 +368,7 @@
       </ul></li>
       -->
 
-      <!-- week 04: JPA Core
+      <!-- week 04: JPA Core -->
       <li><ul> 
             <li>Exercises
                 <ul>
@@ -412,11 +412,17 @@
                   and persisted the objects using one of your DAOs. This will be a thin
                   slice of the overall dataset.
                   </li>
+                  <li>Manually validate a DTO or business object using the programmatic 
+                      validation API in a sample method of your business logic.</li>
                 </ul>
             </li>
       </ul></li>
-      -->
 
+      </ul>
+      </subsection>
+
+      <subsection name="Things you should have finished!" id="completed">
+      <ul>
       <!-- week 03: DAOs and EntityManager -->
       <li><ul> 
             <li>Project Sanity Check
@@ -494,11 +500,6 @@
             </li>
       </ul></li>
 
-      </ul>
-      </subsection>
-
-      <subsection name="Things you should have finished!" id="completed">
-      <ul>
 
       <!-- week 02: DevEnv and Business Logic -->
       <li><ul> 
