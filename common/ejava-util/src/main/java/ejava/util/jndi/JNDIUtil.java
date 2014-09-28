@@ -1,25 +1,23 @@
 package ejava.util.jndi;
 
 import java.io.IOException;
-
 import java.io.InputStream;
 import java.util.Properties;
 
 import javax.naming.Context;
-
 import javax.naming.InitialContext;
 import javax.naming.NameClassPair;
 import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This class helps work with the JNDI tree.
  */
 public class JNDIUtil {
-	private static final Log log = LogFactory.getLog(JNDIUtil.class);
+	private static final Logger logger = LoggerFactory.getLogger(JNDIUtil.class);
 	public static final String PROPERTY_FILE="ejava-jndi.properties";
 	private static final String[] PATHS = new String[]{
 		"/" + PROPERTY_FILE, PROPERTY_FILE
@@ -38,11 +36,11 @@ public class JNDIUtil {
     public static Properties getJNDIProperties(String prefix) throws IOException {
     	InputStream is = null;
     	for (int i=0; is==null && i<PATHS.length; i++) {
-    		log.debug("trying: " + PATHS[i]);
+    		logger.debug("trying: " + PATHS[i]);
     		is = JNDIUtil.class.getResourceAsStream(PATHS[i]);
     	}
     	for (int i=0; is==null && i<PATHS.length; i++) {
-    		log.debug("trying loader for thread: " + PATHS[i]);
+    		logger.debug("trying loader for thread: " + PATHS[i]);
     		is = Thread.currentThread().getContextClassLoader().getResourceAsStream(PATHS[i]);
     	}
     	
@@ -60,7 +58,7 @@ public class JNDIUtil {
         		}
         	}
     	} else {
-    		log.warn("unable to locate ejava-jndi.properties from classpath");
+    		logger.warn("unable to locate ejava-jndi.properties from classpath");
     	}
     	return env;
     }
@@ -78,7 +76,7 @@ public class JNDIUtil {
     @SuppressWarnings("unchecked")
 	public static <T> T lookup(Context ctx, Class<T> type, String name, int waitSecs) 
 			throws NamingException {
-    	log.debug(String.format("looking up %s, wait=%d", name, waitSecs));
+    	logger.debug(String.format("looking up %s, wait=%d", name, waitSecs));
     	
     	T object=null;
     	//wait increments should be at least 1sec
@@ -88,14 +86,14 @@ public class JNDIUtil {
 	    		try {
 					object = (T) ctx.lookup(name);
 				} catch (Throwable ex) {
-					log.debug(String.format("error in jndi.lookup(%s)=%s", name, ex));
+					logger.debug(String.format("error in jndi.lookup(%s)=%s", name, ex));
 					try { Thread.sleep(interval); } catch (Exception ex2) {}
 				}
     		} else {
 				object = (T) ctx.lookup(name);
     		}
     	}
-    	log.debug("object=" + object);
+    	logger.debug("object=" + object);
     	return object;
     }
 		
