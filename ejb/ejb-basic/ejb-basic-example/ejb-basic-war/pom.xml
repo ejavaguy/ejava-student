@@ -22,18 +22,11 @@
             <groupId>${project.groupId}</groupId>
             <artifactId>ejb-basic-ejb</artifactId>
             <version>${project.version}</version>
+            <type>ejb</type>
         </dependency>        
     </dependencies>
 
     <build>
         <finalName>ejb-basic-war</finalName>
-
-        <plugins>          
-            <!-- artifacts to deploy to server -->
-            <plugin>
-                <groupId>org.codehaus.cargo</groupId>
-                <artifactId>cargo-maven2-plugin</artifactId>
-            </plugin>
-        </plugins>          
     </build>
 </project>

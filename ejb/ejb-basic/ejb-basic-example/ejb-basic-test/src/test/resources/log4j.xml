@@ -32,7 +32,7 @@
    </appender>
 
    <logger name="info.ejava">
-      <level value="debug"/>
+      <level value="info"/>
       <appender-ref ref="logfile"/>  
    </logger>
    <root>

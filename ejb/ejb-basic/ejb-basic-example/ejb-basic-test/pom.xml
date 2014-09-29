@@ -35,11 +35,18 @@
             <groupId>${project.groupId}</groupId>
             <artifactId>ejb-basic-ejb</artifactId>
             <version>${project.version}</version>
-            <type>ejb</type>
+            <type>ejb-client</type>
             <scope>test</scope>
         </dependency>
         
         <!-- packages being deployed must be a dependency -->
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>ejb-basic-ejb</artifactId>
+            <version>${project.version}</version>
+            <type>ejb</type>
+            <scope>compile</scope>
+        </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>ejb-basic-war</artifactId>
@@ -92,12 +99,17 @@
         </testResources>
 
         <plugins>
-            <!-- artifacts to deploy to server -->
             <plugin>
                 <groupId>org.codehaus.cargo</groupId>
                 <artifactId>cargo-maven2-plugin</artifactId>
                 <configuration>
+                    <!-- artifacts to deploy to server -->
                     <deployables>
+                        <deployable>
+                            <groupId>${project.groupId}</groupId>
+                            <artifactId>ejb-basic-ejb</artifactId>
+                            <type>ejb</type>
+                        </deployable>
                         <deployable>
                             <groupId>${project.groupId}</groupId>
                             <artifactId>ejb-basic-war</artifactId>
