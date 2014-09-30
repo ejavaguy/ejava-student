@@ -109,6 +109,14 @@
             <type>war</type>
             <scope>runtime</scope>
         </dependency>
+
+        <dependency>
+            <groupId>info.ejava.docs.ejb</groupId>
+            <artifactId>ejb-basic-notes</artifactId>
+            <version>${project.version}</version>
+            <type>war</type>
+            <scope>runtime</scope>
+        </dependency>
         <dependency>
             <groupId>info.ejava.docs.ejb</groupId>
             <artifactId>ejbsessionBank</artifactId>
@@ -323,6 +331,12 @@
                 <overlay>
                     <groupId>info.ejava.docs.jpa</groupId>
                     <artifactId>jpa-tuning-notes</artifactId>
+                    <type>war</type>
+                    <targetPath>../site/docs/content</targetPath>
+                </overlay>
+                <overlay>
+                    <groupId>info.ejava.docs.ejb</groupId>
+                    <artifactId>ejb-basic-notes</artifactId>
                     <type>war</type>
                     <targetPath>../site/docs/content</targetPath>
                 </overlay>
