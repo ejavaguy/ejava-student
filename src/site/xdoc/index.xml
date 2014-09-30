@@ -36,8 +36,8 @@
           <li>2014-10-23: Posted EJB TODOs</li>
           <li>2014-10-15: Posted Final Project 1 TODOs and Server-side Materials</li>
           <li>2014-10-08: Updated Inheritance notes and posted JPA-QL TODOs</li>
-          <li>2014-10-01: Posted Updated ORM Relationship notes and TODOs</li>
           -->
+          <li>2014-09-30: Posted Updated ORM Relationship TODOs</li>
           <li>2014-09-23: Posted Core JPA TODOs</li>
           <li>2014-09-16: Posted EntityManager TODOs</li>
           <li>2014-09-09: Addressed many JPA Eclipse warnings in examples</li>
@@ -314,7 +314,7 @@
       </ul></li>
       -->
 
-      <!-- week 05: JPA Relationships
+      <!-- week 05: JPA Relationships -->
       <li><ul> 
             <li>Exercises
                 <ul>
@@ -340,6 +340,7 @@
                   parent/child relationships. It is recommended that you *not*
                   use Cascades when starting out. Keep the functionality implemented
                   within the scope of the requirements of the end-to-end scenario.
+                  Not every entity and relationship needs full CRUD behavior.
                   </li>
                 </ul>
             </li>
@@ -366,8 +367,12 @@
                 </ul>
             </li>
       </ul></li>
-      -->
 
+      </ul>
+      </subsection>
+
+      <subsection name="Things you should have finished!" id="completed">
+      <ul>
       <!-- week 04: JPA Core -->
       <li><ul> 
             <li>Exercises
@@ -418,11 +423,6 @@
             </li>
       </ul></li>
 
-      </ul>
-      </subsection>
-
-      <subsection name="Things you should have finished!" id="completed">
-      <ul>
       <!-- week 03: DAOs and EntityManager -->
       <li><ul> 
             <li>Project Sanity Check
