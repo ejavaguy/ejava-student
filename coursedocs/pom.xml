@@ -110,6 +110,14 @@
             <scope>runtime</scope>
         </dependency>
 
+        <!-- EJB -->
+        <dependency>
+            <groupId>info.ejava.docs.ejb</groupId>
+            <artifactId>ejb-intro-notes</artifactId>
+            <version>${project.version}</version>
+            <type>war</type>
+            <scope>runtime</scope>
+        </dependency>
         <dependency>
             <groupId>info.ejava.docs.ejb</groupId>
             <artifactId>ejb-basic-notes</artifactId>
@@ -159,6 +167,8 @@
             <type>war</type>
             <scope>runtime</scope>
         </dependency>
+
+        <!-- Async -->
         <dependency>
             <groupId>info.ejava.docs.async</groupId>
             <artifactId>jmsCore</artifactId>
@@ -334,6 +344,13 @@
                     <type>war</type>
                     <targetPath>../site/docs/content</targetPath>
                 </overlay>
+                <!-- EJB -->
+                <overlay>
+                    <groupId>info.ejava.docs.ejb</groupId>
+                    <artifactId>ejb-intro-notes</artifactId>
+                    <type>war</type>
+                    <targetPath>../site/docs/content</targetPath>
+                </overlay>
                 <overlay>
                     <groupId>info.ejava.docs.ejb</groupId>
                     <artifactId>ejb-basic-notes</artifactId>
@@ -376,6 +393,8 @@
                     <type>war</type>
                     <targetPath>../site/docs/content</targetPath>
                 </overlay>
+
+                <!-- Async -->
                 <overlay>
                     <groupId>info.ejava.docs.async</groupId>
                     <artifactId>jmsCore</artifactId>
