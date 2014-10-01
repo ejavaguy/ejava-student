@@ -87,7 +87,8 @@
         <log4j.version>1.2.13</log4j.version>
         <icu4j.version>53.1</icu4j.version>
         <inject.version>1</inject.version>
-        <javaee-api.version>6.0</javaee-api.version>
+        <javaee-api.version>7.0</javaee-api.version>
+        <javax.ejb-api.version>3.2</javax.ejb-api.version>
         <javax.el.version>2.2.4</javax.el.version>        
         <jaxb-api.version>2.1</jaxb-api.version>
         <jaxb-impl.version>2.1.9-brew</jaxb-impl.version>
@@ -424,6 +425,11 @@
                 <groupId>javax</groupId>
                 <artifactId>javaee-api</artifactId>
                 <version>${javaee-api.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>javax.ejb</groupId>
+                <artifactId>javax.ejb-api</artifactId>
+                <version>${javax.ejb-api.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.hornetq</groupId>

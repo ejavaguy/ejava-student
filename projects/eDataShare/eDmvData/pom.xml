@@ -46,6 +46,7 @@
                 <module>eDmvRMITest</module>
             </modules>
         </profile>
+        <!--
         <profile>
             <id>all-modules</id>
             <modules>
@@ -54,5 +55,6 @@
                 <module>eDmvRMITest</module>
             </modules>
         </profile>
+        -->
     </profiles>
 </project>
