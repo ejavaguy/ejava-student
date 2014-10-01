@@ -3,24 +3,21 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>info.ejava.examples.ejb</groupId>
-        <artifactId>ejb-basic</artifactId>
+        <artifactId>ejb</artifactId>
         <version>4.0.0-SNAPSHOT</version>
     </parent>
 
-    <groupId>info.ejava.examples.ejb.basicejb</groupId>
-    <artifactId>ejb-basic-example</artifactId>
+    <artifactId>ejb-intro</artifactId>
     <packaging>pom</packaging>
 
-    <name>EJB::Basic EJB Example</name>
+    <name>EJB::EJB Introduction</name>
     <description>
-        This project provides an example of developing and deploying 
-        an initial Session EJB that has no resource requirements.
+        This project provides the home for core/getting started EJB materials
+        dealing with topics that are key to developing and deploying a simple
+        EJB.
     </description>
 
     <modules>
-        <module>ejb-basic-ejb</module>
-        <module>ejb-basic-ear</module>
-        <module>ejb-basic-war</module>
-        <module>ejb-basic-test</module>
+        <module>ejb-basic-example</module>
     </modules>
 </project>
