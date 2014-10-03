@@ -128,11 +128,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
-                <configuration>
-                    <systemPropertyVariables>
-                        <cargo.startstop>${cargo-startstop}</cargo.startstop>
-                    </systemPropertyVariables>
-                </configuration>
             </plugin>
 
             <!-- this module does not play well with the site plugin -->

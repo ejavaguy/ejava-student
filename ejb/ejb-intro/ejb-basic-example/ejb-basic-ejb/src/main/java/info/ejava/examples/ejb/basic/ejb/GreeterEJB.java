@@ -5,6 +5,7 @@ import info.ejava.examples.ejb.basic.dto.Name;
 
 import java.util.Date;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
 
@@ -16,6 +17,11 @@ import org.slf4j.LoggerFactory;
 public class GreeterEJB implements Greeter {
     private static final Logger logger = LoggerFactory.getLogger(GreeterEJB.class);
 
+    @PostConstruct
+    public void init() {
+        logger.info("*** GreeterEJB ***");
+    }
+    
     /**
      * This method is an example of a business method that can be invoked by
      * users of this object (if a POJO) or bean (if deployed as an EJB).
