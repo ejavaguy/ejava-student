@@ -2,6 +2,9 @@ package ejava.examples.orm.rel.annotated;
 
 import javax.persistence.*;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 /**
  * The class provides a set of OneToOne relationship examples.
  * It contains a uni-directional, non-primary key relationship to Person and a 
@@ -11,6 +14,7 @@ import javax.persistence.*;
  */
 @Entity @Table(name="ORMREL_APPLICANT")
 public class Applicant  {
+    private static Log log = LogFactory.getLog(Applicant.class);
     @Id @GeneratedValue
     private long id;
     
@@ -21,6 +25,9 @@ public class Applicant  {
     @OneToOne(optional=true)        //we may exist without Borrower 
     @JoinColumn(name="APP_BORROWER")//we own relationship to Borrower
     private Borrower borrower;
+    
+    public Applicant() {
+        log.info(super.toString() + ", ctor()");     }
     
     public long getId() { return id; }
 
