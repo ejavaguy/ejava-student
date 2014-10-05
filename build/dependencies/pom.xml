@@ -32,7 +32,7 @@
 
         <!-- packaging plugins -->
         <maven-ear-plugin.version>2.9.1</maven-ear-plugin.version>
-        <maven-ejb-plugin.version>2.3</maven-ejb-plugin.version>
+        <maven-ejb-plugin.version>2.4</maven-ejb-plugin.version>
         <maven-jar-plugin.version>2.5</maven-jar-plugin.version>
         <maven-rar-plugin.version>2.3</maven-rar-plugin.version>
         <maven-source-plugin.version>2.3</maven-source-plugin.version>
@@ -97,7 +97,7 @@
         <jnpserver.version>5.0.3.GA</jnpserver.version>
         <jsr250-api.version>1.0</jsr250-api.version>
         <jta.version>1.0.1B</jta.version>
-        <junit.version>4.10</junit.version>
+        <junit.version>4.11</junit.version>
         <maven-jaxb2-plugin.version>0.7.1</maven-jaxb2-plugin.version>
         <mysql-connector-java.version>5.0.5</mysql-connector-java.version>
         <netty.version>3.2.6.Final</netty.version>
@@ -671,7 +671,7 @@
                     <artifactId>maven-ejb-plugin</artifactId>
                     <version>${maven-ejb-plugin.version}</version>
                     <configuration>
-                        <ejbVersion>3.1</ejbVersion>
+                        <ejbVersion>3.2</ejbVersion>
                         <archive>
                             <manifest>
                                 <addClasspath>true</addClasspath>
