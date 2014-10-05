@@ -123,6 +123,12 @@
             <logger category="jacorb.config">
                 <level name="ERROR"/>
             </logger>
+            <logger category="org.myorg">
+                <level name="DEBUG"/>
+            </logger>
+            <logger category="info.ejava">
+                <level name="DEBUG"/>
+            </logger>
             <logger category="ejava">
                 <level name="DEBUG"/>
             </logger>
