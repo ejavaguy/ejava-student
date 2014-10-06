@@ -16,6 +16,8 @@
 
     <modules>
         <module>basicejb-ejb</module>
+        <module>basicejb-ear</module>
+        <module>basicejb-test</module>
     </modules>
 
     <properties>
@@ -23,16 +25,46 @@
         <java.source.version>1.7</java.source.version>
         <java.target.version>1.7</java.target.version>
 
+        <ejava.version>4.0.0-SNAPSHOT</ejava.version>
         <javax.ejb-api.version>3.2</javax.ejb-api.version>
         <junit.version>4.11</junit.version>
         <log4j.version>1.2.13</log4j.version>
         <slf4j.version>1.6.1</slf4j.version>
+        <wildfly.version>8.1.0.Final</wildfly.version>
 
+        <cargo-maven2-plugin.version>1.4.3</cargo-maven2-plugin.version>
         <maven-compiler-plugin.version>3.1</maven-compiler-plugin.version>
         <maven-ejb-plugin.version>2.4</maven-ejb-plugin.version>
+        <maven-failsafe-plugin.version>2.17</maven-failsafe-plugin.version>
+
+        <cargo.containerId>wildfly8x</cargo.containerId>
+        <jboss.host>localhost</jboss.host>
+        <jboss.http.port>8080</jboss.http.port>
+        <jboss.mgmt.host>${jboss.host}</jboss.mgmt.host>
+        <jboss.mgmt.port>9990</jboss.mgmt.port>
+        <jndi.user>known</jndi.user>
+        <jndi.password>password1!</jndi.password>
+
+        <jboss.remoting.java.naming.factory.initial>org.jboss.naming.remote.client.InitialContextFactory</jboss.remoting.java.naming.factory.initial>
+        <jboss.remoting.java.naming.provider.url>http-remoting://${jboss.host}:${jboss.http.port}</jboss.remoting.java.naming.provider.url>
+        <jboss.remoting.java.naming.factory.url.pkgs/>
+        <jboss.remoting.java.naming.security.principal>${jndi.user}</jboss.remoting.java.naming.security.principal>
+        <jboss.remoting.java.naming.security.credentials>${jndi.password}</jboss.remoting.java.naming.security.credentials>
     </properties>
 
     <repositories>
+        <repository>
+            <id>webdev-snapshot</id>
+            <name>ejava webdev snapshot repository</name>
+            <url>http://webdev.jhuep.com/~jcs/maven2-snapshot</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>daily</updatePolicy>
+            </snapshots>
+        </repository>
     </repositories>
 
     <pluginRepositories>
@@ -65,6 +97,12 @@
                 <artifactId>log4j</artifactId>
                 <version>${log4j.version}</version>
             </dependency>    
+            <dependency>
+                <groupId>info.ejava.examples.common</groupId>
+                <artifactId>jboss-rmi-client</artifactId>
+                <version>${ejava.version}</version>
+                <type>pom</type>
+            </dependency>    
         </dependencies>
     </dependencyManagement>
 
@@ -93,10 +131,80 @@
                         </archive>
                     </configuration>
                 </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-failsafe-plugin</artifactId>
+                    <version>${maven-failsafe-plugin.version}</version>
+                    <configuration>
+                        <argLine>${surefire.argLine}</argLine>
+                    </configuration>
+                    <executions>
+                        <execution> 
+                           <goals>
+                               <goal>integration-test</goal>
+                               <goal>verify</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.cargo</groupId>
+                    <artifactId>cargo-maven2-plugin</artifactId>
+                    <version>${cargo-maven2-plugin.version}</version>
+                    <configuration>
+                        <container>
+                            <containerId>${cargo.containerId}</containerId>
+                            <type>remote</type>
+                            <log>target/server.log</log>
+                            <output>target/output.log</output>
+                        </container>
+                        <configuration>
+                            <type>runtime</type>
+                            <properties>
+                                <cargo.hostname>${jboss.mgmt.host}</cargo.hostname>
+                                <cargo.jboss.management.port>${jboss.mgmt.port}</cargo.jboss.management.port>
+                            </properties>
+                        </configuration>
+                    </configuration>
+                    <dependencies>
+                        <dependency>
+                            <groupId>org.wildfly</groupId>
+                            <artifactId>wildfly-controller-client</artifactId>
+                            <version>${wildfly.version}</version>
+                        </dependency>
+                    </dependencies>
+                    <executions>
+                       <execution>
+                           <id>cargo-prep</id> 
+                               <phase>pre-integration-test</phase>
+                           <goals>
+                                <goal>redeploy</goal>
+                           </goals>
+                       </execution>
+                        <execution>
+                            <id>cargo-post</id>
+                            <phase>post-integration-test</phase>
+                            <goals>
+                                <goal>undeploy</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
             </plugins>
     	</pluginManagement>
     </build>
 
     <profiles>
+        <profile> <!-- tells surefire/failsafe to run JUnit tests with remote debug -->
+            <id>debugger</id>
+            <activation>
+                <property>
+                    <name>debugger</name>
+                </property>
+            </activation>
+            <properties>
+                <surefire.argLine>-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=8000 -Xnoagent -Djava.compiler=NONE</surefire.argLine>
+            </properties>                                  
+        </profile>        
     </profiles>
 </project>
