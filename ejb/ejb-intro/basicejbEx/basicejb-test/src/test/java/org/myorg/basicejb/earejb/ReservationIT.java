@@ -1,6 +1,7 @@
 package org.myorg.basicejb.earejb;
 
 import static org.junit.Assert.*;
+
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
@@ -19,7 +20,7 @@ public class ReservationIT {
     @Before
     public void setUp() throws NamingException {
         assertNotNull("jndi.name.reservation not supplied", reservationJNDI);
-        
+
         logger.debug("getting jndi initial context");
         jndi=new InitialContext();
         logger.debug("jndi={}", jndi.getEnvironment());

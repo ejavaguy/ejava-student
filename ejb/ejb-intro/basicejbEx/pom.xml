@@ -40,6 +40,8 @@
         <cargo.containerId>wildfly8x</cargo.containerId>
         <jboss.host>localhost</jboss.host>
         <jboss.http.port>8080</jboss.http.port>
+        <jboss.remoting.port>${jboss.http.port}</jboss.remoting.port>
+        <jboss.naming.port>${jboss.remoting.port}</jboss.naming.port>
         <jboss.mgmt.host>${jboss.host}</jboss.mgmt.host>
         <jboss.mgmt.port>9990</jboss.mgmt.port>
         <jndi.user>known</jndi.user>
@@ -48,8 +50,8 @@
         <jboss.remoting.java.naming.factory.initial>org.jboss.naming.remote.client.InitialContextFactory</jboss.remoting.java.naming.factory.initial>
         <jboss.remoting.java.naming.provider.url>http-remoting://${jboss.host}:${jboss.http.port}</jboss.remoting.java.naming.provider.url>
         <jboss.remoting.java.naming.factory.url.pkgs/>
-        <jboss.remoting.java.naming.security.principal>${jndi.user}</jboss.remoting.java.naming.security.principal>
-        <jboss.remoting.java.naming.security.credentials>${jndi.password}</jboss.remoting.java.naming.security.credentials>
+
+        <jboss.ejbclient.java.naming.factory.url.pkgs>org.jboss.ejb.client.naming</jboss.ejbclient.java.naming.factory.url.pkgs>
     </properties>
 
     <repositories>
