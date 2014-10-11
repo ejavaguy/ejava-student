@@ -3,34 +3,48 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <parent>
-        <artifactId>basicejbEx</artifactId>
         <groupId>myorg.basicejb</groupId>
+        <artifactId>basicejbEx</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>basicejb-test</artifactId>
-    <packaging>jar</packaging>
+    <artifactId>basicejb-war</artifactId>
+    <packaging>war</packaging>
 
-    <name>Basic EJB Exercise::Remote Test</name>
+    <name>Basic EJB Exercise::WAR</name>
     <description>
-        This project provides an example RMI Test project.
+        This project provides a sample WAR for the Java EE components
+        associated with the overall project.
     </description>
 
     <dependencies>
+        <!-- for EJBs embedded in WAR module -->
+        <dependency>
+            <groupId>javax.ejb</groupId>
+            <artifactId>javax.ejb-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>basicejb-ejb</artifactId>
+            <version>${project.version}</version>
+            <type>ejb</type>
+            <exclusions>
+                <!-- server doesn't want to see already provided jars -->
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-api</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
         <!-- core dependencies -->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <!-- cargo requires scope=compile dependencies on deployables -->
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>basicejb-ear</artifactId>
-            <type>ear</type>
-            <version>${project.version}</version>
+            <scope>provided</scope>
         </dependency>
 
         <!-- test dependencies -->
@@ -48,7 +62,7 @@
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
             <scope>test</scope>
-        </dependency>    
+        </dependency>
 
         <!-- dependencies used for remote interface -->
         <dependency>
@@ -57,15 +71,6 @@
             <type>pom</type>
             <scope>test</scope>
         </dependency>    
-
-        <!-- brings in the EJB-client jar file w/o the EJB -->
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>basicejb-ejb</artifactId>
-            <version>${project.version}</version>
-            <type>ejb-client</type>
-            <scope>test</scope>
-        </dependency>
     </dependencies>
 
     <build>
@@ -88,40 +93,21 @@
         </testResources>
 
         <plugins>
-            <!-- a mistaken step to attempt to correct an IT test setup problem 
+            <!-- artifacts to deploy to server. this module by default -->
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <configuration>
-                    <systemPropertyVariables>
-                        <jndi.name.reservation>ejb:basicejb-ear-${project.version}/basicejb-ejb-${project.version}/ReservationEJB!org.myorg.basicejb.ejb.ReservationRemote</jndi.name.reservation>
-                    </systemPropertyVariables>
-                </configuration>
+                <groupId>org.codehaus.cargo</groupId>
+                <artifactId>cargo-maven2-plugin</artifactId>
             </plugin>
-                 -->
+
             <!-- adds IT integration tests to the build -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
                 <configuration>
                     <systemPropertyVariables>
-                        <jndi.name.reservation>ejb:basicejb-ear-${project.version}/basicejb-ejb-${project.version}/ReservationEJB!org.myorg.basicejb.ejb.ReservationRemote</jndi.name.reservation>
+                        <jndi.name.reservation>ejb:/basicejb-war-1.0-SNAPSHOT/ReservationEJB!org.myorg.basicejb.ejb.ReservationRemote</jndi.name.reservation>
+                        <jndi.name.shopper>ejb:/basicejb-war-1.0-SNAPSHOT/ShopperEJB!org.myorg.basicejb.webejb.ShopperRemote?stateful</jndi.name.shopper>
                     </systemPropertyVariables>
-                </configuration>
-            </plugin>
-
-            <!-- artifacts to deploy to server -->
-            <plugin>
-                <groupId>org.codehaus.cargo</groupId>
-                <artifactId>cargo-maven2-plugin</artifactId>
-                <configuration>
-                    <deployables>
-                        <deployable>
-                            <groupId>${project.groupId}</groupId>
-                            <artifactId>basicejb-ear</artifactId>
-                            <type>ear</type>
-                        </deployable>
-                    </deployables>
                 </configuration>
             </plugin>
         </plugins>

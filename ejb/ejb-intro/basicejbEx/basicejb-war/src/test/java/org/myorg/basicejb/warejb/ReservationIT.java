@@ -1,4 +1,4 @@
-package org.myorg.basicejb.earejb;
+package org.myorg.basicejb.warejb;
 
 import static org.junit.Assert.*;
 
