@@ -50,12 +50,11 @@
         </plugins>
     </build>
 
-
     <profiles>
     <!-- this profiles allow the EAR to be undeployed before it is deleted
         during the clean target. This behavior requires the EAR to be
         present, so it cannot be part of the default behavior. It is
-        only activated when -Dundeploy or -Pundeploy is present so that
+        only activated when -Pundeploy is present so that
         normal cleans do not fail.  -->
         <profile>
             <id>undeploy</id>

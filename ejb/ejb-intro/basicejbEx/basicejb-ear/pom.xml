@@ -33,4 +33,32 @@
             </exclusions>
         </dependency>
     </dependencies>
+
+    <profiles>
+    <!-- this profiles allow the EAR to be undeployed before it is deleted
+        during the clean target. This behavior requires the EAR to be
+        present, so it cannot be part of the default behavior. It is
+        only activated when -Pundeploy is present so that
+        normal cleans do not fail.  -->
+        <profile>
+            <id>undeploy</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.cargo</groupId>
+                        <artifactId>cargo-maven2-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>undeploy-ear</id>
+                                <phase>pre-clean</phase>
+                                <goals>
+                                    <goal>undeploy</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>                    
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>
