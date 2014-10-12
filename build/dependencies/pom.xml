@@ -663,7 +663,7 @@
                     <artifactId>maven-ear-plugin</artifactId>
                     <version>${maven-ear-plugin.version}</version>
                     <configuration>
-                       <version>6</version>
+                       <version>7</version>
                     </configuration>
                 </plugin>
                 <plugin>
