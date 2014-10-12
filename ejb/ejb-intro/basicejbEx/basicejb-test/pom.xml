@@ -94,7 +94,7 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
                     <systemPropertyVariables>
-                        <jndi.name.reservation>ejb:basicejb-ear-${project.version}/basicejb-ejb-${project.version}/ReservationEJB!org.myorg.basicejb.ejb.ReservationRemote</jndi.name.reservation>
+                        <jndi.name.reservation>ejb:basicejb-ear/basicejb-ejb/ReservationEJB!org.myorg.basicejb.ejb.ReservationRemote</jndi.name.reservation>
                     </systemPropertyVariables>
                 </configuration>
             </plugin>
@@ -105,7 +105,9 @@
                 <artifactId>maven-failsafe-plugin</artifactId>
                 <configuration>
                     <systemPropertyVariables>
-                        <jndi.name.reservation>ejb:basicejb-ear-${project.version}/basicejb-ejb-${project.version}/ReservationEJB!org.myorg.basicejb.ejb.ReservationRemote</jndi.name.reservation>
+                        <!--
+                        <jndi.name.reservation>ejb:basicejb-ear/basicejb-ejb/ReservationEJB!org.myorg.basicejb.ejb.ReservationRemote</jndi.name.reservation>
+                        -->
                     </systemPropertyVariables>
                 </configuration>
             </plugin>

@@ -2,7 +2,6 @@ package org.myorg.basicejb.warejb;
 
 import static org.junit.Assert.*;
 
-
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
@@ -14,7 +13,8 @@ import org.slf4j.LoggerFactory;
 
 public class ShopperIT {
     private static final Logger logger = LoggerFactory.getLogger(ShopperIT.class);
-    private static final String shopperJNDI = System.getProperty("jndi.name.shopper"); 
+    private static final String shopperJNDI = System.getProperty("jndi.name.shopper",
+            "ejb:/basicejb-war/ShopperEJB!"+ShopperRemote.class.getName()+"?stateful"); 
     private InitialContext jndi;
     
     @Before

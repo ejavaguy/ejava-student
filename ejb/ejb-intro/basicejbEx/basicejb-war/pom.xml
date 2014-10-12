@@ -105,8 +105,10 @@
                 <artifactId>maven-failsafe-plugin</artifactId>
                 <configuration>
                     <systemPropertyVariables>
-                        <jndi.name.reservation>ejb:/basicejb-war-1.0-SNAPSHOT/ReservationEJB!org.myorg.basicejb.ejb.ReservationRemote</jndi.name.reservation>
-                        <jndi.name.shopper>ejb:/basicejb-war-1.0-SNAPSHOT/ShopperEJB!org.myorg.basicejb.webejb.ShopperRemote?stateful</jndi.name.shopper>
+                        <!--
+                        <jndi.name.reservation>ejb:/basicejb-war/ReservationEJB!org.myorg.basicejb.ejb.ReservationRemote</jndi.name.reservation>
+                        <jndi.name.shopper>ejb:/basicejb-war/ShopperEJB!org.myorg.basicejb.webejb.ShopperRemote?stateful</jndi.name.shopper>
+                        -->
                     </systemPropertyVariables>
                 </configuration>
             </plugin>

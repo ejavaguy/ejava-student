@@ -34,6 +34,30 @@
         </dependency>
     </dependencies>
 
+    <build>
+        <plugins>
+            <!-- provide properties here to impact the EAR packaging -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-ear-plugin</artifactId>
+                <configuration>
+                    <!-- names directory within EAR to place jars to be in classpath -->
+                    <defaultLibBundleDir>lib</defaultLibBundleDir>
+                    <!-- eliminates use of version in EAR JNDI name portion -->
+                    <applicationName>${project.artifactId}</applicationName>
+                    <modules>
+                        <!-- eliminates use of the version in the EJB JNDI name -->
+                        <ejbModule>
+                            <groupId>${project.groupId}</groupId>
+                            <artifactId>basicejb-ejb</artifactId>
+                            <bundleFileName>basicejb-ejb.jar</bundleFileName>
+                        </ejbModule>
+                    </modules>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
     <profiles>
     <!-- this profiles allow the EAR to be undeployed before it is deleted
         during the clean target. This behavior requires the EAR to be
