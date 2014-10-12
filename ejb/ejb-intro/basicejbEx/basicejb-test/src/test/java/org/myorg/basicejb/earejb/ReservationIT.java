@@ -35,6 +35,8 @@ public class ReservationIT {
     @Test
     public void testPing() throws NamingException {
         logger.info("*** testPing ***");
-        reservationist.ping();
+        for (int i=0; i<10; i++) {
+            reservationist.ping();
+        }
     }
 }
