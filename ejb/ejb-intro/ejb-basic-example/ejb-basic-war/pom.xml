@@ -18,6 +18,19 @@
     </description>
 
     <dependencies>
+        <!-- for embedded code/EJBs -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.ejb</groupId>
+            <artifactId>javax.ejb-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- external/imported EJBs -->
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>ejb-basic-ejb</artifactId>
