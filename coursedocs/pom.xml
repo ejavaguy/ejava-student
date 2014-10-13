@@ -134,6 +134,13 @@
         </dependency>
         <dependency>
             <groupId>info.ejava.docs.ejb</groupId>
+            <artifactId>enc-config-notes</artifactId>
+            <version>${project.version}</version>
+            <type>war</type>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>info.ejava.docs.ejb</groupId>
             <artifactId>ejbsessionBank</artifactId>
             <version>${project.version}</version>
             <type>war</type>
@@ -374,6 +381,12 @@
                 <overlay>
                     <groupId>info.ejava.docs.ejb</groupId>
                     <artifactId>ejb-dev-notes</artifactId>
+                    <type>war</type>
+                    <targetPath>../site/docs/content</targetPath>
+                </overlay>
+                <overlay>
+                    <groupId>info.ejava.docs.ejb</groupId>
+                    <artifactId>enc-config-notes</artifactId>
                     <type>war</type>
                     <targetPath>../site/docs/content</targetPath>
                 </overlay>

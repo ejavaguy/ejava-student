@@ -267,8 +267,10 @@
                   <li>Look over the specification for project 2.</li>
                   <li>Apply the maven, EJB, EAR, RMI Test, and remote interface
                   concepts from the exercises to your project 2.</li>
-                  <li>Have one end-to-end thread through eDmvTest, EJB, and project 1
-                  operational</li>
+                  <li>Have one IT test deploying eDmvEAR with and EJB and invoking
+                  skeletal methods from end-to-end scenario. Mayberry should
+                  pass serializable BOs as DTOs. Dmv should pass separate serializable
+                  DTO classes (i.e., not same BO classes).</li>
                 </ul>
             </li>
             <li>Examples

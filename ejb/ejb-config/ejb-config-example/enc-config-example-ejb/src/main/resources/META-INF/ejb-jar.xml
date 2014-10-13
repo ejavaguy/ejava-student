@@ -1,0 +1,152 @@
+<?xml version="1.0"?>
+<ejb-jar 
+    xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/ejb-jar_3_2.xsd"
+      version="3.2">
+    
+    <enterprise-beans>
+        <session>
+            <ejb-name>AnnotatedEJB</ejb-name>
+            <env-entry>
+                <env-entry-name>val/value2</env-entry-name>
+                <env-entry-type>java.lang.String</env-entry-type>
+                <env-entry-value>from ejb-jar.xml</env-entry-value>
+            </env-entry>
+        </session>
+        <session>
+            <ejb-name>XMLConfiguredEJB</ejb-name>
+            
+            <env-entry>
+                <env-entry-name>val/value1</env-entry-name>
+                <env-entry-type>java.lang.Integer</env-entry-type>
+                <env-entry-value>10</env-entry-value>
+                <injection-target>
+                    <injection-target-class>ejava.ejb.examples.encconfig.ejb.XMLConfiguredEJB</injection-target-class>
+                    <injection-target-name>value1</injection-target-name>
+                </injection-target>
+            </env-entry>
+            <env-entry>
+                <env-entry-name>val/value2</env-entry-name>
+                <env-entry-type>java.lang.String</env-entry-type>
+                <env-entry-value>from ejb-jar.xml</env-entry-value>
+            </env-entry>
+
+            <ejb-local-ref>
+                <ejb-ref-name>ejb/ejb1</ejb-ref-name>
+                <ejb-ref-type>Session</ejb-ref-type>
+                <local>ejava.ejb.examples.encconfig.ejb.InjectedEJB</local>
+                <ejb-link>InjectedEJB</ejb-link>
+                <injection-target>
+                    <injection-target-class>ejava.ejb.examples.encconfig.ejb.XMLConfiguredEJB</injection-target-class>
+                    <injection-target-name>ejb1</injection-target-name>
+                </injection-target>
+            </ejb-local-ref>
+            <ejb-local-ref>
+                <ejb-ref-name>ejb/ejb2</ejb-ref-name>
+                <ejb-ref-type>Session</ejb-ref-type>
+                <local>ejava.ejb.examples.encconfig.ejb.InjectedEJB</local>
+                <ejb-link>InjectedEJB</ejb-link>
+            </ejb-local-ref>
+            
+            <resource-ref>
+                <res-ref-name>jdbc/ds1</res-ref-name>
+                <res-type>javax.sql.DataSource</res-type>
+                <injection-target>
+                    <injection-target-class>ejava.ejb.examples.encconfig.ejb.XMLConfiguredEJB</injection-target-class>
+                    <injection-target-name>ds1</injection-target-name>
+                </injection-target>
+                <lookup-name>java:jboss/datasources/ExampleDS</lookup-name>
+            </resource-ref>
+            <resource-ref>
+                <res-ref-name>jdbc/ds2</res-ref-name>
+                <res-type>javax.sql.DataSource</res-type>
+                <lookup-name>java:jboss/datasources/ExampleDS</lookup-name>
+            </resource-ref>            
+
+            <resource-ref>
+                <res-ref-name>jms/cf1</res-ref-name>
+                <res-type>javax.jms.ConnectionFactory</res-type>
+                <injection-target>
+                    <injection-target-class>ejava.ejb.examples.encconfig.ejb.XMLConfiguredEJB</injection-target-class>
+                    <injection-target-name>cf1</injection-target-name>
+                </injection-target>
+                <lookup-name>java:/JmsXA</lookup-name>
+            </resource-ref>
+            <resource-ref>
+                <res-ref-name>jms/cf2</res-ref-name>
+                <res-type>javax.jms.ConnectionFactory</res-type>
+                <lookup-name>java:/JmsXA</lookup-name>
+            </resource-ref>
+
+            <resource-env-ref>
+                <resource-env-ref-name>jms/queue1</resource-env-ref-name>
+                <resource-env-ref-type>javax.jms.Queue</resource-env-ref-type>
+                <injection-target>
+                    <injection-target-class>ejava.ejb.examples.encconfig.ejb.XMLConfiguredEJB</injection-target-class>
+                    <injection-target-name>queue1</injection-target-name>
+                </injection-target>
+                <lookup-name>java:/queue/test</lookup-name>
+            </resource-env-ref>
+            <resource-env-ref>
+                <resource-env-ref-name>jms/queue2</resource-env-ref-name>
+                <resource-env-ref-type>javax.jms.Destination</resource-env-ref-type>
+                <lookup-name>java:/queue/test</lookup-name>
+            </resource-env-ref>
+
+            <resource-env-ref>
+                <resource-env-ref-name>jms/topic1</resource-env-ref-name>
+                <resource-env-ref-type>javax.jms.Topic</resource-env-ref-type>
+                <injection-target>
+                    <injection-target-class>ejava.ejb.examples.encconfig.ejb.XMLConfiguredEJB</injection-target-class>
+                    <injection-target-name>topic1</injection-target-name>
+                </injection-target>
+                <lookup-name>java:/topic/test</lookup-name>
+            </resource-env-ref>
+            <resource-env-ref>
+                <resource-env-ref-name>jms/topic2</resource-env-ref-name>
+                <resource-env-ref-type>javax.jms.Destination</resource-env-ref-type>
+                <lookup-name>java:/topic/test</lookup-name>
+            </resource-env-ref>
+            
+            <persistence-context-ref>
+                <persistence-context-ref-name>jpa/em1</persistence-context-ref-name>
+                <persistence-unit-name>enc-config</persistence-unit-name>
+                <injection-target>
+                    <injection-target-class>ejava.ejb.examples.encconfig.ejb.XMLConfiguredEJB</injection-target-class>
+                    <injection-target-name>em1</injection-target-name>
+                </injection-target>
+            </persistence-context-ref>
+            <persistence-context-ref>
+                <persistence-context-ref-name>jpa/em2</persistence-context-ref-name>
+                <persistence-unit-name>enc-config</persistence-unit-name>
+                <injection-target>
+                    <injection-target-class>ejava.ejb.examples.encconfig.ejb.XMLConfiguredEJB</injection-target-class>
+                    <injection-target-name>em2</injection-target-name>
+                </injection-target>
+            </persistence-context-ref>
+            
+            <persistence-unit-ref>
+                <persistence-unit-ref-name>jpa/emf1</persistence-unit-ref-name>
+                <persistence-unit-name>enc-config</persistence-unit-name>
+                <injection-target>
+                    <injection-target-class>ejava.ejb.examples.encconfig.ejb.XMLConfiguredEJB</injection-target-class>
+                    <injection-target-name>emf1</injection-target-name>
+                </injection-target>
+            </persistence-unit-ref>            
+            <persistence-unit-ref>
+                <persistence-unit-ref-name>jpa/emf2</persistence-unit-ref-name>
+                <persistence-unit-name>enc-config</persistence-unit-name>
+                <injection-target>
+                    <injection-target-class>ejava.ejb.examples.encconfig.ejb.XMLConfiguredEJB</injection-target-class>
+                    <injection-target-name>emf2</injection-target-name>
+                </injection-target>
+            </persistence-unit-ref>
+
+            <post-construct>
+                <lifecycle-callback-method>init</lifecycle-callback-method>
+            </post-construct>
+        </session>
+    </enterprise-beans>
+   
+</ejb-jar>

@@ -6,6 +6,7 @@ import info.ejava.examples.ejb.basic.dto.Name;
 import java.util.Date;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
 
@@ -19,7 +20,11 @@ public class GreeterEJB implements Greeter {
 
     @PostConstruct
     public void init() {
-        logger.info("*** GreeterEJB ***");
+        logger.info("*** GreeterEJB:init({}) ***", super.hashCode());
+    }
+    @PreDestroy
+    public void destroy() {
+        logger.info("*** GreeterEJB:destroy({}) ***", super.hashCode());
     }
     
     /**

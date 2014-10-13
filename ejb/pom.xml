@@ -17,6 +17,7 @@
     </description>
     <modules>
         <module>ejb-intro</module>
+        <module>ejb-config</module>
         <module>ejbsessionBank</module>
         <module>jndiDemo</module>
         <module>webtier</module>
