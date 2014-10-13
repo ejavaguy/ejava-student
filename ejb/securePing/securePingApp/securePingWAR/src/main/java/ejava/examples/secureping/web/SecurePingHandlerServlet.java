@@ -70,13 +70,13 @@ public class SecurePingHandlerServlet extends HttpServlet {
         }
     }
 
+    @SuppressWarnings("rawtypes")
     private void initServerRef(ServletConfig config) throws Exception {        
         log.debug("initServerRef(), securePingServer=" + securePingServer);
         if (securePingServer == null) {
             //build an InitialContext from Servlet.init properties in web.xml
             Properties jndiProperties = new Properties();
-            for(@SuppressWarnings("rawtypes")
-			Enumeration e=config.getInitParameterNames();
+            for(Enumeration e=config.getInitParameterNames();
                 e.hasMoreElements(); ) {
                 String key = (String)e.nextElement();
                 String value=(String)config.getInitParameter(key);
