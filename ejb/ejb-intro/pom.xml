@@ -20,4 +20,12 @@
     <modules>
         <module>ejb-basic-example</module>
     </modules>
+    <profiles>
+        <profile>
+            <id>all-modules</id>
+            <modules>
+                <module>basicejbEx</module>
+            </modules>
+        </profile>
+    </profiles>
 </project>
