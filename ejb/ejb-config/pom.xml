@@ -18,6 +18,7 @@
 
     <modules>
         <module>ejb-config-example</module>
+        <module>encconfig-lab</module>
     </modules>
     <profiles>
         <profile>
