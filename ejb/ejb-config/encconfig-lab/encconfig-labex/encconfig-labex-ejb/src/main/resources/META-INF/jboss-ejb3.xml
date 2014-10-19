@@ -1,0 +1,42 @@
+<?xml version="1.0"?>  
+<jboss:ejb-jar 
+    xmlns:jboss="urn:jboss:domain:ejb3:1.1"
+    xmlns="http://java.sun.com/xml/ns/javaee"
+    xmlns:s="urn:security"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/ejb-jar_3_1.xsd"
+    version="3.1"
+    impl-version="2.0">
+
+    <enterprise-beans>
+        <session>
+            <ejb-name>JNDIAuditorEJB</ejb-name>
+            <resource-ref>
+                <res-ref-name>jms/cf</res-ref-name>
+                <res-type>javax.jms.ConnectionFactory</res-type>
+                <jndi-name>java:/JmsXA</jndi-name>
+            </resource-ref>
+
+            <resource-env-ref>
+                <resource-env-ref-name>jms/topic</resource-env-ref-name>
+                <resource-env-ref-type>javax.jms.Topic</resource-env-ref-type>
+                <jndi-name>java:/topic/test</jndi-name>
+            </resource-env-ref>
+        </session>
+
+        <session>
+            <ejb-name>XMLInjectAuditorEJB</ejb-name>
+            <resource-ref>
+                <res-ref-name>jms/cf</res-ref-name>
+                <res-type>javax.jms.ConnectionFactory</res-type>
+                <jndi-name>java:/JmsXA</jndi-name>
+            </resource-ref>
+
+            <resource-env-ref>
+                <resource-env-ref-name>jms/topic</resource-env-ref-name>
+                <resource-env-ref-type>javax.jms.Topic</resource-env-ref-type>
+                <jndi-name>java:/topic/test</jndi-name>
+            </resource-env-ref>
+        </session>
+    </enterprise-beans>
+</jboss:ejb-jar>
