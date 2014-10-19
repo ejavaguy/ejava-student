@@ -33,8 +33,8 @@
           <li>2014-11-05: Posted Web Tier TODOs</li>
           <li>2014-10-30: Posted Transaction TODOs</li>
           <li>2014-10-27: Posted updates to JavaEE Exercises</li>
-          <li>2014-10-23: Posted EJB TODOs</li>
           -->
+          <li>2014-10-19: Posted JNDI/ENC Exercise and EJB TODOs</li>
           <li>2014-10-14: Posted Final Project 1 TODOs and Server-side EJB Modules</li>
           <li>2014-10-07: Posted JPA-QL TODOs</li>
           <li>2014-09-30: Posted Updated ORM Relationship TODOs</li>
@@ -217,14 +217,14 @@
       </ul></li>
       -->
 
-      <!-- week 08: Session Beans
+      <!-- week 08: Session Beans -->
       <li><ul>
             <li>Exercises
                 <ul>
                   <li>Start working through the Java EE exercises.
                   It is highly recommended that you go through this since it
                   takes you through many of the use cases and common issues
-                  related to project 2.  Stop after completng Part E.</li>
+                  related to project 2.</li>
                 </ul>
             </li>
             <li>Examples
@@ -233,8 +233,8 @@
                   server-side modules. Be be sure to have your jboss server 
                   running when building prior to building them from this 
                   point forward.</li>
-                  <li>Begin looking at ejbsessionBank example application; 
-                  which forms an EJB, EAR, RMI Test, as well as a WAR Client.
+                  <li>Begin looking at ejb-basic and ejbsessionBank example applications; 
+                  which form an EJB, EAR, RMI Test, as well as a WAR Client.
                   These will be key component types within project 2.</li>
                 </ul>
             </li>
@@ -243,12 +243,18 @@
                   <li>Look over the specification for project 2.</li>
                   <li>Apply the maven, EJB, EAR, RMI Test, and remote interface
                   concepts from the exercises to your project 2.</li>
-                  <li>Have one end-to-end thread through eSalesTest, EJB, and project 1
+                  <li>Have one end-to-end thread through eDmvTest, EJB, and project 1
                   operational</li>
                 </ul>
             </li>
       </ul></li>
-      -->
+
+
+      </ul>
+      </subsection>
+
+      <subsection name="Things you should have finished!" id="completed">
+      <ul>
 
       <!-- week 07: SQL Tuning and Session Beans -->
       <li><ul> 
@@ -293,13 +299,6 @@
                 </ul>
             </li>
       </ul></li>
-
-
-      </ul>
-      </subsection>
-
-      <subsection name="Things you should have finished!" id="completed">
-      <ul>
 
       <!-- week 06: JPAQL -->
       <li><ul> 
