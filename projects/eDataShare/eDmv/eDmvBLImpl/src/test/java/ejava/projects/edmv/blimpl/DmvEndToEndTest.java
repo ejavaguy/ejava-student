@@ -22,8 +22,8 @@ import ejava.projects.edmv.jpa.JPAVehicleDAO;
 /**
  * This class provides an end-to-end demonstration of the DMV business logic.
  */
-public class DmvEndToEnd extends JPADAOTestBase {
-	private static Log log = LogFactory.getLog(DmvEndToEnd.class);
+public class DmvEndToEndTest extends JPADAOTestBase {
+	private static Log log = LogFactory.getLog(DmvEndToEndTest.class);
 	protected PersonDAO personDAO;
 	protected VehicleDAO vrDAO;
 	protected PersonMgmt personMgmt;
