@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory;
  * This class implements the technique-independent IT tests for the configured
  * EJB. It gets extended by technique-specific IT tests 
  */
-public class AuditorCheckerITBase {
+public abstract class AuditorCheckerITBase {
 	private static final Logger log = LoggerFactory.getLogger(AuditorCheckerITBase.class);
 
 	private String jndiName;

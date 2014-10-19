@@ -19,7 +19,7 @@ import org.slf4j.LoggerFactory;
  * EJB. It gets extended by technique-specific IT tests 
  */
 @Ignore
-public class AuditorCheckerITBase {
+public abstract class AuditorCheckerITBase {
 	private static final Logger log = LoggerFactory.getLogger(AuditorCheckerITBase.class);
 
 	private String jndiName;
@@ -51,7 +51,7 @@ public class AuditorCheckerITBase {
 	}
 	
 	//TODO: enc-config 01: run this test
-	//@Ignore
+	@Ignore
 	@Test
 	public void testPublishJMS() throws NamingException {
 		log.info("*** testPublishJMS() ***");

@@ -36,7 +36,7 @@
             
             <persistence-context-ref>
                 <persistence-context-ref-name>jpa/em</persistence-context-ref-name>
-                <persistence-unit-name>ejbconfig-lab</persistence-unit-name>
+                <persistence-unit-name>encconfig-lab</persistence-unit-name>
             </persistence-context-ref>
         </session>
 
@@ -60,7 +60,7 @@
             
             <persistence-context-ref>
                 <persistence-context-ref-name>jpa/em</persistence-context-ref-name>
-                <persistence-unit-name>ejbconfig-lab</persistence-unit-name>
+                <persistence-unit-name>encconfig-lab</persistence-unit-name>
             </persistence-context-ref>
         </session>
 
@@ -96,7 +96,7 @@
             
             <persistence-context-ref>
                 <persistence-context-ref-name>jpa/em</persistence-context-ref-name>
-                <persistence-unit-name>ejbconfig-lab</persistence-unit-name>
+                <persistence-unit-name>encconfig-lab</persistence-unit-name>
                 <injection-target>
                     <injection-target-class>org.myorg.encconfig.ejb.XMLInjectAuditorEJB</injection-target-class>
                     <injection-target-name>em</injection-target-name>

@@ -18,7 +18,7 @@ public class LookupAuditorEJB extends AuditorBase
 	@Resource(name="val/publishJMS")
 	private Boolean publishJMS;
 	
-	@PersistenceContext(unitName="ejbconfig-lab")
+	@PersistenceContext(unitName="encconfig-lab")
 	private EntityManager em;
 	
 	@Resource(lookup="java:/JmsXA")

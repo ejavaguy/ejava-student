@@ -1,6 +1,5 @@
 package org.myorg.encconfig.ejb;
 
-import javax.ejb.Stateless;
 import javax.jms.ConnectionFactory;
 import javax.jms.Topic;
 import javax.persistence.EntityManager;
@@ -8,7 +7,6 @@ import javax.persistence.EntityManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@Stateless
 public class XMLInjectAuditorEJB extends AuditorBase 
 	implements AuditorRemote {
 	private static final Logger log = LoggerFactory.getLogger(XMLInjectAuditorEJB.class);

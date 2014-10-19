@@ -21,7 +21,7 @@ public class LookupAuditorEJB extends AuditorBase
 	private Boolean publishJMS;
 	
 	//TODO: enc-config 04: define a persistence context injection here 
-	//@PersistenceContext(unitName="ejbconfig-lab")
+	//@PersistenceContext(unitName="encconfig-lab")
 	private EntityManager em;
 	
 	//TODO: enc-config 06: define a resource value lookup and injection here

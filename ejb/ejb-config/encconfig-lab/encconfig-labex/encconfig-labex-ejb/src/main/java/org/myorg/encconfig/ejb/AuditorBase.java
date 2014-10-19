@@ -17,7 +17,7 @@ import javax.persistence.EntityManager;
 import org.myorg.encconfig.bo.AuditRecord;
 import org.slf4j.Logger;
 
-public class AuditorBase {
+public abstract class AuditorBase {
 	private Logger log_;
 	private boolean publishJMS_;
 	private EntityManager em_;

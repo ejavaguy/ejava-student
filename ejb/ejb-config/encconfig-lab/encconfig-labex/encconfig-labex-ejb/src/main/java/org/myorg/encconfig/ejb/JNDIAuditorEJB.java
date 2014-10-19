@@ -26,7 +26,7 @@ public class JNDIAuditorEJB extends AuditorBase
 	private @Resource SessionContext ctx;
 	
 	//TODO: enc-config 18: activate initialization method to perform ENC lookups 
-	@PostConstruct
+	//@PostConstruct
 	public void init() {
 		InitialContext jndi = null;
 		try {
