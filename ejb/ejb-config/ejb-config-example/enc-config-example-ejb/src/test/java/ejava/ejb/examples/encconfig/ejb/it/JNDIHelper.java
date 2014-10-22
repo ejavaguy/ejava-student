@@ -24,7 +24,7 @@ public class JNDIHelper {
 			for (Enumeration<NameClassPair> e=jndi.list(name);e.hasMoreElements();) {
 				NameClassPair ncp = e.nextElement();
 				String n = name + "/" + ncp.getName();
-				listJNDI(jndi, text, n, jndi.lookup(n));
+				try { listJNDI(jndi, text, n, jndi.lookup(n)); } catch (NamingException ex){}
 			}
 		} else {
 			text.append(String.format("%s:%s\n", name, object));
