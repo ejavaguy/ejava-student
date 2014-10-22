@@ -17,6 +17,7 @@ import org.slf4j.LoggerFactory;
  * This class implements the technique-independent IT tests for the configured
  * EJB. It gets extended by technique-specific IT tests 
  */
+//TODO: enc-config 29
 @Ignore
 public class ConfigBeanIT {
 	private static final Logger log = LoggerFactory.getLogger(ConfigBeanIT.class);
