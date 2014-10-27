@@ -32,8 +32,8 @@
           <li>2014-11-12: Posted Security TODOs</li>
           <li>2014-11-05: Posted Web Tier TODOs</li>
           <li>2014-10-30: Posted Transaction TODOs</li>
-          <li>2014-10-27: Posted updates to JavaEE Exercises</li>
           -->
+          <li>2014-10-28: Posted Server-Side JPA Notes and Transaction TODOs</li>
           <li>2014-10-23: Posted typo corrections to Basic EJB Dev Exercise</li>
           <li>2014-10-19: Posted JNDI/ENC Exercise and EJB TODOs</li>
           <li>2014-10-14: Posted Final Project 1 TODOs and Server-side EJB Modules</li>
@@ -188,26 +188,26 @@
       </ul></li>
       -->
 
-      <!-- week 09: CDI and Transactions
+      <!-- week 09: (CDI and) Transactions -->
       <li><ul>
-            <li>Exercises
+            <li>Examples
                 <ul>
-                  <li>Complete through (Optional) Part E</li>
+                  <li>ejb-jpa-example provides beyond-basic examples of using 
+                    JPA on the server-side -- to include LAZy-load exceptions/solutions,
+                    DTOs, caching state with Stateful EJBs, etc.
+                  </li>
                 </ul>
             </li>
             <li>Project
                 <ul>
-                  <li>Design your remote interfaces and DTO classes for the eLeague</li>
+                  <li>Design your remote interfaces and DTO classes for eDmv</li>
                   <li>Begin adding the other session beans, remote interfaces,
                   business logic integration, and RMI tests for project 2.</li>
                   <li>Finish implementing EJB use cases for eSales end-to-end testing.</li>
                   <li>Transactions
                         <ul>
                           <li>Add @Transaction declarations</li>
-                          <li>Implement the transaction test requirement. You may
-                          want to place logic for the transaction test within 
-                          the TestUtilEJB if you end up with undesirable business
-                          logic in order to demonstrate the rollback of a transaction.
+                          <li>Implement the transaction test requirement.
                           Remember, your entities must actually hit the DB and be rolled
                           back as part of the transaction. Simply rejecting bad data does
                           not satisfy the project transaction rollback demo requirement.</li>
@@ -216,8 +216,13 @@
                 </ul>
             </li>
       </ul></li>
-      -->
 
+
+      </ul>
+      </subsection>
+
+      <subsection name="Things you should have finished!" id="completed">
+      <ul>
       <!-- week 08: Session Beans -->
       <li><ul>
             <li>Exercises
@@ -250,12 +255,6 @@
             </li>
       </ul></li>
 
-
-      </ul>
-      </subsection>
-
-      <subsection name="Things you should have finished!" id="completed">
-      <ul>
 
       <!-- week 07: SQL Tuning and Session Beans -->
       <li><ul> 

@@ -4,7 +4,7 @@
     xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd" version="2.0">
 
     <persistence-unit name="ejbsessionbank">
-        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         <jta-data-source>java:jboss/datasources/ExampleDS</jta-data-source>
         <jar-file>lib/ejbsessionBankImpl-${project.version}.jar</jar-file>
         <properties>
@@ -18,5 +18,4 @@
             -->
         </properties>
     </persistence-unit>        
-    
 </persistence>

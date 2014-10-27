@@ -114,6 +114,14 @@
             <scope>runtime</scope>
        </dependency>
 
+       <!-- used if hibernate entities re-used as DTOs 
+       <dependency>
+           <groupId>org.hibernate</groupId>
+           <artifactId>hibernate-core</artifactId>
+            <scope>runtime</scope>
+       </dependency>
+            -->
+
     </dependencies>
 
     <build>

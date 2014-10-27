@@ -25,7 +25,8 @@ import org.slf4j.LoggerFactory;
 @Stateless
 public class HotelMgmtEJB implements HotelMgmtRemote, HotelMgmtLocal {
     private static final Logger logger = LoggerFactory.getLogger(HotelMgmtEJB.class);
-                                                                                                                                                                                                                                                                                                                                        @PersistenceContext(unitName="ejbjpa-hotel")
+
+    @PersistenceContext(unitName="ejbjpa-hotel")
     private EntityManager em;
     private HotelDAO dao;                                                                                                                                                                                                                                                                                                                                   
     private HotelMgmt hotelMgmt; 

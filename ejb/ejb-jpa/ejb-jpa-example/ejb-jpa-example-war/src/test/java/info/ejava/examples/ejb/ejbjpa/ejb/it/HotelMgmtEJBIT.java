@@ -2,9 +2,8 @@ package info.ejava.examples.ejb.ejbjpa.ejb.it;
 
 import static org.junit.Assert.*;
 
+
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 
 import info.ejava.examples.ejb.ejbjpa.bl.RoomUnavailableExcepton;
@@ -116,7 +115,7 @@ public class HotelMgmtEJBIT  {
 	        logger.info("foor has {} rooms", floor.getRooms().size());
 	        fail("did not get lazy-load exception");
 	    } catch (LazyInitializationException expected) {
-	        logger.info("got expected exception:{}", expected);
+	        logger.info("got expected exception:{}", expected.toString());
 	    }
 	}
 	
@@ -344,38 +343,4 @@ public class HotelMgmtEJBIT  {
         logger.info("hotel has {} rooms available", availableRooms2);
         assertEquals("", availableRooms, availableRooms2);
     }
-	
-	
-//	@Test
-    public void hotel() {
-        int offset=0;
-        int limit=1;
-        Room room = hotelMgmt.getRoom(1);
-        assertNotNull("room not found", room);
-        List<Floor> floors = hotelMgmt.getFloors(offset, limit);
-        while (!floors.isEmpty()) {
-            Floor floor = floors.get(0);
-            logger.info("floor=" + floor);
-            offset += limit;
-            floors = hotelMgmt.getFloors(offset, limit);
-        }
-    }
-	
-//	@Test
-	public void stay() throws RoomUnavailableExcepton {
-        List<Room> rooms = hotelMgmt.getAvailableRooms(2, 0, 1);
-        assertEquals("unexpected rooms.count", 1, rooms.size());
-        Room room = rooms.get(0);
-        assertEquals("unexpected floor", 2, room.getFloor().getLevel());
-        assertNull("room occupied", room.getOccupant());
-        Guest guest = new Guest("Cosmo Kramer");
-        guest = hotelMgmt.checkIn(guest, room);
-        
-        Room hotelRoom = hotelMgmt.getRoom(room.getNumber());
-        assertNotNull("room not occupied", hotelRoom.getOccupant());
-        logger.debug("{}", room);
-        
-        int count = hotelMgmt.checkout(guest);
-        assertEquals("unexpected count", 1, count);
-	}
 }

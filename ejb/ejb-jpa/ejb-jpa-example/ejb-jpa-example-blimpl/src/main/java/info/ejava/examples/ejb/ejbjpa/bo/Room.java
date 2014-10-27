@@ -26,11 +26,12 @@ public class Room implements Serializable {
     @Column(name="ROOM_NUMBER")
     private int number;
     
-    @ManyToOne(fetch=FetchType.LAZY, optional=false)
+    @ManyToOne(optional=false, fetch=FetchType.LAZY)
     @JoinColumn(name="FLOOR_ID")
     private Floor floor;
     
     @OneToOne(optional=true, fetch=FetchType.LAZY)
+    @JoinColumn(name="OCCUPANT_ID")
     private Guest occupant;
 
     public Room() {}
