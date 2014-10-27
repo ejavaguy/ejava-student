@@ -3,6 +3,7 @@ package info.ejava.examples.ejb.ejbjpa.dto;
 import java.io.Serializable;
 
 public class RoomDTO implements Serializable {
+    private static final long serialVersionUID = 1L;
     private int number;
     private boolean occupied;
     

@@ -218,9 +218,19 @@ public class HotelMgmtEJB implements HotelMgmtRemote, HotelMgmtLocal {
         }
         return cleanRooms;
     }
+    
+    /**
+     * This local-interface-only method places a pessimistic write-lock on each 
+     * returned room.
+     */
+    @Override
+    public List<Room> getAvailableRoomsForUpdate(Integer level, int offset, int limit) {
+        return dao.getAvailableRoomsForUpdate(level, offset, limit);
+    }
 
     @Override
     public Guest checkIn(Guest guest, Room room) throws RoomUnavailableExcepton {
+        logger.debug("checkin(guest={}, room={})", em);
         return hotelMgmt.checkIn(guest, room);
     }
 

@@ -7,6 +7,7 @@ import info.ejava.examples.ejb.ejbjpa.bo.Room;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.LockModeType;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -89,8 +90,7 @@ public class JPAHotelDAO implements HotelDAO {
         return em.find(Room.class, number);
     }
 
-    @Override
-    public List<Room> getAvailableRooms(Integer level, int offset, int limit) {
+    protected TypedQuery<Room> getAvailableRoomsQuery(Integer level, int offset, int limit) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Room> qdef = cb.createQuery(Room.class);
         Root<Room> r = qdef.from(Room.class);
@@ -104,9 +104,22 @@ public class JPAHotelDAO implements HotelDAO {
         
         qdef.select(r).where(pred).orderBy(cb.asc(r.get("number")));
         return withPaging(em.createQuery(qdef),
-                offset, limit)
+                offset, limit);
+    }
+
+    @Override
+    public List<Room> getAvailableRooms(Integer level, int offset, int limit) {
+        return getAvailableRoomsQuery(level, offset, limit)
                 .getResultList();
     }
+    
+    @Override
+    public List<Room> getAvailableRoomsForUpdate(Integer level, int offset, int limit) {
+        return getAvailableRoomsQuery(level, offset, limit)
+                .setLockMode(LockModeType.PESSIMISTIC_WRITE)
+                .getResultList();
+    }
+    
     
     @Override
     public Room findRoomByGuest(Guest guest) {

@@ -2,6 +2,9 @@ package info.ejava.examples.ejb.ejbjpa.ejb.it;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
 import info.ejava.examples.ejb.ejbjpa.bl.RoomUnavailableExcepton;
@@ -12,6 +15,7 @@ import info.ejava.examples.ejb.ejbjpa.dto.FloorDTO;
 import info.ejava.examples.ejb.ejbjpa.dto.RoomDTO;
 import info.ejava.examples.ejb.ejbjpa.ejb.HotelInitRemote;
 import info.ejava.examples.ejb.ejbjpa.ejb.HotelMgmtRemote;
+import info.ejava.examples.ejb.ejbjpa.ejb.ReservationRemote;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -30,6 +34,8 @@ public class HotelMgmtEJBIT  {
             "ejb:/ejb-jpa-example-war/HotelMgmtEJB!" + HotelMgmtRemote.class.getName());
     private static final String hotelinitJNDI = System.getProperty("hotelinit.jndi.name",
             "ejb:/ejb-jpa-example-war/HotelInitEJB!" + HotelInitRemote.class.getName());
+    private static final String reservationJNDI = System.getProperty("reservation.jndi.name",
+            "ejb:/ejb-jpa-example-war/ReservationEJB!" + ReservationRemote.class.getName() +"?stateful");
 	private Context jndi;
 	private HotelMgmtRemote hotelMgmt;
     private HotelInitRemote hotelInit;
@@ -191,6 +197,152 @@ public class HotelMgmtEJBIT  {
                 //still rude, but a bit more private
             }
         }
+    }
+    
+    /**
+     * This method demonstrates banging against a stateless EJB for each request.
+     * If you look at the SQL/DB activity generated, the room information must be
+     * pulled from the database on every call.
+     * @throws NamingException
+     * @throws RoomUnavailableExcepton
+     */
+    @Test
+    public void statelessReservation() throws NamingException, RoomUnavailableExcepton {
+        List<Room> availableRooms = hotelMgmt.getAvailableRooms(null, 0, 0);
+        logger.debug("we have {} available rooms", availableRooms.size());
+
+        List<Guest> members = new ArrayList<Guest>(availableRooms.size());
+        int i=0;
+        for (Room room: availableRooms) {
+            Guest member = new Guest("member " + i++);
+            member = hotelMgmt.checkIn(member, room);
+            members.add(member);
+        }
+        
+        logger.info("completed reservations for {} guests", members.size());
+        int availableRooms2 = hotelMgmt.getAvailableRooms(null, 0, 0).size();
+        logger.info("hotel has {} rooms available", availableRooms2);
+        assertEquals("", availableRooms.size()-members.size(), availableRooms2);
+    }
+    
+    
+    /**
+     * This test demonstrates how we can use a stateful session EJB to queue up
+     * some requests on the server-side and then act on behalf of a single call
+     * from the client. If you look behind the scenes, it also combines all the 
+     * stateless EJB calls into a single persistence context instance. Unlike 
+     * the statelessReservation you should notice the room information is pulled
+     * from the database only once and re-used after it was made part of the initial
+     * query.
+     * @throws NamingException
+     * @throws RoomUnavailableExcepton
+     */
+    @Test
+    public void statefulReservation() throws NamingException, RoomUnavailableExcepton {
+        int availableRooms = hotelMgmt.getAvailableRooms(null, 0, 0).size();
+        logger.debug("we have {} available rooms", availableRooms);
+        
+        ReservationRemote checkin = (ReservationRemote) jndi.lookup(reservationJNDI);
+        for (int i=0; i<availableRooms; i++) {
+            Guest member = new Guest("member " + i);
+            int count=checkin.addGuest(member);
+            logger.debug("we have {} in our group so far", count);
+        }
+        List<Guest> guests = checkin.reserveRooms();
+        logger.info("completed reservations for {} guests", guests.size());
+        int availableRooms2 = hotelMgmt.getAvailableRooms(null, 0, 0).size();
+        logger.info("hotel has {} rooms available", availableRooms2);
+        assertEquals("", availableRooms-guests.size(), availableRooms2);
+    }
+    
+    /**
+     * This test demonstrates how we can stand a better chance of getting our reservation.
+     * In this case when our stateful session EJB requests rooms for all guests --
+     * it places a pessimistic lock on the room for the duration of the transaction.
+     * If you look closely at the SQL/DB interaction -- you will see a select ... FOR UPDATE.
+     * @throws NamingException 
+     * @throws RoomUnavailableExcepton 
+     */
+    @Test
+    public void pessimisticStatefulReservation() throws NamingException, RoomUnavailableExcepton {
+        int availableRooms = hotelMgmt.getAvailableRooms(null, 0, 0).size();
+        logger.debug("we have {} available rooms", availableRooms);
+        
+        ReservationRemote checkin = (ReservationRemote) jndi.lookup(reservationJNDI);
+        for (int i=0; i<availableRooms; i++) {
+            Guest member = new Guest("member " + i);
+            int count=checkin.addGuest(member);
+            logger.debug("we have {} in our group so far", count);
+        }
+        List<Guest> guests = checkin.reserveRoomsPessimistic();
+        logger.info("completed reservations for {} guests", guests.size());
+        int availableRooms2 = hotelMgmt.getAvailableRooms(null, 0, 0).size();
+        logger.info("hotel has {} rooms available", availableRooms2);
+        assertEquals("", availableRooms-guests.size(), availableRooms2);
+    }
+    
+    /**
+     * This test demonstrates how only the most recent reservation will get rejected
+     * if every call before it is in its own transaction.
+     * @throws RoomUnavailableExcepton 
+     */
+    @Test
+    public void rollbackStateless() throws RoomUnavailableExcepton {
+        List<Room> availableRooms = hotelMgmt.getAvailableRooms(null, 0, 0);
+        logger.debug("we have {} available rooms", availableRooms.size());
+
+        List<Guest> members = new ArrayList<Guest>(availableRooms.size());
+        int i=0;
+        for (Room room: availableRooms) {
+            Guest member = new Guest("member " + i++);
+            member = hotelMgmt.checkIn(member, room);
+            members.add(member);
+        }
+
+        //try doing it again
+        Room room = availableRooms.get(0);
+        Guest member = new Guest("member " + i++);
+        try {
+            member = hotelMgmt.checkIn(member, room);
+            members.add(member);
+            fail("fail to detect bad checkin");
+        } catch (RoomUnavailableExcepton ex) {
+            logger.debug("expected exception making too many reservations:{}", ex.toString());
+        }
+        
+        logger.info("completed reservations for {} guests", members.size());
+        int availableRooms2 = hotelMgmt.getAvailableRooms(null, 0, 0).size();
+        logger.info("hotel has {} rooms available", availableRooms2);
+        assertEquals("", availableRooms.size()-members.size(), availableRooms2);
+    }
+    
+    /**
+     * This test demonstrates how all reservations are rolled back if any of them
+     * fail.
+     * @throws NamingException 
+     */
+    @Test
+    public void rollbackStateful() throws NamingException {
+        int availableRooms = hotelMgmt.getAvailableRooms(null, 0, 0).size();
+        logger.debug("we have {} available rooms", availableRooms);
+        
+        ReservationRemote checkin = (ReservationRemote) jndi.lookup(reservationJNDI);
+        for (int i=0; i<availableRooms+1; i++) {
+            Guest member = new Guest("member " + i);
+            int count=checkin.addGuest(member);
+            logger.debug("we have {} in our group so far", count);
+        }
+        
+        try {
+            checkin.reserveRooms();
+            fail("too many check-ins not detected");
+        } catch (RoomUnavailableExcepton ex) {
+            logger.debug("expected exception making too many reservations:{}", ex.toString());
+        }
+        
+        int availableRooms2 = hotelMgmt.getAvailableRooms(null, 0, 0).size();
+        logger.info("hotel has {} rooms available", availableRooms2);
+        assertEquals("", availableRooms, availableRooms2);
     }
 	
 	

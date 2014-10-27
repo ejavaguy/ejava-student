@@ -13,6 +13,7 @@ public interface HotelDAO {
     
     Room getRoom(int number);
     List<Room> getAvailableRooms(Integer level, int offset, int limit);
+    List<Room> getAvailableRoomsForUpdate(Integer level, int offset, int limit);
     Room findRoomByGuest(Guest guest);
     
     void addGuest(Guest guest);

@@ -46,7 +46,7 @@ public class HotelMgmtImpl implements HotelMgmt {
         }
         
         if (hotelRoom.getOccupant()!=null) {
-            throw new RoomUnavailableExcepton(String.format("room is occupied by %s", room.getOccupant()));
+            throw new RoomUnavailableExcepton(String.format("room is occupied by %s", hotelRoom.getOccupant()));
         }
         
         dao.addGuest(guest);
