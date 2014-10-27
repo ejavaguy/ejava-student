@@ -1,7 +1,6 @@
 package info.ejava.examples.ejb.ejbjpa.ejb;
 
 import java.util.ArrayList;
-
 import java.util.List;
 
 import info.ejava.examples.ejb.ejbjpa.bl.HotelMgmt;
@@ -12,6 +11,8 @@ import info.ejava.examples.ejb.ejbjpa.bo.Guest;
 import info.ejava.examples.ejb.ejbjpa.bo.Room;
 import info.ejava.examples.ejb.ejbjpa.dao.HotelDAO;
 import info.ejava.examples.ejb.ejbjpa.dao.JPAHotelDAO;
+import info.ejava.examples.ejb.ejbjpa.dto.FloorDTO;
+import info.ejava.examples.ejb.ejbjpa.dto.RoomDTO;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
@@ -133,6 +134,52 @@ public class HotelMgmtEJB implements HotelMgmtRemote, HotelMgmtLocal {
     }
     
     @Override
+    public FloorDTO getFetchedFloorDTO(int level) {        
+        Floor floor = getFloor(level);
+        /*
+    select 
+        floor0_.LEVEL as LEVEL1_0_0_ 
+    from
+        EJBJPA_FLOOR floor0_  
+    where
+        floor0_.LEVEL=? 
+         */
+        return toDTO(floor);
+        /*
+    select 
+        rooms0_.FLOOR_ID as FLOOR_ID2_0_0_, 
+        rooms0_.ROOM_NUMBER as ROOM_NUM1_2_0_,
+        rooms0_.ROOM_NUMBER as ROOM_NUM1_2_1_,
+        rooms0_.FLOOR_ID as FLOOR_ID2_2_1_, 
+        rooms0_.occupant_GUEST_ID as occupant3_2_1_ 
+    from
+        EJBJPA_ROOM rooms0_   
+    where
+        rooms0_.FLOOR_ID=? 
+    order by
+        rooms0_.ROOM_NUMBER
+         */
+    }
+    
+    
+    private FloorDTO toDTO(Floor floor) {
+        if (floor==null) { return null; }
+        FloorDTO floorDTO = new FloorDTO(floor.getLevel());
+        if (floor.getRooms()!=null) { for (Room room: floor.getRooms()) {
+            floorDTO.withRoom(toDTO(room));
+        }}
+        return floorDTO;
+    }
+    
+    private RoomDTO toDTO(Room room) {
+        if (room==null) { return null; }
+        RoomDTO roomDTO = new RoomDTO(room.getNumber());
+        //remote client shouldn't care who is in the room -- just if busy
+        roomDTO.setOccupied(room.getOccupant()!=null);
+        return roomDTO;
+    }
+
+    @Override
     public List<Floor> getFloors(int offset, int limit) {
         return hotelMgmt.getFloors(offset, limit);
     }
@@ -154,6 +201,7 @@ public class HotelMgmtEJB implements HotelMgmtRemote, HotelMgmtLocal {
      * entity.
      */
     private List<Room> toClean(List<Room> rooms) {
+        if (rooms==null) { return null; }
         List<Room> cleanRooms = new ArrayList<Room>(rooms.size());
         for (Room room : rooms) {
             Floor floor = room.getFloor();

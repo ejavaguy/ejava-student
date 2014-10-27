@@ -5,6 +5,7 @@ import java.util.List;
 import info.ejava.examples.ejb.ejbjpa.bl.HotelMgmt;
 import info.ejava.examples.ejb.ejbjpa.bo.Floor;
 import info.ejava.examples.ejb.ejbjpa.bo.Room;
+import info.ejava.examples.ejb.ejbjpa.dto.FloorDTO;
 
 import javax.ejb.Remote;
 
@@ -38,4 +39,13 @@ public interface HotelMgmtRemote extends HotelMgmt {
      * @return floor
      */
     Floor getFetchedFloor(int level);
+
+    /**
+     * This method will return a slightly-washed down set of data objects to 
+     * the caller with sensitive or non-pertinent information not included in 
+     * the abstraction.
+     * @param level
+     * @return floor
+     */
+    FloorDTO getFetchedFloorDTO(int level);
 }

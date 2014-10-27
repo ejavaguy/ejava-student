@@ -103,6 +103,27 @@
         </testResources>
 
         <plugins>
+            <!-- build client library for what is hosted here -->        
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                        <configuration>
+                            <classifier>client</classifier>
+                            <includes>
+                                <include>**/*Remote.class</include>
+                                <include>**/dto/*.class</include>
+                            </includes>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        
             <!-- deploy EJB to server -->
             <plugin>
                 <groupId>org.codehaus.cargo</groupId>

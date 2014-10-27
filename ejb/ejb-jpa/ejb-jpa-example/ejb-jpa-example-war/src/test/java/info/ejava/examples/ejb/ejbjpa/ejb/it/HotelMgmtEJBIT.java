@@ -8,6 +8,8 @@ import info.ejava.examples.ejb.ejbjpa.bl.RoomUnavailableExcepton;
 import info.ejava.examples.ejb.ejbjpa.bo.Floor;
 import info.ejava.examples.ejb.ejbjpa.bo.Guest;
 import info.ejava.examples.ejb.ejbjpa.bo.Room;
+import info.ejava.examples.ejb.ejbjpa.dto.FloorDTO;
+import info.ejava.examples.ejb.ejbjpa.dto.RoomDTO;
 import info.ejava.examples.ejb.ejbjpa.ejb.HotelInitRemote;
 import info.ejava.examples.ejb.ejbjpa.ejb.HotelMgmtRemote;
 
@@ -144,6 +146,49 @@ public class HotelMgmtEJBIT  {
         for (Room room: floor.getRooms()) {
             if (room.getOccupant()!=null) {
                 logger.info("occupant.name={}", room.getOccupant().getName());
+            }
+        }
+    }
+    
+    /**
+     * This test shows that a server-side entity may not be the best abstraction
+     * for a remote client. In this example, the client is trying to personally
+     * locate an available room by looking at the occupant status of each room
+     * on each floor. The server-side may have a good reason for holding onto the 
+     * guest information for a room, but a normal remote client may only need to 
+     * know the room is occupied.
+     */
+    @Test
+    public void getOccupiedRoom() {
+        //lets see if we can manually find a vacant room.....
+        Floor floor = hotelMgmt.getFetchedFloor(0);
+        //all floors have at least one occupant
+        for (Room room: floor.getRooms()) {
+            Guest occupant = room.getOccupant();
+            if (occupant!=null) {
+                logger.info("hey {}, are you done with room {} yet?", 
+                        occupant.getName(), room.getNumber());
+                //that is just rude
+            }
+        }
+    }
+    
+    /**
+     * This test demonstrates a solution to the above issue about unnecessary 
+     * information. The floor and room are returned as types which obscure
+     * information not meant for the client. Note that this likely also solves 
+     * some of the lazy-load issues since creating this DTO likely "touched" every
+     * entity it needed while still on the server-side.
+     */
+    @Test
+    public void getOccupiedRoomDTO() {
+        //lets see if we can manually find a vacant room.....
+        FloorDTO floor = hotelMgmt.getFetchedFloorDTO(0);
+        //all floors have at least one occupant
+        for (RoomDTO room: floor.getRooms()) {
+            if (room.isOccupied()) {
+                logger.info("hey whoever, are you done with room {} yet?", room.getNumber());
+                //still rude, but a bit more private
             }
         }
     }
