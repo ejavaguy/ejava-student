@@ -192,7 +192,7 @@ public class HotelMgmtEJB implements HotelMgmtRemote, HotelMgmtLocal {
 
     @Override
     public List<Room> getCleanAvailableRooms(Integer level, int offset, int limit) {
-        List<Room> rooms = getAvailableRooms(level, 0, 1);
+        List<Room> rooms = getAvailableRooms(level, offset, limit);
         return toClean(rooms);
     }
 
