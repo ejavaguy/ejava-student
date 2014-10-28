@@ -27,6 +27,8 @@ import javax.persistence.Table;
                     + "where f.level=:level")
 })
 public class Floor implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     @Id
     @Column(name="LEVEL", nullable=false)
     int level;
