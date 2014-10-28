@@ -51,7 +51,7 @@ public class Floor implements Serializable {
     }
     public Floor withRoom(Room room) {
         if (rooms==null) {
-            rooms = new LinkedList<>();
+            rooms = new LinkedList<Room>();
         }
         if (room!=null) {
             rooms.add(room);
