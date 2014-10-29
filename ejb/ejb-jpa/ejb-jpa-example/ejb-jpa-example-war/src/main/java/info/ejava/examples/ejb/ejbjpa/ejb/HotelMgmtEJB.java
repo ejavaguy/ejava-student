@@ -15,6 +15,7 @@ import info.ejava.examples.ejb.ejbjpa.dto.FloorDTO;
 import info.ejava.examples.ejb.ejbjpa.dto.RoomDTO;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -33,12 +34,17 @@ public class HotelMgmtEJB implements HotelMgmtRemote, HotelMgmtLocal {
     
     @PostConstruct
     public void init() {
-        logger.debug("*** HotelMgmtEJB:init({}) ***", super.hashCode());
+        logger.debug("*** HotelMgmtEJB({}):init ***", super.hashCode());
         dao = new JPAHotelDAO();
         ((JPAHotelDAO)dao).setEntityManager(em);
         
         hotelMgmt = new HotelMgmtImpl();
         ((HotelMgmtImpl)hotelMgmt).setHotelDao(dao);
+    }
+
+    @PreDestroy
+    public void destroy() {
+        logger.debug("*** HotelMgmtEJB({}):destroy ***", super.hashCode());
     }
 
     @Override
@@ -231,7 +237,7 @@ public class HotelMgmtEJB implements HotelMgmtRemote, HotelMgmtLocal {
 
     @Override
     public Guest checkIn(Guest guest, Room room) throws RoomUnavailableExcepton {
-        logger.debug("checkin(guest={}, room={})", em);
+        logger.debug("checkin(guest={}, room={})", guest, room);
         return hotelMgmt.checkIn(guest, room);
     }
 

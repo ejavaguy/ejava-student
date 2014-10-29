@@ -277,7 +277,7 @@ public class HotelMgmtEJBIT  {
         logger.info("completed reservations for {} guests", guests.size());
         int availableRooms2 = hotelMgmt.getAvailableRooms(null, 0, 0).size();
         logger.info("hotel has {} rooms available", availableRooms2);
-        assertEquals("", availableRooms-guests.size(), availableRooms2);
+        assertEquals("unexpected room count", availableRooms-guests.size(), availableRooms2);
     }
     
     /**
@@ -312,7 +312,7 @@ public class HotelMgmtEJBIT  {
         logger.info("completed reservations for {} guests", members.size());
         int availableRooms2 = hotelMgmt.getAvailableRooms(null, 0, 0).size();
         logger.info("hotel has {} rooms available", availableRooms2);
-        assertEquals("", availableRooms.size()-members.size(), availableRooms2);
+        assertEquals("unexpected room count", availableRooms.size()-members.size(), availableRooms2);
     }
     
     /**
@@ -341,6 +341,6 @@ public class HotelMgmtEJBIT  {
         
         int availableRooms2 = hotelMgmt.getAvailableRooms(null, 0, 0).size();
         logger.info("hotel has {} rooms available", availableRooms2);
-        assertEquals("", availableRooms, availableRooms2);
+        assertEquals("unexpected room count", availableRooms, availableRooms2);
     }
 }

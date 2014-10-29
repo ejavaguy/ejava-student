@@ -117,6 +117,7 @@ public class JPAHotelDAO implements HotelDAO {
     public List<Room> getAvailableRoomsForUpdate(Integer level, int offset, int limit) {
         return getAvailableRoomsQuery(level, offset, limit)
                 .setLockMode(LockModeType.PESSIMISTIC_WRITE)
+                .setHint("javax.persistence.lock.timeout", 5000)
                 .getResultList();
     }
     

@@ -20,6 +20,7 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceContextType;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +29,7 @@ import org.slf4j.LoggerFactory;
 public class ReservationEJB implements ReservationRemote {
     private static final Logger logger = LoggerFactory.getLogger(ReservationEJB.class);
     
-    @PersistenceContext(unitName="ejbjpa-hotel")
+    @PersistenceContext(unitName="ejbjpa-hotel", type=PersistenceContextType.EXTENDED)
     private EntityManager em;
     
     @EJB
@@ -52,14 +53,16 @@ public class ReservationEJB implements ReservationRemote {
     @Override
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public int addGuest(Guest guest) {
-        logger.debug("em={}", em);
+        logger.debug("addGuest={}", guest);
         if (guest!=null) {
             guests.add(guest);
+            em.persist(guest); //<== no transaction active yet
         }
         return guests.size();
     }
 
     protected List<Guest> reserveRooms(List<Room> rooms) throws RoomUnavailableExcepton {
+        logger.debug("reserving {} rooms for {} guests", rooms.size(), guests.size());
         if (rooms.size() < guests.size()) {
             //no rollback needed, we didn't do anything
             throw new RoomUnavailableExcepton(String.format("found on %d out of %d required", 
@@ -67,15 +70,14 @@ public class ReservationEJB implements ReservationRemote {
         }
 
         //assign each one of them a room
+        em.flush(); //<== flush guests persisted outside of a TX for demonstration
         List<Guest> completed = new ArrayList<Guest>(guests.size());
         Iterator<Room> roomItr = rooms.iterator();
         for (Guest guest: guests) {
             Room room = roomItr.next();
             try {
                 //the room could be unavailable -- depending on whether pessimistic lock created
-                logger.debug("stateful.em contains(guest) before checkin={}", em.contains(guest));
-                guest = hotelMgmt.checkIn(guest, room);
-                logger.debug("stateful.em contains(guest) after checkin={}", em.contains(guest));
+                guest = hotelMgmt.checkIn(guest, room); //<== will attempt to also persist guest
                 completed.add(guest);
             } catch (RoomUnavailableExcepton ex) {
                 //rollback any previous reservations
