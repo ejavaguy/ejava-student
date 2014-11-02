@@ -5,12 +5,19 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core">
 <h:head>
-    <title>Sell Products (<h:outputText value="#{sellerController.user.name}"/>)</title>
+    <title>Sell Products (#{sellerController.seller.name})</title>
 </h:head>
 <h:body>
-    <h3>Sell Products (<h:outputText value="#{sellerController.user.name}"/>)</h3>
+    <h3>Sell Products (#{sellerController.seller.name})</h3>
     
     <h:form>
+        <!--
+            Binds this form to the UICommand in the controller known as "addCommand"
+            and accessed through getAddCommand() and setAddCommand().
+		    public UICommand getAddCommand() { 
+		    public void setAddCommand(UICommand addCommand) {
+            public String addNew() {
+         -->
         <h:commandButton binding="#{sellerController.addCommand}" accesskey="n" 
             action="#{sellerController.addNew}" 
             value="Sell New Product"/>
@@ -36,14 +43,14 @@
     </h:form>
     
     <h:form binding="#{sellerController.tableForm}">
-     <h:dataTable value="#{sellerController.products}" var="product">
+     <h:dataTable value="#{sellerController.products}" var="p">
          <h:column>
              <f:facet name="header">
                  <h:column>
                      <h:outputText value="Created"></h:outputText>
                  </h:column>
              </f:facet>
-             <h:outputText value="#{product.dateCreated}"/>
+             <h:outputText value="#{p.dateCreated}"/>
          </h:column>
          
          <h:column>
@@ -52,7 +59,7 @@
                      <h:outputText value="Category"></h:outputText>
                  </h:column>
              </f:facet>
-             <h:outputText value="#{product.category}"/>
+             <h:outputText value="#{p.category}"/>
          </h:column>
          
             <h:column>
@@ -61,7 +68,7 @@
                         <h:outputText value="Name"></h:outputText>
                     </h:column>
                 </f:facet>
-                <h:outputText value="#{product.name}"/>
+                <h:outputText value="#{p.name}"/>
             </h:column>
          
             <h:column>
@@ -70,7 +77,7 @@
                         <h:outputText value="Year"></h:outputText>
                     </h:column>
                 </f:facet>
-                <h:outputText value="#{product.year}"/>
+                <h:outputText value="#{p.year}"/>
             </h:column>
          
          <h:column>
@@ -79,7 +86,7 @@
                      <h:outputText value="Price"></h:outputText>
                  </h:column>
              </f:facet>
-             <h:outputText value="#{product.price}"/>
+             <h:outputText value="#{p.price}"/>
          </h:column>
          
          <h:column>
@@ -92,12 +99,12 @@
                  <h:commandButton value="save" action="#{sellerController.save}">
                      <f:setPropertyActionListener 
                          target="#{sellerController.product}" 
-                         value="#{product}"/>
+                         value="#{p}"/>
                  </h:commandButton>
                  <h:commandButton value="delete" action="#{sellerController.delete}">
                      <f:setPropertyActionListener 
                          target="#{sellerController.product}" 
-                         value="#{product}"/>
+                         value="#{p}"/>
                  </h:commandButton>
              </h:panelGrid>
          </h:column>
@@ -108,5 +115,6 @@
     <h:form>
         <h:commandLink value="Home" action="#{sellerController.complete}"/>
     </h:form>
+    <h:link value="Home2" outcome="/index"/>
 </h:body>
 </html>

@@ -1,9 +1,11 @@
 package info.ejava.examples.ejb.cdisales.web;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 import info.ejava.examples.ejb.cdisales.bl.ProductCatalog;
 import info.ejava.examples.ejb.cdisales.bl.Tx;
@@ -11,6 +13,7 @@ import info.ejava.examples.ejb.cdisales.bo.CurrentUser;
 import info.ejava.examples.ejb.cdisales.bo.Member;
 import info.ejava.examples.ejb.cdisales.bo.Product;
 import info.ejava.examples.ejb.cdisales.bo.ProductCategory;
+import info.ejava.examples.ejb.cdisales.ejb.InvalidProduct;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.Conversation;
@@ -26,8 +29,8 @@ import org.slf4j.Logger;
 
 @SuppressWarnings("serial")
 
-@Named("sellerController")
-@ConversationScoped
+@Named("sellerController") //named used by the JSF page to access properties and methods
+@ConversationScoped        //stays alive longer than a request and shorter than a session
 /*
     Properties within this class are referred to using #{sellerController.xxx}
     syntax in the JSF page. 
@@ -35,63 +38,114 @@ import org.slf4j.Logger;
 public class SellerController implements Serializable {
     private static final Logger logger = LoggerFactory.getLogger(SellerController.class);
     
-    @Inject
-    private Conversation conversation;
-    
+    /**
+     * Gets injected and is place to stash errors to be displayed.
+     */
     @Inject 
-    private CurrentUser user;
+    private ErrorController error;
     
+    /** Can be used to manage the conversation */
+    @Inject
+    private Conversation conversation; 
+    
+    
+    /** A reference to back-end business logic that can manage products. This
+     * will be injected by CDI with the aid of a @Tx Qualifier 
+     */
     @Inject @Tx
     private ProductCatalog catalog;
     
-    //domain properties
-    Member seller;
-    //<h:dataTable value="#{sellerController.products}" var="product">
-    List<Product> products;
-    //<h:inputText value="#{sellerController.product.name}" required="true"/>
-    Product product;
+    /***************************************
+     * Business data 
+     */
     
-    //jsf properties
+    /** 
+     * Current user will be injected by CDI into this property using a @Produces
+     * by one of our components. 
+     */
+    @Inject 
+    private CurrentUser user;
+    
+    /**
+     * This is initially populated using a call to the back-end for persisted 
+     * items for sale and then updated as products are added for sale during the 
+     * conversation.
+     */
+    List<Product> products;
+    /**
+     * This is the product the page is currently working with. No argument 
+     * actions methods will be called and it is assumed they should be acting
+     * on the last item referenced by setProduct().
+     */
+    Product product;
+
+    /***************************************
+     * JSF data
+     */
+    /**
+     * Form used when adding a new product. We will hide this form 
+     * when the user is not actively adding a new product.
+     <pre>
+         <h:form binding="#{sellerController.form}" rendered="false">
+     </pre>
+     */
     private UIForm form;
+    /**
+     * Form used when displaying the list of products
+     <pre>
+         <h:form binding="#{sellerController.tableForm}"
+     </pre>
+     */
     private UIForm tableForm;
+    /**
+     * Command button used when user chooses to add a new product. We track this
+     * so we can hide it while the user is entering the product data.
+     <pre>
+        <h:commandButton binding="#{sellerController.addCommand}" accesskey="n" 
+     </pre>
+     */
     private UICommand addCommand;
     
     @PostConstruct
     public void init() {
-        logger.info("SellerController({}):init", super.hashCode());
+        logger.debug("SellerController({}):init", super.hashCode());
         conversation.begin();
     }
 
+    
     //data model methods
-    public CurrentUser getUser() {
-        return user;
+    public Member getSeller() {
+        return user.getMember();
     }
     public List<Product> getProducts() {
-        logger.info("getProducts()={}", products);
+        logger.debug("getProducts()={}", products);
         if (products==null) {
             products = catalog.getSellerProducts(user.getMember(), 0, 0);
         }
         return products;
     }
     public void setProducts(List<Product> products) {
-        logger.info("setProducts({})", products);
+        logger.debug("setProducts({})", products);
         this.products=products;
     }
     
     /**
-     * Associated getter/setter is called for inputText.value elements
+     * Associated getter/setter is called for inputText.value elements. The 
+     * initial value of the form field will be the value provided in getProduct.
+     <pre>
         <h:inputText value="#{sellerController.product.name}"/>
+     </pre>
      */
     public Product getProduct() {
-        logger.info("getProduct()={}", product);
+        logger.debug("getProduct()={}", product);
         return product; 
     }
     public void setProduct(Product product) {
-        logger.info("setProduct({})", product);
+        logger.debug("setProduct({})", product);
         this.product = product;
     }
     public List<SelectItem> getCategories() {
-        logger.info("getCategories()");
+        logger.debug("getCategories()");
         List<SelectItem> list = new ArrayList<SelectItem>(ProductCategory.values().length);
         for (ProductCategory pc: ProductCategory.values()) {
             list.add(new SelectItem(pc, pc.getPrettyName()));
@@ -100,19 +154,26 @@ public class SellerController implements Serializable {
     }
     
     
-    /*
+    /** 
+     * The provider will supply a UICommand object for a form within the binding
+     * sellerController.addCommand. 
+    <pre>
     <h:form>
         <h:commandLink binding="#{sellerController.addCommand}" accesskey="n" 
             action="#{sellerController.addNew}" 
             value="Sell New Product"/>
     </h:form>
+    </pre>
+    The provider will access that property through setAddCommand() and getAddCommand().
+    This controller gets a chance to modify the UICommand properties but the object
+    itself is provided by the JSF provider.
      */
     public UICommand getAddCommand() { 
-        logger.info("getAddCommand()={}", addCommand);
+        logger.debug("getAddCommand()={}", addCommand);
         return addCommand; 
     }
     public void setAddCommand(UICommand addCommand) {
-        logger.info("setAddCommand(addCommand={})", addCommand);
+        logger.debug("setAddCommand(addCommand={})", addCommand);
         this.addCommand = addCommand;
     }
     
@@ -129,8 +190,16 @@ public class SellerController implements Serializable {
         2) return a value that will be used to choose the next page             
      */
     public String addNew() {
-        logger.info("addNew()");
+        logger.debug("addNew()");
         this.product = new Product(); //create a new Product instance
+        
+        //instead of having our user fill in everything -- lets make some stuff up
+        //to be initially displayed in the form
+        Random r = new Random();
+        product.setCategory(ProductCategory.values()[r.nextInt(ProductCategory.SPORT.ordinal())]);
+        product.setName("name" + r.nextInt(100));
+        product.setYear(1980 + r.nextInt(30));
+        product.setPrice(new BigDecimal(r.nextInt(10000)));
         form.setRendered(true);       //activate the form that will operate on new Product
         addCommand.setRendered(false);//disable the view that called this action method
         return null;                  
@@ -159,11 +228,11 @@ public class SellerController implements Serializable {
     </h:form>
      */
     public UIForm getForm() { 
-        logger.info("getForm()={}, rendered={}", form, form==null?null : form.isRendered());
+        logger.debug("getForm()={}, rendered={}", form, form==null?null : form.isRendered());
         return form; 
     }
     public void setForm(UIForm form) {
-        logger.info("setForm(form={}, rendered={})", form, form==null? null : form.isRendered());
+        logger.debug("setForm(form={}, rendered={})", form, form==null? null : form.isRendered());
         this.form = form;
     }
     
@@ -182,12 +251,12 @@ public class SellerController implements Serializable {
         2) return a value that will be used to choose the next page
      */
     public String add() {
-        logger.info("add(): product={}", product);
+        logger.debug("add(): product={}", product);
         products.add(product);
         Collections.sort(products, new Product.ProductASC());
         form.setRendered(false);
         addCommand.setRendered(true);
-        return "/seller/seller-products.xhtml";
+        return "/seller/seller-products";
     }
     
     
@@ -222,11 +291,11 @@ public class SellerController implements Serializable {
     </h:form>
      */
     public UIForm getTableForm() { 
-        logger.info("getTableForm()={}, rendered={}", tableForm, tableForm==null?null:tableForm.isRendered());
+        logger.debug("getTableForm()={}, rendered={}", tableForm, tableForm==null?null:tableForm.isRendered());
         return tableForm; 
     }
     public void setTableForm(UIForm tableForm) {
-        logger.info("setTableForm(tableForm={}, rendered={})", tableForm, tableForm==null ? null : tableForm.isRendered());
+        logger.debug("setTableForm(tableForm={}, rendered={})", tableForm, tableForm==null ? null : tableForm.isRendered());
         this.tableForm = tableForm;
     }
     /*
@@ -238,23 +307,34 @@ public class SellerController implements Serializable {
         2) return a value that will be used to choose the next page
      */
     public String delete() {
-        logger.info("delete(): product={}", product);
+        logger.debug("delete(): product={}", product);
         products.remove(product);
         catalog.remove(product);
         return null;
     }
     
     public String save() {
-        logger.info("save", product);
+        logger.debug("save", product);
         //create a relationship to the current user as the seller
         product.setSeller(user.getMember());
         //save to DB
-        catalog.addProduct(product);
-        return null;
+        products.remove(product);
+        try {
+            product = catalog.addProduct(product);
+            //replace with merged instance
+            products.add(product);
+            Collections.sort(products, new Product.ProductASC());
+            return null;
+        } catch (InvalidProduct ex) {
+            String errorMsg = "error saving product:" + product;
+            error.setError(errorMsg);
+            error.setException(ex);
+            return "/error";
+        }
     }
     
     public String complete() {
-        logger.info("complete({})", super.hashCode());
+        logger.debug("complete({})", super.hashCode());
         conversation.end();
         return "/index";
     }

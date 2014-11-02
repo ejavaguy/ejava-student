@@ -43,7 +43,10 @@ public class ProductCatalogEJB implements ProductCatalogLocal {
     
     @Override
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
-    public Product addProduct(Product product) {
+    public Product addProduct(Product product) throws InvalidProduct {
+        if (product.getPrice() != null && product.getPrice().intValue() <= 0) {
+            throw new InvalidProduct(String.format("price [%s]is too low, we don't give things away!", product.getPrice()));
+        }
         return dao.addProduct(product);
     }
 

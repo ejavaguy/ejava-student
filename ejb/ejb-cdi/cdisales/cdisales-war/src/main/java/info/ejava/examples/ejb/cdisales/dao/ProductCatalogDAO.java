@@ -25,7 +25,8 @@ public class ProductCatalogDAO implements ProductCatalog {
 
     @Override
     public Product addProduct(Product product) {
-        em.persist(product);
+        if (product==null) { return null; }
+        product=em.merge(product);
         return product;
     }
 
