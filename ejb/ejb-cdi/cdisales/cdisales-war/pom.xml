@@ -1,0 +1,268 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>info.ejava.examples.ejb.cdi</groupId>
+        <artifactId>cdisales</artifactId>
+        <version>4.0.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>cdisales-war</artifactId>
+    <packaging>war</packaging>
+
+    <name>EJB::CDI Example::WAR</name>
+    <description>
+        This project provides examples using CDI.
+    </description>
+
+    <dependencies>
+        <!-- core implementation dependencies -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.faces</groupId>
+            <artifactId>javax.faces-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.ejb</groupId>
+            <artifactId>javax.ejb-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate.javax.persistence</groupId>
+            <artifactId>hibernate-jpa-2.1-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.enterprise</groupId>
+            <artifactId>cdi-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        
+        <!-- implementation-specific dependencies -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <scope>compile</scope>
+            <exclusions>
+             <exclusion>
+              <artifactId>jboss-logging</artifactId>
+              <groupId>org.jboss.logging</groupId>
+             </exclusion>
+            </exclusions>
+        </dependency>
+
+        <!-- provides RMI dependencies for JBoss -->
+        <dependency>
+            <groupId>info.ejava.examples.common</groupId>
+            <artifactId>jboss-rmi-client</artifactId>
+            <type>pom</type>
+            <version>${project.version}</version>
+            <scope>test</scope>
+            <exclusions>
+             <exclusion>
+              <artifactId>jboss-logging</artifactId>
+              <groupId>org.jboss.logging</groupId>
+             </exclusion>
+            </exclusions>
+        </dependency>
+       <!-- used if hibernate entities re-used as DTOs -->
+       <dependency>
+           <groupId>org.hibernate</groupId>
+           <artifactId>hibernate-core</artifactId>
+           <scope>test</scope>
+           <exclusions>
+            <exclusion>
+             <artifactId>jboss-logging</artifactId>
+             <groupId>org.jboss.logging</groupId>
+            </exclusion>
+           </exclusions>
+       </dependency>
+        
+        <!-- test dependencies -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <scope>test</scope>
+        </dependency>    
+
+    </dependencies>
+
+    <build>
+        <finalName>${project.artifactId}</finalName>
+
+        <!-- filter test/resource files for profile-specific values -->
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>META-INF/persistence.xml</include>
+                </includes>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>false</filtering>
+                <excludes>
+                    <exclude>META-INF/persistence.xml</exclude>
+                </excludes>
+            </resource>
+        </resources>
+        <testResources>
+            <testResource>
+                <directory>src/test/resources</directory>
+                <filtering>true</filtering>
+            </testResource>
+        </testResources>
+
+        <plugins>
+            <!-- build client library for what is hosted here -->        
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                        <configuration>
+                            <classifier>client</classifier>
+                            <includes>
+                                <include>**/*Remote.class</include>
+                                <include>**/dto/*.class</include>
+                            </includes>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        
+            <!-- deploy EJB to server -->
+            <plugin>
+                <groupId>org.codehaus.cargo</groupId>
+                <artifactId>cargo-maven2-plugin</artifactId>
+            </plugin>
+
+            <!-- run IT tests -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+            </plugin>
+            
+            <plugin>
+                <groupId>org.eclipse.jetty</groupId>
+                <artifactId>jetty-maven-plugin</artifactId>
+                <configuration>
+                    <scanIntervalSeconds>10</scanIntervalSeconds>
+                    <reload>manual</reload>
+                    <webApp>
+                        <contextPath>/</contextPath>
+                        <overrideDescriptor>${basedir}/target/test-classes/web-override.xml</overrideDescriptor>
+                    </webApp>
+                    <useTestClasspath>true</useTestClasspath>
+                    <httpConnector>
+                        <port>9090</port>
+                        <idleTimeout>60000</idleTimeout>
+                    </httpConnector>
+                    <systemProperties>
+                        <systemProperty>
+                            <name>log4j.debug</name>
+                            <name>true</name>
+                        </systemProperty>
+                        <systemProperty>
+                            <name>slf4j</name>
+                            <value>true</value>
+                        </systemProperty>
+                        <systemProperty>
+                            <name>log4j.configuration</name>
+                            <value>file:///${basedir}/target/test-classes/log4j.properties</value>
+                        </systemProperty>
+                        <systemProperty>
+                            <name>log4j.ignoreTCL</name>
+                            <value>true</value>
+                        </systemProperty>
+                    </systemProperties>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>com.sun.faces</groupId>
+                        <artifactId>jsf-api</artifactId>
+                        <version>2.2.4</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>com.sun.faces</groupId>
+                        <artifactId>jsf-impl</artifactId>
+                        <version>2.2.4</version>
+                    </dependency>                
+                    <dependency>
+                        <groupId>info.ejava.examples.common</groupId>
+                        <artifactId>jboss-rmi-client</artifactId>
+                        <version>${project.version}</version>
+                        <type>pom</type>
+                    </dependency>    
+                    <dependency>
+                        <groupId>org.slf4j</groupId>
+                        <artifactId>slf4j-api</artifactId>
+                        <version>${slf4j.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.slf4j</groupId>
+                        <artifactId>slf4j-log4j12</artifactId>
+                        <version>${slf4j.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>log4j</groupId>
+                        <artifactId>log4j</artifactId>
+                        <version>${log4j.version}</version>
+                    </dependency>    
+                    <dependency>
+                        <groupId>javax.enterprise</groupId>
+                        <artifactId>cdi-api</artifactId>
+                        <version>${cdi-api.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.jboss.weld.servlet</groupId>
+                        <artifactId>weld-servlet</artifactId>
+                        <version>${weld-servlet.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.jboss</groupId>
+                        <artifactId>jandex</artifactId>
+                        <version>${jandex.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.glassfish.web</groupId>
+                        <artifactId>javax.el</artifactId>
+                        <version>${javax.el.version}</version>
+                    </dependency>        
+                </dependencies>       
+            </plugin>          
+            
+        </plugins>      
+    </build>
+</project>

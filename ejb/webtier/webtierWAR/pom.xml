@@ -24,7 +24,7 @@
         -->
         <dependency>
             <groupId>javax.servlet</groupId>
-            <artifactId>servlet-api</artifactId>
+            <artifactId>javax.servlet-api</artifactId>
             <scope>provided</scope>
         </dependency>        
         <dependency>
@@ -73,11 +73,18 @@
                 <artifactId>maven-war-plugin</artifactId>  
             </plugin>
             <plugin>
-                <groupId>org.mortbay.jetty</groupId>
-                <artifactId>maven-jetty-plugin</artifactId>
+                <groupId>org.eclipse.jetty</groupId>
+                <artifactId>jetty-maven-plugin</artifactId>
                 <configuration>
+                    <httpConnector>
+                        <port>9090</port>
+                        <idleTimeout>60000</idleTimeout>
+                    </httpConnector>
                     <scanIntervalSeconds>10</scanIntervalSeconds>
-                    <contextPath>/</contextPath>
+                    <webApp>
+                        <contextPath>/</contextPath>
+                    </webApp>
+
                     <systemProperties>
                         <systemProperty>
                             <name>slf4j</name>
@@ -88,12 +95,6 @@
                             <value>file:./target/test-classes/log4j.xml</value>
                         </systemProperty>
                     </systemProperties>
-                    <connectors>
-                        <connector implementation="org.mortbay.jetty.nio.SelectChannelConnector">
-                            <port>9090</port>
-                            <maxIdleTime>60000</maxIdleTime>
-                        </connector>
-                    </connectors>
                 </configuration>       
                 <dependencies>
                     <dependency>

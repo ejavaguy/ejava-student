@@ -1,0 +1,112 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+<h:head>
+    <title>Sell Products (<h:outputText value="#{sellerController.user.name}"/>)</title>
+</h:head>
+<h:body>
+    <h3>Sell Products (<h:outputText value="#{sellerController.user.name}"/>)</h3>
+    
+    <h:form>
+        <h:commandButton binding="#{sellerController.addCommand}" accesskey="n" 
+            action="#{sellerController.addNew}" 
+            value="Sell New Product"/>
+    </h:form>
+
+    <h:form binding="#{sellerController.form}" rendered="false">
+        <h:outputText value="Category"/>
+        <h:selectOneMenu value="#{sellerController.product.category}" required="true">
+            <f:selectItems value="#{sellerController.categories}"/>
+        </h:selectOneMenu>
+        
+        <h:outputText value="Name"/>
+        <h:inputText value="#{sellerController.product.name}" required="true"/>
+        
+        <h:outputText value="Year"/>
+        <h:inputText value="#{sellerController.product.year}"/>
+        
+        <h:outputText value="Price"/>
+        <h:inputText value="#{sellerController.product.price}"/>
+        
+        <p></p>
+        <h:commandButton value="Add Product" action="#{sellerController.add}"/>
+    </h:form>
+    
+    <h:form binding="#{sellerController.tableForm}">
+     <h:dataTable value="#{sellerController.products}" var="product">
+         <h:column>
+             <f:facet name="header">
+                 <h:column>
+                     <h:outputText value="Created"></h:outputText>
+                 </h:column>
+             </f:facet>
+             <h:outputText value="#{product.dateCreated}"/>
+         </h:column>
+         
+         <h:column>
+             <f:facet name="header">
+                 <h:column>
+                     <h:outputText value="Category"></h:outputText>
+                 </h:column>
+             </f:facet>
+             <h:outputText value="#{product.category}"/>
+         </h:column>
+         
+            <h:column>
+                <f:facet name="header">
+                    <h:column>
+                        <h:outputText value="Name"></h:outputText>
+                    </h:column>
+                </f:facet>
+                <h:outputText value="#{product.name}"/>
+            </h:column>
+         
+            <h:column>
+                <f:facet name="header">
+                    <h:column>
+                        <h:outputText value="Year"></h:outputText>
+                    </h:column>
+                </f:facet>
+                <h:outputText value="#{product.year}"/>
+            </h:column>
+         
+         <h:column>
+             <f:facet name="header">
+                 <h:column>
+                     <h:outputText value="Price"></h:outputText>
+                 </h:column>
+             </f:facet>
+             <h:outputText value="#{product.price}"/>
+         </h:column>
+         
+         <h:column>
+             <f:facet name="header">
+                 <h:column>
+                     <h:outputText value="Actions"></h:outputText>
+                 </h:column>
+             </f:facet>
+             <h:panelGrid columns="2">
+                 <h:commandButton value="save" action="#{sellerController.save}">
+                     <f:setPropertyActionListener 
+                         target="#{sellerController.product}" 
+                         value="#{product}"/>
+                 </h:commandButton>
+                 <h:commandButton value="delete" action="#{sellerController.delete}">
+                     <f:setPropertyActionListener 
+                         target="#{sellerController.product}" 
+                         value="#{product}"/>
+                 </h:commandButton>
+             </h:panelGrid>
+         </h:column>
+         
+     </h:dataTable>
+    </h:form>
+    
+    <h:form>
+        <h:commandLink value="Home" action="#{sellerController.complete}"/>
+    </h:form>
+</h:body>
+</html>
