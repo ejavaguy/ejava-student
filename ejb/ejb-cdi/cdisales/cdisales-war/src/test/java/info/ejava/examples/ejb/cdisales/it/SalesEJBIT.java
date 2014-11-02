@@ -18,10 +18,10 @@ import org.slf4j.LoggerFactory;
 
 public class SalesEJBIT  {
 	private static final Logger logger = LoggerFactory.getLogger(SalesEJBIT.class);
-    private static final String hotelmgmtJNDI = System.getProperty("hotelmgmt.jndi.name",
-            "ejb:/ejb-cdi-example-war/EJB!" + Object.class.getName());
+    private static final String catalogJNDI = System.getProperty("catalog.jndi.name",
+            "ejb:/cdisales-war/EJB!" + Object.class.getName());
 	private Context jndi;
-	private Object hotelMgmt;
+	private Object catalogMgmt;
 	
 	@BeforeClass
 	public static void setUpClass() throws NamingException {
@@ -30,8 +30,8 @@ public class SalesEJBIT  {
 	@Before
 	public void setUp() throws NamingException {
         jndi=new InitialContext();
-        logger.debug("looking up jndi.name={}", hotelmgmtJNDI);
-	    hotelMgmt = (Object)jndi.lookup(hotelmgmtJNDI);
+        logger.debug("looking up jndi.name={}", catalogJNDI);
+	    //catalogMgmt = (Object)jndi.lookup(catalogJNDI);
         
         cleanup();
         populate();

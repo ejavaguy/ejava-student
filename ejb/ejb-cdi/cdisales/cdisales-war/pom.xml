@@ -59,12 +59,14 @@
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-validator</artifactId>
             <scope>compile</scope>
+            <!--
             <exclusions>
              <exclusion>
               <artifactId>jboss-logging</artifactId>
               <groupId>org.jboss.logging</groupId>
              </exclusion>
             </exclusions>
+            -->
         </dependency>
 
         <!-- provides RMI dependencies for JBoss -->
