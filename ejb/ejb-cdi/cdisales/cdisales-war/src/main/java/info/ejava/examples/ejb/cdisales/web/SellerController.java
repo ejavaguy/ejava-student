@@ -3,7 +3,6 @@ package info.ejava.examples.ejb.cdisales.web;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 
 import info.ejava.examples.ejb.cdisales.bl.ProductCatalog;
@@ -16,15 +15,12 @@ import info.ejava.examples.ejb.cdisales.bo.ProductCategory;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.Conversation;
 import javax.enterprise.context.ConversationScoped;
-import javax.enterprise.context.SessionScoped;
 import javax.faces.component.UICommand;
 import javax.faces.component.UIForm;
-import javax.faces.event.ActionEvent;
 import javax.faces.model.SelectItem;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import org.junit.experimental.categories.Categories;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 
