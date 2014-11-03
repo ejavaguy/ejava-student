@@ -1,0 +1,9 @@
+CREATE TABLE EJAVA_Users(
+    userId VARCHAR(32) PRIMARY KEY, 
+    passwd VARCHAR(64)
+)
+
+CREATE TABLE EJAVA_UserRoles(
+    userId VARCHAR(32), 
+    Role VARCHAR(32)
+)

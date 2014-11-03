@@ -1,0 +1,141 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <parent>
+        <groupId>info.ejava.examples.common</groupId>
+        <artifactId>common</artifactId>
+        <version>4.0.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>jboss-rmi-client</artifactId>
+    <packaging>pom</packaging>
+
+    <name>Common::JBoss AS Client Dependencies</name>
+    <description>
+      This project aggregates several dependencies required for JBoss RMI
+      clients. This was taken from 
+      https://github.com/wildfly/quickstart/blob/master/ejb-remote/client/pom.xml
+     </description>
+
+     <properties>
+        <jboss.javaee7.spec.version>1.0.0.Final</jboss.javaee7.spec.version>
+     </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <!-- Define the version of JBoss' Java EE 7 APIs we want to use -->
+            <!-- JBoss distributes a complete set of Java EE 7 APIs including
+            a Bill of Materials (BOM). A BOM specifies the versions of a "stack" (or
+            a collection) of artifacts. We use this here so that we always get the correct
+            versions of artifacts. Here we use the jboss-javaee-7.0 stack (you can
+            read this as the JBoss stack of the Java EE 7 APIs). You can actually
+            use this stack with any version of WildFly that implements Java EE 7, not
+            just WildFly 8! -->
+            <dependency>
+                <groupId>org.jboss.spec</groupId>
+                <artifactId>jboss-javaee-7.0</artifactId>
+                <version>${jboss.javaee7.spec.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.wildfly</groupId>
+                <artifactId>wildfly-ejb-client-bom</artifactId>
+                <version>${wildfly.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+
+       <!-- Import the transaction spec API, we use runtime scope because we aren't using any direct
+        reference to the spec API in our client code -->
+      <dependency>
+         <groupId>org.jboss.spec.javax.transaction</groupId>
+         <artifactId>jboss-transaction-api_1.2_spec</artifactId>
+         <scope>runtime</scope>
+      </dependency>
+
+      <!-- Import the EJB 3.x API, we use runtime scope because we aren't using any direct
+       reference to EJB spec API in our client code -->
+      <dependency>
+         <groupId>org.jboss.spec.javax.ejb</groupId>
+         <artifactId>jboss-ejb-api_3.2_spec</artifactId>
+         <scope>runtime</scope>
+      </dependency>
+
+       <!-- JBoss EJB client API jar. We use runtime scope because the EJB client API
+        isn't directly used in this example. We just need it in our runtime classpath -->
+       <dependency>
+           <groupId>org.jboss</groupId>
+           <artifactId>jboss-ejb-client</artifactId>
+           <scope>runtime</scope>
+       </dependency>
+
+       <!-- client communications with the server use XNIO -->
+       <dependency>
+           <groupId>org.jboss.xnio</groupId>
+           <artifactId>xnio-api</artifactId>
+           <scope>runtime</scope>
+       </dependency>
+       <dependency>
+           <groupId>org.jboss.xnio</groupId>
+           <artifactId>xnio-nio</artifactId>
+           <scope>runtime</scope>
+       </dependency>
+
+      <!-- The client needs JBoss remoting to access the server -->
+       <dependency>
+            <groupId>org.jboss.remoting</groupId>
+            <artifactId>jboss-remoting</artifactId>
+            <scope>runtime</scope>
+       </dependency>
+
+      <!-- Remote EJB accesses can be secured -->
+       <dependency>
+           <groupId>org.jboss.sasl</groupId>
+           <artifactId>jboss-sasl</artifactId>
+           <scope>runtime</scope>
+       </dependency>
+
+       <!-- data serialization for invoking remote EJBs -->
+       <dependency>
+           <groupId>org.jboss.marshalling</groupId>
+           <artifactId>jboss-marshalling-river</artifactId>
+           <scope>runtime</scope>
+       </dependency>
+
+       <!-- used for non-EJB-specific, generic JNDI lookups -->
+       <dependency>
+            <groupId>org.jboss</groupId>
+            <artifactId>jboss-remote-naming</artifactId>
+            <scope>runtime</scope>
+       </dependency>
+
+       <!-- used if hibernate entities re-used as DTOs 
+       <dependency>
+           <groupId>org.hibernate</groupId>
+           <artifactId>hibernate-core</artifactId>
+            <scope>runtime</scope>
+       </dependency>
+            -->
+
+    </dependencies>
+
+    <build>
+        <plugins> 
+            <!-- this module does not play well with the site plugin -->
+            <plugin> 
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-site-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                    <skipDeploy>true</skipDeploy>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
+

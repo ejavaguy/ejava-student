@@ -41,7 +41,7 @@
         <hibernate3.version>3.6.10.Final</hibernate3.version>
         <junit.version>4.10</junit.version>
         <log4j.version>1.2.13</log4j.version>
-        <slf4j.version>1.6.1</slf4j.version>
+        <slf4j.version>1.7.2</slf4j.version>
     </properties>
 
     <dependencyManagement>
@@ -311,6 +311,7 @@
                                 </goals>
                                 <configuration>
                                     <autocommit>true</autocommit>
+                                    <orderFile>decending</orderFile>
                                     <fileset>
                                         <basedir>${basedir}/src</basedir>
                                         <includes>
@@ -330,6 +331,7 @@
                                 </goals>
                                 <configuration>
                                     <autocommit>true</autocommit>
+                                    <orderFile>acending</orderFile>
                                     <fileset>
                                         <basedir>${basedir}/src</basedir>
                                         <includes>

@@ -24,8 +24,7 @@ public class Checkout {
     @JoinColumn(name="CHECKOUT_BID")
     private Borrower borrower;
     
-    @SuppressWarnings("unused")
-    private Checkout() {  //this is needed by persistence layer
+    protected Checkout() {  //this is needed by persistence layer
         log.debug(super.toString() + ": ctor()");
     }  
     public Checkout(Date outDate) {

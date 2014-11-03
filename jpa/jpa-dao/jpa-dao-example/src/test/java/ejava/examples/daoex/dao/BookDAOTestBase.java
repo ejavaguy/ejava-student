@@ -13,7 +13,7 @@ import ejava.examples.daoex.bo.Book;
  * This class defines the core tests for our Book DAOs. Sub-classes will provide
  * an implementation.
  */
-public class BookDAOTestBase {
+public abstract class BookDAOTestBase {
 	protected BookDAO dao;
 
 	/**

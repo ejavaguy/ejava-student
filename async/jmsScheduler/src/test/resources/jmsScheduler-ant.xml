@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="jmsScheduler" basedir="..">
+
+    <property file="test-classes/${ant.project.name}.properties"/>
+
+    <loadfile property="dependency-classpath" srcFile="test-classes/dependency-classpath" failonerror="false"/>
+
+    <path id="demo.classpath">
+        <pathelement path="test-classes"/>
+        <pathelement path="classes"/>
+        <fileset dir="." includes="dependency/*.jar"/>
+        <pathelement path="${dependency-classpath}"/>
+    </path>
+
+    <description>
+    This Ant script will run each of the JMS Scheduler test programs. There
+    are two main programs: Requestor and Worker.  The Requestor has 
+    two targets; requestor and requestor1. The Worker has several; worker,
+    worker1, worker2, worker3, worker4.
+
+    requestor will send 10 messages and quit. It is intended to run with
+    worker1 and worker2. workers 1 and 2 will always quit after
+    successfully handling 2 requests and fall down performing the last one.
+    They will need to be continually restarted (and watch the failover) or 
+    replaced with worker, worker3, or worker4 to actually complete.
+
+    requestor1 will send an unlimited amount of messages at a rate with
+    a sleep time of 10msecs. It is intended to run with worker, worker3,
+    and worker4.
+
+    If a worker has a set max number of messages, they consume the last 
+    request, but never commit the transaction (thus it should be returned).
+    worker1 and worker2 quit after 3 requests.
+
+    Each of the targets take the following arguments
+    -Djndi.naming.connFactory - connection factory JNDI name
+    -Djndi.name.requestQueue  - destination JNDI name
+    -Djndi.name.DLQ           - dead letter queue JNDI name
+    -Dxxx.name                - connectionID and durable topic name
+    -Dxxx.max                 - max messages before existing;0=unlimited
+
+    The Requestor also takes the following argument.
+    -Dxxx.sleep               - delay between processing next message
+
+    xxx stands for the target name.  
+    
+    Putting a sleep time on the requestorr slows the rate of requests.
+    </description>
+
+    <target name="echo">
+        <property name="demo-classpath" refid="demo.classpath"/>
+        <echo>basedir=${basedir}</echo>
+        <echo>commons.logging.classpath=${commons.logging.classpath}</echo>
+        <echo>demo.classpath=${demo-classpath}</echo>
+    </target>
+
+    <target name="init">
+        <!-- replace the integration test jndi.properties with the demo
+            copy referencing the live JBoss instance -->
+        <copy tofile="test-classes/jndi.properties"
+              file="test-classes/jboss-jndi.properties"
+              overwrite="true"/>
+    </target>
+
+    <target name="requestor" depends="init">
+        <java classname="ejava.examples.jmsscheduler.Requestor"
+            fork="true">
+            <classpath>
+                <path refid="demo.classpath"/>
+            </classpath>
+            <arg value="-jndi.name.connFactory"/>
+            <arg value="${jndi.name.connFactory}"/>
+            <arg value="-jndi.name.requestQueue"/>
+            <arg value="${jndi.name.requestQueue}"/>
+            <arg value="-jndi.name.DLQ"/>
+            <arg value="${jndi.name.DLQ}"/>
+            <arg value="-name"/>
+            <arg value="${requestor.name}"/>
+            <arg value="-sleep"/>
+            <arg value="${requestor.sleep}"/>
+            <arg value="-max"/>
+            <arg value="${requestor.max}"/>
+            <arg value="-username"/>
+            <arg value="${requestor.username}"/>
+            <arg value="-password"/>
+            <arg value="${requestor.password}"/>
+        </java>
+    </target>
+
+    <target name="requestor1" depends="init">
+        <java classname="ejava.examples.jmsscheduler.Requestor"
+            fork="true">
+            <classpath>
+                <path refid="demo.classpath"/>
+            </classpath>
+            <arg value="-jndi.name.connFactory"/>
+            <arg value="${jndi.name.connFactory}"/>
+            <arg value="-jndi.name.requestQueue"/>
+            <arg value="${jndi.name.requestQueue}"/>
+            <arg value="-jndi.name.DLQ"/>
+            <arg value="${jndi.name.DLQ}"/>
+            <arg value="-name"/>
+            <arg value="${requestor1.name}"/>
+            <arg value="-sleep"/>
+            <arg value="${requestor1.sleep}"/>
+            <arg value="-max"/>
+            <arg value="${requestor1.max}"/>
+            <arg value="-username"/>
+            <arg value="${requestor.username}"/>
+            <arg value="-password"/>
+            <arg value="${requestor.password}"/>
+        </java>
+    </target>
+
+    <target name="worker" depends="init">
+        <java classname="ejava.examples.jmsscheduler.Worker"
+            fork="true">
+            <classpath>
+                <path refid="demo.classpath"/>
+            </classpath>
+            <arg value="-jndi.name.connFactory"/>
+            <arg value="${jndi.name.connFactory}"/>
+            <arg value="-jndi.name.requestQueue"/>
+            <arg value="${jndi.name.requestQueue}"/>
+            <arg value="-jndi.name.DLQ"/>
+            <arg value="${jndi.name.DLQ}"/>
+            <arg value="-name"/>
+            <arg value="${worker.name}"/>
+            <arg value="-max"/>
+            <arg value="${worker.max}"/>
+            <arg value="-username"/>
+            <arg value="${worker.username}"/>
+            <arg value="-password"/>
+            <arg value="${worker.password}"/>
+        </java>
+    </target>
+
+    <target name="worker1">
+        <java classname="ejava.examples.jmsscheduler.Worker"
+            fork="true">
+            <classpath>
+                <path refid="demo.classpath"/>
+            </classpath>
+            <arg value="-jndi.name.connFactory"/>
+            <arg value="${jndi.name.connFactory}"/>
+            <arg value="-jndi.name.requestQueue"/>
+            <arg value="${jndi.name.requestQueue}"/>
+            <arg value="-jndi.name.DLQ"/>
+            <arg value="${jndi.name.DLQ}"/>
+            <arg value="-name"/>
+            <arg value="${worker1.name}"/>
+            <arg value="-max"/>
+            <arg value="${worker1.max}"/>
+            <arg value="-username"/>
+            <arg value="${worker.username}"/>
+            <arg value="-password"/>
+            <arg value="${worker.password}"/>
+        </java>
+    </target>
+
+    <target name="worker2">
+        <java classname="ejava.examples.jmsscheduler.Worker"
+            fork="true">
+            <classpath>
+                <path refid="demo.classpath"/>
+            </classpath>
+            <arg value="-jndi.name.connFactory"/>
+            <arg value="${jndi.name.connFactory}"/>
+            <arg value="-jndi.name.requestQueue"/>
+            <arg value="${jndi.name.requestQueue}"/>
+            <arg value="-jndi.name.DLQ"/>
+            <arg value="${jndi.name.DLQ}"/>
+            <arg value="-name"/>
+            <arg value="${worker2.name}"/>
+            <arg value="-max"/>
+            <arg value="${worker2.max}"/>
+            <arg value="-username"/>
+            <arg value="${worker.username}"/>
+            <arg value="-password"/>
+            <arg value="${worker.password}"/>
+        </java>
+    </target>
+
+    <target name="worker3">
+        <java classname="ejava.examples.jmsscheduler.Worker"
+            fork="true">
+            <classpath>
+                <path refid="demo.classpath"/>
+            </classpath>
+            <arg value="-jndi.name.connFactory"/>
+            <arg value="${jndi.name.connFactory}"/>
+            <arg value="-jndi.name.requestQueue"/>
+            <arg value="${jndi.name.requestQueue}"/>
+            <arg value="-jndi.name.DLQ"/>
+            <arg value="${jndi.name.DLQ}"/>
+            <arg value="-name"/>
+            <arg value="${worker3.name}"/>
+            <arg value="-max"/>
+            <arg value="${worker3.max}"/>
+            <arg value="-username"/>
+            <arg value="${worker.username}"/>
+            <arg value="-password"/>
+            <arg value="${worker.password}"/>
+        </java>
+    </target>
+
+    <target name="worker4">
+        <java classname="ejava.examples.jmsscheduler.Worker"
+            fork="true">
+            <classpath>
+                <path refid="demo.classpath"/>
+            </classpath>
+            <arg value="-jndi.name.connFactory"/>
+            <arg value="${jndi.name.connFactory}"/>
+            <arg value="-jndi.name.requestQueue"/>
+            <arg value="${jndi.name.requestQueue}"/>
+            <arg value="-jndi.name.DLQ"/>
+            <arg value="${jndi.name.DLQ}"/>
+            <arg value="-name"/>
+            <arg value="${worker4.name}"/>
+            <arg value="-max"/>
+            <arg value="${worker4.max}"/>
+            <arg value="-username"/>
+            <arg value="${worker.username}"/>
+            <arg value="-password"/>
+            <arg value="${worker.password}"/>
+        </java>
+    </target>
+</project>

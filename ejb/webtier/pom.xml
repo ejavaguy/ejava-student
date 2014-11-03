@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <parent>
+        <groupId>info.ejava.examples.ejb</groupId>
+        <artifactId>ejb</artifactId>
+        <version>4.0.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>webTier</artifactId>
+    <packaging>pom</packaging>
+
+    <name>Web Tier</name>
+    <description>
+     This project demonstrates deploying the data access tier and some
+     trivial business logic to a web-only component. It consists of two
+     projects; data access tier and war. They are direct children to this 
+     parent project.
+    </description>
+    <modules>
+        <module>webtierBO</module>
+        <module>webtierDA</module>
+        <module>webtierJPA</module>
+        <module>webtierBL</module>
+        <module>webtierWAR</module>
+    </modules>
+</project>

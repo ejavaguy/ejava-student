@@ -1,6 +1,5 @@
 package ejava.examples.daoex.bo;
 
-import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.GeneratedValue;
@@ -13,8 +12,7 @@ import javax.persistence.Table;
 @javax.persistence.Entity(name="jpaAuthor")
 @Table(name="DAO_AUTHOR")
 @SequenceGenerator(name="AUTHOR_SEQUENCE", sequenceName="AUTHOR_SEQ")
-public class Author implements Serializable {
-    private static final long serialVersionUID = 1L;
+public class Author {
     @Id
     @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="AUTHOR_SEQUENCE")
     @Column(name="AUTHOR_ID", nullable=false)
@@ -35,8 +33,7 @@ public class Author implements Serializable {
     @Column(name="PUBLISH_DATE")
     private Date publishDate;
     
-    public Author() {
-    }        
+    public Author() {}        
     public Author(long id) {
         this.id = id;
     }    

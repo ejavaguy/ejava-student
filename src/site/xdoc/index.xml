@@ -27,22 +27,23 @@
       <subsection name="What's New" id="whatsnew">
       <ul>
       <!--
-          <li>2013-12-03: Posted Async TODOs</li>
-          <li>2013-11-19: Posted JMS TODOs</li>
-          <li>2013-11-12: Posted Security TODOs</li>
-          <li>2013-11-05: Posted Web Tier TODOs</li>
-          <li>2013-10-30: Posted Transaction TODOs</li>
-          <li>2013-10-27: Posted updates to JavaEE Exercises</li>
-          <li>2013-10-23: Posted EJB TODOs</li>
-          <li>2013-10-15: Posted Final Project 1 TODOs and Server-side Materials</li>
-          <li>2013-10-08: Updated Inheritance notes and posted JPA-QL TODOs</li>
-          <li>2013-10-01: Posted Updated ORM Relationship notes and TODOs</li>
-          <li>2013-09-23: Posted Core JPA TODOs with updated Entity Notes</li>
-          <li>2013-09-21: Updated EntityManager Exercise with current versions and schema tuning</li>
-          <li>2013-09-16: Posted DAO Materials and EntityManager TODOs</li>
-          <li>2013-09-09: Posted Project descriptions and Business Logic TODOs</li>
+          <li>2014-12-03: Posted Async TODOs</li>
+          <li>2014-11-19: Posted JMS TODOs</li>
+          <li>2014-11-12: Posted Security TODOs</li>
+          <li>2014-11-05: Posted Web Tier TODOs</li>
+          <li>2014-10-30: Posted Transaction TODOs</li>
           -->
-          <li>2014-09-xx: Posted initial class site</li>
+          <li>2014-10-28: Posted Server-Side JPA Notes and Transaction TODOs</li>
+          <li>2014-10-23: Posted typo corrections to Basic EJB Dev Exercise</li>
+          <li>2014-10-19: Posted JNDI/ENC Exercise and EJB TODOs</li>
+          <li>2014-10-14: Posted Final Project 1 TODOs and Server-side EJB Modules</li>
+          <li>2014-10-07: Posted JPA-QL TODOs</li>
+          <li>2014-09-30: Posted Updated ORM Relationship TODOs</li>
+          <li>2014-09-23: Posted Core JPA TODOs and updated setup for JPA exercises</li>
+          <li>2014-09-16: Posted EntityManager TODOs</li>
+          <li>2014-09-09: Addressed many JPA Eclipse warnings in examples</li>
+          <li>2014-09-09: Posted Project 1 description and Business Logic TODOs</li>
+          <li>2014-09-02: Posted initial class site</li>
       </ul>
       </subsection>
       <subsection name="Class To Do" id="todo">
@@ -187,26 +188,26 @@
       </ul></li>
       -->
 
-      <!-- week 09: CDI and Transactions
+      <!-- week 09: (CDI and) Transactions -->
       <li><ul>
-            <li>Exercises
+            <li>Examples
                 <ul>
-                  <li>Complete through (Optional) Part E</li>
+                  <li>ejb-jpa-example provides beyond-basic examples of using 
+                    JPA on the server-side -- to include LAZy-load exceptions/solutions,
+                    DTOs, caching state with Stateful EJBs, etc.
+                  </li>
                 </ul>
             </li>
             <li>Project
                 <ul>
-                  <li>Design your remote interfaces and DTO classes for the eLeague</li>
+                  <li>Design your remote interfaces and DTO classes for eDmv</li>
                   <li>Begin adding the other session beans, remote interfaces,
                   business logic integration, and RMI tests for project 2.</li>
                   <li>Finish implementing EJB use cases for eSales end-to-end testing.</li>
                   <li>Transactions
                         <ul>
                           <li>Add @Transaction declarations</li>
-                          <li>Implement the transaction test requirement. You may
-                          want to place logic for the transaction test within 
-                          the TestUtilEJB if you end up with undesirable business
-                          logic in order to demonstrate the rollback of a transaction.
+                          <li>Implement the transaction test requirement.
                           Remember, your entities must actually hit the DB and be rolled
                           back as part of the transaction. Simply rejecting bad data does
                           not satisfy the project transaction rollback demo requirement.</li>
@@ -215,16 +216,21 @@
                 </ul>
             </li>
       </ul></li>
-      -->
 
-      <!-- week 08: Session Beans
+
+      </ul>
+      </subsection>
+
+      <subsection name="Things you should have finished!" id="completed">
+      <ul>
+      <!-- week 08: Session Beans -->
       <li><ul>
             <li>Exercises
                 <ul>
                   <li>Start working through the Java EE exercises.
                   It is highly recommended that you go through this since it
                   takes you through many of the use cases and common issues
-                  related to project 2.  Stop after completng Part E.</li>
+                  related to project 2.</li>
                 </ul>
             </li>
             <li>Examples
@@ -233,8 +239,8 @@
                   server-side modules. Be be sure to have your jboss server 
                   running when building prior to building them from this 
                   point forward.</li>
-                  <li>Begin looking at ejbsessionBank example application; 
-                  which forms an EJB, EAR, RMI Test, as well as a WAR Client.
+                  <li>Begin looking at ejb-basic and ejbsessionBank example applications; 
+                  which form an EJB, EAR, RMI Test, as well as a WAR Client.
                   These will be key component types within project 2.</li>
                 </ul>
             </li>
@@ -243,14 +249,14 @@
                   <li>Look over the specification for project 2.</li>
                   <li>Apply the maven, EJB, EAR, RMI Test, and remote interface
                   concepts from the exercises to your project 2.</li>
-                  <li>Have one end-to-end thread through eSalesTest, EJB, and project 1
+                  <li>Have one end-to-end thread through eDmvTest, EJB, and project 1
                   operational</li>
                 </ul>
             </li>
       </ul></li>
-      -->
 
-      <!-- week 07: SQL Tuning and Session Beans
+
+      <!-- week 07: SQL Tuning and Session Beans -->
       <li><ul> 
             <li>DAOs
                 <ul>
@@ -260,15 +266,17 @@
             </li>
             <li>Project
                 <ul>
-                  <li>Finish up project 1 and submit to the grader according
-                  to the submission criteria.</li>
+                  <li>Finish up project 1 and submit according
+                  to the submission guidelines.</li>
                   <li>Perform any desired post-submission refactoring of your 
                   project 1 implementation prior to re-use within project 2.</li>
                   <li>Look over the specification for project 2.</li>
                   <li>Apply the maven, EJB, EAR, RMI Test, and remote interface
                   concepts from the exercises to your project 2.</li>
-                  <li>Have one end-to-end thread through eSalesTest, EJB, and project 1
-                  operational</li>
+                  <li>Have one IT test deploying eDmvEAR with and EJB and invoking
+                  skeletal methods from end-to-end scenario. Mayberry should
+                  pass serializable BOs as DTOs. Dmv should pass separate serializable
+                  DTO classes (i.e., not same BO classes).</li>
                 </ul>
             </li>
             <li>Examples
@@ -277,23 +285,22 @@
                   server-side modules. Be be sure to have your jboss server 
                   running when building prior to building them from this 
                   point forward.</li>
-                  <li>Begin looking at ejbsessionBank example application; 
-                  which forms an EJB, EAR, RMI Test, as well as a WAR Client.
+                  <li>Begin looking at ejb-basic and ejbsessionBank example applications; 
+                  which form an EJB, EAR, RMI Test, as well as a WAR Client.
                   These will be key component types within project 2.</li>
                 </ul>
             </li>
             <li>Exercises
                 <ul>
-                  <li>Start working through the Java EE exercises.
+                  <li>Start working through the EJB exercises.
                   It is highly recommended that you go through this since it
                   takes you through many of the use cases and common issues
-                  related to project 2.  Stop after completng Part D.</li>
+                  related to project 2.  Stop after completing Basic EJB Development</li>
                 </ul>
             </li>
       </ul></li>
-      -->
 
-      <!-- week 06: JPAQL
+      <!-- week 06: JPAQL -->
       <li><ul> 
             <li>Exercises
                 <ul>
@@ -312,9 +319,8 @@
                 </ul>
             </li>
       </ul></li>
-      -->
 
-      <!-- week 05: JPA Relationships
+      <!-- week 05: JPA Relationships -->
       <li><ul> 
             <li>Exercises
                 <ul>
@@ -340,6 +346,7 @@
                   parent/child relationships. It is recommended that you *not*
                   use Cascades when starting out. Keep the functionality implemented
                   within the scope of the requirements of the end-to-end scenario.
+                  Not every entity and relationship needs full CRUD behavior.
                   </li>
                 </ul>
             </li>
@@ -366,9 +373,8 @@
                 </ul>
             </li>
       </ul></li>
-      -->
 
-      <!-- week 04: JPA Core
+      <!-- week 04: JPA Core -->
       <li><ul> 
             <li>Exercises
                 <ul>
@@ -412,12 +418,13 @@
                   and persisted the objects using one of your DAOs. This will be a thin
                   slice of the overall dataset.
                   </li>
+                  <li>Manually validate a DTO or business object using the programmatic 
+                      validation API in a sample method of your business logic.</li>
                 </ul>
             </li>
       </ul></li>
-      -->
 
-      <!-- week 03: DAOs and EntityManager
+      <!-- week 03: DAOs and EntityManager -->
       <li><ul> 
             <li>Project Sanity Check
             <ul>
@@ -434,7 +441,7 @@
                   the details to create a maven module for data tier classes as it is about the JPA 
                   EntityManager.</li>          
               <li>Look over the class project example implementation under the 
-                projects/eSport/eLeague directory as it relates to integrating
+                projects/eDatashare/eDmv directory as it relates to integrating
                 JPA within the individual modules.
               </li>
             </ul>
@@ -493,9 +500,9 @@
             </ul>
             </li>
       </ul></li>
-      -->
 
-      <!-- week 02: DevEnv and Business Logic
+
+      <!-- week 02: DevEnv and Business Logic -->
       <li><ul> 
             <li>Project
                 <ul>
@@ -531,22 +538,14 @@
                 </ul>
             </li>
       </ul></li>
-       -->
 
-      <!-- week 01: Course Intro
+      <!-- week 01: Course Intro -->
       <li><ul> 
           <li>register for newsgroup and setup e-mail handling (all e-mails will have ejava_class in subject)</li>
           <li>post at least 1 test message to newsgroup</li>
           <li>setup development environment by going through exercises 0 and 1</li>
           <li>post your weekly newsgroup contribution based on development environment setup</li>
       </ul></li>
-      -->
-
-      </ul>
-      </subsection>
-
-      <subsection name="Things you should have finished!" id="completed">
-      <ul>
 
       <li><ul>
           <li>had a nice break!</li>

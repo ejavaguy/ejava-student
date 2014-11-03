@@ -22,7 +22,7 @@ public class Car {
             nullable=false, 
             insertable=true,
             updatable=true,
-            table="",  //note: we can point to another table to get prop
+            //table="",  //note: we can point to another table to get prop
             length=20)
     private String make;
 

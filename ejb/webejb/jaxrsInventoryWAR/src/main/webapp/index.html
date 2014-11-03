@@ -1,0 +1,32 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>JAX-RS Inventory</title>
+	</head>
+<body>
+    <ul>
+        <!-- this file contains several simple toy HTML constructs to 
+            do early work with the JAX-RS application. Unfortunately, HTML
+            does not support the full method suite -->
+        <li><a href="rest/categories">List Categories</a></li>
+        <li><b>Create Product</b>
+		    <form action="rest/products" method="post" enctype="application/x-www-form-urlencoded">
+		      Name:     <input name="name" type="text"><p>
+              Category: <input name="category" type="text" value="Stuff"><p>
+              Quantity: <input name="quantity" type="text" value="0"><p>
+              Price:   $<input name="price" type="text" value="0.00"><p>
+              <input type="submit" value="Submit"><p>
+		    </form>
+        </li>
+        <li><a href="rest/products/1">Get Product 1</a></li>
+        <li><a href="rest/categories/1">Get Category 1</a></li>
+        <li><form action="rest/products" method="get">
+              Find Product(name=<input name="name" type="text" value="%">)
+              <input type="submit" value="Submit"><p>
+            </form>
+        </li>
+    </ul>
+    
+</body>
+</html>

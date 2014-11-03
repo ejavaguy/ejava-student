@@ -82,7 +82,21 @@
                     <skipDeploy>true</skipDeploy>
                 </configuration>
             </plugin>
+
+           <!-- need only for deploy with course examples -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <version>2.8.1</version>
+            </plugin>
         </plugins>
+        <extensions> <!-- needed for site deploy over scp -->
+            <extension>
+                <groupId>org.apache.maven.wagon</groupId>
+                <artifactId>wagon-ssh-external</artifactId>
+                <version>2.2</version>
+            </extension>
+        </extensions>
     </build>
 
     <reporting>
@@ -116,6 +130,5 @@
                 <surefire.argLine>-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=8000 -Xnoagent -Djava.compiler=NONE</surefire.argLine>
             </properties>       
         </profile>            
-    
     </profiles>
 </project>

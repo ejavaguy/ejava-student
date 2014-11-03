@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>info.ejava.examples.ejb</groupId>
+        <artifactId>ejb</artifactId>
+        <version>4.0.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>ejb-cdi</artifactId>
+    <packaging>pom</packaging>
+
+    <name>EJB::Contexts and Dependency Injection</name>
+    <description>
+        This project provides the home for demonstrating concepts related to CDI.
+    </description>
+
+    <modules>
+        <module>cdisales</module>
+    </modules>
+    <profiles>
+        <profile>
+            <id>all-modules</id>
+            <modules>
+            </modules>
+        </profile>
+    </profiles>
+</project>

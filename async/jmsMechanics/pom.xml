@@ -1,0 +1,145 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <parent>
+        <groupId>info.ejava.examples.async</groupId>
+        <artifactId>async</artifactId>
+        <version>4.0.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>jmsMechanics</artifactId>
+    <packaging>jar</packaging>
+
+    <name>Async::JMS Mechanics</name>
+    <description>
+        This project provides examples for performing core JMS mechanics
+        of establishing connections, creating, sending, and receiving
+        messages.
+    </description>
+
+    <properties>
+        <jms.embedded>true</jms.embedded>
+    </properties>
+
+    <dependencies>
+        <!-- core dependencies -->
+        <dependency>
+            <groupId>javax.jms</groupId>
+            <artifactId>jms</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- brings in JBoss RMI dependencies -->
+        <dependency>
+            <groupId>info.ejava.examples.common</groupId>
+            <artifactId>jboss-rmi-client</artifactId>
+            <version>${project.version}</version>
+            <type>pom</type>
+            <scope>test</scope>
+        </dependency>    
+        <dependency>
+            <groupId>info.ejava.examples.common</groupId>
+            <artifactId>ejava-util</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>    
+
+        <!-- brings in JBoss HornetQ dependencies -->
+        <dependency>
+            <groupId>org.hornetq</groupId>
+            <artifactId>hornetq-jms-client</artifactId>
+            <scope>compile</scope>
+        </dependency>
+
+        <!-- test dependencies -->
+        <dependency>
+            <groupId>org.jboss.netty</groupId>
+            <artifactId>netty</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.hornetq</groupId>
+            <artifactId>hornetq-jms-server</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <scope>test</scope>
+        </dependency>    
+    </dependencies>
+
+    <build>
+        <!-- filter resource files for profile-specific values -->
+        <testResources>
+            <testResource>
+                <directory>src/test/resources</directory>
+                <filtering>true</filtering>
+                <excludes>
+                    <exclude>**/*.xml</exclude>
+                </excludes>
+            </testResource>
+            <testResource>
+                <directory>src/test/resources</directory>
+                <filtering>false</filtering>
+                <includes>
+                    <include>**/*.xml</include>
+                </includes>
+            </testResource>
+        </testResources>
+
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <systemPropertyVariables>
+                        <multi.message.count>${jmsmechanics.multi.message.count}</multi.message.count>
+                        <jms.embedded>${jms.embedded}</jms.embedded>
+                    </systemPropertyVariables>
+                </configuration>
+            </plugin>
+
+            <!-- build a jar file to share JMS Test utilities -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>test-jar</goal>
+                        </goals>
+                        <configuration>
+                            <!-- include or exclude as appropriate -->
+                            <includes>
+                                <include>META-INF/persistence.xml</include>
+                                <include>**/*TestBase.class</include>
+                            </includes>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- this module does not play well with the site plugin -->
+            <plugin> 
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-site-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                    <skipDeploy>true</skipDeploy>
+                </configuration>
+            </plugin>
+        </plugins>      
+    </build>
+
+</project>

@@ -1,0 +1,65 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <parent>
+        <groupId>info.ejava.examples.ejb</groupId>
+        <artifactId>webejb</artifactId>
+        <version>4.0.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>webejbCustomerEJB</artifactId>
+    <packaging>ejb</packaging>
+
+    <name>EJB::Web-oriented EJB::Customer EJB</name>
+    <description>
+        This project provides an example of an EJB component that will
+        be deployed within a WAR.
+    </description>
+
+    <dependencies>
+        <!-- core dependencies -->
+        <dependency>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- HTTP web client is implemented in HttpClient -->
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <scope>provided</scope>
+        </dependency>        
+
+        <dependency>
+            <groupId>javax</groupId>
+            <artifactId>javaee-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+         <!--tell the resource plugin to perform filtering on resources 
+             to fill in dialect, etc. -->
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+
+        <plugins>
+              <!-- tell the EJB plugin we are using EJB3  and configure client-jar -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-ejb-plugin</artifactId>
+                <configuration>
+                    <generateClient>true</generateClient>
+                    <clientExcludes>
+                        <clientExclude>**/ejb/*Local.class</clientExclude>
+                        <clientExclude>**/ejb/*EJB.class</clientExclude>
+                    </clientExcludes>
+                </configuration>
+            </plugin>      
+        </plugins>      
+    </build>
+</project>

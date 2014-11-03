@@ -1,0 +1,116 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+<h:head>
+    <title>Sell Products (#{sellerController.seller.name})</title>
+</h:head>
+<h:body>
+    <h3>Sell Products (#{sellerController.seller.name})</h3>
+    
+    <h:form>
+        <!--
+            Binds this form to the UICommand in the controller known as "addCommand"
+            and accessed through getAddCommand() and setAddCommand().
+		    public UICommand getAddCommand() { 
+		    public void setAddCommand(UICommand addCommand) {
+            public String addNew() {
+         -->
+        <h:commandButton binding="#{sellerController.addCommand}" accesskey="n" 
+            action="#{sellerController.addNew}" 
+            value="Sell New Product"/>
+    </h:form>
+
+    <h:form binding="#{sellerController.form}" rendered="false">
+        <h:outputText value="Category"/>
+        <h:selectOneMenu value="#{sellerController.product.category}" required="true">
+            <f:selectItems value="#{sellerController.categories}"/>
+        </h:selectOneMenu>
+        
+        <h:outputText value="Name"/>
+        <h:inputText value="#{sellerController.product.name}" required="true"/>
+        
+        <h:outputText value="Year"/>
+        <h:inputText value="#{sellerController.product.year}"/>
+        
+        <h:outputText value="Price"/>
+        <h:inputText value="#{sellerController.product.price}"/>
+        
+        <p></p>
+        <h:commandButton value="Add Product" action="#{sellerController.add}"/>
+    </h:form>
+    
+    <h:form binding="#{sellerController.tableForm}">
+     <h:dataTable value="#{sellerController.products}" var="p">
+         <h:column>
+             <f:facet name="header">
+                 <h:column>
+                     <h:outputText value="Created"></h:outputText>
+                 </h:column>
+             </f:facet>
+             <h:outputText value="#{p.dateCreated}"/>
+         </h:column>
+         
+         <h:column>
+             <f:facet name="header">
+                 <h:column>
+                     <h:outputText value="Category"></h:outputText>
+                 </h:column>
+             </f:facet>
+             <h:outputText value="#{p.category}"/>
+         </h:column>
+         
+            <h:column>
+                <f:facet name="header">
+                    <h:column>
+                        <h:outputText value="Name"></h:outputText>
+                    </h:column>
+                </f:facet>
+                <h:outputText value="#{p.name}"/>
+            </h:column>
+         
+            <h:column>
+                <f:facet name="header">
+                    <h:column>
+                        <h:outputText value="Year"></h:outputText>
+                    </h:column>
+                </f:facet>
+                <h:outputText value="#{p.year}"/>
+            </h:column>
+         
+         <h:column>
+             <f:facet name="header">
+                 <h:column>
+                     <h:outputText value="Price"></h:outputText>
+                 </h:column>
+             </f:facet>
+             <h:outputText value="#{p.price}"/>
+         </h:column>
+         
+         <h:column>
+             <f:facet name="header">
+                 <h:column>
+                     <h:outputText value="Actions"></h:outputText>
+                 </h:column>
+             </f:facet>
+             <h:panelGrid columns="2">
+                 <h:commandButton value="save" action="#{sellerController.save}">
+                     <f:setPropertyActionListener 
+                         target="#{sellerController.product}" 
+                         value="#{p}"/>
+                 </h:commandButton>
+                 <h:commandButton value="delete" action="#{sellerController.delete}">
+                     <f:setPropertyActionListener 
+                         target="#{sellerController.product}" 
+                         value="#{p}"/>
+                 </h:commandButton>
+             </h:panelGrid>
+         </h:column>
+         
+     </h:dataTable>
+    </h:form>
+    <h:link value="Home" outcome="/index"/>
+</h:body>
+</html>

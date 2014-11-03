@@ -1,0 +1,45 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <parent>
+        <groupId>info.ejava.examples.ejb.basicejb</groupId>
+        <artifactId>ejb-basic-example</artifactId>
+        <version>4.0.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>ejb-basic-war</artifactId>
+    <packaging>war</packaging>
+
+    <name>EJB::Basic EJB::WAR</name>
+    <description>
+        This project provides an example WAR deployment
+        of an EJB. Note that this WAR is *not* being deployed
+        as a part of the sibling EAR. It is here to show a 
+        flexible deployment option to an EAR.
+    </description>
+
+    <dependencies>
+        <!-- for embedded code/EJBs -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.ejb</groupId>
+            <artifactId>javax.ejb-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- external/imported EJBs -->
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>ejb-basic-ejb</artifactId>
+            <version>${project.version}</version>
+            <type>ejb</type>
+        </dependency>        
+    </dependencies>
+
+    <build>
+        <finalName>ejb-basic-war</finalName>
+    </build>
+</project>

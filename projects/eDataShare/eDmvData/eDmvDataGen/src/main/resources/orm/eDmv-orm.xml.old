@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm 
+        file:///apps/jboss/docs/schema/orm_1_0.xsd"
+    version="1.0">
+    <!--         
+        http://java.sun.com/xml/ns/persistence/orm_1_0.xsd
+    -->    
+    <mapped-superclass class="gov.ojp.it.jxdm._3_0.SuperType"
+            access="FIELD">
+        <attributes>
+            <transient name="sourceIDText"/>
+            <transient name="id"/>
+        </attributes>        
+    </mapped-superclass>
+
+    <mapped-superclass class="gov.ojp.it.jxdm._3_0.Person" 
+        access="FIELD">
+        <attributes>
+            <transient name="personName"/>
+            <transient name="personPhysicalDetails"/>
+            <transient name="personBirthDate"/>
+            <transient name="residence"/>
+        </attributes>
+    </mapped-superclass>    
+    <mapped-superclass class="gov.ojp.it.jxdm._3_0.PersonPhysicalDetailsType">
+        <attributes>
+            <transient name="personRaceCode"/>
+            <transient name="personHairColorText"/>
+            <transient name="personHeightMeasure"/>
+            <transient name="personWeightMeasure"/>
+            <transient name="personDigitalImage"/>
+        </attributes>
+    </mapped-superclass>
+    <mapped-superclass class="gov.ojp.it.jxdm._3_0.ImageType">
+        <attributes>
+            <embedded name="binaryObjectBase64"/>
+            <transient name="id"/>
+            <transient name="sourceIDText"/>
+        </attributes>
+    </mapped-superclass>
+    <mapped-superclass class="gov.ojp.it.jxdm._3_0.ResidenceType">
+        <attributes>
+            <transient name="residenceStartDate"/>
+            <transient name="residenceEndDate"/>
+        </attributes>
+    </mapped-superclass>
+    
+    <mapped-superclass class="gov.ojp.it.jxdm._3_0.VehicleRegistration">
+        <attributes>
+            <transient name="vehicleLicensePlateID"/>
+            <transient name="vehicleRegistrationDecal"/>
+            <transient name="vehicle"/>
+        </attributes>
+    </mapped-superclass>
+    
+    <entity class="ejava.projects.edmv.DMVPerson" 
+        access="PROPERTY">
+        <table name="PERSON"/>
+        <attributes>
+            <id name="sourceIDInt">
+                <column name="ID"/>
+            </id>
+            <basic name="givenName">
+                <column name="FIRST_NAME" 
+                    nullable="false"/>
+            </basic>
+            <basic name="middleName">
+                <column name="MIDDLE_NAME" 
+                    nullable="true"/>
+            </basic>
+            <basic name="surName">
+                <column name="LAST_NAME" 
+                    nullable="false"/>
+            </basic>
+            <basic name="suffixName">
+                <column name="NAME_SUFFIX" 
+                    nullable="true"/>
+            </basic>
+            <one-to-many name="residences">
+                <join-column 
+                    name="PERSON_ID"/>
+            </one-to-many>
+            <one-to-one name="physicalDetails">
+                <primary-key-join-column/>
+            </one-to-one>
+            <transient name="residence"/>
+            <transient name="personPhysicalDetails"/>
+        </attributes>
+    </entity>
+    
+    <entity class="ejava.projects.edmv.DMVPersonPhysicalDetailsType" 
+        access="PROPERTY">
+        <table name="PHYSICAL_DETAILS"/>
+        <attributes>
+            <id name="id">
+                <column name="PERSON_ID"/>
+            </id>
+            <basic name="dob">
+                <column name="DOB"/>
+                <temporal>DATE</temporal>
+            </basic>
+            <basic name="height">
+                <column name="HEIGHT"/>
+            </basic>
+            <basic name="weight">
+                <column name="WEIGHT"/>
+            </basic>
+            <basic name="hairColor">
+                <column name="HAIR_COLOR"
+                    length="16"/>
+            </basic>
+            <one-to-one name="personDigitalImage">
+                <primary-key-join-column/>
+            </one-to-one>
+        </attributes>
+    </entity>
+    
+    <entity class="ejava.projects.edmv.DMVImageType"
+        access="PROPERTY">
+        <table name="PHOTO"/>
+        <attributes>
+            <id name="sourceIDInt">
+                <column name="PERSON_ID"/>
+            </id>
+        </attributes>
+    </entity>
+    
+    <entity class="ejava.projects.edmv.DMVResidenceType"
+        access="PROPERTY">
+        <table name="RESIDENCE"/>
+        <secondary-table name="LOCATION">
+            <primary-key-join-column name="LOCATION_ID"
+                 referenced-column-name="ID"/>
+        </secondary-table>           
+        <attributes>
+            <id name="sourceIDInt">
+                <column name="ID"/>
+            </id>
+            <basic name="startDate">
+                <column name="START_DATE"/>
+                <temporal>DATE</temporal>
+            </basic>
+            <basic name="endDate">
+                <column name="END_DATE"/>
+                <temporal>DATE</temporal>
+            </basic>
+           
+            <basic name="streetNumber">
+                <column name="STREET_NO"
+                   length="16"
+                   table="LOCATION"/>
+            </basic>
+            <basic name="streetName">
+                <column name="STREET_NAME"
+                    length="64"
+                    table="LOCATION"/>
+            </basic>
+            <basic name="cityName">
+                <column name="CITY"
+                    length="64"
+                    table="LOCATION"/>
+            </basic>
+            <basic name="state">
+                <column name="STATE_CODE"
+                    length="2"
+                    table="LOCATION"/>
+            </basic>
+            <basic name="zip">
+                <column name="ZIP"
+                    length="10"
+                    table="LOCATION"/>
+            </basic>
+            <basic name="locationId">
+                <column name="LOCATION_ID"/>
+            </basic>
+            
+        </attributes>
+    </entity>
+    
+    <entity class="ejava.projects.edmv.DMVVehicleRegistration"
+        access="PROPERTY">
+        <table name="VEHICLE_REGISTRATION"/>
+        <attributes>
+            <id name="sourceIDInt">
+                <column name="ID"/>
+            </id>
+        </attributes>
+    </entity>
+    
+    <embeddable class="gov.ojp.it.jxdm._3_0_3.proxy.xsd._1.Base64Binary">
+        <attributes>
+            <basic name="value">
+                <column name="IMAGE"/>
+                <lob/>
+            </basic>
+            <transient name="id"/>
+            <transient name="sourceIDText"/>
+        </attributes>
+    </embeddable>
+    <embeddable class="gov.ojp.it.jxdm._3_0_3.proxy.ncic_2000._1_0.SEXType">
+        <attributes>
+            <basic name="value">
+                <column name="SEX" 
+                    length="1"/>
+            </basic>
+            <transient name="id"/>
+            <transient name="sourceIDText"/>
+        </attributes>
+    </embeddable>
+    <embeddable class="gov.ojp.it.jxdm._3_0_3.proxy.ncic_2000._1_0.EYEType">
+        <attributes>
+            <basic name="value">
+                <column name="EYE_COLOR" 
+                    length="16"/>
+            </basic>
+            <transient name="id"/>
+            <transient name="sourceIDText"/>
+        </attributes>
+    </embeddable>
+    
+</entity-mappings>
+    
+    

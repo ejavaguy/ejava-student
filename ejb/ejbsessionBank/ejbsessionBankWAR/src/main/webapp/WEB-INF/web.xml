@@ -1,0 +1,22 @@
+<web-app 
+    xmlns="http://java.sun.com/xml/ns/javaee" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+    version="2.5">
+  
+  <display-name>Session Bank Web Application</display-name>
+  
+    <servlet>
+        <servlet-name>Handler</servlet-name>
+        <servlet-class>ejava.examples.ejbsessionbank.web.TellerHandlerServlet
+        </servlet-class>
+        <init-param>      
+            <param-name>type</param-name>
+            <param-value>admin</param-value>
+        </init-param>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Handler</servlet-name>
+        <url-pattern>/model/admin/handler</url-pattern>
+    </servlet-mapping>    
+</web-app>

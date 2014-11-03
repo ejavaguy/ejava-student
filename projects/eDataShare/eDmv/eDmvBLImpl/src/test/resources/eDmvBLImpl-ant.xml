@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="eDmvBLImpl" basedir="..">
+
+    <property file="test-classes/${ant.project.name}.properties"/>
+
+    <path id="run.classpath">
+        <pathelement path="test-classes"/>
+        <pathelement path="classes"/>
+        <fileset dir="dependency" includes="*.jar"/>
+    </path>
+
+    <description>
+    This Ant script will run business logic from the command line.
+    </description>
+
+    <target name="echo">
+        <property name="run-classpath" refid="run.classpath"/>
+        <echo>basedir=${basedir}</echo>
+        <echo>run.classpath=${run-classpath}</echo>
+    </target>
+
+    <target name="coldstart">
+        <sql driver="${JDBC_DRIVER}"
+             url="${JDBC_URL}"
+             userid="${JDBC_USER}"
+             password="${JDBC_PASSWORD}">
+            <classpath>
+                <path refid="run.classpath"/>
+            </classpath>
+             <fileset dir=".">
+                <include name="ddl/*drop.ddl"/>
+             </fileset>
+         </sql>
+        <sql driver="${JDBC_DRIVER}"
+             url="${JDBC_URL}"
+             userid="${JDBC_USER}"
+             password="${JDBC_PASSWORD}">
+            <classpath>
+                <path refid="run.classpath"/>
+            </classpath>
+             <fileset dir=".">
+                <include name="ddl/*create.ddl"/>
+             </fileset>
+         </sql>
+    </target>
+
+    <target name="ingest" depends="coldstart">
+        <property name="inputFile" value="xml/dmv-all.xml"/>
+        <java classname="ejava.projects.edmv.blimpl.EDmvIngestCommand" 
+              fork="true">
+            <classpath>
+                <path refid="run.classpath"/>
+            </classpath>
+            <sysproperty key="inputFile"
+                         value="${inputFile}"/>
+            <sysproperty key="jdbc.driver"
+                         value="${JDBC_DRIVER}"/>
+            <sysproperty key="jdbc.url"
+                         value="${JDBC_URL}"/>
+            <sysproperty key="jdbc.user"
+                         value="${JDBC_USER}"/>
+            <sysproperty key="jdbc.password"
+                         value="${JDBC_PASSWORD}"/>
+        </java>
+    </target>
+
+    <!-- this target is not used in this example. however, it shows how you can
+        parameterize the main ingest target and supply a different file -->
+    <target name="ingest1">
+        <antcall target="ingest">
+            <param name="inputFile" value="xml/some-other-file.xml"/>
+        </antcall>
+    </target>
+
+    <target name="dmvMgmt">
+        <property name="command" value="_NOT_SUPPLIED_"/>
+        <property name="index" value="0"/>
+        <property name="count" value="10"/>
+        <java classname="ejava.projects.edmv.blimpl.EDmvMgmtCommand" fork="true">
+            <classpath>
+                <path refid="run.classpath"/>
+            </classpath>
+            <sysproperty key="command" value="${command}"/>
+            <sysproperty key="index" value="${index}"/>
+            <sysproperty key="count" value="${count}"/>
+        </java>
+    </target>
+
+    <target name="listPeople">
+        <antcall target="dmvMgmt">
+            <param name="command" value="listPeople"/>
+        </antcall>
+    </target>
+
+    <target name="listRegistrations">
+        <antcall target="dmvMgmt">
+            <param name="command" value="listRegistrations"/>
+        </antcall>
+    </target>
+
+</project>

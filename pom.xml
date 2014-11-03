@@ -23,19 +23,37 @@
 
     <modules>
         <module>build</module>
+        <module>common</module>
         <module>javase</module>
+        <module>projects</module>
         <module>jpa</module>
+        <module>servers</module>
+        <module>ejb</module>
+        <!--
+        <module>async</module>
+        -->
         <module>coursedocs</module>
     </modules>
 
     <url>http://webdev.jhuep.com/ejava-javaee</url>
-    <distributionManagement>
-        <site>
-            <id>local</id>
-            <name>Local Site</name>
-            <url>file://tmp/ejava-javaee</url>
-        </site>
-    </distributionManagement>
+    <organization>
+        <name>
+            John's Hopkins University, Engineering Programs for Professionals 
+        </name>
+        <url>http://ep.jhu.edu</url>
+    </organization>
+    <mailingLists>
+        <mailingList>
+            <name>class newsgroup (for class use)</name>
+            <subscribe>http://groups.yahoo.com/group/ejava_class/</subscribe>
+        </mailingList>
+    </mailingLists>
+    <scm>
+        <url>https://github.com/ejavaguy/ejava-student/tree/master</url>
+        <connection>scm:git:git@github.com:ejavaguy/ejava-student.git</connection>
+        <developerConnection>scm:git:git@github-ejavaguy:ejavaguy/ejava-student.git</developerConnection>
+        <tag>HEAD</tag>
+    </scm>
 
     <profiles>
         <profile>
@@ -296,6 +314,41 @@
                 </plugins>
             </build>
         </profile>
+        
+        <!-- 
+        <profile>
+            <id>enforcer</id>
+            <activation>
+                <property>!m2e</property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-enforcer-plugin</artifactId>
+                        <version>${maven-enforcer-plugin.version}</version>
+                        <executions>
+                            <execution>
+                                <id>enforce</id>
+                                <goals>
+                                    <goal>enforce</goal>
+                                </goals>
+                                <configuration>
+                                    <rules>
+                                        <requirePluginVersions/>
+                                        <requireJavaVersion>
+                                            <version>[1.7,)</version>
+                                        </requireJavaVersion>
+                                        <DependencyConvergence/>
+                                    </rules>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+         -->
 
         <profile>
             <id>jenkins</id>
@@ -371,6 +424,37 @@
             </reporting>
         </profile>
 
+
+        <profile>
+            <id>all-modules</id>
+            <modules>
+                <module>build</module>
+                <module>common</module>
+                <module>javase</module>
+                <module>projects</module>
+                <module>jpa</module>
+                <module>servers</module>
+                <module>ejb</module>
+                <module>async</module>
+                <module>coursedocs</module>
+            </modules>
+        </profile>
+
+        <profile>
+            <id>local-deploy</id>
+            <activation>
+                <property>
+                    <name>!remote-deploy</name>
+                </property>
+            </activation>
+            <distributionManagement>
+                <site>
+                    <id>local</id>
+                    <name>Local Site</name>
+                    <url>file://tmp/ejava-javaee</url>
+                </site>
+            </distributionManagement>
+        </profile>
         <profile>
             <id>dev5</id>
             <distributionManagement>
@@ -381,6 +465,25 @@
                 </site>
             </distributionManagement>
         </profile>
-
+        <profile>
+            <id>test-deploy</id>
+            <distributionManagement>
+                <site>
+                    <id>webdev.website</id>
+                    <name>Test Site</name>
+                    <url>scpexe://webdev.jhuep.com/home/jcs/public_html/test-deploy/sites/ejava-javaee</url>
+                </site>
+            </distributionManagement>
+        </profile>
+        <profile>
+            <id>webdev</id>
+            <distributionManagement>
+                <site>
+                    <id>webdev.website</id>
+                    <name>ejava JHU webdev website</name>
+                    <url>scpexe://webdev.jhuep.com/home/jcs/public_html/ejava-javaee</url>
+                </site>
+            </distributionManagement>
+        </profile>
     </profiles>
 </project>

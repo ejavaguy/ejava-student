@@ -1,0 +1,115 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <parent>
+        <groupId>info.ejava.examples.projects.eDataShare</groupId>
+        <artifactId>eDmvData</artifactId>
+        <version>4.0.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>eDmvDTO</artifactId>
+
+    <name>Projects::Data Share::DMV Data::DTO</name>
+    <description>
+        This project provides the data transfer objects and XML parser
+        used to provide an initial starting point for ingesting data
+        into the class database. The parser and DTOs are to be
+        used to obtain data for project-specific business objects for
+        ingest. Once the ingest is complete, there should not be
+        any downstream dependency on this project or classes/interfaces
+        within. A separate project is provided to provide test data. Use
+        that project for your primary dependency as it will bring in
+        default implementation classes for JAXB and StAX needed for
+        runtime use.
+    </description>
+
+    <dependencies>
+        <dependency>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>sun-jaxb</groupId>
+            <artifactId>jaxb-impl</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        
+        <!-- added a dependency on Xerces to hopefully stablize the
+            lexical representation of gMonth formats when changing
+            JRE versions. 
+            -->
+        <dependency>
+            <groupId>xerces</groupId>
+            <artifactId>xercesImpl</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- core project testing dependencies -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>        
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <scope>test</scope>
+        </dependency>    
+    </dependencies>
+
+    <profiles>
+        <profile> <!-- place in profile to limit when code generated -->
+            <id>jaxbgen</id>
+            <activation>
+                <property> <!-- setting this property will turn off XML gen -->
+                    <name>!nojaxb</name>
+                </property>
+            </activation>
+            <build>
+	        <plugins>
+
+        <!-- generate Java classes from XML Schema -->
+        <plugin>
+            <groupId>org.jvnet.jaxb2.maven2</groupId>
+            <artifactId>maven-jaxb2-plugin</artifactId>
+            <executions>
+                <execution>
+                	<phase>generate-sources</phase>
+                    <goals>
+                        <goal>generate</goal>
+                    </goals>
+                </execution>
+            </executions>
+            <configuration>
+                <schemaDirectory>src/main/resources/xsd</schemaDirectory>
+                <schemaIncludes>
+                    <schemaIncludes>dmv.xsd</schemaIncludes>
+                </schemaIncludes>
+
+                <bindingDirectory>src/main/resources/xsd</bindingDirectory>
+                <bindingIncludes>
+                    <bindingInclude>**/*.xjb</bindingInclude>
+                </bindingIncludes>
+                <extension>true</extension>
+                <args>
+                    <arg>-Xvalue-constructor</arg>
+                </args>
+                <plugins>
+                    <dependency>
+                        <groupId>org.jvnet.jaxb2_commons</groupId>
+                        <artifactId>jaxb2-value-constructor</artifactId>
+                        <version>3.0</version>
+                    </dependency>
+                </plugins> 
+            </configuration>
+            <dependencies>
+            </dependencies>
+        </plugin>
+
+    	        </plugins>
+            </build>
+        </profile>
+        
+    </profiles>
+</project>

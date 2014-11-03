@@ -1,0 +1,80 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <parent>
+        <groupId>info.ejava.examples.ejb</groupId>
+        <artifactId>webTier</artifactId>
+        <version>4.0.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+  <artifactId>webtierBL</artifactId>
+
+  <name>Web Tier::Business Logic</name>
+  <description>
+      This project provides an example of business logic that stands
+      between the client/web tier and the data access tier. 
+  </description>
+  
+  <dependencies>
+    <!-- core dependencies -->
+    <dependency>
+      <groupId>commons-logging</groupId>
+      <artifactId>commons-logging</artifactId>
+      <scope>compile</scope>
+    </dependency>
+
+    <!-- contains the core business objects passed between tiers -->
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>webtierBO</artifactId>
+      <version>${project.version}</version>
+      <scope>compile</scope>
+    </dependency>
+
+    <!-- JPA API -->
+    <dependency>
+        <groupId>org.hibernate.javax.persistence</groupId>
+        <artifactId>hibernate-jpa-2.1-api</artifactId>
+        <scope>provided</scope>
+    </dependency>
+
+    <!-- JPA Provider -->
+    <dependency>
+        <groupId>org.hibernate</groupId>
+        <artifactId>hibernate-entitymanager</artifactId>
+        <scope>test</scope>
+    </dependency>
+    <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-log4j12</artifactId>
+        <scope>test</scope>
+    </dependency>
+
+    <!-- interface for DAO implementations -->
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>webtierDA</artifactId>
+      <version>${project.version}</version>
+      <scope>compile</scope>
+    </dependency>
+
+    <!-- a DAO implementation -->
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>webtierJPA</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>
+
+    <!-- core project testing dependencies -->
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <scope>test</scope>
+    </dependency>        
+    <dependency>
+      <groupId>log4j</groupId>
+      <artifactId>log4j</artifactId>
+      <scope>test</scope>
+    </dependency>    
+  </dependencies>
+</project>

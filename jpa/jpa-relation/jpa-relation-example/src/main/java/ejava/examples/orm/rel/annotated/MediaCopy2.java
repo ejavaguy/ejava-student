@@ -28,8 +28,7 @@ public class MediaCopy2 {
     @JoinColumn(name="MEDIACOPY_MID")
     private Media media;
     
-    @SuppressWarnings("unused")
-    private MediaCopy2() { log.debug(super.toString() + ": ctor()"); }
+    protected MediaCopy2() { log.debug(super.toString() + ": ctor()"); }
     public MediaCopy2(Media media, int copyNo) {
         log.debug(super.toString() + ": ctor() mediaId="
                 + media.getId() + ", copyNo=" + copyNo);

@@ -16,6 +16,8 @@
         This project is the root project for Hibernate-specific materials.
     </description>
     <modules>
+    <!--
         <module>hibernate-migration</module>
+        -->
     </modules>
 </project>

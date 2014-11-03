@@ -52,8 +52,7 @@ public class MediaCopy {
             insertable=false, updatable=false) //makes column read-only
     private Media media;
     
-    @SuppressWarnings("unused")
-    private MediaCopy() { log.debug(super.toString() + ": ctor()"); }
+    protected MediaCopy() { log.debug(super.toString() + ": ctor()"); }
     public MediaCopy(Media media, int copyNo) {
         log.debug(super.toString() + ": ctor() mediaId="
                 + media.getId() + ", copyNo=" + copyNo);

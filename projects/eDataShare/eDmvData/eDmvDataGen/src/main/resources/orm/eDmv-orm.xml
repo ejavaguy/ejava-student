@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm 
+        file:///apps/jboss/docs/schema/orm_1_0.xsd"
+    version="1.0">
+    <!--         
+        http://java.sun.com/xml/ns/persistence/orm_1_0.xsd
+    -->    
+    
+    <entity class="ejava.projects.edmv.bo.DMVPerson"
+        name="DMVPerson"
+        access="PROPERTY">
+        <table name="PERSON"/>
+        <attributes>
+            <id name="id">
+                <column name="ID"/>
+            </id>
+            <basic name="givenName">
+                <column name="FIRST_NAME" 
+                    nullable="false"/>
+            </basic>
+            <basic name="middleName">
+                <column name="MIDDLE_NAME" 
+                    nullable="true"/>
+            </basic>
+            <basic name="surName">
+                <column name="LAST_NAME" 
+                    nullable="false"/>
+            </basic>
+            <basic name="suffixName">
+                <column name="NAME_SUFFIX" 
+                    nullable="true"/>
+            </basic>
+            <one-to-many name="residences">
+                <!-- this FK will be placed in RESIDENCE table -->
+                <join-column name="PERSON_ID"/>
+            </one-to-many>
+            <one-to-one name="physicalDetails">
+                <primary-key-join-column/>
+            </one-to-one>
+        </attributes>
+    </entity>
+    
+    <entity class="ejava.projects.edmv.bo.DMVPersonPhysicalDetails"
+        name="DMVPhysicalDetails"
+        access="PROPERTY">
+        <table name="PHYSICAL_DETAILS"/>
+        <attributes>
+            <id name="id">
+                <column name="PERSON_ID"/>
+            </id>
+            <basic name="dob">
+                <column name="DOB"/>
+                <temporal>DATE</temporal>
+            </basic>
+            <basic name="height">
+                <column name="HEIGHT"/>
+            </basic>
+            <basic name="weight">
+                <column name="WEIGHT"/>
+            </basic>
+            <basic name="hairColor">
+                <column name="HAIR_COLOR"
+                    length="16"/>
+            </basic>
+            <basic name="eyeColor">
+                <column name="EYE_COLOR"
+                    length="16"/>
+            </basic>
+            <basic name="sex">
+                <column name="SEX"
+                    length="1"/>
+            </basic>
+            <one-to-one name="photo">
+                <primary-key-join-column/>
+            </one-to-one>
+        </attributes>
+    </entity>
+    
+    <entity class="ejava.projects.edmv.bo.DMVPhoto"
+        name="DMVPhoto"
+        access="PROPERTY">
+        <table name="PHOTO"/>
+        <attributes>
+            <id name="id">
+                <column name="PERSON_ID"/>
+            </id>
+            <basic name="image">
+                <column name="IMAGE" 
+                    nullable="false"/>
+                <lob/>
+            </basic>
+        </attributes>
+    </entity>
+    
+    <entity class="ejava.projects.edmv.bo.DMVLocation"
+        name="DMVLocation"
+        access="PROPERTY">
+        <table name="LOCATION"/>
+        <attributes>
+            <id name="id">
+                <column name="ID"/>
+            </id>           
+            <basic name="streetNumber">
+                <column name="STREET_NO"
+                   length="16"/>
+            </basic>
+            <basic name="streetName">
+                <column name="STREET_NAME"
+                    length="64"/>
+            </basic>
+            <basic name="cityName">
+                <column name="CITY"
+                    length="64"/>
+            </basic>
+            <basic name="state">
+                <column name="STATE_CODE"
+                    length="2"/>
+            </basic>
+            <basic name="zip">
+                <column name="ZIP"
+                    length="10"/>
+            </basic>            
+        </attributes>
+    </entity>
+    
+    <entity class="ejava.projects.edmv.bo.DMVResidence"
+        name="DMVResidence"
+        access="PROPERTY">
+        <table name="RESIDENCE"/>
+        <attributes>
+            <id name="id">
+                <column name="ID"/>
+            </id>
+            <basic name="startDate">
+                <column name="START_DATE"/>
+                <temporal>DATE</temporal>
+            </basic>
+            <basic name="endDate">
+                <column name="END_DATE"/>
+                <temporal>DATE</temporal>
+            </basic>
+            
+            <one-to-one name="location">
+                <join-column name="LOCATION_ID"/>
+            </one-to-one>
+            
+        </attributes>
+    </entity>
+    
+    <entity class="ejava.projects.edmv.bo.DMVVehicleRegistration"
+        name="DMVVehicleRegistration"
+        access="PROPERTY">
+        <table name="VEHICLE_REGISTRATION"/>
+        <attributes>
+            <id name="id">
+                <column name="ID"/>
+            </id>
+            <basic name="vin">
+                <column name="VIN"
+                    length="32"/>
+            </basic>
+            <basic name="tagNo">
+                <column name="TAG_NO"
+                    length="10"/>
+            </basic>
+            <basic name="make">
+                <column name="MAKE"
+                    length="32"/>
+            </basic>
+            <basic name="model">
+                <column name="MODEL"
+                    length="32"/>
+            </basic>
+            <basic name="year">
+                <column name="YEAR"
+                    length="4"/>
+            </basic>
+            <basic name="color">
+                <column name="COLOR"
+                    length="32"/>
+            </basic>
+            <basic name="expiration">
+                <column name="EXPIRATION"/>
+                <temporal>DATE</temporal>
+            </basic>
+            
+            <many-to-many name="owners">
+                <join-table name="VEHICLE_OWNER">
+                    <join-column name="VEHICLE_ID"
+                        referenced-column-name="ID"/>
+                    <inverse-join-column name="PERSON_ID"
+                        referenced-column-name="ID"/>
+                </join-table>                
+            </many-to-many>
+        </attributes>
+    </entity>
+    
+</entity-mappings>
+    
+    

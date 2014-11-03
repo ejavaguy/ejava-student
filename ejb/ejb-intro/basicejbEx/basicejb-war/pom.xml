@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <parent>
+        <groupId>myorg.basicejb</groupId>
+        <artifactId>basicejbEx</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>basicejb-war</artifactId>
+    <packaging>war</packaging>
+
+    <name>Basic EJB Exercise::WAR</name>
+    <description>
+        This project provides a sample WAR for the Java EE components
+        associated with the overall project.
+    </description>
+
+    <dependencies>
+        <!-- for EJBs embedded in WAR module -->
+        <dependency>
+            <groupId>javax.ejb</groupId>
+            <artifactId>javax.ejb-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>basicejb-ejb</artifactId>
+            <version>${project.version}</version>
+            <type>ejb</type>
+            <exclusions>
+                <!-- server doesn't want to see already provided jars -->
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-api</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <!-- core dependencies -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- test dependencies -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- dependencies used for remote interface -->
+        <dependency>
+            <groupId>info.ejava.examples.common</groupId>
+            <artifactId>jboss-rmi-client</artifactId>
+            <type>pom</type>
+            <scope>test</scope>
+        </dependency>    
+    </dependencies>
+
+    <build>
+        <!-- filter test/resource files for profile-specific valies -->
+        <testResources>
+            <testResource>
+                <directory>src/test/resources</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>**/*.properties</include>
+                </includes>
+            </testResource>
+            <testResource>
+                <directory>src/test/resources</directory>
+                <filtering>false</filtering>
+                <excludes>
+                    <exclude>**/*.properties</exclude>
+                </excludes>
+            </testResource>
+        </testResources>
+
+        <plugins>
+            <!-- artifacts to deploy to server. this module by default -->
+            <plugin>
+                <groupId>org.codehaus.cargo</groupId>
+                <artifactId>cargo-maven2-plugin</artifactId>
+            </plugin>
+
+            <!-- adds IT integration tests to the build -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <configuration>
+                    <systemPropertyVariables>
+                        <!--
+                        <jndi.name.reservation>ejb:/basicejb-war/ReservationEJB!org.myorg.basicejb.ejb.ReservationRemote</jndi.name.reservation>
+                        <jndi.name.shopper>ejb:/basicejb-war/ShopperEJB!org.myorg.basicejb.webejb.ShopperRemote?stateful</jndi.name.shopper>
+                        -->
+                    </systemPropertyVariables>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <profiles>
+    <!-- this profiles allow the EAR to be undeployed before it is deleted
+        during the clean target. This behavior requires the EAR to be
+        present, so it cannot be part of the default behavior. It is
+        only activated when -Pundeploy is present so that
+        normal cleans do not fail.  -->
+        <profile>
+            <id>undeploy</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.cargo</groupId>
+                        <artifactId>cargo-maven2-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>undeploy-ear</id>
+                                <phase>pre-clean</phase>
+                                <goals>
+                                    <goal>undeploy</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>                    
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+</project>

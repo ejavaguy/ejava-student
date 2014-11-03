@@ -1,0 +1,131 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <parent>
+        <groupId>info.ejava.examples.async</groupId>
+        <artifactId>asyncMarket</artifactId>
+        <version>4.0.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>asyncMarketImpl</artifactId>
+    <packaging>jar</packaging>
+
+    <name>Async::Async Market::Impl</name>
+    <description>
+        This project provides the data access tier used by the Async
+        Market JMS example.
+    </description>
+
+    <dependencies>
+        <!-- src/main, test, runtime, and dependency classpaths -->
+        <dependency>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+            <scope>compile</scope>
+        </dependency>
+
+        <!-- src/main, test, and runtime classpaths -->
+        <dependency>
+            <groupId>javax.transaction</groupId>
+            <artifactId>jta</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- src/test and runtime classpaths -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <scope>test</scope>
+        </dependency>    
+    </dependencies>
+
+    <build>
+         <!--tell the resource plugin to perform filtering on resources 
+             to fill in JDBC URL, etc. -->
+        <testResources>
+            <testResource>
+                <directory>src/test/resources</directory>
+                <filtering>true</filtering>
+            </testResource>
+        </testResources>
+        <pluginManagement>
+        
+        
+            <plugins>
+                <!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+                <plugin>
+                    <groupId>org.eclipse.m2e</groupId>
+                    <artifactId>lifecycle-mapping</artifactId>
+                    <version>1.0.0</version>
+                    <configuration>
+                        <lifecycleMappingMetadata>
+                            <pluginExecutions>
+                                <pluginExecution>
+                                    <pluginExecutionFilter>
+                                        <groupId>org.codehaus.mojo</groupId>
+                                        <artifactId>hibernate3-maven-plugin</artifactId>
+                                        <versionRange>[3.0,)</versionRange>
+                                        <goals>
+                                            <goal>run</goal>
+                                        </goals>
+                                    </pluginExecutionFilter>
+                                    <action>
+                                        <execute />
+                                    </action>
+                                </pluginExecution>
+                            </pluginExecutions>
+                        </lifecycleMappingMetadata>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+
+    <profiles>
+        <profile> <!-- defines our API and default persistence provider -->
+            <id>hibernate</id>
+            <activation>
+                <property>
+                    <name>!jpa</name>
+                </property>
+            </activation>
+            <dependencies>
+                <dependency>
+                    <groupId>org.hibernate.javax.persistence</groupId>
+                    <artifactId>hibernate-jpa-2.1-api</artifactId>
+                    <scope>provided</scope>
+                </dependency>
+                <dependency>
+                    <groupId>org.hibernate</groupId>
+                    <artifactId>hibernate-entitymanager</artifactId>
+                    <scope>test</scope>
+                </dependency>
+                <dependency>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-log4j12</artifactId>
+                    <scope>test</scope>
+                </dependency>
+            </dependencies>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>hibernate3-maven-plugin</artifactId>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <configuration>
+                            <hibernatetool destdir="target/classes/ddl">
+                                <classpath>
+                                    <path location="${project.build.directory}/test-classes" />
+                                </classpath>
+                                <jpaconfiguration persistenceunit="asyncMarket-test" propertyfile="${basedir}/target/test-classes/hibernate.properties" />
+                            </hibernatetool>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+</project>

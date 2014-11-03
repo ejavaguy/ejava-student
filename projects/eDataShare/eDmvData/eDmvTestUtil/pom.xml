@@ -1,0 +1,110 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <parent>
+        <groupId>info.ejava.examples.projects.eDataShare</groupId>
+        <artifactId>eDmvData</artifactId>
+        <version>4.0.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>eDmvTestUtil</artifactId>
+
+    <name>Projects::Data Share::DMV Data::TestUtil</name>
+    <description>
+        This project wraps the DTO project by supplying physical test data 
+        and a default set of runtime specifications for the StAX parser and
+        JAXB framework.
+
+        Class projects will declare a dependency on this project. This project
+        will automatically bring in the XML data file, the XML Parser and JAXB/DTO
+        classes, and the XML parsing libraries.
+    </description>
+
+    <dependencies>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>eDmvDTO</artifactId>
+            <version>${project.version}</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <!--  this is what JBoss AS 5.1.0.GA is using  
+        -->
+        <dependency>
+            <groupId>sun-jaxb</groupId>
+            <artifactId>jaxb-impl</artifactId>
+            <scope>compile</scope>
+        </dependency>
+        
+
+        <!-- added a dependency on Xerces to hopefully stablize the
+            lexical representation of gMonth formats when changing
+            JRE versions.
+            -->
+        <dependency>
+            <groupId>xerces</groupId>
+            <artifactId>xercesImpl</artifactId>
+            <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>stax</groupId>
+                    <artifactId>stax-api</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>xml-apis</groupId>
+                    <artifactId>xml-apis</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        
+        <!-- true test dependencies -->
+        <dependency>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <scope>test</scope>
+        </dependency>        
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <systemPropertyVariables>                                
+                        <inputDir>target/classes/xml</inputDir>
+                    </systemPropertyVariables>                                
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <profiles>
+        <profile>
+            <id>devel</id>
+            <activation>
+                <property>
+                    <name>devel</name>
+                    <value>true</value>
+                </property>
+            </activation>
+            <dependencies>
+                <dependency>
+                    <groupId>${project.groupId}</groupId>
+                    <artifactId>eDmvDataGen</artifactId>
+                    <version>${project.version}</version>
+                    <scope>provided</scope>
+                </dependency>
+            </dependencies>
+        </profile>
+    </profiles>
+</project>

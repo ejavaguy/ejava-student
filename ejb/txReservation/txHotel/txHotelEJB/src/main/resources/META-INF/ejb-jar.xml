@@ -1,0 +1,177 @@
+<?xml version="1.0"?>
+<ejb-jar
+    xmlns="http://java.sun.com/xml/ns/javaee" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/ejb-jar_3_1.xsd"
+    version="3.1">
+    
+    <enterprise-beans>
+        <session>
+            <ejb-name>HotelRegistrationEJB</ejb-name>
+            <ejb-class>ejava.examples.txhotel.ejb.HotelRegistrationEJB</ejb-class>
+            <session-type>Stateless</session-type>
+        </session>
+        <session>
+            <ejb-name>RequiredEJB</ejb-name>
+            <ejb-class>ejava.examples.txhotel.ejb.HotelRegistrationEJB</ejb-class>
+            <session-type>Stateless</session-type>
+        </session>
+        <session>
+            <ejb-name>RequiresNewEJB</ejb-name>
+            <ejb-class>ejava.examples.txhotel.ejb.HotelRegistrationEJB</ejb-class>
+            <session-type>Stateless</session-type>
+        </session>
+        
+        <session>                      
+            <ejb-name>HotelReservationSessionEJB</ejb-name>
+            <ejb-class>ejava.examples.txhotel.ejb.HotelReservationSessionEJB</ejb-class>
+            <session-type>Stateful</session-type>
+            <stateful-timeout>
+                <timeout>3</timeout>
+                <unit>Minutes</unit>
+            </stateful-timeout>            
+            <remove-method>
+                <bean-method>
+                    <method-name>commit</method-name>
+                </bean-method>
+                <retain-if-exception>false</retain-if-exception>
+            </remove-method>
+
+            <ejb-local-ref>
+                <ejb-ref-name>ejb/HotelReservationist</ejb-ref-name>
+                <ejb-ref-type>Session</ejb-ref-type>
+                <local>ejava.examples.txhotel.ejb.HotelRegistrationLocal</local>
+                <ejb-link>HotelRegistrationEJB</ejb-link>
+                <injection-target>
+                    <injection-target-class>
+                        ejava.examples.txhotel.ejb.HotelReservationSessionEJB
+                    </injection-target-class>
+                    <injection-target-name>
+                        reservationist
+                    </injection-target-name>
+                </injection-target>
+            </ejb-local-ref>
+
+            <!-- this seemed to be ignored, so @PostConstruct annotation
+                put back into class -->
+            <post-construct>
+                <lifecycle-callback-method>init</lifecycle-callback-method>
+            </post-construct>
+            <!-- this seemed to be ignored, so @PreDestroy annotation
+                put back into class -->
+            <pre-destroy>
+                <lifecycle-callback-method>close</lifecycle-callback-method>
+            </pre-destroy>
+        </session>        
+        <session>
+            <ejb-name>RequiredSessionEJB</ejb-name>                       
+            <ejb-class>ejava.examples.txhotel.ejb.HotelReservationSessionEJB</ejb-class>
+            <session-type>Stateful</session-type>
+            <stateful-timeout>
+                <timeout>3</timeout>
+                <unit>Minutes</unit>
+            </stateful-timeout>            
+            <remove-method>
+                <bean-method>
+                    <method-name>commit</method-name>
+                </bean-method>
+                <retain-if-exception>false</retain-if-exception>
+            </remove-method>            
+
+            <ejb-local-ref>
+                <ejb-ref-name>ejb/HotelReservationist</ejb-ref-name>
+                <ejb-ref-type>Session</ejb-ref-type>
+                <local>ejava.examples.txhotel.ejb.HotelRegistrationLocal</local>
+                <ejb-link>RequiredEJB</ejb-link>
+                <injection-target>
+                    <injection-target-class>
+                        ejava.examples.txhotel.ejb.HotelReservationSessionEJB
+                    </injection-target-class>
+                    <injection-target-name>
+                        reservationist
+                    </injection-target-name>
+                </injection-target>
+            </ejb-local-ref>
+        </session>
+        <session>
+            <ejb-name>RequiresNewSessionEJB</ejb-name>
+            <ejb-class>ejava.examples.txhotel.ejb.HotelReservationSessionEJB</ejb-class>
+            <session-type>Stateful</session-type>
+            <stateful-timeout>
+                <timeout>3</timeout>
+                <unit>Minutes</unit>
+            </stateful-timeout>            
+            <remove-method>
+                <bean-method>
+                    <method-name>commit</method-name>
+                </bean-method>
+                <retain-if-exception>false</retain-if-exception>
+            </remove-method>            
+
+            <ejb-local-ref>
+                <ejb-ref-name>ejb/HotelReservationist</ejb-ref-name>
+                <ejb-ref-type>Session</ejb-ref-type>
+                <local>ejava.examples.txhotel.ejb.HotelRegistrationLocal</local>
+                <ejb-link>RequiresNewEJB</ejb-link>
+                <injection-target>
+                    <injection-target-class>                        
+                        ejava.examples.txhotel.ejb.HotelReservationSessionEJB
+                    </injection-target-class>
+                    <injection-target-name>
+                        reservationist
+                    </injection-target-name>
+                </injection-target>
+            </ejb-local-ref>
+        </session>
+    </enterprise-beans>
+    
+    <assembly-descriptor>
+        <!-- the stateless session beans will be a mix of tx styles -->
+        <container-transaction>
+            <method>
+                <ejb-name>RequiredEJB</ejb-name>
+                <method-name>*</method-name>
+            </method>
+            <trans-attribute>Required</trans-attribute>
+        </container-transaction>
+        <container-transaction>
+            <method>
+                <ejb-name>RequiresNewEJB</ejb-name>
+                <method-name>*</method-name>
+            </method>
+            <trans-attribute>RequiresNew</trans-attribute>
+        </container-transaction>
+        
+        <!-- the stateful session beans need a tx only in commit method 
+        -->
+        <container-transaction>
+            <method>
+                <ejb-name>RequiredSessionEJB</ejb-name>
+                <method-name>*</method-name>
+            </method>
+            <trans-attribute>NotSupported</trans-attribute>
+        </container-transaction>        
+        <container-transaction>
+            <method>
+                <ejb-name>RequiredSessionEJB</ejb-name>
+                <method-name>commit</method-name>
+            </method>
+            <trans-attribute>Required</trans-attribute>
+        </container-transaction>            
+        
+        <container-transaction>
+            <method>
+                <ejb-name>RequiresNewSessionEJB</ejb-name>
+                <method-name>*</method-name>
+            </method>
+            <trans-attribute>NotSupported</trans-attribute>
+        </container-transaction>
+        <container-transaction>
+            <method>
+                <ejb-name>RequiresNewSessionEJB</ejb-name>
+                <method-name>commit</method-name>
+            </method>
+            <trans-attribute>Required</trans-attribute>
+        </container-transaction>
+    </assembly-descriptor>
+</ejb-jar>

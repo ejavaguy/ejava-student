@@ -1,8 +1,5 @@
 package ejava.examples.orm.core.mapped;
 
-import javax.persistence.Access;
-import javax.persistence.AccessType;
-
 /**
  * This class provides a pure POJO class that is mapped by BIKE-orm.xml
  * into the database. See the annotated Bike example for how this can be done 
@@ -21,7 +18,6 @@ public class Bike {
         return id;
     }
 
-    @Access(AccessType.FIELD)
     public String getMake() { return make; }
     public void setMake(String make) {
         this.make = make;

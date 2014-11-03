@@ -1,0 +1,127 @@
+<?xml version="1.0"?>
+<ejb-jar 
+    xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/ejb-jar_3_2.xsd"
+      version="3.2">
+
+    <enterprise-beans>
+        <session>
+            <ejb-name>LookupAuditorEJB</ejb-name>
+            <env-entry>
+                <env-entry-name>val/publishJMS</env-entry-name>
+                <env-entry-type>java.lang.Boolean</env-entry-type>
+                <env-entry-value>true</env-entry-value>
+            </env-entry>
+        </session>
+        <session>
+            <ejb-name>ENCAuditorEJB</ejb-name>
+            <env-entry>
+                <env-entry-name>val/publishJMS</env-entry-name>
+                <env-entry-type>java.lang.Boolean</env-entry-type>
+                <env-entry-value>true</env-entry-value>
+            </env-entry>
+
+            <resource-ref>
+                <res-ref-name>jms/cf</res-ref-name>
+                <res-type>javax.jms.ConnectionFactory</res-type>
+                <lookup-name>java:/JmsXA</lookup-name>
+            </resource-ref>
+
+            <resource-env-ref>
+                <resource-env-ref-name>jms/topic</resource-env-ref-name>
+                <resource-env-ref-type>javax.jms.Topic</resource-env-ref-type>
+                <lookup-name>java:/topic/test</lookup-name>
+            </resource-env-ref>            
+            
+            <persistence-context-ref>
+                <persistence-context-ref-name>jpa/em</persistence-context-ref-name>
+                <persistence-unit-name>encconfig-lab</persistence-unit-name>
+            </persistence-context-ref>
+        </session>
+
+        <session>
+            <ejb-name>JNDIAuditorEJB</ejb-name>
+            <env-entry>
+                <env-entry-name>val/publishJMS</env-entry-name>
+                <env-entry-type>java.lang.Boolean</env-entry-type>
+                <env-entry-value>true</env-entry-value>
+            </env-entry>
+            
+            <resource-ref>
+                <res-ref-name>jms/cf</res-ref-name>
+                <res-type>javax.jms.ConnectionFactory</res-type>
+            </resource-ref>
+            
+            <resource-env-ref>
+                <resource-env-ref-name>jms/topic</resource-env-ref-name>
+                <resource-env-ref-type>javax.jms.Topic</resource-env-ref-type>
+            </resource-env-ref>
+            
+            <persistence-context-ref>
+                <persistence-context-ref-name>jpa/em</persistence-context-ref-name>
+                <persistence-unit-name>encconfig-lab</persistence-unit-name>
+            </persistence-context-ref>
+        </session>
+
+        <session>
+            <ejb-name>XMLInjectAuditorEJB</ejb-name>
+            <business-remote>org.myorg.encconfig.ejb.AuditorRemote</business-remote>
+            <ejb-class>org.myorg.encconfig.ejb.XMLInjectAuditorEJB</ejb-class>
+            <session-type>Stateless</session-type>
+            
+            <!-- TODO: enc-config 24: activate this injection 
+            <env-entry>
+                <env-entry-name>val/publishJMS</env-entry-name>
+                <env-entry-type>java.lang.Boolean</env-entry-type>
+                <env-entry-value>true</env-entry-value>
+                <injection-target>
+                    <injection-target-class>org.myorg.encconfig.ejb.XMLInjectAuditorEJB</injection-target-class>
+                    <injection-target-name>publishJMS</injection-target-name>
+                </injection-target>
+            </env-entry>
+            -->
+            
+            <!-- TODO: enc-config 27: activate this injection
+            <resource-ref>
+                <res-ref-name>jms/cf</res-ref-name>
+                <res-type>javax.jms.ConnectionFactory</res-type>
+                <injection-target>
+                    <injection-target-class>org.myorg.encconfig.ejb.XMLInjectAuditorEJB</injection-target-class>
+                    <injection-target-name>cf</injection-target-name>
+                </injection-target>
+            </resource-ref>
+            --> 
+            
+            <!-- TODO: enc-config 26: activate this injection
+            <resource-env-ref>
+                <resource-env-ref-name>jms/topic</resource-env-ref-name>
+                <resource-env-ref-type>javax.jms.Topic</resource-env-ref-type>
+                <injection-target>
+                    <injection-target-class>org.myorg.encconfig.ejb.XMLInjectAuditorEJB</injection-target-class>
+                    <injection-target-name>topic</injection-target-name>
+                </injection-target>
+            </resource-env-ref>
+            --> 
+            
+            <!-- TODO: enc-config 25: activate this injection
+            <persistence-context-ref>
+                <persistence-context-ref-name>jpa/em</persistence-context-ref-name>
+                <persistence-unit-name>encconfig-lab</persistence-unit-name>
+                <injection-target>
+                    <injection-target-class>org.myorg.encconfig.ejb.XMLInjectAuditorEJB</injection-target-class>
+                    <injection-target-name>em</injection-target-name>
+                </injection-target>
+            </persistence-context-ref>
+            -->
+            
+            <!-- TODO: enc-config 28: activate this injection
+            <post-construct>
+                <lifecycle-callback-class>org.myorg.encconfig.ejb.XMLInjectAuditorEJB</lifecycle-callback-class>
+                <lifecycle-callback-method>init</lifecycle-callback-method>
+            </post-construct>
+            -->
+        </session>
+    </enterprise-beans>
+   
+</ejb-jar>

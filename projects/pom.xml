@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>info.ejava.examples</groupId>
+        <artifactId>examples-root</artifactId>
+        <version>4.0.0-SNAPSHOT</version>
+    </parent>
+
+    <groupId>info.ejava.examples.projects</groupId>
+    <artifactId>projects</artifactId>
+    <packaging>pom</packaging>
+
+    <name>Class Projects Root</name>
+    <description>
+        This project is the root project for class project artifacts.
+        It contains test data generators and examples for getting started
+        with the class project. As a general rule, the test data is not
+        to be re-implemented by the student. You will re-use the instructor-provided
+        version as a pre-compiled resource. You will implement your 
+        version of the sample application found here that uses that test
+        data. Use the sample application as a good source of solving some of the 
+        Maven setup required to create your implementation of the class project.
+    </description>
+    <modules>
+        <module>eDataShare</module>
+    </modules>
+</project>

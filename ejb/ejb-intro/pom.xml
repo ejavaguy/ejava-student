@@ -10,12 +10,22 @@
     <artifactId>ejb-intro</artifactId>
     <packaging>pom</packaging>
 
-    <name>EJB::Intro::Example</name>
+    <name>EJB::EJB Introduction</name>
     <description>
-        This project is the root project for simple set of
-        introductory EJBs.
+        This project provides the home for core/getting started EJB materials
+        dealing with topics that are key to developing and deploying a simple
+        EJB.
     </description>
 
     <modules>
+        <module>ejb-basic-example</module>
     </modules>
+    <profiles>
+        <profile>
+            <id>all-modules</id>
+            <modules>
+                <module>basicejbEx</module>
+            </modules>
+        </profile>
+    </profiles>
 </project>

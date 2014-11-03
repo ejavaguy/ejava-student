@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema attributeFormDefault="unqualified" 
+    elementFormDefault="qualified" 
+    targetNamespace="http://www.it.ojp.gov/jxdm/3.0.3" 
+    xmlns:j-xsd="http://www.it.ojp.gov/jxdm/3.0.3/proxy/xsd/1.0" 
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+    xmlns:j-ncic="http://www.it.ojp.gov/jxdm/3.0.3/proxy/ncic_2000/1.0.2" 
+    xmlns:j="http://www.it.ojp.gov/jxdm/3.0.3" 
+    xmlns:j-usps="http://www.it.ojp.gov/jxdm/3.0.3/proxy/usps_states/1.0"
+    >
+    
+  <xsd:import namespace="http://www.it.ojp.gov/jxdm/3.0.3/proxy/xsd/1.0" 
+      schemaLocation="proxy/xsd/1.0/xsd.xsd"/>
+  <xsd:import namespace="http://www.it.ojp.gov/jxdm/3.0.3/proxy/ncic_2000/1.0.2" 
+      schemaLocation="proxy/ncic_2000/1.0.2/ncic_2000.xsd"/>
+  <xsd:import namespace="http://www.it.ojp.gov/jxdm/3.0.3/proxy/usps_states/1.0" 
+      schemaLocation="proxy/usps_states/1.0/usps_states.xsd"/>  
+  <xsd:import namespace="http://www.it.ojp.gov/jxdm/3.0.3/proxy/ansi_d20/1.0.1" 
+      schemaLocation="proxy/ansi_d20/1.0.1/ansi_d20.xsd"/>
+
+  
+  <xsd:attributeGroup name="SuperTypeMetadata">
+    <xsd:attribute name="sourceIDText" type="xsd:string"/>   
+    <xsd:attribute name="id" type="xsd:ID"/>
+  </xsd:attributeGroup>
+  <xsd:complexType name="SuperType">
+    <xsd:attributeGroup ref="j:SuperTypeMetadata"/>
+  </xsd:complexType>
+  <xsd:complexType name="TextType">
+    <xsd:simpleContent>
+      <xsd:extension base="j-xsd:string"/>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="IDType">
+      <xsd:sequence>
+        <xsd:element name="ID" type="j:TextType"/>
+      </xsd:sequence>
+  </xsd:complexType>  
+  <xsd:complexType name="ReferenceType">
+    <xsd:attribute name="ref" type="xsd:IDREF"/>
+  </xsd:complexType>
+  
+
+
+  <xsd:complexType name="PersonNameTextType">
+    <xsd:simpleContent>
+      <xsd:extension base="j:TextType"/>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="MeasureType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:decimal"/>      
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="PersonHeightMeasureType">
+    <xsd:simpleContent>
+      <xsd:extension base="j:MeasureType"/>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="PersonWeightMeasureType">
+    <xsd:simpleContent>
+      <xsd:extension base="j:MeasureType"/>
+    </xsd:simpleContent>
+  </xsd:complexType>  
+  
+  <xsd:complexType name="StreetType">
+      <xsd:sequence>
+          <xsd:element name="StreetNumberText" type="j:TextType" minOccurs="0"/>          
+          <xsd:element name="StreetName" type="j:TextType" minOccurs="0"/>
+      </xsd:sequence>
+  </xsd:complexType>
+  
+  <xsd:complexType name="AddressType">
+      <xsd:sequence>
+          <xsd:element name="LocationStreet" type="j:StreetType" minOccurs="0"/>          
+          <xsd:element name="LocationCityName" type="j:TextType" minOccurs="0"/>
+          <xsd:element name="LocationStateCode.USPostalService" type="j-usps:USStateCodeType" minOccurs="0"/>
+          <xsd:element name="LocationPostalCodeID" type="j:IDType" minOccurs="0"/>
+      </xsd:sequence>
+  </xsd:complexType>
+  
+  <xsd:complexType name="LocationType">
+    <xsd:complexContent>
+      <xsd:extension base="j:SuperType">
+        <xsd:sequence>
+          <xsd:element name="LocationAddress" type="j:AddressType"/>          
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>  
+  
+  <xsd:complexType name="ResidenceType">
+    <xsd:complexContent>
+      <xsd:extension base="j:LocationType">
+        <xsd:sequence>
+          <xsd:element name="ResidenceStartDate" type="j-xsd:date" minOccurs="1"/>
+          <xsd:element name="ResidenceEndDate" type="j-xsd:date" minOccurs="0"/>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  
+
+  <xsd:complexType name="PersonNameType">
+        <xsd:sequence>
+          <xsd:element name="PersonGivenName" type="j:PersonNameTextType" minOccurs="0"/>
+          <xsd:element name="PersonMiddleName" type="j:PersonNameTextType" minOccurs="0"/>
+          <xsd:element name="PersonSurName" type="j:PersonNameTextType" minOccurs="0"/>
+          <xsd:element name="PersonSuffixName" type="j:TextType" minOccurs="0"/>
+        </xsd:sequence>
+  </xsd:complexType>
+  
+    <xsd:complexType name="ImageType">
+      <xsd:complexContent>
+        <xsd:extension base="j:SuperType">
+          <xsd:sequence>
+            <xsd:element name="BinaryObject.Base64" type="j-xsd:base64Binary"/>
+          </xsd:sequence>
+        </xsd:extension>
+      </xsd:complexContent>
+    </xsd:complexType>
+      
+  <xsd:complexType name="PersonPhysicalDetailsType">
+        <xsd:sequence>
+          <xsd:element name="PersonEyeColorCode" type="j-ncic:EYEType" minOccurs="0"/>
+          <xsd:element name="PersonHairColorText" type="j:TextType" minOccurs="0"/>
+          <xsd:element name="PersonHeightMeasure" type="j:PersonHeightMeasureType" minOccurs="0"/>
+          <xsd:element name="PersonWeightMeasure" type="j:PersonWeightMeasureType" minOccurs="0"/>          
+          <xsd:element name="PersonRaceCode" type="j-ncic:RACType" minOccurs="0"/>
+          <xsd:element name="PersonSexCode" type="j-ncic:SEXType" minOccurs="0"/>
+          <xsd:element name="PersonDigitalImage" type="j:ImageType" minOccurs="0"/>
+      </xsd:sequence>
+  </xsd:complexType>
+  
+  <xsd:element name="Person">
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:extension base="j:SuperType">
+          <xsd:sequence>
+            <xsd:element name="PersonName" type="j:PersonNameType"/>
+            <xsd:element name="PersonPhysicalDetails" type="j:PersonPhysicalDetailsType"/>
+            <xsd:element name="PersonBirthDate" type="j-xsd:date"/>
+            <xsd:element name="Residence" type="j:ResidenceType" minOccurs="0" maxOccurs="unbounded"/>
+          </xsd:sequence>
+        </xsd:extension>
+      </xsd:complexContent>
+    </xsd:complexType>    
+  </xsd:element>
+  
+  <xsd:complexType name="DrivingJurisdictionAuthorityIDType">
+    <xsd:complexContent>
+      <xsd:extension base="j:IDType"/>
+    </xsd:complexContent>
+  </xsd:complexType>
+    
+  <xsd:complexType name="DecalType">
+    <xsd:complexContent>
+      <xsd:extension base="j:SuperType">
+        <xsd:sequence>
+          <xsd:element name="DecalMonthDate" type="j-xsd:gMonth"/>
+          <xsd:element name="DecalYearDate" type="j-xsd:gYear"/>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>  
+  <xsd:complexType name="PropertyType">
+    <xsd:complexContent>
+      <xsd:extension base="j:SuperType">
+        <xsd:sequence>
+          <xsd:element name="PropertyOwner.Person" type="j:ReferenceType" 
+                       minOccurs="1" maxOccurs="unbounded"/>        
+        </xsd:sequence>        
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <xsd:complexType name="VehicleBasicsType">
+    <xsd:complexContent>
+      <xsd:extension base="j:PropertyType"/>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <xsd:complexType name="VehicleType">
+    <xsd:complexContent>
+      <xsd:extension base="j:VehicleBasicsType">
+        <xsd:sequence>
+          <xsd:element name="VehicleID" type="j:IDType"/>          
+          <xsd:element name="VehicleColorPrimaryCode" type="j-ncic:VCOType"/>
+          <xsd:element name="VehicleMakeCode" type="j-ncic:VMAType"/>
+          <xsd:element name="VehicleModelCode" type="j-ncic:VMOType"/>
+          <xsd:element name="VehicleModelYearDate" type="j-xsd:gYear"/>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>  
+  <xsd:complexType name="PropertyRegistrationType">
+    <xsd:complexContent>
+      <xsd:extension base="j:SuperType"/>
+    </xsd:complexContent>
+  </xsd:complexType>
+
+  <xsd:element name="VehicleRegistration">
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:extension base="j:PropertyRegistrationType">
+          <xsd:sequence>
+            <xsd:element name="VehicleLicensePlateID" type="j:IDType"/>
+            <xsd:element name="VehicleRegistrationDecal" type="j:DecalType"/>          
+            <xsd:element name="Vehicle" type="j:VehicleType"/>
+          </xsd:sequence>        
+        </xsd:extension>
+      </xsd:complexContent>
+    </xsd:complexType>    
+  </xsd:element>  
+</xsd:schema>

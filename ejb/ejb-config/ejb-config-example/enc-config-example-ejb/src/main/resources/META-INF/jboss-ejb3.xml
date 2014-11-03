@@ -1,0 +1,90 @@
+<?xml version="1.0"?>  
+<jboss:ejb-jar xmlns:jboss="http://www.jboss.com/xml/ns/javaee" 
+    xmlns="http://java.sun.com/xml/ns/javaee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xmlns:s="urn:security" 
+    xmlns:c="urn:clustering:1.0"
+    xmlns:p="urn:ejb-pool:1.0"
+    xsi:schemaLocation="http://www.jboss.com/xml/ns/javaee http://www.jboss.org/j2ee/schema/jboss-ejb3-2_0.xsd
+                     http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/ejb-jar_3_1.xsd"
+    version="3.1" 
+    impl-version="2.0">
+
+    <enterprise-beans>
+        <session>
+            <ejb-name>AnnotatedEJB</ejb-name>
+            <env-entry>
+                <env-entry-name>val/value3</env-entry-name>
+                <env-entry-type>java.lang.String</env-entry-type>
+                <env-entry-value>from jboss-ejb3.xml</env-entry-value>
+            </env-entry>
+            <resource-ref>
+                <res-ref-name>jdbc/ds3</res-ref-name>
+                <jndi-name>java:jboss/datasources/ExampleDS</jndi-name>
+            </resource-ref>
+            <resource-ref>
+                <res-ref-name>jms/cf3</res-ref-name>
+                <jndi-name>java:/JmsXA</jndi-name>
+            </resource-ref>
+            <resource-env-ref>
+                <resource-env-ref-name>jms/queue3</resource-env-ref-name>
+                <jndi-name>java:/queue/test</jndi-name>
+            </resource-env-ref>
+            <resource-env-ref>
+                <resource-env-ref-name>jms/topic3</resource-env-ref-name>
+                <jndi-name>java:/topic/test</jndi-name>
+            </resource-env-ref>
+            <persistence-context-ref>
+                <persistence-context-ref-name>jpa/em3</persistence-context-ref-name>
+                <persistence-unit-name>enc-config</persistence-unit-name>
+            </persistence-context-ref>
+            <persistence-unit-ref>
+                <persistence-unit-ref-name>jpa/emf3</persistence-unit-ref-name>
+                <persistence-unit-name>enc-config</persistence-unit-name>
+            </persistence-unit-ref>
+        </session>
+
+        <session>
+            <ejb-name>XMLConfiguredEJB</ejb-name>
+            <env-entry>
+                <env-entry-name>val/value3</env-entry-name>
+                <env-entry-type>java.lang.String</env-entry-type>
+                <env-entry-value>from jboss-ejb3.xml</env-entry-value>
+            </env-entry>
+            <resource-ref>
+                <res-ref-name>jdbc/ds3</res-ref-name>
+                <jndi-name>java:jboss/datasources/ExampleDS</jndi-name>
+            </resource-ref>
+            <resource-ref>
+                <res-ref-name>jms/cf3</res-ref-name>
+                <jndi-name>java:/JmsXA</jndi-name>
+            </resource-ref>
+            <resource-env-ref>
+                <resource-env-ref-name>jms/queue3</resource-env-ref-name>
+                <jndi-name>java:/queue/test</jndi-name>
+            </resource-env-ref>
+            <resource-env-ref>
+                <resource-env-ref-name>jms/topic3</resource-env-ref-name>
+                <jndi-name>java:/topic/test</jndi-name>
+            </resource-env-ref>
+            <persistence-context-ref>
+                <persistence-context-ref-name>jpa/em3</persistence-context-ref-name>
+                <persistence-unit-name>enc-config</persistence-unit-name>
+            </persistence-context-ref>
+            <persistence-unit-ref>
+                <persistence-unit-ref-name>jpa/emf3</persistence-unit-ref-name>
+                <persistence-unit-name>enc-config</persistence-unit-name>
+            </persistence-unit-ref>
+        </session>
+    </enterprise-beans>
+
+    <assembly-descriptor>
+        <!-- defines EJB pool else not pooled 
+        <p:pool>
+          <ejb-name>*</ejb-name>
+          <p:bean-instance-pool-ref>slsb-strict-max-pool</p:bean-instance-pool-ref>
+        </p:pool>    
+        -->
+    </assembly-descriptor>
+    
+</jboss:ejb-jar>
