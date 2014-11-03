@@ -2,22 +2,25 @@
 <project name="${project.name}">
     <publishDate position="navigation-bottom" format="MMM-dd-yyyy"/>
     <bannerLeft>
-        <name>Enterprise Java (605.784.31)</name>
-        <src>${project.url}/coursedocs/content/html/images/jhu784-white.png</src>
+        <name>Building Service Tier with JavaEE/EJB</name>
+        <src>${project.url}/coursedocs-ejb/content/html/images/ejava-ejb-white.png</src>
         <href>${project.url}/index.html</href>
     </bannerLeft>
     <bannerRight>
         <name>Fall 2014</name>
         <src>${project.url}/coursedocs/content/html/images/semester-white.png</src>
-        <href>http://ep.jhu.edu/</href>
+        <href>http://www.sra.com/</href>
     </bannerRight>
 
   <body>
     <links>
+        <!--
         <item name="Newsgroup" href="http://groups.yahoo.com/group/ejava_class/" />
+        -->
         <item name="JavaSE" href="http://docs.oracle.com/javase/7/docs/api/"/>
         <item name="JavaEE" href="http://download.oracle.com/javaee/7/api/"/>
         <item name="JBoss" href="http://www.jboss.org/"/>
+        <item name="Wildfly" href="http://wildfly.org/"/>
         <item name="Maven" href="http://maven.apache.org/maven2/"/>
     </links>
 
@@ -26,12 +29,12 @@
     </breadcrumbs>
 
     <menu name="Quick Links" inherit="top">
-        <item name="Docs" href="${project.url}/coursedocs/content"/>
-        <item name="Course Description" href="${project.url}/coursedocs/content/html/jhu784-syllabus-intro.html"/>
-        <item name="Syllabus (Paged)" href="${project.url}/coursedocs/content/html/jhu784-syllabus-schedule.html"/>
-        <item name="Syllabus (Book)" href="${project.url}/coursedocs/content/html_single/jhu784-notes-book.html#jhu784-syllabus-schedule"/>
-        <item name="Exercises (Paged)" href="${project.url}/coursedocs/content/html/jhu784-lab-labs.html"/>
-        <item name="Exercises (Book)" href="${project.url}/coursedocs/content/html_single/jhu784-lab-book.html#jhu784-lab-labs"/>
+        <item name="Docs" href="${project.url}/coursedocs-ejb/content"/>
+        <item name="Course Description" href="${project.url}/coursedocs-ejb/content/html/ejb-syllabus-intro.html"/>
+        <item name="Syllabus (Paged)" href="${project.url}/coursedocs-ejb/content/html/ejb-syllabus-schedule.html"/>
+        <item name="Syllabus (Book)" href="${project.url}/coursedocs-ejb/content/html_single/ejb-notes-book.html#ejb-syllabus-schedule"/>
+        <item name="Exercises (Paged)" href="${project.url}/coursedocs-ejb/content/html/ejb-lab-labs.html"/>
+        <item name="Exercises (Book)" href="${project.url}/coursedocs-ejb/content/html_single/ejb-lab-book.html#ejb-lab-labs"/>
     </menu>
 
     <menu ref="modules" inherit="bottom"/>

@@ -1,20 +1,16 @@
 <?xml version="1.0"?>
 <document>
   <properties>
-    <title>Enterprise Java (605.784.31) Fall 2014</title>
-    <author email="jim.stafford@jhu.edu">jim.stafford@jhu.edu</author>
+    <title>Building the Service Tier with JavaEE/EJB, Fall 2014</title>
+    <author email="ejavaguy@gmail.com">ejavaguy@gmail.com</author>
   </properties>
   <body>
-    <section name="Enterprise Java (605.784.31) Fall 2014">
+    <section name="Building the Service Tier with JavaEE/EJB, Fall 2014">
       <p>
-      This is the course home page for the Enterprise Java Course
-      (605.784), taught at John's Hopkins University, Engineering
-      Programs for Professionals.  
+      This is the course home page for the Building the Service Tier
+      with JavaEE/EJB and JBoss/Wildfly, taught at SRA-U.
       This site will be populated as the
-      semester progresses and topics are addressed. If you are looking
-      for a version of the full content for ejava-javaee, refer to
-      <a href="http://webdev.jhuep.com/~jcs/legacy-ejava-javaee">
-      http://webdev.jhuep.com/~jcs/legacy-ejava-javaee</a>.
+      semester progresses and topics are addressed. 
       </p>
       <p>
       Legal Disclaimer: The information and opinions expressed within the
@@ -32,7 +28,6 @@
           <li>2014-11-12: Posted Security TODOs</li>
           <li>2014-11-05: Posted Web Tier TODOs</li>
           <li>2014-10-30: Posted Transaction TODOs</li>
-          -->
           <li>2014-10-28: Posted Server-Side JPA Notes and Transaction TODOs</li>
           <li>2014-10-23: Posted typo corrections to Basic EJB Dev Exercise</li>
           <li>2014-10-19: Posted JNDI/ENC Exercise and EJB TODOs</li>
@@ -43,7 +38,8 @@
           <li>2014-09-16: Posted EntityManager TODOs</li>
           <li>2014-09-09: Addressed many JPA Eclipse warnings in examples</li>
           <li>2014-09-09: Posted Project 1 description and Business Logic TODOs</li>
-          <li>2014-09-02: Posted initial class site</li>
+          -->
+          <li>2014-11-03: Posted initial class site</li>
       </ul>
       </subsection>
       <subsection name="Class To Do" id="todo">
@@ -188,12 +184,12 @@
       </ul></li>
       -->
 
-      <!-- week 09: (CDI and) Transactions -->
+      <!-- week 09: (CDI and) Transactions 
       <li><ul>
             <li>Examples
                 <ul>
                   <li>ejb-jpa-example provides beyond-basic examples of using 
-                    JPA on the server-side -- to include LAZy-load exceptions/solutions,
+                    JPA on the server-side - to include LAZy-load exceptions/solutions,
                     DTOs, caching state with Stateful EJBs, etc.
                   </li>
                 </ul>
@@ -216,14 +212,22 @@
                 </ul>
             </li>
       </ul></li>
+           -->
 
+      <!-- week 01: Course Intro -->
+      <li><ul> 
+          <li>post at least 1 test message to discussion area</li>
+          <li>setup development environment by going through setup exercise</li>
+          <li>if new to Maven, go through the simple application exercise</li>
+          <li>(optional) get an early start on the Basic EJB Development exercise</li>
+      </ul></li>
 
       </ul>
       </subsection>
 
       <subsection name="Things you should have finished!" id="completed">
       <ul>
-      <!-- week 08: Session Beans -->
+      <!-- week 08: Session Beans 
       <li><ul>
             <li>Exercises
                 <ul>
@@ -254,9 +258,10 @@
                 </ul>
             </li>
       </ul></li>
+           -->
 
 
-      <!-- week 07: SQL Tuning and Session Beans -->
+      <!-- week 07: SQL Tuning and Session Beans 
       <li><ul> 
             <li>DAOs
                 <ul>
@@ -299,8 +304,9 @@
                 </ul>
             </li>
       </ul></li>
+           -->
 
-      <!-- week 06: JPAQL -->
+      <!-- week 06: JPAQL 
       <li><ul> 
             <li>Exercises
                 <ul>
@@ -319,8 +325,9 @@
                 </ul>
             </li>
       </ul></li>
+           -->
 
-      <!-- week 05: JPA Relationships -->
+      <!-- week 05: JPA Relationships 
       <li><ul> 
             <li>Exercises
                 <ul>
@@ -373,8 +380,9 @@
                 </ul>
             </li>
       </ul></li>
+           -->
 
-      <!-- week 04: JPA Core -->
+      <!-- week 04: JPA Core 
       <li><ul> 
             <li>Exercises
                 <ul>
@@ -423,8 +431,9 @@
                 </ul>
             </li>
       </ul></li>
+           -->
 
-      <!-- week 03: DAOs and EntityManager -->
+      <!-- week 03: DAOs and EntityManager 
       <li><ul> 
             <li>Project Sanity Check
             <ul>
@@ -500,9 +509,10 @@
             </ul>
             </li>
       </ul></li>
+           -->
 
 
-      <!-- week 02: DevEnv and Business Logic -->
+      <!-- week 02: DevEnv and Business Logic 
       <li><ul> 
             <li>Project
                 <ul>
@@ -538,18 +548,9 @@
                 </ul>
             </li>
       </ul></li>
+           -->
 
-      <!-- week 01: Course Intro -->
-      <li><ul> 
-          <li>register for newsgroup and setup e-mail handling (all e-mails will have ejava_class in subject)</li>
-          <li>post at least 1 test message to newsgroup</li>
-          <li>setup development environment by going through exercises 0 and 1</li>
-          <li>post your weekly newsgroup contribution based on development environment setup</li>
-      </ul></li>
 
-      <li><ul>
-          <li>had a nice break!</li>
-      </ul></li>
       </ul>
       </subsection>
     </section>
