@@ -1344,5 +1344,21 @@
                     </snapshotRepository>
                 </distributionManagement>
             </profile>
+            <profile>
+                <id>srau</id>
+                <distributionManagement>
+                    <repository>
+                        <id>srau-releases</id>
+                        <name>srau releases</name>
+                        <url>https://srau.ejava.info/nexus/content/repositories/srau-releases/</url>
+                    </repository>
+                    <snapshotRepository>
+                        <id>srau-snapshots</id>
+                        <name>srau snapshots</name>
+                        <url>https://srau.ejava.info/nexus/content/repositories/srau-snapshots/</url>
+                        <uniqueVersion>false</uniqueVersion>
+                    </snapshotRepository>
+                </distributionManagement>
+            </profile>
     </profiles>
 </project>

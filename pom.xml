@@ -485,5 +485,15 @@
                 </site>
             </distributionManagement>
         </profile>
+        <profile>
+            <id>srau</id>
+            <distributionManagement>
+                <site>
+                    <id>ejava-ejb.website</id>
+                    <name>SRA-U EJB</name>
+                    <url>scpexe://srau.ejava.info/var/www/ejava.info/html/sites/ejava-ejb</url>
+                </site>
+            </distributionManagement>
+        </profile>
     </profiles>
 </project>
