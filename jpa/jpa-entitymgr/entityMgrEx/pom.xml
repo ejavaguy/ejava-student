@@ -331,7 +331,7 @@
                                 </goals>
                                 <configuration>
                                     <autocommit>true</autocommit>
-                                    <orderFile>acending</orderFile>
+                                    <orderFile>ascending</orderFile>
                                     <fileset>
                                         <basedir>${basedir}/src</basedir>
                                         <includes>
