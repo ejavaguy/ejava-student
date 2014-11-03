@@ -6,4 +6,11 @@
     http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd"
     version="2.2">
 
+    <navigation-rule>
+        <from-view-id>/seller/seller-products.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>error</from-outcome>
+            <to-view-id>/WEB-INF/content/error.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
 </faces-config>

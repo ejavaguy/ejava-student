@@ -16,6 +16,7 @@ import info.ejava.examples.ejb.cdisales.bo.ProductCategory;
 import info.ejava.examples.ejb.cdisales.ejb.InvalidProduct;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import javax.enterprise.context.Conversation;
 import javax.enterprise.context.ConversationScoped;
 import javax.faces.component.UICommand;
@@ -108,10 +109,14 @@ public class SellerController implements Serializable {
     
     @PostConstruct
     public void init() {
-        logger.debug("SellerController({}):init", super.hashCode());
-        conversation.begin();
+        logger.debug("*** SellerController({}):init ***", super.hashCode());
+        conversation.begin(); //got to start it since we declared it
     }
 
+    @PreDestroy
+    public void destroy() {
+        logger.debug("*** SellerController({}):destroy ***", super.hashCode());
+    }
     
     //data model methods
     public Member getSeller() {
@@ -329,13 +334,7 @@ public class SellerController implements Serializable {
             String errorMsg = "error saving product:" + product;
             error.setError(errorMsg);
             error.setException(ex);
-            return "/error";
+            return "error";
         }
-    }
-    
-    public String complete() {
-        logger.debug("complete({})", super.hashCode());
-        conversation.end();
-        return "/index";
     }
 }
