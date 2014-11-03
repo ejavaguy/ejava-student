@@ -8,7 +8,7 @@ import info.ejava.examples.ejb.cdisales.bl.InvalidAccount;
 import info.ejava.examples.ejb.cdisales.bl.UserMgmt;
 import info.ejava.examples.ejb.cdisales.bo.Member;
 
-import javax.enterprise.inject.Alternative;
+import javax.enterprise.inject.Vetoed;
 import javax.persistence.EntityManager;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
@@ -16,7 +16,8 @@ import javax.validation.Validator;
 /**
  * This bean will be "Produced" and injected from a factory
  */
-@Alternative
+//@Vetoed //don't use this class as a source for obtaining a UserMgmt or UserMgmtDAO.
+//that is being implemented by a factory elsewhere
 public class UserMgmtDAO implements UserMgmt {
     private EntityManager em;
     private Validator validator;
