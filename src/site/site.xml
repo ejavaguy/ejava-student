@@ -8,7 +8,7 @@
     </bannerLeft>
     <bannerRight>
         <name>Fall 2014</name>
-        <src>${project.url}/coursedocs/content/html/images/semester-white.png</src>
+        <src>${project.url}/coursedocs-ejb/content/html/images/semester-white.png</src>
         <href>http://www.sra.com/</href>
     </bannerRight>
 
