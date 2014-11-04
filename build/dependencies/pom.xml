@@ -1280,11 +1280,13 @@
 
             <profile>
                 <id>webdev-repos</id>
+                <!--
                 <activation>
                     <property>
                         <name>!test-deploy</name>
                     </property>
                 </activation>
+                -->
                 <repositories>
                     <repository>
                         <id>webdev</id>
@@ -1316,6 +1318,55 @@
                         <id>webdev</id>
                         <name>ejava webdev repository</name>
                         <url>http://webdev.jhuep.com/~jcs/maven2</url>
+                        <releases>
+                            <enabled>true</enabled>
+                            <updatePolicy>never</updatePolicy>
+                        </releases>
+                        <snapshots>
+                            <enabled>true</enabled>
+                            <updatePolicy>daily</updatePolicy>
+                        </snapshots>
+                    </pluginRepository>
+                </pluginRepositories>
+            </profile>
+            <profile>
+                <id>srau-repos</id>
+                <activation>
+                    <property>
+                        <name>!test-deploy</name>
+                    </property>
+                </activation>
+                <repositories>
+                    <repository>
+                        <id>srau-releases</id>
+                        <name>srau releases</name>
+                        <url>http://srau.ejava.info/nexus/content/repositories/srau-releases/</url>
+                        <releases>
+                            <enabled>true</enabled>
+                            <updatePolicy>never</updatePolicy>
+                        </releases>
+                        <snapshots>
+                            <enabled>false</enabled>
+                        </snapshots>
+                    </repository>
+                    <repository>
+                        <id>srau-snapshot</id>
+                        <name>srau snapshots</name>
+                        <url>srau-snapshots: http://srau.ejava.info/nexus/content/repositories/srau-snapshots/</url>
+                        <releases>
+                            <enabled>false</enabled>
+                        </releases>
+                        <snapshots>
+                            <enabled>true</enabled>
+                            <updatePolicy>daily</updatePolicy>
+                        </snapshots>
+                    </repository>
+                </repositories>
+                <pluginRepositories>
+                    <pluginRepository>
+                        <id>srau-releases</id>
+                        <name>srau plugin repository</name>
+                        <url>http://srau.ejava.info/nexus/content/repositories/srau-releases/</url>
                         <releases>
                             <enabled>true</enabled>
                             <updatePolicy>never</updatePolicy>

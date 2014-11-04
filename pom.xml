@@ -28,7 +28,9 @@
         <!--
         <module>projects</module>
         <module>jpa</module>
+        -->
         <module>servers</module>
+        <!--
         <module>ejb</module>
         <module>async</module>
         -->
@@ -427,6 +429,12 @@
         </profile>
 
 
+        <profile>
+            <id>ejb-modules</id>
+            <modules>
+                <module>ejb</module>
+            </modules>
+        </profile>
         <profile>
             <id>all-modules</id>
             <modules>

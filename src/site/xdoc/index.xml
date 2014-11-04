@@ -9,8 +9,10 @@
       <p>
       This is the course home page for the Building the Service Tier
       with JavaEE/EJB and JBoss/Wildfly, taught at SRA-U.
-      This site will be populated as the
-      semester progresses and topics are addressed. 
+      This site will be populated as the semester progresses and topics are addressed. 
+      The class 
+      <a href="https://corpteams.sranet.sra.com/support/sra-u/wildfly/default.aspx">collaboration site</a>
+      is located on the portal.
       </p>
       <p>
       Legal Disclaimer: The information and opinions expressed within the
@@ -217,7 +219,18 @@
       <!-- week 01: Course Intro -->
       <li><ul> 
           <li>post at least 1 test message to discussion area</li>
-          <li>setup development environment by going through setup exercise</li>
+          <li>setup development environment by going through setup exercise
+            <ul>
+              <li>use the git "ejb-class" branch (git checkout ejb-class). Do not use the default "master" branch.</li>
+              <li>use "coursedocs-ejb" - not "coursedocs" - when referenced in instructions</li>
+              <li>do not use "webdev" repository locations. For Nexus repositories use
+                    <ul>
+                        <li>srau-releases: http://srau.ejava.info/nexus/content/repositories/srau-releases/</li>
+                        <li>srau-snapshots: http://srau.ejava.info/nexus/content/repositories/srau-snapshots/</li>
+                    </ul>
+              </li>
+            </ul>
+          </li>
           <li>if new to Maven, go through the simple application exercise</li>
           <li>(optional) get an early start on the Basic EJB Development exercise</li>
       </ul></li>
