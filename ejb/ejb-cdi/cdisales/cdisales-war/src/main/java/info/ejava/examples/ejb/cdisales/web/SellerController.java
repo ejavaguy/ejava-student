@@ -72,13 +72,13 @@ public class SellerController implements Serializable {
      * items for sale and then updated as products are added for sale during the 
      * conversation.
      */
-    List<Product> products;
+    private List<Product> products;
     /**
      * This is the product the page is currently working with. No argument 
      * actions methods will be called and it is assumed they should be acting
      * on the last item referenced by setProduct().
      */
-    Product product;
+    private Product product;
 
     /***************************************
      * JSF data

@@ -30,9 +30,8 @@
           <li>2014-12-03: Posted Async TODOs</li>
           <li>2014-11-19: Posted JMS TODOs</li>
           <li>2014-11-12: Posted Security TODOs</li>
-          <li>2014-11-05: Posted Web Tier TODOs</li>
-          <li>2014-10-30: Posted Transaction TODOs</li>
           -->
+          <li>2014-11-05: Posted Web Tier Materials and TODOs</li>
           <li>2014-10-28: Posted Server-Side JPA Notes and Transaction TODOs</li>
           <li>2014-10-23: Posted typo corrections to Basic EJB Dev Exercise</li>
           <li>2014-10-19: Posted JNDI/ENC Exercise and EJB TODOs</li>
@@ -156,37 +155,37 @@
       </ul></li>
       -->
 
-      <!-- week 10: Web
+      <!-- week 10: Web -->
       <li><ul>
-            <li>Exercises
-                <ul>
-                  <li>Complete exercises through Part G</li>
-                </ul>
-            </li>
             <li>Examples
                 <ul>
-                  <li>Look over Web UI parts of the ejbsessionBank.</li>
+                  <li>Look over Web UI parts of the ejbsessionBank (Servlets &amp; JSPs) and cdisales (JSF).</li>
                   <li>The webejb example shows an example of RMI and JAX-RS
                       being used as a remote facade. You may use either technique 
-                      for eClub. eLeague should use RMI.</li>
+                      for eMayberry. eDmv should use RMI.</li>
                 </ul>
             </li>
             <li>Web/Project
                 <ul>
-                  <li>Add a WAR project to eLeague. Add in supporting 
-                      Servlet and JSP implementations.</li>
-                  <li>Add a WAR project to eClub and deploy your eClub
-                      EJBs within that WAR - either embedded or included from a 
-                      separate module. See the webejb example</li>
-                  <li>Add supporting Servlet and JSP implementations for eClub.  
-                      This WAR may obtain functionality implemented by eLeagueEJB. 
-                      However, it should not directly communicate with eLeagueEJB. 
-                      eClubEJB should act as a facade for all behavior performed 
-                      on behalf of eClubWAR</li>
+                  <li>Add a WAR project to eDmv. Add in supporting 
+                      Web UI implementations.</li>
+                  <li>Add supporting Web UI implementations for eMayberry.  
+                      This WAR may obtain functionality implemented by eDmvEJB. 
+                      However, it should not directly communicate with eDmvEJB. 
+                      eMayberryEJB should act as a facade for all behavior performed 
+                      on behalf of Mayberry</li>
+                  <li>Re-implement the JUnit end-to-end scenario using a Web UI.
+                      Keep both.</li>
                 </ul>
             </li>
       </ul></li>
-      -->
+
+
+      </ul>
+      </subsection>
+
+      <subsection name="Things you should have finished!" id="completed">
+      <ul>
 
       <!-- week 09: (CDI and) Transactions -->
       <li><ul>
@@ -217,12 +216,6 @@
             </li>
       </ul></li>
 
-
-      </ul>
-      </subsection>
-
-      <subsection name="Things you should have finished!" id="completed">
-      <ul>
       <!-- week 08: Session Beans -->
       <li><ul>
             <li>Exercises
