@@ -218,8 +218,8 @@
 
       <!-- week 01: Course Intro -->
       <li><ul> 
-          <li>post at least 1 test message to discussion area</li>
-          <li>setup development environment by going through setup exercise
+          <li>Post at least 1 test message to discussion area</li>
+          <li>Setup development environment by going through setup exercise
             <ul>
               <li>use the git "ejb-class" branch (git checkout ejb-class). Do not use the default "master" branch.</li>
               <li>use "coursedocs-ejb" - not "coursedocs" - when referenced in instructions</li>
@@ -229,10 +229,16 @@
                         <li>srau-snapshots: http://srau.ejava.info/nexus/content/repositories/srau-snapshots/</li>
                     </ul>
               </li>
+              <li>Many of the class modules have been commented out in the root pom to allow for simpler first 
+                  build. Once you have everything setup, please attempt to build the EJB
+                  modules (using -Pejb-modules or building from the ejb directory) and all modules (using -Pall-modules
+                  or building from the jpa and async directories). You are done with the assignment once you have
+                  all modules successfully building in your area. Make use of the newsgroup to efficiently solve any 
+                  errors.</li>
             </ul>
           </li>
-          <li>if new to Maven, go through the simple application exercise</li>
-          <li>(optional) get an early start on the Basic EJB Development exercise</li>
+          <li>If new to Maven, go through the simple application exercise</li>
+          <li>(optional) Get an early start on the Basic EJB Development exercise</li>
       </ul></li>
 
       </ul>
