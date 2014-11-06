@@ -1352,7 +1352,7 @@
                     <repository>
                         <id>srau-snapshot</id>
                         <name>srau snapshots</name>
-                        <url>srau-snapshots: http://srau.ejava.info/nexus/content/repositories/srau-snapshots/</url>
+                        <url>http://srau.ejava.info/nexus/content/repositories/srau-snapshots/</url>
                         <releases>
                             <enabled>false</enabled>
                         </releases>
