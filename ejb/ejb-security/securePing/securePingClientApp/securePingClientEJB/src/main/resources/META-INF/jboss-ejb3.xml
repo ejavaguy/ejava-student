@@ -1,0 +1,21 @@
+<?xml version="1.0"?>  
+<jboss:ejb-jar 
+   xmlns:jboss="http://www.jboss.com/xml/ns/javaee"
+   xmlns:sec="urn:security" 
+   xmlns="http://java.sun.com/xml/ns/javaee"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://www.jboss.com/xml/ns/javaee http://www.jboss.org/j2ee/schema/jboss-ejb3-2_0.xsd
+      http://java.sun.com/xml/ns/javaee http://www.jboss.org/j2ee/schema/jboss-ejb3-spec-2_0.xsd
+      urn:security urn:security"
+   version="3.1"
+   impl-version="2.0">
+
+    <assembly-descriptor>
+        <sec:security>
+            <ejb-name>*</ejb-name>
+            <sec:security-domain>other</sec:security-domain>
+            <sec:run-as-principal>admin1</sec:run-as-principal>
+        </sec:security>
+    </assembly-descriptor>    
+
+</jboss:ejb-jar>

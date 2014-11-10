@@ -1,0 +1,135 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <parent>
+        <groupId>info.ejava.examples.ejb</groupId>
+        <artifactId>securePingClientApp</artifactId>
+        <version>4.0.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>securePingClientTest</artifactId>
+    <packaging>jar</packaging>
+
+    <name>EJB::Security::Secure Ping Client::RMI Test</name>
+    <properties>
+        <admin.username>admin1</admin.username>
+        <user.username>user1</user.username>
+    </properties>
+
+    <dependencies>
+        <!-- core dependencies -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- include this to compile tests -->
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>securePingClientEJB</artifactId>
+            <version>${project.version}</version>
+            <type>jar</type>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>securePingEAR</artifactId>
+            <version>${project.version}</version>
+            <type>ear</type>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>info.ejava.examples.common</groupId>
+            <artifactId>jboss-rmi-client</artifactId>
+            <version>${project.version}</version>
+            <type>pom</type>
+            <scope>test</scope>
+        </dependency>    
+        
+        <dependency>
+            <groupId>info.ejava.examples.common</groupId>
+            <artifactId>ejava-util</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <!-- package being deployed must be a scope=compile dependency -->
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>securePingClientEAR</artifactId>
+            <version>${project.version}</version>
+            <type>ear</type>
+            <scope>compile</scope>
+        </dependency>
+
+        <!-- test dependencies -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <scope>test</scope>
+        </dependency>    
+    </dependencies>
+
+    <build>
+        <!-- filter test/resource files for profile-specific valies -->
+        <testResources>
+            <testResource>
+                <directory>src/test/resources</directory>
+                <filtering>true</filtering>
+            </testResource>
+        </testResources>
+
+        <plugins>
+            <!-- artifacts to deploy to server -->
+            <plugin>
+                <groupId>org.codehaus.cargo</groupId>
+                <artifactId>cargo-maven2-plugin</artifactId>
+                <configuration>
+                    <deployables>
+                        <deployable>
+                            <groupId>${project.groupId}</groupId>
+                            <artifactId>securePingEAR</artifactId>
+                            <type>ear</type>
+                        </deployable>
+                        <deployable>
+                            <groupId>${project.groupId}</groupId>
+                            <artifactId>securePingClientEAR</artifactId>
+                            <type>ear</type>
+                        </deployable>
+                    </deployables>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <configuration>
+                    <systemPropertyVariables>
+                        <admin.username>${admin.username}</admin.username>
+                        <user.username>${user.username}</user.username>
+                        <cargo.startstop>${cargo-startstop}</cargo.startstop>
+                    </systemPropertyVariables>
+                </configuration>
+            </plugin>
+
+            <!-- this module does not play well with the site plugin -->
+            <plugin> 
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-site-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                    <skipDeploy>true</skipDeploy>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
