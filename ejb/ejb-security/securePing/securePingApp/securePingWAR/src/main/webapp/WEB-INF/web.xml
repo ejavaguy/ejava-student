@@ -1,0 +1,102 @@
+<web-app 
+    xmlns="http://java.sun.com/xml/ns/javaee" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+    version="2.5">
+    
+  <display-name>SecurePing Web Application</display-name>
+  
+    <servlet>
+        <servlet-name>Handler</servlet-name>
+        <servlet-class>info.ejava.examples.secureping.web.SecurePingHandlerServlet
+        </servlet-class>
+        <init-param>      
+            <param-name>java.naming.factory.initial</param-name>
+            <param-value>org.jnp.interfaces.NamingContextFactory</param-value>
+        </init-param>
+        <init-param>      
+            <param-name>java.naming.provider.url</param-name>
+            <param-value>jnp://localhost:1099</param-value>
+        </init-param>
+        <init-param>
+            <param-name>java.naming.factory.url.pkgs</param-name> 
+            <param-value>org.jboss.naming:org.jnp.interfaces</param-value>
+        </init-param>
+        <init-param>
+            <param-name>secureping.local</param-name> 
+            <param-value>
+                ejava/examples/secureping/SecurePingEJB/local
+            </param-value>
+        </init-param>
+        <init-param>
+            <param-name>secureping.remote</param-name> 
+            <param-value>
+                ejava/examples/secureping/SecurePingEJB/remote
+            </param-value>
+        </init-param>        
+    </servlet>
+    
+    <servlet-mapping>
+        <servlet-name>Handler</servlet-name>
+        <url-pattern>/model/admin/handler</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Handler</servlet-name>
+        <url-pattern>/model/user/handler</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Handler</servlet-name>
+        <url-pattern>/model/known/handler</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Handler</servlet-name>
+        <url-pattern>/model/handler</url-pattern>
+    </servlet-mapping>
+    
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>admin-only</web-resource-name>
+            <url-pattern>/model/admin/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>admin</role-name>
+        </auth-constraint>
+        <user-data-constraint>
+            <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+        </user-data-constraint>
+    </security-constraint>
+
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>user-access</web-resource-name>
+            <url-pattern>/model/user/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>user</role-name>
+        </auth-constraint>
+        <user-data-constraint>
+            <transport-guarantee>NONE</transport-guarantee>
+        </user-data-constraint>
+    </security-constraint>
+        
+    <login-config>
+        <!--
+            <auth-method>BASIC</auth-method>
+        -->
+        <auth-method>FORM</auth-method>
+        <form-login-config>
+            <form-login-page>/WEB-INF/content/Login.jsp</form-login-page>
+            <form-error-page>/WEB-INF/content/Login.jsp</form-error-page>
+        </form-login-config>
+    </login-config>    
+    
+    <security-role>
+        <role-name>admin</role-name>
+    </security-role>
+    <security-role>
+        <role-name>user</role-name>
+    </security-role>
+    <security-role>
+        <role-name>known</role-name>
+    </security-role>    
+</web-app>

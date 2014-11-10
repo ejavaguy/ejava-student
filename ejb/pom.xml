@@ -20,11 +20,11 @@
         <module>ejb-config</module>
         <module>ejb-jpa</module>
         <module>ejb-cdi</module>
+        <module>ejb-security</module>
         <module>ejbsessionBank</module>
         <module>jndiDemo</module>
         <module>webtier</module>
         <module>webejb</module>
         <module>txReservation</module>
-        <module>securePing</module>
     </modules>
 </project>

@@ -27,9 +27,9 @@ public class SchedulerResources {
     /**
      * Gets a persistence context based on the persistence unit name and
      * produces it for any bean injecting an EntityManager qualified
-     * with a @Named("jndiname") qualifier. 
+     * with a @JndiDemo. 
      */
-	@PersistenceContext(name="jndidemo")
+	@PersistenceContext(unitName="jndidemo")
 	@Produces
 	@JndiDemo
 	public EntityManager em;

@@ -1,0 +1,208 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <parent>
+        <groupId>info.ejava.examples.ejb</groupId>
+        <artifactId>securePingApp</artifactId>
+        <version>4.0.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>securePingTest</artifactId>
+    <packaging>jar</packaging>
+
+    <name>EJB::Security::Secure Ping::RMI Test</name>
+    <properties>
+        <admin.username>admin1</admin.username>
+        <admin.password>password1!</admin.password>
+        <user.username>user1</user.username>
+        <user.password>password1!</user.password>
+        <skip.flush>true</skip.flush>
+    </properties>
+
+    <dependencies>
+        <!-- core dependencies -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>info.ejava.examples.common</groupId>
+            <artifactId>ejava-util</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <!-- include this to compile tests -->
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>securePingEJB</artifactId>
+            <version>${project.version}</version>
+            <type>jar</type>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- package being deployed must be a scope=compile dependency -->
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>securePingEAR</artifactId>
+            <version>${project.version}</version>
+            <type>ear</type>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>info.ejava.examples.common</groupId>
+            <artifactId>jboss-rmi-client</artifactId>
+            <version>${project.version}</version>
+            <type>pom</type>
+            <scope>test</scope>
+        </dependency>    
+        
+
+        <!-- test dependencies -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <scope>test</scope>
+        </dependency>    
+    </dependencies>
+
+    <build>
+        <!-- filter test/resource files for profile-specific valies -->
+        <testResources>
+            <testResource>
+                <directory>src/test/resources</directory>
+                <filtering>true</filtering>
+            </testResource>
+        </testResources>
+
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <configuration>
+                    <systemPropertyVariables>
+                        <skip.flush>${skip.flush}</skip.flush>
+                        <admin.username>${admin.username}</admin.username>
+                        <admin.password>${admin.password}</admin.password>
+                        <user.username>${user.username}</user.username>
+                        <user.password>${user.password}</user.password>
+                        <jmx.username>${jboss.user}</jmx.username>
+                        <jmx.password>${jboss.password}</jmx.password>
+                        <cargo.startstop>${cargo-startstop}</cargo.startstop>
+                    </systemPropertyVariables>
+                </configuration>
+            </plugin>
+
+            <!-- TODO: prepare the additional user DB
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>sql-maven-plugin</artifactId>        
+            
+            <dependencies>
+              <dependency>
+                <groupId>hsqldb</groupId>
+                <artifactId>hsqldb</artifactId>
+                <version>${hsqldb.version}</version>            
+              </dependency>
+            </dependencies>
+            
+            <configuration>
+              <username>${jdbc.user}</username>
+              <password>${jdbc.password}</password>
+              <driver>${jdbc.driver}</driver>
+              <url>${jdbc.url}</url>          
+            </configuration>
+            
+            <executions>
+              <execution>
+                <id>drop-db-before-test</id>
+                <phase>process-test-resources</phase>
+                <goals>
+                  <goal>execute</goal>
+                </goals>    
+                <configuration>              
+                  <autocommit>true</autocommit>
+                  <fileset>
+                    <basedir>${basedir}/target</basedir>
+                    <includes>
+                      <include>test-classes/ddl/*drop*.ddl</include>                  
+                    </includes>
+                  </fileset>
+                  <onError>continue</onError>
+                </configuration>        
+              </execution>
+
+              <execution>
+                <id>create-db-before-test</id>
+                <phase>process-test-resources</phase>
+                <goals>
+                  <goal>execute</goal>
+                </goals>    
+                <configuration>              
+                  <autocommit>true</autocommit>
+                  <fileset>
+                    <basedir>${basedir}/target</basedir>
+                    <includes>
+                      <include>test-classes/ddl/*create*.ddl</include>                  
+                    </includes>
+                  </fileset>
+                  <print>true</print>
+                </configuration>        
+              </execution>
+              
+              <execution>
+                <id>populate-db-before-test</id>
+                <phase>process-test-resources</phase>
+                <goals>
+                  <goal>execute</goal>
+                </goals>    
+                <configuration>              
+                  <autocommit>true</autocommit>
+                  <fileset>
+                    <basedir>${basedir}/target</basedir>
+                    <includes>
+                      <include>test-classes/ddl/*populate*.ddl</include>                  
+                    </includes>
+                  </fileset>
+                </configuration>        
+              </execution>
+          </executions>
+        </plugin>
+        -->
+
+            <!-- artifacts to deploy to server -->
+            <plugin>
+                <groupId>org.codehaus.cargo</groupId>
+                <artifactId>cargo-maven2-plugin</artifactId>
+                <configuration>
+                    <deployables>
+                        <deployable>
+                            <groupId>${project.groupId}</groupId>
+                            <artifactId>securePingEAR</artifactId>
+                            <type>ear</type>
+                        </deployable>
+                    </deployables>
+                </configuration>
+            </plugin>
+
+            <!-- this module does not play well with the site plugin -->
+            <plugin> 
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-site-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                    <skipDeploy>true</skipDeploy>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

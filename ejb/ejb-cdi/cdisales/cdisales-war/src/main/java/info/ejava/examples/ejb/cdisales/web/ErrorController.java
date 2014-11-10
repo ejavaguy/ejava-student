@@ -38,6 +38,4 @@ public class ErrorController implements Serializable {
     public void setException(Exception exception) {
         this.exception = exception;
     }
-
-    
 }
