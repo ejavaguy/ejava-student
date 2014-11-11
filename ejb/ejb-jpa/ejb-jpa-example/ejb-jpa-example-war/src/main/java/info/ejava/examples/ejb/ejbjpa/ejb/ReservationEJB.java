@@ -38,7 +38,7 @@ public class ReservationEJB implements ReservationRemote {
     @Resource
     private SessionContext ctx;
     
-    List<Guest> guests = new LinkedList<Guest>();
+    private List<Guest> guests = new LinkedList<Guest>();
 
     @PostConstruct
     public void init() {
