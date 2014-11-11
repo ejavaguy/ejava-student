@@ -29,8 +29,8 @@
       <!--
           <li>2014-12-03: Posted Async TODOs</li>
           <li>2014-11-19: Posted JMS TODOs</li>
-          <li>2014-11-12: Posted Security TODOs</li>
           -->
+          <li>2014-11-12: Posted Security Notes and TODOs</li>
           <li>2014-11-05: Posted Web Tier Materials and TODOs</li>
           <li>2014-10-28: Posted Server-Side JPA Notes and Transaction TODOs</li>
           <li>2014-10-23: Posted typo corrections to Basic EJB Dev Exercise</li>
@@ -107,7 +107,7 @@
       </ul></li> 
       -->
 
-      <!-- week 11: Security
+      <!-- week 11: Security -->
       <li><ul>
             <li>Project
                 <ul>
@@ -115,11 +115,13 @@
                   <li>Start project 3</li>
                 </ul>
             </li>
-            <li>Exercises
-                <ul>
-                  <li>Complete through Part I</li>
-                </ul>
-            </li>
+          <li>Examples
+              <ul>
+                  <li>Look at updated securePing application for examples
+                  on how to perform different logins using EJB Client
+                  and JBoss Remoting.</li>
+              </ul>
+          </li>
           <li>EJB
               <ul>
                   <li>Assign EJB to security-domain "other".
@@ -153,7 +155,13 @@
               </ul>
           </li>
       </ul></li>
-      -->
+
+
+      </ul>
+      </subsection>
+
+      <subsection name="Things you should have finished!" id="completed">
+      <ul>
 
       <!-- week 10: Web -->
       <li><ul>
@@ -180,12 +188,6 @@
             </li>
       </ul></li>
 
-
-      </ul>
-      </subsection>
-
-      <subsection name="Things you should have finished!" id="completed">
-      <ul>
 
       <!-- week 09: (CDI and) Transactions -->
       <li><ul>
