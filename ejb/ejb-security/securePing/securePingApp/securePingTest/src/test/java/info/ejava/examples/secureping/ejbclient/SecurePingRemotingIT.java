@@ -2,6 +2,7 @@ package info.ejava.examples.secureping.ejbclient;
 
 
 import static org.junit.Assert.*;
+
 import info.ejava.examples.secureping.ejb.SecurePing;
 import info.ejava.examples.secureping.ejb.SecurePingRemote;
 

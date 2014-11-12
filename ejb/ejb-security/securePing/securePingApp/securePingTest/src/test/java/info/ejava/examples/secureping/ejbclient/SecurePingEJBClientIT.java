@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
+import javax.ejb.EJBAccessException;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -74,7 +75,7 @@ public class SecurePingEJBClientIT extends SecurePingTestBase {
 
         Properties jndiProperties = new Properties();
         jndiProperties.put("jboss.naming.client.ejb.context", false); //override anything we put there for Remoting
-        Context jndi = new InitialContext();
+        Context jndi = new InitialContext(jndiProperties);
         logger.debug("looking up jndi.name={}", jndiName);
         securePing = (SecurePingRemote)jndi.lookup(jndiName);
         logger.debug("found={}", securePing);
@@ -283,7 +284,7 @@ public class SecurePingEJBClientIT extends SecurePingTestBase {
             logger.info(securePing.pingAdmin());
             fail("didn't detect known, but non-admin user");
         }
-        catch (Exception ex) {
+        catch (EJBAccessException ex) {
             logger.info("expected exception thrown:" + ex);
         }
         
@@ -292,7 +293,7 @@ public class SecurePingEJBClientIT extends SecurePingTestBase {
             logger.info(securePing.pingAdmin());
             fail("didn't detect non-admin user");
         }
-        catch (Exception ex) {
+        catch (EJBAccessException ex) {
             logger.info("expected exception thrown:" + ex);
         }        
 

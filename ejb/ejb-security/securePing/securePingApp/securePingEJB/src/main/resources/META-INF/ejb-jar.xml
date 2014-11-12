@@ -13,6 +13,9 @@
                 <role-name>internalRole</role-name>
                 <role-link>admin</role-link>
             </security-role-ref>
+            <security-identity>
+                <use-caller-identity/>
+            </security-identity>
         </session>
     </enterprise-beans>    
     <assembly-descriptor>
