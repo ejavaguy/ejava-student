@@ -41,6 +41,7 @@
           <li>2014-09-09: Addressed many JPA Eclipse warnings in examples</li>
           <li>2014-09-09: Posted Project 1 description and Business Logic TODOs</li>
           -->
+          <li>2014-11-11: Posted updates and EJB Intro TODOs</li>
           <li>2014-11-03: Posted initial class site</li>
       </ul>
       </subsection>
@@ -216,6 +217,32 @@
       </ul></li>
            -->
 
+      <!-- week 02: Session Beans -->
+      <li><ul>
+            <li>Exercises
+                <ul>
+                  <li>Finish up with the software installation and report the
+                  success or failure(s) of a build that includes the 
+                  ejb-modules profile (-Pejb-modules).</li>
+                  <li>Start working through the Basic EJB Development exercise.
+                  Post questions or observations about what you encountered during
+                  this exercise.  This will span about two weeks.</li>
+                </ul>
+            </li>
+            <li>Examples
+                <ul>
+                  <li>Begin looking at ejb-basic and ejbsessionBank example applications; 
+                  which form an EJB, EAR, RMI Test, as well as a WAR Client.
+                  </li>
+                </ul>
+            </li>
+      </ul></li>
+
+      </ul>
+      </subsection>
+
+      <subsection name="Things you should have finished!" id="completed">
+      <ul>
       <!-- week 01: Course Intro -->
       <li><ul> 
           <li>Post at least 1 test message to discussion area</li>
@@ -241,11 +268,6 @@
           <li>(optional) Get an early start on the Basic EJB Development exercise</li>
       </ul></li>
 
-      </ul>
-      </subsection>
-
-      <subsection name="Things you should have finished!" id="completed">
-      <ul>
       <!-- week 08: Session Beans 
       <li><ul>
             <li>Exercises
