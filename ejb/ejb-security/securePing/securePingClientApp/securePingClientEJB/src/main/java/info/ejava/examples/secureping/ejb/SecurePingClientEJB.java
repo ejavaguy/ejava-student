@@ -5,6 +5,7 @@ import info.ejava.examples.secureping.ejb.SecurePingRemote;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.annotation.security.PermitAll;
+import javax.annotation.security.RunAs;
 import javax.ejb.EJB;
 import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
@@ -18,6 +19,7 @@ import org.slf4j.LoggerFactory;
  */
 @Stateless
 @PermitAll
+@RunAs("admin")
 public class SecurePingClientEJB 
     implements SecurePingClientRemote, SecurePingClientLocal {
     private static final Logger logger = LoggerFactory.getLogger(SecurePingClientEJB.class);
