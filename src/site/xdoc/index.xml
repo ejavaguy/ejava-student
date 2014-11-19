@@ -28,8 +28,8 @@
       <ul>
       <!--
           <li>2014-12-03: Posted Async TODOs</li>
-          <li>2014-11-19: Posted JMS TODOs</li>
           -->
+          <li>2014-11-19: Posted JMS TODOs</li>
           <li>2014-11-12: Posted Security Notes and TODOs</li>
           <li>2014-11-05: Posted Web Tier Materials and TODOs</li>
           <li>2014-10-28: Posted Server-Side JPA Notes and Transaction TODOs</li>
@@ -64,16 +64,10 @@
       </ul></li>
            -->
 
-      <!-- week 12: JMS
+      <!-- week 12: JMS -->
       <li><ul> 
           <li>Security
               <ul>
-                  <li>Update your server configuration to the latest from the baseline 
-                  to correct leniency issues with user credentials. Update your 
-                  server database settings after updating if desired since they will be
-                  replaced.</li>
-                  <li>Update your user password(s) to new value</li>
-                  <li>Verify project 2 can build/deploy with new settings and report issues</li>
                   <li>Finish security configuration, implementation, and testing</li>
               </ul>
           </li>
@@ -95,7 +89,7 @@
               </ul>
           </li>
 
-          <li>JSE JMS Client
+          <li>JavaSE JMS Client
               <ul>
                   <li>Implement a Java SE Client to receive and log the JMS
                   messages. This client can be placed in BLImpl, must use a
@@ -105,7 +99,13 @@
               </ul>
           </li>
       </ul></li> 
-      -->
+
+
+      </ul>
+      </subsection>
+
+      <subsection name="Things you should have finished!" id="completed">
+      <ul>
 
       <!-- week 11: Security -->
       <li><ul>
@@ -156,12 +156,6 @@
           </li>
       </ul></li>
 
-
-      </ul>
-      </subsection>
-
-      <subsection name="Things you should have finished!" id="completed">
-      <ul>
 
       <!-- week 10: Web -->
       <li><ul>
