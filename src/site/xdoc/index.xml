@@ -41,6 +41,7 @@
           <li>2014-09-09: Addressed many JPA Eclipse warnings in examples</li>
           <li>2014-09-09: Posted Project 1 description and Business Logic TODOs</li>
           -->
+          <li>2014-11-19: Updated EJB Intro TODOs</li>
           <li>2014-11-11: Posted updates and EJB Intro TODOs</li>
           <li>2014-11-03: Posted initial class site</li>
       </ul>
@@ -217,6 +218,20 @@
       </ul></li>
            -->
 
+      <!-- week 03: Session Beans (cont.)-->
+      <li><ul>
+            <li>Exercises
+                <ul>
+                  <li>Finish-up the Basic EJB Development exercise.</li>
+                </ul>
+            </li>
+      </ul></li>
+
+      </ul>
+      </subsection>
+
+      <subsection name="Things you should have finished!" id="completed">
+      <ul>
       <!-- week 02: Session Beans -->
       <li><ul>
             <li>Exercises
@@ -238,11 +253,6 @@
             </li>
       </ul></li>
 
-      </ul>
-      </subsection>
-
-      <subsection name="Things you should have finished!" id="completed">
-      <ul>
       <!-- week 01: Course Intro -->
       <li><ul> 
           <li>Post at least 1 test message to discussion area</li>
