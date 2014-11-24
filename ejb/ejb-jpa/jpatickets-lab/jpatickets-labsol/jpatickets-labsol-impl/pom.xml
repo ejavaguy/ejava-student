@@ -57,5 +57,25 @@
                 <filtering>true</filtering>
             </testResource>
         </testResources>
+        
+        <!-- package re-uesable test artifacts for downstream testing -->
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>test-jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <includes>
+                        <include>**/TicketsFactory.class</include>
+                    </includes>
+                </configuration>
+            </plugin>
+        </plugins>
     </build>
 </project>

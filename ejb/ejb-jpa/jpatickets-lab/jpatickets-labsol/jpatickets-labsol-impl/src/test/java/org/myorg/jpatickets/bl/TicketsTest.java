@@ -34,6 +34,7 @@ public class TicketsTest {
     private static final Logger logger = LoggerFactory.getLogger(TicketsTest.class);
     private static final String PU_NAME="jpatickets-test";
     private static EntityManagerFactory emf;
+    private final TicketsFactory tf = new TicketsFactory();
     private EntityManager em;
     private VenueMgmt venueMgmt;
     private EventMgmt eventMgmt;
@@ -91,25 +92,9 @@ public class TicketsTest {
         }
     }
     
-    private Venue makeVenue() {
-        return new Venue("VZC")
-        .withName("Verizon Center")
-        .withAddress(new Address()
-            .withStreet("601 F Street NW")
-            .withCity("Washington")
-            .withState("DC")
-            .withZipCode(20004));
-    }
-    
-    private Event makeEvent() {
-        return new Event()
-            .withName("FLEETWOOD MAC ON WITH THE SHOW TOUR")
-            .withStartTime(new GregorianCalendar(2015, Calendar.JANUARY, 30, 20, 0, 0).getTime());
-    }
-    
     @Test
     public void venue() {
-        Venue venue = makeVenue();
+        Venue venue = tf.makeVenue();
         venueMgmt.createVenue(venue, 1, 2, 3);
         em.flush(); em.clear();
         
@@ -118,8 +103,8 @@ public class TicketsTest {
     
     @Test
     public void event() throws UnavailableException {
-        Venue venue = venueMgmt.createVenue(makeVenue(), 2, 3, 4);
-        Event event = eventMgmt.createEvent(makeEvent(), venue);
+        Venue venue = venueMgmt.createVenue(tf.makeVenue(), 2, 3, 4);
+        Event event = eventMgmt.createEvent(tf.makeEvent(), venue);
         em.flush(); em.clear();
         
         event=eventMgmt.getEvent(event.getId());
@@ -128,8 +113,8 @@ public class TicketsTest {
     
     @Test
     public void ticket() throws UnavailableException {
-        Venue venue = venueMgmt.createVenue(makeVenue(), 2, 3, 4);
-        Event event = eventMgmt.createEvent(makeEvent(), venue);
+        Venue venue = venueMgmt.createVenue(tf.makeVenue(), 2, 3, 4);
+        Event event = eventMgmt.createEvent(tf.makeEvent(), venue);
         List<Seat> seats = eventMgmt.findSeats(event, null, 0, null, 0, 1);
         assertTrue("no seats available", seats.size() > 0);
         List<Ticket> tickets = eventMgmt.reserveSeats(event, Arrays.asList(seats.get(0)));

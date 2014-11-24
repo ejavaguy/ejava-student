@@ -1,10 +1,12 @@
 package org.myorg.jpatickets.bo;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
 @Embeddable
-public class Address {
+public class Address implements Serializable {
     @Column(name="STREET", length=20)
     private String street;
     @Column(name="CITY", length=20)
