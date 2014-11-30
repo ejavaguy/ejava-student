@@ -1,0 +1,93 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>info.ejava.examples.ejb</groupId>
+        <artifactId>jpatickets-labex</artifactId>
+        <version>4.0.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>jpatickets-labex-war</artifactId>
+    <packaging>war</packaging>
+
+    <name>EJB::JPA Tickets Lab::Exercise::WAR</name>
+    <description>
+        This project provides an example of integrating 
+        a persistence unit into a WAR for direct injection
+        into EJBs. The WAR is not deployed as a part of the 
+        sibling EAR. It is being deployed separately to show
+        an example of WAR-based deployment.
+    </description>
+
+    <dependencies>
+        <!-- for embedded code/EJBs -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate.javax.persistence</groupId>
+            <artifactId>hibernate-jpa-2.1-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.ejb</groupId>
+            <artifactId>javax.ejb-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        
+        <!-- core implementation -->
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>jpatickets-labex-impl</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        
+        <!-- imported EJB implementation -->
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>jpatickets-labex-ejb</artifactId>
+            <version>${project.version}</version>
+            <type>ejb</type>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <finalName>${project.artifactId}</finalName>
+        <resources>
+            <!-- filter property references in persistence.xml -->
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>META-INF/persistence.xml</include>
+                </includes>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>false</filtering>
+                <excludes>
+                    <exclude>META-INF/persistence.xml</exclude>
+                </excludes>
+            </resource>
+        </resources>
+        
+        <plugins>
+            <plugin>
+                <!-- filter project artifactId into jboss-web without hard-coding -->
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <configuration>
+                   <webResources>
+                    <resource>
+                        <directory>src/main/webapp-filtered</directory>
+                        <filtering>true</filtering>
+                    </resource>
+                   </webResources>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

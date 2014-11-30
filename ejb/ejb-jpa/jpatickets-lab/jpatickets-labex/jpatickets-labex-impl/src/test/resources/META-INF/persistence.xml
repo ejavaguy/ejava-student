@@ -8,9 +8,10 @@
         <jta-data-source>java:jboss/datasources/ExampleDS</jta-data-source>
         -->
         <!-- jarfile shortcut can be used when deploying EJB within EAR 
-        <jar-file>lib/jpatickets-labsol-impl-${project.version}.jar</jar-file>
+        <jar-file>lib/jpatickets-labsex-impl-${project.version}.jar</jar-file>
         -->
     
+        <!-- classes must be enumerated when deploying outside of EAR -->
         <class>org.myorg.jpatickets.bo.Venue</class>
         <class>org.myorg.jpatickets.bo.Address</class>
         <class>org.myorg.jpatickets.bo.Seat</class>
