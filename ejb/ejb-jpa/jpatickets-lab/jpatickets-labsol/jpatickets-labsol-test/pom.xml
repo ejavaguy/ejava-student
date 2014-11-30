@@ -38,6 +38,13 @@
             <type>ear</type>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>jpatickets-labsol-war</artifactId>
+            <version>${project.version}</version>
+            <type>war</type>
+            <scope>compile</scope>
+        </dependency>
 
         <!-- test dependencies -->
         <dependency>
@@ -71,6 +78,12 @@
             <type>pom</type>
             <scope>test</scope>
         </dependency>    
+        
+        <!-- necessary to supply hibernate classes when marshaling managed entities as DTOs -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
@@ -93,6 +106,11 @@
                             <groupId>${project.groupId}</groupId>
                             <artifactId>jpatickets-labsol-ear</artifactId>
                             <type>ear</type>
+                        </deployable>
+                        <deployable>
+                            <groupId>${project.groupId}</groupId>
+                            <artifactId>jpatickets-labsol-war</artifactId>
+                            <type>war</type>
                         </deployable>
                     </deployables>
                 </configuration>

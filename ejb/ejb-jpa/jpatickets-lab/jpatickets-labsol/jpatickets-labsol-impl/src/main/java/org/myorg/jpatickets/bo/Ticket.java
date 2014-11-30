@@ -1,9 +1,11 @@
 package org.myorg.jpatickets.bo;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 import javax.persistence.*;
 
+@SuppressWarnings("serial")
 @Entity
 @Table(name="JPATICKETS_TICKET")
 @NamedQueries({
@@ -11,14 +13,17 @@ import javax.persistence.*;
         query="select t from Ticket t where t.seat in :seats")
 })
 @IdClass(TicketPK.class)
-public class Ticket {
+public class Ticket implements Serializable {
     @Id
     @ManyToOne(fetch=FetchType.EAGER, optional=false)
     @JoinColumn(name="EVENT_ID")
     private Event event;
     
     @Id
-    @OneToOne(fetch=FetchType.EAGER, optional=false)
+    @OneToOne(
+            //fetch=FetchType.EAGER,
+            fetch=FetchType.LAZY,
+            optional=false)
     @JoinColumns({
         @JoinColumn(name="VENUE_ID"),
         @JoinColumn(name="SECTION"),

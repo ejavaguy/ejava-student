@@ -20,7 +20,7 @@ public class TicketsFactory {
     }
     
     public Event makeEvent() {
-        return new Event()
+        return new Event(makeVenue())
             .withName("FLEETWOOD MAC ON WITH THE SHOW TOUR")
             .withStartTime(new GregorianCalendar(2015, Calendar.JANUARY, 30, 20, 0, 0).getTime());
     }

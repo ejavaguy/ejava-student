@@ -4,13 +4,44 @@
     xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd" version="2.0">
 
     <persistence-unit name="jpatickets-labsol">
-        <provider>org.hibernate.ejb.HibernatePersistence</provider>
         <jta-data-source>java:jboss/datasources/ExampleDS</jta-data-source>
+        <!-- jarfile shortcut can be used when deploying EJB within EAR 
         <jar-file>lib/jpatickets-labsol-impl-${project.version}.jar</jar-file>
+        -->
+        <!-- classes must be enumerated when deploying outside of EAR -->
+        <class>org.myorg.jpatickets.bo.Venue</class>
+        <class>org.myorg.jpatickets.bo.Address</class>
+        <class>org.myorg.jpatickets.bo.Seat</class>
+        <class>org.myorg.jpatickets.bo.Event</class>
+        <class>org.myorg.jpatickets.bo.Ticket</class>
+                
         <properties>
-            <property name="hibernate.dialect" 
-                value="${hibernate.dialect}"/>
-            <property name="hibernate.hbm2ddl.auto" value="create"/>
+            <!-- this applies to both unit-test and server-side environments -->
+            <property name="hibernate.dialect" value="${hibernate.dialect}"/>
+
+            <!-- these can be helpful in both environments when debugging
+            <property name="hibernate.jdbc.batch_size" value="0"/>
+             -->            
+            <property name="hibernate.show_sql" value="true"/>
+            <property name="hibernate.format_sql" value="false"/>
+        </properties>
+    </persistence-unit>
+            
+    <!-- This persistence unit is used exclusively for managing the schema 
+         during IT tests. 
+     -->            
+    <persistence-unit name="jpatickets-schemagen-labsol">
+        <jta-data-source>java:jboss/datasources/ExampleDS</jta-data-source>
+        <class>org.myorg.jpatickets.bo.Venue</class>
+        <class>org.myorg.jpatickets.bo.Address</class>
+        <class>org.myorg.jpatickets.bo.Seat</class>
+        <class>org.myorg.jpatickets.bo.Event</class>
+        <class>org.myorg.jpatickets.bo.Ticket</class>
+        <properties>
+            <property name="hibernate.dialect" value="${hibernate.dialect}"/>
+            <property name="hibernate.show_sql" value="false"/>
+            <property name="hibernate.format_sql" value="false"/>            
+            <property name="javax.persistence.schema-generation.database.action" value="none"/>
         </properties>
     </persistence-unit>        
     

@@ -1,10 +1,12 @@
 package org.myorg.jpatickets.ejbclient;
 
-import javax.naming.InitialContext;
+import static org.junit.Assert.assertNotNull;
+import static org.myorg.jpatickets.ejbclient.TicketsITFactory.*;
+
+import javax.naming.NamingException;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.myorg.jpatickets.bl.TicketsFactory;
 import org.myorg.jpatickets.bo.Venue;
 import org.myorg.jpatickets.ejb.VenueMgmtRemote;
 import org.slf4j.Logger;
@@ -12,23 +14,44 @@ import org.slf4j.LoggerFactory;
 
 public class VenueMgmtIT {
     private static final Logger logger = LoggerFactory.getLogger(VenueMgmtIT.class);    
-    private static final String VENUE_JNDINAME = System.getProperty("jndi.name.venuemgmt",
-        "ejb:jpatickets-labsol-ear/jpatickets-labsol-ejb/VenueMgmtEJB!org.myorg.jpatickets.ejb.VenueMgmtRemote");
-        //"ejb:jpatickets-labsol-ear/jpatickets-labsol-ejb/VenueMgmtEJB!"+VenueMgmtRemote.class.getName());
     
-    private TicketsFactory tf = new TicketsFactory();    
-    private VenueMgmtRemote venueMgmt;
+    private TicketsITFactory tf = new TicketsITFactory();    
 
     @Before
     public void setUp() throws Exception {
-        InitialContext jndi = new InitialContext();
-        logger.info("{} looking up {}", jndi.getEnvironment(), VENUE_JNDINAME);
-        venueMgmt = (VenueMgmtRemote) jndi.lookup(VENUE_JNDINAME);
+        tf.cleanup();
     }
-
+    
     @Test
-    public void venue() {
+    public void venueEAR() throws NamingException {
+        logger.info("*** venueEAR ***");
+        
+        VenueMgmtRemote venueMgmt=tf.lookup(VenueMgmtRemote.class, VENUE_JNDINAME);
         Venue venue = tf.makeVenue();
-        venue = venueMgmt.createVenue(venue, 1, 2, 3);
+        venueMgmt.createVenue(venue, 1, 2, 3);
+        
+        assertNotNull("could not locate venue:" + venue.getId(), venueMgmt.getVenue(venue.getId()));
+    }
+    
+    @Test
+    public void venueImportedEJB() throws NamingException {
+        logger.info("*** venueImportedEJB ***");
+        
+        VenueMgmtRemote venueMgmt=tf.lookup(VenueMgmtRemote.class, WEBIMPORTED_VENUE_JNDINAME);
+        Venue venue = tf.makeVenue();
+        venueMgmt.createVenue(venue, 1, 2, 3);
+        
+        assertNotNull("could not locate venue:" + venue.getId(), venueMgmt.getVenue(venue.getId()));
+    }
+    
+    @Test
+    public void venueWAR() throws NamingException {
+        logger.info("*** venueEAR ***");
+        
+        VenueMgmtRemote venueMgmt=tf.lookup(VenueMgmtRemote.class, WEBVENUE_JNDINAME);
+        Venue venue = tf.makeVenue();
+        venueMgmt.createVenue(venue, 1, 2, 3);
+        
+        assertNotNull("could not locate venue:" + venue.getId(), venueMgmt.getVenue(venue.getId()));
     }
 }

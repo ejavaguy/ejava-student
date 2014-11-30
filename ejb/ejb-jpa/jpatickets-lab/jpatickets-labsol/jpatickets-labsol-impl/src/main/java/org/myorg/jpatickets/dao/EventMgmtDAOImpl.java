@@ -1,6 +1,8 @@
 package org.myorg.jpatickets.dao;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
@@ -31,6 +33,44 @@ public class EventMgmtDAOImpl implements EventMgmtDAO {
     @Override
     public Event getEvent(int eventId) {
         return em.find(Event.class, eventId);
+    }
+    
+    @Override
+    public Event fetchEventTickets(int id) {
+        List<Event> events = em.createNamedQuery("JPATicketEvent.fetchEventTickets", 
+                Event.class)
+                .setParameter("eventId", id)
+                .getResultList();
+        return events.isEmpty() ? null : events.get(0);
+    }    
+    
+    @Override
+    public Event fetchEventTicketsSeats(int id) {
+        List<Event> events = em.createNamedQuery("JPATicketEvent.fetchEventTicketsSeats", 
+                Event.class)
+                .setParameter("eventId", id)
+                .getResultList();
+        return events.isEmpty() ? null : events.get(0);
+    }
+    
+    @Override
+    public Map<String, Object> fetchEventDTOData(int eventId) {
+        @SuppressWarnings("unchecked")
+        List<Object[]> rows = em.createNamedQuery("JPATicketEvent.fetchEventDTO")
+                .setParameter("eventId", eventId)
+                .getResultList();
+        
+        Map<String, Object> dtoData = new HashMap<String, Object>();
+        if (!rows.isEmpty()) {
+            Object[] row = rows.get(0);
+            Event event = (Event) row[0];
+            String venueName = (String) row[1];
+            Number numTickets = (Number) row[2];
+            dtoData.put(EVENT, event);
+            dtoData.put(VENUE_NAME, venueName);
+            dtoData.put(NUM_TICKETS, numTickets.intValue());
+        }
+        return dtoData;
     }
     
     @Override

@@ -38,6 +38,14 @@ public class EventMgmtImpl implements EventMgmt {
     public Event getEvent(int id) {
         return edao.getEvent(id);
     }
+    @Override
+    public Event fetchEventTickets(int id) {
+        return edao.fetchEventTickets(id);
+    }
+    @Override
+    public Event fetchEventTicketsSeats(int id) {
+        return edao.fetchEventTicketsSeats(id);
+    }
 
     @Override
     public List<Seat> findSeats(Event event, String section, Integer row, Integer position, int offset, int limit) {
@@ -64,5 +72,4 @@ public class EventMgmtImpl implements EventMgmt {
         }
         return tickets;
     }
-
 }

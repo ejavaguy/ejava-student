@@ -3,7 +3,10 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd" version="2.0">
 
-    <persistence-unit name="jpatickets-test">
+    <persistence-unit name="jpaticketsweb-labsol">
+        <!-- server dataSource provides connection pool to borrow connections from -->
+        <jta-data-source>java:jboss/datasources/ExampleDS</jta-data-source>
+        <!-- must list out classes from external JAR when deployed as WAR -->
         <class>org.myorg.jpatickets.bo.Venue</class>
         <class>org.myorg.jpatickets.bo.Address</class>
         <class>org.myorg.jpatickets.bo.Seat</class>
@@ -19,15 +22,6 @@
             <property name="hibernate.show_sql" value="true"/>
             <property name="hibernate.format_sql" value="true"/>
              -->            
-            
-            <!-- this applies to only the ***demo***-nature of this example -->
-            <property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>
-            
-            <!-- these apply only to the unit test environment -->
-            <property name="javax.persistence.jdbc.driver" value="${jdbc.driver}"/>
-            <property name="javax.persistence.jdbc.url" value="${jdbc.url}"/>
-            <property name="javax.persistence.jdbc.user" value="${jdbc.user}"/>
-            <property name="javax.persistence.jdbc.password" value="${jdbc.password}"/>
         </properties>
     </persistence-unit>            
 </persistence>

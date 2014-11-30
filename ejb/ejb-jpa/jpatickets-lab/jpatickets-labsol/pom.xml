@@ -18,6 +18,7 @@
         <module>jpatickets-labsol-impl</module>
         <module>jpatickets-labsol-ejb</module>
         <module>jpatickets-labsol-ear</module>
+        <module>jpatickets-labsol-war</module>
         <module>jpatickets-labsol-test</module>
     </modules>
 

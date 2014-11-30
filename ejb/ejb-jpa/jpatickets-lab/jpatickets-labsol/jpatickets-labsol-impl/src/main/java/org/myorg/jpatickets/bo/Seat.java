@@ -1,14 +1,17 @@
 package org.myorg.jpatickets.bo;
 
+import java.io.Serializable;
+
 import javax.persistence.*;
 
+@SuppressWarnings("serial")
 @Entity
 @Table(name="JPATICKET_SEAT")
 @NamedQueries({
     @NamedQuery(name = "JPATicketSeat.getSeatsForVenue", 
             query = "select s from Seat s where s.venue = :venue")
 })
-public class Seat {
+public class Seat implements Serializable {
     @EmbeddedId
     private SeatPK pk;
     

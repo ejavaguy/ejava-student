@@ -7,6 +7,7 @@ import javax.persistence.Embeddable;
 
 @Embeddable
 public class Address implements Serializable {
+    private static final long serialVersionUID = 5678018330323499890L;
     @Column(name="STREET", length=20)
     private String street;
     @Column(name="CITY", length=20)

@@ -13,4 +13,6 @@ public interface EventMgmt {
     List<Seat> findSeats(Event event, String section, Integer row, Integer position, int offset, int limit);
     List<Ticket> getTickets(Event event, List<Seat> seats);
     List<Ticket> reserveSeats(Event event, List<Seat> seats) throws UnavailableException;
+    Event fetchEventTickets(int id);
+    Event fetchEventTicketsSeats(int id);
 }
