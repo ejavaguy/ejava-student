@@ -44,7 +44,7 @@ import javax.persistence.*;
                 }
     )
 })
-public class Event implements Serializable {
+public class Event /* implements Serializable */ {
     @Id @GeneratedValue
     @Column(name="EVENT_ID")
     private int id;

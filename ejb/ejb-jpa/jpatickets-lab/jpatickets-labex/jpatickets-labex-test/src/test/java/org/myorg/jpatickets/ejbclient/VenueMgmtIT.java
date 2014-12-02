@@ -50,7 +50,7 @@ public class VenueMgmtIT {
     @Test 
     @Ignore
     public void venueWAR() throws NamingException {
-        logger.info("*** venueEAR ***");
+        logger.info("*** venueWAR ***");
         
         VenueMgmtRemote venueMgmt=tf.lookup(VenueMgmtRemote.class, WEBVENUE_JNDINAME);
         Venue venue = tf.makeVenue();

@@ -31,6 +31,16 @@ public class EventMgmtIT {
     }
     
     @Test
+    public void eventSerializable() throws UnavailableException {
+        logger.info("*** eventSerializable ***");
+        Venue venue = venueMgmt.createVenue(tf.makeVenue(), 1, 2, 2);
+        Event event = eventMgmt.createEvent(tf.makeEvent(), venue);
+        assertNotNull("null tickets for event", event);
+        logger.info("event.tickets.class={}", event.getTickets().getClass());
+    }
+
+
+    @Test
     public void eventLazy() throws UnavailableException {
         logger.info("*** eventLazy ***");
         Venue venue = venueMgmt.createVenue(tf.makeVenue(), 1, 2, 2);
@@ -52,6 +62,7 @@ public class EventMgmtIT {
         Venue venue = venueMgmt.createVenue(tf.makeVenue(), 1, 2, 2);
         Event event = eventMgmt.createEvent(tf.makeEvent(), venue);
         
+//        event=eventMgmt.getEvent(event.getId());
         event=eventMgmt.getEventTouchedSome(event.getId());
         assertNotNull("null tickets for event", event.getTickets());
         assertTrue("no tickets for event", event.getTickets().size() > 0);
@@ -80,6 +91,22 @@ public class EventMgmtIT {
             Seat s = t.getSeat();
             assertNotNull("null seat", s);
         }
+    }
+    
+    
+    
+    @Test
+    public void eventCleansed() throws UnavailableException {
+        logger.info("*** eventCleansed ***");
+        Venue venue = venueMgmt.createVenue(tf.makeVenue(), 1, 2, 2);
+        Event event = eventMgmt.createEvent(tf.makeEvent(), venue);
+        
+        logger.info("event.tickets.class={}", event.getTickets().getClass());
+        assertTrue("missing provider class", event.getTickets().getClass().getName().contains("org.hibernate"));
+//        event=eventMgmt.getEvent(event.getId());
+        event=eventMgmt.getEventCleansed(event.getId());
+        logger.info("(cleansed)event.tickets.class={}", event.getTickets().getClass());
+        assertFalse("unexpected provider class", event.getTickets().getClass().getName().contains("org.hibernate"));
     }
     
     @Test

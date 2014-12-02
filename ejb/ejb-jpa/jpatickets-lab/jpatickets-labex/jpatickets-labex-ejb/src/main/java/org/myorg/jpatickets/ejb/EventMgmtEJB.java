@@ -1,5 +1,7 @@
 package org.myorg.jpatickets.ejb;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
@@ -14,6 +16,7 @@ import org.myorg.jpatickets.bl.EventMgmt;
 import org.myorg.jpatickets.bl.EventMgmtImpl;
 import org.myorg.jpatickets.bl.UnavailableException;
 import org.myorg.jpatickets.bo.Event;
+import org.myorg.jpatickets.bo.Seat;
 import org.myorg.jpatickets.bo.Ticket;
 import org.myorg.jpatickets.bo.Venue;
 import org.myorg.jpatickets.dao.EventMgmtDAO;
@@ -66,6 +69,33 @@ public class EventMgmtEJB implements EventMgmtRemote {
     }
     
     @Override
+    public Event getEventCleansed(int id) {
+        logger.debug("getCleansedEvent({})", id);
+        Event event = getEvent(id);
+        return toCleansed(event);
+    }
+    
+    private Event toCleansed(Event bo) {
+        Event pojo = new Event(bo.getId());
+        pojo.setName(bo.getName());
+        pojo.setStartTime(bo.getStartTime());
+        List<Ticket> tickets = new ArrayList<>(bo.getTickets().size());
+        for (Ticket t: bo.getTickets()) {
+            toCleansed(t, pojo);
+        }
+        pojo.setTickets(tickets);
+        return pojo;
+    }
+    
+    private Ticket toCleansed(Ticket bo, Event event) {
+        //example cleansing is stopping here for the example
+        Ticket pojo = new Ticket(event, bo.getSeat());
+        pojo.setPrice(bo.getPrice());
+        pojo.setSold(bo.isSold());
+        return pojo;
+    }
+    
+    @Override
     public Event getEventTouchedSome(int id) {
         logger.debug("getEventTouchedSome({})", id);
         Event event = getEvent(id);
@@ -103,7 +133,7 @@ public class EventMgmtEJB implements EventMgmtRemote {
     
     @Override
     public EventDTO getEventLazyDTO(int id) {
-        logger.debug("getEventDTO({})", id);
+        logger.debug("getEventLazyDTO({})", id);
         Event event = eventMgmt.getEvent(id);
         return toEventDTO(event);
     }
@@ -120,6 +150,7 @@ public class EventMgmtEJB implements EventMgmtRemote {
     
     @Override
     public EventDTO getEventFetchedDTO(int eventId) {
+        logger.debug("getEventFetchedDTO({})", eventId);
         Map<String, Object> dtoData = edao.fetchEventDTOData(eventId);
         return toEventDTO(dtoData);
     }

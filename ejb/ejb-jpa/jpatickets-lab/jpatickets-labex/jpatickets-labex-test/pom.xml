@@ -79,12 +79,11 @@
             <scope>test</scope>
         </dependency>    
         
-        <!-- necessary to supply hibernate classes when marshaling managed entities as DTOs 
+        <!-- necessary to supply hibernate classes when marshaling managed entities as DTOs -->
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
         </dependency>
-        -->
     </dependencies>
 
     <build>

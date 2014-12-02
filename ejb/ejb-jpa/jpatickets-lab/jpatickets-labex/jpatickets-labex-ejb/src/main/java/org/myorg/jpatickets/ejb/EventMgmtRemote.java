@@ -11,6 +11,7 @@ import org.myorg.jpatickets.dto.EventDTO;
 public interface EventMgmtRemote {
     Event createEvent(Event event, Venue venue) throws UnavailableException;
     Event getEvent(int id);
+    Event getEventCleansed(int id);
     Event getEventTouchedSome(int id);
     Event getEventTouchedMore(int id);
     Event getEventFetchedSome(int id);

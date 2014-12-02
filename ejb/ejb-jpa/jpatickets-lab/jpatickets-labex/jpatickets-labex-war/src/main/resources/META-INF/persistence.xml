@@ -5,6 +5,14 @@
 
 <!-- TODO: supply jpatickets-labexsweb persistence unit --> 
     <persistence-unit name="jpaticketsweb-labex">
+    <!-- 
+        <jta-data-source>java:jboss/datasources/ExampleDS</jta-data-source>
+        <class>org.myorg.jpatickets.bo.Venue</class>
+        <class>org.myorg.jpatickets.bo.Address</class>
+        <class>org.myorg.jpatickets.bo.Seat</class>
+        <class>org.myorg.jpatickets.bo.Event</class>
+        <class>org.myorg.jpatickets.bo.Ticket</class>
+     -->
     </persistence-unit>            
 
 </persistence>
