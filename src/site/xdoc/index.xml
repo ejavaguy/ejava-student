@@ -41,6 +41,7 @@
           <li>2014-09-09: Addressed many JPA Eclipse warnings in examples</li>
           <li>2014-09-09: Posted Project 1 description and Business Logic TODOs</li>
           -->
+          <li>2014-12-02: Added EJB/JPA Exercise</li>
           <li>2014-11-19: Updated EJB Intro TODOs</li>
           <li>2014-11-11: Posted updates and EJB Intro TODOs</li>
           <li>2014-11-03: Posted initial class site</li>
@@ -218,11 +219,11 @@
       </ul></li>
            -->
 
-      <!-- week 03: Session Beans (cont.)-->
+      <!-- week 04: EJB/JPA and Remote Interfaces -->
       <li><ul>
             <li>Exercises
                 <ul>
-                  <li>Finish-up the Basic EJB Development exercise.</li>
+                  <li>Complete EJB/JPA and Remote Interface exercise.</li>
                 </ul>
             </li>
       </ul></li>
@@ -232,7 +233,26 @@
 
       <subsection name="Things you should have finished!" id="completed">
       <ul>
-      <!-- week 02: Session Beans -->
+
+      <!-- week 03: Session EJBs and JNDI/ENC Configuration-->
+      <li><ul>
+            <li>Exercises
+                <ul>
+                  <li>Complete JNDI/ENC EJB Configuration exercise.</li>
+                </ul>
+            </li>
+      </ul></li>
+
+      <!-- week 02: Development Use Cases -->
+      <li><ul>
+            <li>Exercises
+                <ul>
+                  <li>Finish-up the Basic EJB Development exercise.</li>
+                </ul>
+            </li>
+      </ul></li>
+
+      <!-- week 01: Intro EJB -->
       <li><ul>
             <li>Exercises
                 <ul>
@@ -253,7 +273,7 @@
             </li>
       </ul></li>
 
-      <!-- week 01: Course Intro -->
+      <!-- week 00: Course Intro -->
       <li><ul> 
           <li>Post at least 1 test message to discussion area</li>
           <li>Setup development environment by going through setup exercise
@@ -277,329 +297,6 @@
           <li>If new to Maven, go through the simple application exercise</li>
           <li>(optional) Get an early start on the Basic EJB Development exercise</li>
       </ul></li>
-
-      <!-- week 08: Session Beans 
-      <li><ul>
-            <li>Exercises
-                <ul>
-                  <li>Start working through the Java EE exercises.
-                  It is highly recommended that you go through this since it
-                  takes you through many of the use cases and common issues
-                  related to project 2.</li>
-                </ul>
-            </li>
-            <li>Examples
-                <ul>
-                  <li>The class examples have been updated to include the 
-                  server-side modules. Be be sure to have your jboss server 
-                  running when building prior to building them from this 
-                  point forward.</li>
-                  <li>Begin looking at ejb-basic and ejbsessionBank example applications; 
-                  which form an EJB, EAR, RMI Test, as well as a WAR Client.
-                  These will be key component types within project 2.</li>
-                </ul>
-            </li>
-            <li>Project
-                <ul>
-                  <li>Look over the specification for project 2.</li>
-                  <li>Apply the maven, EJB, EAR, RMI Test, and remote interface
-                  concepts from the exercises to your project 2.</li>
-                  <li>Have one end-to-end thread through eDmvTest, EJB, and project 1
-                  operational</li>
-                </ul>
-            </li>
-      </ul></li>
-           -->
-
-
-      <!-- week 07: SQL Tuning and Session Beans 
-      <li><ul> 
-            <li>DAOs
-                <ul>
-                  <li>Add indexes to your DB schema to at least account for where 
-                      clauses used in queries and foreign keys used in relationship joins.</li>
-                </ul>
-            </li>
-            <li>Project
-                <ul>
-                  <li>Finish up project 1 and submit according
-                  to the submission guidelines.</li>
-                  <li>Perform any desired post-submission refactoring of your 
-                  project 1 implementation prior to re-use within project 2.</li>
-                  <li>Look over the specification for project 2.</li>
-                  <li>Apply the maven, EJB, EAR, RMI Test, and remote interface
-                  concepts from the exercises to your project 2.</li>
-                  <li>Have one IT test deploying eDmvEAR with and EJB and invoking
-                  skeletal methods from end-to-end scenario. Mayberry should
-                  pass serializable BOs as DTOs. Dmv should pass separate serializable
-                  DTO classes (i.e., not same BO classes).</li>
-                </ul>
-            </li>
-            <li>Examples
-                <ul>
-                  <li>The class examples have been updated to include the 
-                  server-side modules. Be be sure to have your jboss server 
-                  running when building prior to building them from this 
-                  point forward.</li>
-                  <li>Begin looking at ejb-basic and ejbsessionBank example applications; 
-                  which form an EJB, EAR, RMI Test, as well as a WAR Client.
-                  These will be key component types within project 2.</li>
-                </ul>
-            </li>
-            <li>Exercises
-                <ul>
-                  <li>Start working through the EJB exercises.
-                  It is highly recommended that you go through this since it
-                  takes you through many of the use cases and common issues
-                  related to project 2.  Stop after completing Basic EJB Development</li>
-                </ul>
-            </li>
-      </ul></li>
-           -->
-
-      <!-- week 06: JPAQL 
-      <li><ul> 
-            <li>Exercises
-                <ul>
-                  <li>Go through the Query Exercise if you have time.</li>          
-                </ul>
-            </li>
-            <li>DAOs
-                <ul>
-                  <li>Finish mapping remaining relationships</li>
-                  <li>Refactor or implement any necessary functionality using Queries and JPA-QL.</li>
-                </ul>
-            </li>
-            <li>Project
-                <ul>
-                  <li>Finish adding required business logic for end-to-end testing.</li>
-                </ul>
-            </li>
-      </ul></li>
-           -->
-
-      <!-- week 05: JPA Relationships 
-      <li><ul> 
-            <li>Exercises
-                <ul>
-                  <li>Go through the Relationship Mapping Exercise. This exercise covers 
-                      issues that come up when mapping Java class relationships to an RDBMs 
-                      using JPA. There is more there than one could possibly ever finish
-                      in the time alloted. Pick and choose which sections are relevant 
-                      to your project and use it as a reference to refer back to later.</li>          
-                </ul>
-            </li>
-            <li>JPA Entities
-                <ul>
-                  <li>Enhance your business objects to include JPA relationships.
-                  Be sure to include proper deletion as a part of your cleanup
-                  in your test case. This now must take foreign key constraints
-                  into consideration (e.g., can't delete parent object when you
-                  still have related child)</li>
-                </ul>
-            </li>
-            <li>DAOs
-                <ul>
-                  <li>Enhance your DAOs and DAO unit tests to account for storing
-                  parent/child relationships. It is recommended that you *not*
-                  use Cascades when starting out. Keep the functionality implemented
-                  within the scope of the requirements of the end-to-end scenario.
-                  Not every entity and relationship needs full CRUD behavior.
-                  </li>
-                </ul>
-            </li>
-            <li>Business Logic
-                <ul>
-                  <li>Fully implement your ingest capability. Provide some sort of 
-                  verification that the ingest worked. You don't have to test
-                  for the entire model ingested, but provide a brief set of 
-                  sanity checks that compares pre/post and selected information.
-                  </li>
-                  <li>Implement your populate() method of the end-to-end scenario 
-                  using your ingest capability.
-                  Encapsulate it and your resetAll() within a TestUtilImpl class.
-                  Re-use this class as a part of your unit testing. You may want 
-                  to reference the following examples when implementing this class.
-                    <ul>
-                      <li><a href="https://github.com/jcstaff/ejava-javaee/blob/master/solutions/javaeeEx/partC/javaeeExImpl/src/main/java/myorg/javaeeex/blimpl/TestUtilImpl.java">TestUtilImpl.java</a></li>
-                      <li><a href="https://github.com/jcstaff/ejava-javaee/blob/master/solutions/javaeeEx/partC/javaeeExImpl/src/main/java/myorg/javaeeex/jpa/DBUtil.java">DBUtil.java</a></li>
-                    </ul>
-                  </li>
-                  <li>Begin filling in business logic methods to satisfy the
-                  specified end-to-end scenario. Add unit tests to verify
-                  the functionality of the individual business logic methods.</li>
-                </ul>
-            </li>
-      </ul></li>
-           -->
-
-      <!-- week 04: JPA Core 
-      <li><ul> 
-            <li>Exercises
-                <ul>
-                  <li>Go through the Entity Mapping Exercise. This exercise covers issues that
-                      come up when mapping Java classes to an RDBMs using JPA.</li>          
-                </ul>
-            </li>
-            <li>JPA Entities
-                <ul>
-                  <li>Create the remainder of your business objects for the project.</li>
-                  <li>Declare the business objects as @Entities and map the classes
-                      to tables and columns in your database. Your schema file(s) and JPA
-                      DAOs should be using the same database tables at this point.
-                      Mark relationships and problem fields as @Transient at this point 
-                      in time.</li>
-                  <li>Add additional bean validation rules to your business objects
-                      to address any non-null, minimum, maximum, and pattern constraints
-                      you may have.</li>
-                  <li>Create unit tests for any non-trivial business rules implemented
-                      within the business object classes.</li>
-                </ul>
-            </li>
-            <li>JPA DAOs
-                <ul>
-                  <li>Create unit tests for the ability to create your business objects
-                      and get them by primary key.
-                      Pay attention to the business rules your application has for ordering
-                      the creation (e.g., must have Club before having a Club Rep).
-                      Solve dependency issues with sensible pre-conditions for child objects.</li>
-                  <li>Enact your bean validation rules for @PrePersist and @PreUpdate</li>
-                </ul>
-            </li>
-            <li>Business Logic
-                <ul>
-                  <li>Create unit test for injest and begin implementation of injest
-                  for at least one of the types in your model and provided test data.
-                  Try to avoid using classes with required relationships at this point.
-                  This goal has been achieved when you have instantiated the provided 
-                  parser within a unit test, read in the provided XML data file, streamed
-                  through the data file looking for objects of early interest from the parser, 
-                  and persisted the objects using one of your DAOs. This will be a thin
-                  slice of the overall dataset.
-                  </li>
-                  <li>Manually validate a DTO or business object using the programmatic 
-                      validation API in a sample method of your business logic.</li>
-                </ul>
-            </li>
-      </ul></li>
-           -->
-
-      <!-- week 03: DAOs and EntityManager 
-      <li><ul> 
-            <li>Project Sanity Check
-            <ul>
-              <li>Correct and complete your project structure based on comments from your early submission
-                   last week. Turn in by due date unless your early submission was previously accepted.</li>          
-              <li>Only business logic interfaces and skeletal business objects are required for the 
-                   project sanity check. Data tier/JPA topics listed below are not a required part.</li>          
-            </ul>
-            </li>
-
-            <li>Exercises and Examples
-            <ul>
-              <li>Go through the EntityManager Exercise. This exercise is just as much about covering
-                  the details to create a maven module for data tier classes as it is about the JPA 
-                  EntityManager.</li>          
-              <li>Look over the class project example implementation under the 
-                projects/eDatashare/eDmv directory as it relates to integrating
-                JPA within the individual modules.
-              </li>
-            </ul>
-            </li>
-
-            <li>Database Schema
-                <ul>
-                  <li>Design a draft DB schema for your business object. This should go in 
-                    the module hosting your DAOs.</li>
-                  <li>Implement a way to create your schema in the DB as a part of your DAO testing. Factor
-                      in reuse across multiple modules, multiple test cases, and multiple test methods.</li>
-                </ul>
-            </li>
-
-            <li>Maven and DAO Unit Test Framework
-                <ul>
-                  <li>Add JPA/Hibernate infrastructure to your project DAO/Impl module.
-                    This should at least consist of a successful connection to
-                    the DB.  You are done with this goal when you have a
-                    JPA JUnit test for the DAO and the setUp() method is able to
-                    create an EntityManager.
-                  </li>
-                </ul>
-            </li>          
-          
-            <li>JPA Entities and DAOs
-            <ul>
-              <li>Enhance your business object (BO) definition with @Entity
-                declarations, a non-private default constructor, and a primary
-                key designation (@Id) to make them legal entities. Leave
-                other things default for now. Annotate all collections with
-                @Transient annotation. We are not ready to cover relationships
-                just yet.
-              </li>
-              <li>Design DAO interfaces to support the data access requirements
-                  of your business logic participating in the end-to-end 
-                  scenario. These interfaces should be void of persistence
-                  technology detail - but feel free to commit to JPA for the 
-                  semantics of how the calls should work.
-              </li>
-              <li>Implement an initial JPA implementation for your DAO
-                   interfaces. Keep in mind the scope of the end-to-end 
-                   scenario when building these methods to help limit and
-                   focus the work performed.
-              </li>
-            </ul>
-            </li>
-
-            <li>DAO Testing
-            <ul>
-              <li>Design and implement a set of unit tests for a few of your JPA
-                DAO(s). Note how the default schema for the @Entities may not
-                match up with your desired DB schema at this point when you run
-                the tests.
-              </li>
-            </ul>
-            </li>
-      </ul></li>
-           -->
-
-
-      <!-- week 02: DevEnv and Business Logic 
-      <li><ul> 
-            <li>Project
-                <ul>
-                  <li>Look over the class project 1 and post any questions.</li>
-                  <li>Establish your project directory structure and perform a build from the root.</li>
-                  <b><li>Send me an early submission of your project sometime this week 
-                      (ideally by Mon evening) in a stable, known but not necessarily complete state. 
-                      You should have a project structure in place that can build from the root, a good 
-                      start on the items mentioned above, and a list of issues or questions
-                      that you would like answered about how to move forward.
-                      This will be used as feedback to the class.</li></b>
-                </ul>
-            </li>
-            <li>Business Logic
-                <ul>
-                  <li>Create the business logic interfaces and define the operations that will
-                      satisfy the end-to-end scenario.</li>
-                  <li>Create a JUnit unit test for the business logic to address the requirements 
-                      for the end-to-end scenario.  Place this unit test in with the module
-                      containing your business logic 
-                      and use it to help scope your future work on the project.</li>
-                  <li>Create a set of business logic classes to implement the busines logic
-                      interfaces. Stub out each call for now so the end-to-end test will
-                      execute.</li>
-                </ul>
-            </li>
-            <li>Business Objects
-                <ul>
-                  <li>Create skeletal business object classes necessary to express the vocabulary 
-                      of the business logic interfaces.</li>
-                  <li>Design and implement the basics of a JUnit unit test for a business object (just one). 
-                      Place this unit test within the module containing your business objects.</li>
-                </ul>
-            </li>
-      </ul></li>
-           -->
 
 
       </ul>

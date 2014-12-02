@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd" version="2.0">
+
+    <persistence-unit name="jpaticketsweb-labsol">
+        <!-- server dataSource provides connection pool to borrow connections from -->
+        <jta-data-source>java:jboss/datasources/ExampleDS</jta-data-source>
+        <!-- must list out classes from external JAR when deployed as WAR -->
+        <class>org.myorg.jpatickets.bo.Venue</class>
+        <class>org.myorg.jpatickets.bo.Address</class>
+        <class>org.myorg.jpatickets.bo.Seat</class>
+        <class>org.myorg.jpatickets.bo.Event</class>
+        <class>org.myorg.jpatickets.bo.Ticket</class>
+        
+        <properties>
+            <!-- this applies to both unit-test and server-side environments -->
+            <property name="hibernate.dialect" value="${hibernate.dialect}"/>
+
+            <!-- these can be helpful in both environments when debugging
+            <property name="hibernate.jdbc.batch_size" value="0"/>
+            <property name="hibernate.show_sql" value="true"/>
+            <property name="hibernate.format_sql" value="true"/>
+             -->            
+        </properties>
+    </persistence-unit>            
+</persistence>

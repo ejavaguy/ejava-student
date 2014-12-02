@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd" version="2.0">
+
+    <persistence-unit name="jpatickets-test">
+        <!-- used on the server-side 
+        <jta-data-source>java:jboss/datasources/ExampleDS</jta-data-source>
+        -->
+        <!-- jarfile shortcut can be used when deploying EJB within EAR 
+        <jar-file>lib/jpatickets-labsex-impl-${project.version}.jar</jar-file>
+        -->
+    
+        <!-- classes must be enumerated when deploying outside of EAR -->
+        <class>org.myorg.jpatickets.bo.Venue</class>
+        <class>org.myorg.jpatickets.bo.Address</class>
+        <class>org.myorg.jpatickets.bo.Seat</class>
+        <class>org.myorg.jpatickets.bo.Event</class>
+        <class>org.myorg.jpatickets.bo.Ticket</class>
+        
+        <properties>
+            <!-- this applies to both unit-test and server-side environments -->
+            <property name="hibernate.dialect" value="${hibernate.dialect}"/>
+
+            <!-- these can be helpful in both environments when debugging
+            <property name="hibernate.jdbc.batch_size" value="0"/>
+            <property name="hibernate.show_sql" value="true"/>
+            <property name="hibernate.format_sql" value="true"/>
+             -->            
+            
+            <!-- this applies to only the ***demo***-nature of this example -->
+            <property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>
+            
+            <!-- these apply only to the unit test environment -->
+            <property name="javax.persistence.jdbc.driver" value="${jdbc.driver}"/>
+            <property name="javax.persistence.jdbc.url" value="${jdbc.url}"/>
+            <property name="javax.persistence.jdbc.user" value="${jdbc.user}"/>
+            <property name="javax.persistence.jdbc.password" value="${jdbc.password}"/>
+        </properties>
+    </persistence-unit>            
+</persistence>

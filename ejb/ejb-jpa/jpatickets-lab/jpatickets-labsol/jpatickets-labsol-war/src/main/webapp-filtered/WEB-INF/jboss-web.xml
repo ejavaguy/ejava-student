@@ -1,0 +1,4 @@
+<jboss-web>
+    <!-- needed to always assure that version# does not get into JNDI name -->
+    <context-root>${project.artifactId}</context-root>
+</jboss-web>

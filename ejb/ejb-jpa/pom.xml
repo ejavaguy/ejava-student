@@ -18,6 +18,7 @@
 
     <modules>
         <module>ejb-jpa-example</module>
+        <module>jpatickets-lab</module>
     </modules>
     <profiles>
         <profile>
