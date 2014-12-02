@@ -27,8 +27,8 @@
       <subsection name="What's New" id="whatsnew">
       <ul>
       <!--
-          <li>2014-12-03: Posted Async TODOs</li>
           -->
+          <li>2014-12-03: Posted Async TODOs</li>
           <li>2014-11-19: Posted JMS TODOs</li>
           <li>2014-11-12: Posted Security Notes and TODOs</li>
           <li>2014-11-05: Posted Web Tier Materials and TODOs</li>
@@ -48,21 +48,25 @@
       <subsection name="Class To Do" id="todo">
       <ul>
 
-      <!-- week 13: Async 
+      <!-- week 13: Async -->
       <li><ul>
-          <li>Setup and deploy your JMS publisher code to eLeague. All
+          <li>Setup and deploy your JMS publisher code to eDmv. All
           resources should be injected by the container.</li>
-          <li>Setup and implement a JMS MDB in the eClub to receive 
-          updates published by eLeague.</li>
-          <li>Setup and deploy your JMS publisher code to eClubEJB.
+          <li>Setup and implement a JMS MDB in the eMayberry to receive 
+          updates published by eDmv.</li>
+          <li>Setup and deploy your JMS publisher code to eMayberry.
           Again - all resources should be injected by the container.</li>
-          <li>Verify that the eLeague JMS JSE Subscriber from last
-          week receives published messages from eLeagueEJB.</li>
-          <li>Implement an EJBTimer to perform scheduled work within
-          eLeagueEJB and eClubEJB.</li>
+          <li>Verify that the JMS JSE Subscriber from last
+          week receives published messages from EJB tier</li>
+          <li>Implement an EJBTimer to perform scheduled work</li>
           <li>Test, cleanup, document, and turn in project 3</li> 
       </ul></li>
-           -->
+
+      </ul>
+      </subsection>
+
+      <subsection name="Things you should have finished!" id="completed">
+      <ul>
 
       <!-- week 12: JMS -->
       <li><ul> 
@@ -99,13 +103,6 @@
               </ul>
           </li>
       </ul></li> 
-
-
-      </ul>
-      </subsection>
-
-      <subsection name="Things you should have finished!" id="completed">
-      <ul>
 
       <!-- week 11: Security -->
       <li><ul>
