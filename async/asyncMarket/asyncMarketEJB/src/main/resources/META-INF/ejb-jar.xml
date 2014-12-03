@@ -16,7 +16,7 @@
             <resource-ref>
                 <res-ref-name>jms/ConnectionFactory</res-ref-name>
                 <res-type>javax.jms.ConnectionFactory</res-type>
-                <mapped-name>ConnectionFactory</mapped-name>
+                <lookup-name>ConnectionFactory</lookup-name>
                 <injection-target>
                     <injection-target-class>
                         ejava.examples.asyncmarket.ejb.SellerEJB
@@ -29,9 +29,9 @@
             <resource-env-ref>
                 <resource-env-ref-name>jms/sellTopic</resource-env-ref-name>
                 <resource-env-ref-type>javax.jms.Topic</resource-env-ref-type>
-                <mapped-name>
+                <lookup-name>
                     topic/asyncMarketTopic1
-                </mapped-name>
+                </lookup-name>
                 <injection-target>
                     <injection-target-class>
                         ejava.examples.asyncmarket.ejb.SellerEJB
@@ -62,7 +62,7 @@
             <resource-ref>
                 <res-ref-name>jms/ConnectionFactory</res-ref-name>
                 <res-type>javax.jms.ConnectionFactory</res-type>
-                <mapped-name>topic/asyncMarketTopic1</mapped-name>                
+                <lookup-name>topic/asyncMarketTopic1</mapped-name>                
                 <injection-target>
                     <injection-target-class>
                         ejava.examples.asyncmarket.ejb.AuctionMgmtEJB
@@ -75,7 +75,7 @@
             <resource-env-ref>
                 <resource-env-ref-name>jms/sellTopic</resource-env-ref-name>
                 <resource-env-ref-type>javax.jms.Topic</resource-env-ref-type>
-                <mapped-name>topic/asyncMarketTopic1</mapped-name>                
+                <lookup-name>topic/asyncMarketTopic1</lookup-name>                
                 <injection-target>
                     <injection-target-class>
                         ejava.examples.asyncmarket.ejb.AuctionMgmtEJB
