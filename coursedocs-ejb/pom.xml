@@ -185,6 +185,13 @@
             <type>war</type>
             <scope>runtime</scope>
         </dependency>
+        <dependency>
+            <groupId>info.ejava.docs.ejb</groupId>
+            <artifactId>ejb-jpa-lab</artifactId>
+            <version>${project.version}</version>
+            <type>war</type>
+            <scope>runtime</scope>
+        </dependency>
 
         <dependency>
             <groupId>info.ejava.docs.courses</groupId>
@@ -362,6 +369,12 @@
                 <overlay>
                     <groupId>info.ejava.docs.ejb</groupId>
                     <artifactId>enc-config-lab</artifactId>
+                    <type>war</type>
+                    <targetPath>../site/docs/content</targetPath>
+                </overlay>
+                <overlay>
+                    <groupId>info.ejava.docs.ejb</groupId>
+                    <artifactId>ejb-jpa-lab</artifactId>
                     <type>war</type>
                     <targetPath>../site/docs/content</targetPath>
                 </overlay>
