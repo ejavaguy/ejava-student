@@ -76,7 +76,7 @@ public class TicketsTest {
     }
     
     private void cleanup() {
-        Map<String, Object> props = new HashMap<>();
+        Map<String, Object> props = new HashMap<String, Object>();
         props.put("javax.persistence.schema-generation.database.action", "drop-and-create");
         Persistence.generateSchema(PU_NAME, props);
     }

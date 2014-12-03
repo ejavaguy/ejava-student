@@ -49,7 +49,7 @@ public class TicketsInitTxEJB {
     public void init() {
         StringWriter createScriptWriter = new StringWriter();
         StringWriter dropScriptWriter = new StringWriter();
-        Map<String, Object> props = new HashMap<>();
+        Map<String, Object> props = new HashMap<String, Object>();
         props.put("javax.persistence.schema-generation.scripts.create-database-schemas", "true");
         props.put("javax.persistence.schema-generation.scripts.action", "drop-and-create");
         props.put("javax.persistence.schema-generation.scripts.create-target", createScriptWriter);
@@ -62,7 +62,7 @@ public class TicketsInitTxEJB {
     }
     
     private List<String> getCommands(String script) {
-        List<String> commands = new ArrayList<>();
+        List<String> commands = new ArrayList<String>();
         for (String line : script.split("\n")) {
             commands.add(line);
         }
