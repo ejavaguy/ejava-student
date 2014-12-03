@@ -17,7 +17,7 @@ public class VenueMgmtImpl implements VenueMgmt {
 
     @Override
     public Venue createVenue(Venue venue, int sections, int positions, int rows) {
-        List<Seat> seats = new ArrayList<>(sections * positions * rows);
+        List<Seat> seats = new ArrayList<Seat>(sections * positions * rows);
         for (int s=0; s<sections; s++) {
             String section = Character.toString((char)('A'+s));
             for (int row=0; row<rows; row++) {
