@@ -79,7 +79,7 @@ public class EventMgmtEJB implements EventMgmtRemote {
         Event pojo = new Event(bo.getId());
         pojo.setName(bo.getName());
         pojo.setStartTime(bo.getStartTime());
-        List<Ticket> tickets = new ArrayList<>(bo.getTickets().size());
+        List<Ticket> tickets = new ArrayList<Ticket>(bo.getTickets().size());
         for (Ticket t: bo.getTickets()) {
             toCleansed(t, pojo);
         }

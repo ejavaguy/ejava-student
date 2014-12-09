@@ -17,6 +17,10 @@ import info.ejava.examples.ejb.ejbjpa.dto.RoomDTO;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
+import javax.ejb.TransactionManagement;
+import javax.ejb.TransactionManagementType;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -24,6 +28,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @Stateless
+@TransactionManagement(TransactionManagementType.CONTAINER)
 public class HotelMgmtEJB implements HotelMgmtRemote, HotelMgmtLocal {
     private static final Logger logger = LoggerFactory.getLogger(HotelMgmtEJB.class);
 
@@ -48,16 +53,19 @@ public class HotelMgmtEJB implements HotelMgmtRemote, HotelMgmtLocal {
     }
 
     @Override
+    @TransactionAttribute(TransactionAttributeType.SUPPORTS)
     public Room getRoom(int number) {
         return hotelMgmt.getRoom(number);
     }
 
     @Override
+    @TransactionAttribute(TransactionAttributeType.SUPPORTS)    
     public Floor getFloor(int level) {
         return hotelMgmt.getFloor(level);
     }
 
     @Override
+    @TransactionAttribute(TransactionAttributeType.SUPPORTS)    
     public Floor getTouchedFloor(int level) {
         Floor floor = getFloor(level);
         /*
@@ -113,6 +121,7 @@ public class HotelMgmtEJB implements HotelMgmtRemote, HotelMgmtLocal {
     }
 
     @Override
+    @TransactionAttribute(TransactionAttributeType.SUPPORTS)    
     public Floor getFetchedFloor(int level) {
         return dao.fetchFloor(level);
         /*
@@ -141,6 +150,7 @@ public class HotelMgmtEJB implements HotelMgmtRemote, HotelMgmtLocal {
     }
     
     @Override
+    @TransactionAttribute(TransactionAttributeType.SUPPORTS)    
     public FloorDTO getFetchedFloorDTO(int level) {        
         Floor floor = getFloor(level);
         /*
@@ -187,16 +197,19 @@ public class HotelMgmtEJB implements HotelMgmtRemote, HotelMgmtLocal {
     }
 
     @Override
+    @TransactionAttribute(TransactionAttributeType.SUPPORTS)    
     public List<Floor> getFloors(int offset, int limit) {
         return hotelMgmt.getFloors(offset, limit);
     }
 
     @Override
+    @TransactionAttribute(TransactionAttributeType.SUPPORTS)    
     public List<Room> getAvailableRooms(Integer level, int offset, int limit) {
         return hotelMgmt.getAvailableRooms(level, offset, limit);
     }
 
     @Override
+    @TransactionAttribute(TransactionAttributeType.SUPPORTS)    
     public List<Room> getCleanAvailableRooms(Integer level, int offset, int limit) {
         List<Room> rooms = getAvailableRooms(level, offset, limit);
         return toClean(rooms);
@@ -231,17 +244,20 @@ public class HotelMgmtEJB implements HotelMgmtRemote, HotelMgmtLocal {
      * returned room.
      */
     @Override
+    @TransactionAttribute(TransactionAttributeType.SUPPORTS)    
     public List<Room> getAvailableRoomsForUpdate(Integer level, int offset, int limit) {
         return dao.getAvailableRoomsForUpdate(level, offset, limit);
     }
 
     @Override
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)    
     public Guest checkIn(Guest guest, Room room) throws RoomUnavailableExcepton {
         logger.debug("checkin(guest={}, room={})", guest, room);
         return hotelMgmt.checkIn(guest, room);
     }
 
     @Override
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)    
     public int checkout(Guest guest) {
         return hotelMgmt.checkout(guest);
     }

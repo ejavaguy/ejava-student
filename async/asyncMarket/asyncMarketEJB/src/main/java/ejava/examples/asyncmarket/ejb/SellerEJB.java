@@ -43,9 +43,9 @@ public class SellerEJB
     implements SellerLocal, SellerRemote {
     Log log = LogFactory.getLog(SellerEJB.class);
     
-    @Resource(mappedName="java:/JmsXA")
+    @Resource(lookup="java:/JmsXA")
     private ConnectionFactory connFactory;
-    @Resource(mappedName="java:/topic/ejava/examples/asyncMarket/topic1", type=Topic.class)
+    @Resource(lookup="java:/topic/ejava/examples/asyncMarket/topic1", type=Topic.class)
     private Destination sellTopic;
     
     @Resource
