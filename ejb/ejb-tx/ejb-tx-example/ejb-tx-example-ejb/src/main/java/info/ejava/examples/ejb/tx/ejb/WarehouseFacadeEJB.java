@@ -40,6 +40,8 @@ public class WarehouseFacadeEJB implements WarehouseRemote {
     private UpdateEJB beanB;
     @EJB
     private GetEJB beanC;
+    @EJB
+    private BmtCreateEJB bmtA;
     
     @PostConstruct
     public void init() {
@@ -211,5 +213,21 @@ public class WarehouseFacadeEJB implements WarehouseRemote {
 
         ctx.setRollbackOnly();
         return p; //return the product even thow we are going to roll it back
+    }
+    
+    @Override
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public Product createProductBmt(Product product) {
+        //enlist a stateful EJB to watch the transaction events
+        txWatcher.watchTransaction(getClass(), super.hashCode());
+        
+        //create a product in the database
+        Product p=bmtA.createProduct(product);
+        //bmtA.flush();
+
+        //return an instance of the bean from this thread/transaction
+        product=beanC.getProduct(p.getId());
+        
+        return product;
     }
 }

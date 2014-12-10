@@ -133,4 +133,13 @@ public class WarehouseEJBIT  {
         Product p2 = warehouse.getProduct(product.getId());
         assertNull("unexpected/rolled back product found", p2);
     }
+    
+    @Test
+    public void createProductBmt()   {
+        Product product=warehouse.createProductBmt(new Product("thing", 6));
+        assertEquals("unexpected quantity for product", 6, product.getQuantity());
+        Product p2 = warehouse.getProduct(product.getId());
+        assertEquals("product not updated async", 6, p2.getQuantity());
+    }
+    
 }

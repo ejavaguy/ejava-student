@@ -19,4 +19,5 @@ public interface WarehouseRemote {
     Product createProductAndThrowChecked(Product product) throws MyCheckedProductException;
     Product createProductAndThrowCheckedRollback(Product product) throws MyCheckedRollbackProductException;
     Product createProductAndRollback(Product product);
+    Product createProductBmt(Product product);
 }
