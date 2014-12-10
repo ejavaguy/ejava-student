@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>info.ejava.examples.ejb</groupId>
+        <artifactId>ejb-tx</artifactId>
+        <version>4.0.0-SNAPSHOT</version>
+    </parent>
+
+    <groupId>info.ejava.examples.ejb.tx</groupId>
+    <artifactId>ejb-tx-example</artifactId>
+    <packaging>pom</packaging>
+
+    <name>EJB::Transactions Example</name>
+    <description>
+        This project provides an example of using EJB Transactions
+    </description>
+
+    <modules>
+        <module>ejb-tx-example-ejb</module>
+    </modules>
+</project>

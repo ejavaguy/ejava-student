@@ -41,6 +41,7 @@
           <li>2014-09-09: Addressed many JPA Eclipse warnings in examples</li>
           <li>2014-09-09: Posted Project 1 description and Business Logic TODOs</li>
           -->
+          <li>2014-12-10: Updated Transaction Notes</li>
           <li>2014-12-02: Added EJB/JPA Exercise</li>
           <li>2014-11-19: Updated EJB Intro TODOs</li>
           <li>2014-11-11: Posted updates and EJB Intro TODOs</li>
@@ -219,11 +220,11 @@
       </ul></li>
            -->
 
-      <!-- week 04: EJB/JPA and Remote Interfaces -->
+      <!-- week 05: EJB/JPA and Remote Interfaces -->
       <li><ul>
             <li>Exercises
                 <ul>
-                  <li>Complete EJB/JPA and Remote Interface exercise.</li>
+                  <li>Look over ejb-tx-example and focus on aspects unique to tranactions</li>
                 </ul>
             </li>
       </ul></li>
@@ -233,6 +234,14 @@
 
       <subsection name="Things you should have finished!" id="completed">
       <ul>
+      <!-- week 04: EJB/JPA and Remote Interfaces -->
+      <li><ul>
+            <li>Exercises
+                <ul>
+                  <li>Complete EJB/JPA and Remote Interface exercise.</li>
+                </ul>
+            </li>
+      </ul></li>
 
       <!-- week 03: Session EJBs and JNDI/ENC Configuration-->
       <li><ul>
