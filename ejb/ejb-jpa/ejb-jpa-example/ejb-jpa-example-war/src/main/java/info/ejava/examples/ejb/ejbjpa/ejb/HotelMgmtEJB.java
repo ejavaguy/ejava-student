@@ -65,7 +65,7 @@ public class HotelMgmtEJB implements HotelMgmtRemote, HotelMgmtLocal {
     }
 
     @Override
-    @TransactionAttribute(TransactionAttributeType.SUPPORTS)    
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)    
     public Floor getTouchedFloor(int level) {
         Floor floor = getFloor(level);
         /*
@@ -150,7 +150,7 @@ public class HotelMgmtEJB implements HotelMgmtRemote, HotelMgmtLocal {
     }
     
     @Override
-    @TransactionAttribute(TransactionAttributeType.SUPPORTS)    
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)    
     public FloorDTO getFetchedFloorDTO(int level) {        
         Floor floor = getFloor(level);
         /*
@@ -209,7 +209,7 @@ public class HotelMgmtEJB implements HotelMgmtRemote, HotelMgmtLocal {
     }
 
     @Override
-    @TransactionAttribute(TransactionAttributeType.SUPPORTS)    
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)    
     public List<Room> getCleanAvailableRooms(Integer level, int offset, int limit) {
         List<Room> rooms = getAvailableRooms(level, offset, limit);
         return toClean(rooms);
