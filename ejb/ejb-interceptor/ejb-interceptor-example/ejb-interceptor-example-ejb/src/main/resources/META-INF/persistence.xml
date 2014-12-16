@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd" version="2.0">
+
+    <persistence-unit name="ejbinterceptor-contacts">
+        <jta-data-source>java:jboss/datasources/ExampleDS</jta-data-source>
+
+        <validation-mode>CALLBACK</validation-mode>
+        <properties>
+            <property name="hibernate.hbm2ddl.auto" value="create"/>
+            <property name="hibernate.show_sql" value="false"/>
+            <property name="hibernate.format_sql" value="false"/>
+            
+            <property name="javax.persistence.validation.group.pre-persist" 
+                      value="info.ejava.examples.ejb.interceptor.bo.PrePersistCheck"/>
+            <property name="javax.persistence.validation.group.pre-update" 
+                      value="info.ejava.examples.ejb.interceptor.bo.PrePersistCheck"/>
+        </properties>
+    </persistence-unit>            
+</persistence>

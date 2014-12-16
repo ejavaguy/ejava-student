@@ -22,6 +22,7 @@
         <module>ejb-cdi</module>
         <module>ejb-tx</module>
         <module>ejb-security</module>
+        <module>ejb-interceptor</module>
         <module>ejbsessionBank</module>
         <module>jndiDemo</module>
         <module>webtier</module>
