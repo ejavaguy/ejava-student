@@ -2,19 +2,20 @@ package info.ejava.examples.ejb.interceptor.ejb.it;
 
 import static org.junit.Assert.*;
 
+
 import java.util.List;
 
 import info.ejava.examples.ejb.interceptor.bo.Contact;
 import info.ejava.examples.ejb.interceptor.bo.ContactInfo;
 import info.ejava.examples.ejb.interceptor.bo.ContactRole;
 import info.ejava.examples.ejb.interceptor.bo.AddressType;
-import info.ejava.examples.ejb.interceptor.bo.ContactType;
 import info.ejava.examples.ejb.interceptor.bo.PhoneInfo;
 import info.ejava.examples.ejb.interceptor.bo.PostalAddress;
 import info.ejava.examples.ejb.interceptor.bo.PostalInfo;
 import info.ejava.examples.ejb.interceptor.ejb.ContactNotFound;
 import info.ejava.examples.ejb.interceptor.ejb.ContactsRemote;
 import info.ejava.examples.ejb.interceptor.ejb.InvalidParam;
+import info.ejava.examples.ejb.interceptor.normalizer.ContactNormalizer;
 import info.ejava.examples.ejb.interceptor.normalizer.NormalizerBase;
 
 import javax.naming.Context;
@@ -49,9 +50,9 @@ public class ContactsEJBIT  {
 	
 	private PostalInfo makePostalInfo(ContactRole role, AddressType type) {
 	    PostalAddress pa = new PostalAddress();
-	    pa.setStreet1("1600 Penn Ave");
-	    pa.setCity("Washington");
-	    pa.setState("DC");
+	    pa.setStreet1("1600 pEnn ave");
+	    pa.setCity("washington");
+	    pa.setState("dC");
 	    pa.setZip("20500");
 	    PostalInfo pi = new PostalInfo();
 	    pi.setAddress(pa);
@@ -75,7 +76,8 @@ public class ContactsEJBIT  {
 	@Test
 	public void createContact() throws InvalidParam {
         String originalName = "John Doe";
-	    Contact contact = contacts.createContact(new Contact().withName(originalName));
+	    Contact contact = contacts.createContact(
+	        new ContactNormalizer().normalize(new Contact().withName(originalName)));
 	    assertNotNull("null contact", contact);
 	    assertTrue("no ID assigned", contact.getId() > 0);
 	    
@@ -95,9 +97,11 @@ public class ContactsEJBIT  {
     @Test
     public void addNormalizedContactInfo() throws InvalidParam, ContactNotFound  {
         Contact contact = contacts.createContact(new Contact().withName("John Doe"));
-        ContactInfo workAddress = makePostalInfo(ContactRole.WORK, AddressType.PHYSICAL);
+        ContactInfo workAddress = new ContactNormalizer().normalize(
+                makePostalInfo(ContactRole.WORK, AddressType.PHYSICAL));
         contacts.addContactInfo(contact.getId(), workAddress);
-        ContactInfo workPhone = makePhoneInfo(ContactRole.WORK);
+        ContactInfo workPhone = new ContactNormalizer().normalize(
+                makePhoneInfo(ContactRole.WORK));
         contacts.addContactInfo(contact.getId(), workPhone);
         
         List<Contact> list = contacts.getContacts(contact.getName(), 0, 0);
@@ -145,4 +149,43 @@ public class ContactsEJBIT  {
             logger.debug("received expected exception", ex);
         }
     }
+    
+    @Test
+    public void addNonNormalizedContactInfo() throws InvalidParam, ContactNotFound  {
+        Contact contact = new Contact().withName("john doe");
+        logger.debug("original contact:{}",contact);
+        contact = contacts.createContact(contact);
+        ContactInfo workAddress = makePostalInfo(ContactRole.WORK, AddressType.PHYSICAL);
+        logger.debug("original workAddress:{}",workAddress);
+        contacts.addContactInfo(contact.getId(), workAddress);
+        ContactInfo workPhone = makePhoneInfo(ContactRole.WORK);
+        logger.debug("original workPhone:{}",workPhone);
+        contacts.addContactInfo(contact.getId(), workPhone);
+        
+        List<Contact> list = contacts.getContacts(contact.getName(), 0, 0);
+        assertEquals("unexpected number of contacts", 1, list.size());
+        Contact contact2 = list.get(0);
+        logger.debug("created contact: {}\n{}",contact2, contact2.getContactInfo());
+        assertEquals("unexpected contact info", 2, contact2.getContactInfo().size());
+        for (ContactInfo ci: contact2.getContactInfo()) {
+            switch (ci.getContactType()) {
+            case ADDRESS:
+                assertEquals("unexpected work address", 
+                    new ContactNormalizer().normalize((PostalInfo)workAddress).toString(), 
+                    ci.toString());
+                break;
+            case PHONE:
+                assertEquals("unexpected work phone", 
+                    new ContactNormalizer().normalize((PhoneInfo)workPhone).toString(), 
+                    ci.toString());
+                break;
+            default:
+                fail("unexpected contactType:" + ci.getContactType());
+                break;
+            }
+        }
+        
+        logger.debug("{}\n{}",contact2, contact2.getContactInfo());
+    }
+    
 }

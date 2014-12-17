@@ -17,9 +17,20 @@ public class NormalizerBase {
             }
             normalizedString.append(tok.substring(0, 1).toUpperCase());
             if (tok.length() > 1) {
-                normalizedString.append(tok.substring(1));
+                normalizedString.append(toLower(tok.substring(1)));
             }
         }
         return normalizedString.toString();
+    }
+    
+    
+    public String toUpper(String value) {
+        if (value==null) { return null; }
+        return value.toUpperCase().trim();
+    }
+    
+    public String toLower(String value) {
+        if (value==null) { return null; }
+        return value.toLowerCase().trim();
     }
 }

@@ -3,4 +3,10 @@
      xmlns="http://xmlns.jcp.org/xml/ns/javaee"
      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
      xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/beans_1_1.xsd">
+     
+     <interceptors>
+        <class>info.ejava.examples.ejb.interceptor.interceptors.PreNormizedInterceptor</class>
+        <class>info.ejava.examples.ejb.interceptor.interceptors.ContactsNormalizerInterceptor</class>
+        <class>info.ejava.examples.ejb.interceptor.interceptors.PostNormizedInterceptor</class>
+     </interceptors>
 </beans>
