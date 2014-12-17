@@ -5,12 +5,10 @@
     xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/ejb-jar_3_2.xsd"
       version="3.2">
     
-    <!-- 
     <assembly-descriptor>
         <interceptor-binding>
             <ejb-name>ContactsEJB</ejb-name>
-            <interceptor-class>info.ejava.examples.ejb.interceptor.interceptors.ContactsNormalizerInterceptor</interceptor-class>
+            <interceptor-class>info.ejava.examples.ejb.interceptor.interceptors.LifecycleInterceptor</interceptor-class>
         </interceptor-binding>
     </assembly-descriptor>   
-     -->
 </ejb-jar>

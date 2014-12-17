@@ -1,20 +1,18 @@
 package info.ejava.examples.ejb.interceptor.ejb;
 
 import java.util.Arrays;
-
 import java.util.List;
 
 import info.ejava.examples.ejb.interceptor.bo.Contact;
 import info.ejava.examples.ejb.interceptor.bo.ContactInfo;
-import info.ejava.examples.ejb.interceptor.interceptors.ContactsNormalizerInterceptor;
-import info.ejava.examples.ejb.interceptor.interceptors.PostNormizedInterceptor;
-import info.ejava.examples.ejb.interceptor.interceptors.PreNormizedInterceptor;
+import info.ejava.examples.ejb.interceptor.interceptors.Validation;
 import info.ejava.examples.ejb.interceptor.normalizer.ContactNormalizer;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import javax.ejb.Schedule;
 import javax.ejb.Stateless;
-import javax.interceptor.Interceptors;
+import javax.ejb.Timer;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
@@ -23,11 +21,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @Stateless
-@Interceptors({
-    PreNormizedInterceptor.class,
-    ContactsNormalizerInterceptor.class,
-    PostNormizedInterceptor.class,
-})
+@Validation
+//@Interceptors({
+//    PreNormizedInterceptor.class,
+//    ContactsNormalizerInterceptor.class,
+//    PostNormizedInterceptor.class,
+//})
 public class ContactsEJB implements ContactsRemote {
     private static final Logger logger = LoggerFactory.getLogger(ContactsEJB.class);
     
@@ -96,5 +95,10 @@ public class ContactsEJB implements ContactsRemote {
         List<Contact> contacts = query.getResultList();
         logger.debug("getContacts(name={}, offset={}, limit={})={}", name, offset, limit, contacts.size());
         return contacts;
+    }
+    
+    @Schedule(second="0", minute="*/10", hour="*", dayOfWeek="*", dayOfMonth="*", persistent=false)
+    public void timeout(Timer timer) {
+        logger.debug("timeout({}), next={})", timer, timer.getNextTimeout());
     }
 }

@@ -1,16 +1,21 @@
 package info.ejava.examples.ejb.interceptor.interceptors;
 
 import info.ejava.examples.ejb.interceptor.bo.Contact;
+import info.ejava.examples.ejb.interceptor.bo.PhoneInfo;
+import info.ejava.examples.ejb.interceptor.bo.PostalInfo;
 import info.ejava.examples.ejb.interceptor.normalizer.ContactNormalizer;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.interceptor.AroundInvoke;
+import javax.interceptor.Interceptor;
 import javax.interceptor.InvocationContext;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@Validation
+@Interceptor
 public class ContactsNormalizerInterceptor {
     private static final Logger logger = LoggerFactory.getLogger(ContactsNormalizerInterceptor.class);
     private ContactNormalizer contactNormalizer=new ContactNormalizer();
@@ -32,6 +37,14 @@ public class ContactsNormalizerInterceptor {
                 if (param instanceof Contact) {
                     logger.debug("normalizing: {}", param);
                     contactNormalizer.normalize((Contact) param);
+                    logger.debug("normalized: {}", param);
+                } else if (param instanceof PostalInfo) {
+                    logger.debug("normalizing: {}", param);
+                    contactNormalizer.normalize((PostalInfo) param);
+                    logger.debug("normalized: {}", param);
+                } else if (param instanceof PhoneInfo) {
+                    logger.debug("normalizing: {}", param);
+                    contactNormalizer.normalize((PhoneInfo) param);
                     logger.debug("normalized: {}", param);
                 }
             }
