@@ -225,7 +225,8 @@
       <li><ul>
             <li>Exercises
                 <ul>
-                  <li>Look over ejb-tx-example and focus on aspects unique to transactions</li>
+                  <li>Look over securePing examples and focus on aspects unique to security access</li>
+                  <li>Look over ejb-interceptor-example and focus on aspects unique to interceptors</li>
                 </ul>
             </li>
       </ul></li>
@@ -235,6 +236,16 @@
 
       <subsection name="Things you should have finished!" id="completed">
       <ul>
+
+      <!-- week 05: EJB/JPA and Remote Interfaces -->
+      <li><ul>
+            <li>Exercises
+                <ul>
+                  <li>Look over ejb-tx-example and focus on aspects unique to transactions</li>
+                </ul>
+            </li>
+      </ul></li>
+
       <!-- week 04: EJB/JPA and Remote Interfaces -->
       <li><ul>
             <li>Exercises
