@@ -3,7 +3,7 @@
 
     <groupId>info.ejava.examples.build</groupId>
     <artifactId>dependencies</artifactId>
-    <version>4.0.0-SNAPSHOT</version>
+    <version>4.1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>Dependencies POM</name>
@@ -15,8 +15,8 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <java.source.version>1.7</java.source.version>
-        <java.target.version>1.7</java.target.version>
+        <java.source.version>1.8</java.source.version>
+        <java.target.version>1.8</java.target.version>
         
         <!-- maven plugins: http://maven.apache.org/plugins/index.html -->
         <!-- core plugins -->
