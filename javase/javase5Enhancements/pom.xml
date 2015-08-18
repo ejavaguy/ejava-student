@@ -3,7 +3,7 @@
     <parent>
         <groupId>info.ejava.examples.javase</groupId>
         <artifactId>javase</artifactId>
-        <version>4.0.0-SNAPSHOT</version>
+        <version>4.1.0-SNAPSHOT</version>
     </parent>
 
     <artifactId>javase5Enhancements</artifactId>
