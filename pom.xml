@@ -1,5 +1,7 @@
 <?xml version="1.0"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>info.ejava.examples.build</groupId>
@@ -31,23 +33,21 @@
         <module>coursedocs</module>
     </modules>
 
-    <url>http://srau.ejava.info/sites/ejava-ejb</url>
+    <url>http://webdev.jhuep.com/ejava-javaee</url>
     <organization>
         <name>
-            SRA-U
+            John's Hopkins University, Engineering Programs for Professionals 
         </name>
-        <url>http://www.sra.com</url>
+        <url>http://ep.jhu.edu</url>
     </organization>
-    <!--
     <mailingLists>
         <mailingList>
             <name>class newsgroup (for class use)</name>
             <subscribe>http://groups.yahoo.com/group/ejava_class/</subscribe>
         </mailingList>
     </mailingLists>
-    -->
     <scm>
-        <url>https://github.com/ejavaguy/ejava-student/tree/ejb-class</url>
+        <url>https://github.com/ejavaguy/ejava-student/tree/master</url>
         <connection>scm:git:git@github.com:ejavaguy/ejava-student.git</connection>
         <developerConnection>scm:git:git@github-ejavaguy:ejavaguy/ejava-student.git</developerConnection>
         <tag>HEAD</tag>
@@ -333,11 +333,11 @@
                                 </goals>
                                 <configuration>
                                     <rules>
-                                        <requirePluginVersions />
+                                        <requirePluginVersions/>
                                         <requireJavaVersion>
                                             <version>[1.7,)</version>
                                         </requireJavaVersion>
-                                        <DependencyConvergence />
+                                        <DependencyConvergence/>
                                     </rules>
                                 </configuration>
                             </execution>
@@ -424,12 +424,6 @@
 
 
         <profile>
-            <id>ejb-modules</id>
-            <modules>
-                <module>ejb</module>
-            </modules>
-        </profile>
-        <profile>
             <id>all-modules</id>
             <modules>
                 <module>build</module>
@@ -486,16 +480,6 @@
                     <id>webdev.website</id>
                     <name>ejava JHU webdev website</name>
                     <url>scpexe://webdev.jhuep.com/home/jcs/public_html/ejava-javaee</url>
-                </site>
-            </distributionManagement>
-        </profile>
-        <profile>
-            <id>srau</id>
-            <distributionManagement>
-                <site>
-                    <id>ejava-ejb.website</id>
-                    <name>SRA-U EJB</name>
-                    <url>scpexe://srau.ejava.info/var/www/ejava.info/html/sites/ejava-ejb</url>
                 </site>
             </distributionManagement>
         </profile>
