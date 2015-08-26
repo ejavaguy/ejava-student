@@ -40,7 +40,7 @@ import javax.persistence.*;
                 },
             columns={
                 @ColumnResult(name="venueName", type=String.class),
-                @ColumnResult(name="numTickets", type=Number.class)
+                @ColumnResult(name="numTickets", type=Long.class)
                 }
     )
 })
