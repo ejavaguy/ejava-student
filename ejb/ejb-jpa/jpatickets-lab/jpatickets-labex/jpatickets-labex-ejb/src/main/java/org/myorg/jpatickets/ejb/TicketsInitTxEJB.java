@@ -52,6 +52,7 @@ public class TicketsInitTxEJB {
         Map<String, Object> props = new HashMap<String, Object>();
         props.put("javax.persistence.schema-generation.scripts.create-database-schemas", "true");
         props.put("javax.persistence.schema-generation.scripts.action", "drop-and-create");
+        props.put("hibernate.id.new_generator_mappings", "true"); //tell JSE schemagen to use SEQUENCE for @Id=AUTO
         props.put("javax.persistence.schema-generation.scripts.create-target", createScriptWriter);
         props.put("javax.persistence.schema-generation.scripts.drop-target", dropScriptWriter);
         Persistence.generateSchema(PU_NAME, props);
