@@ -43,7 +43,6 @@
             <dependency>
                 <groupId>info.ejava.examples.projects.eSport</groupId>
                 <artifactId>eLeagueTestUtil</artifactId>
-                <scope>provided</scope>
                 <version>${project.version}</version>
             </dependency>
         </dependencies>

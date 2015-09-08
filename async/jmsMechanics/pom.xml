@@ -18,6 +18,7 @@
 
     <properties>
         <jms.embedded>true</jms.embedded>
+        <jmsmechanics.multi.message.count>20</jmsmechanics.multi.message.count>
     </properties>
 
     <dependencies>

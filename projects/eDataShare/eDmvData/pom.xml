@@ -23,6 +23,25 @@
         <module>eDmvTestUtil</module>
     </modules>
 
+    <properties>
+        <ejava.version>4.1.0-SNAPSHOT</ejava.version>
+    </properties>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>info.ejava.examples.common</groupId>
+                <artifactId>ejava-util</artifactId>
+                <version>${ejava.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>info.ejava.examples.common</groupId>
+                <artifactId>jboss-rmi-client</artifactId>
+                <version>${ejava.version}</version>
+                <type>pom</type>
+            </dependency>    
+        </dependencies>
+    </dependencyManagement>
+
     <profiles>
         <profile>
             <id>devel</id>
@@ -45,24 +64,6 @@
                 <module>eDmvTestEAR</module>
                 <module>eDmvRMITest</module>
             </modules>
-            <properties>
-                <ejava.version>4.1.0-SNAPSHOT</ejava.version>
-            </properties>
-            <dependencyManagement>
-                <dependencies>
-                    <dependency>
-                        <groupId>info.ejava.examples.common</groupId>
-                        <artifactId>ejava-util</artifactId>
-                        <version>${ejava.version}</version>
-                    </dependency>
-                    <dependency>
-                        <groupId>info.ejava.examples.common</groupId>
-                        <artifactId>jboss-rmi-client</artifactId>
-                        <version>${ejava.version}</version>
-                        <type>pom</type>
-                    </dependency>    
-                </dependencies>
-            </dependencyManagement>
         </profile>
         <profile>
             <id>all-modules</id>

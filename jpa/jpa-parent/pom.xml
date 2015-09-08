@@ -31,22 +31,22 @@
         <jboss.host>localhost</jboss.host>
         <db.host>${jboss.host}</db.host>
 
-        <maven-compiler-plugin.version>3.1</maven-compiler-plugin.version>
-        <maven-jar-plugin.version>2.5</maven-jar-plugin.version>
-        <maven-surefire-plugin.version>2.17</maven-surefire-plugin.version>
+        <maven-compiler-plugin.version>3.3</maven-compiler-plugin.version>
+        <maven-jar-plugin.version>2.6</maven-jar-plugin.version>
+        <maven-surefire-plugin.version>2.18.1</maven-surefire-plugin.version>
         <sql-maven-plugin.version>1.5</sql-maven-plugin.version>        
 
         <commons-logging.version>1.1.1</commons-logging.version>
-        <h2db.version>1.3.168</h2db.version>
+        <h2db.version>1.4.188</h2db.version>
         <hibernate-jpa-2.1-api.version>1.0.0.Final</hibernate-jpa-2.1-api.version>
         <hibernate-entitymanager.version>4.3.4.Final</hibernate-entitymanager.version>
         <hibernate3-maven-plugin.version>3.0</hibernate3-maven-plugin.version>
         <hibernate3.version>3.6.10.Final</hibernate3.version>
-        <junit.version>4.11</junit.version>
-        <log4j.version>1.2.13</log4j.version>
-        <slf4j.version>1.7.2</slf4j.version>
-        <wagon-ssh-external.version>2.2</wagon-ssh-external.version>
-        <maven-deploy-plugin.version>2.8.1</maven-deploy-plugin.version>
+        <junit.version>4.12</junit.version>
+        <log4j.version>1.2.17</log4j.version>
+        <slf4j.version>1.7.12</slf4j.version>
+        <wagon-ssh-external.version>2.9</wagon-ssh-external.version>
+        <maven-deploy-plugin.version>2.8.2</maven-deploy-plugin.version>
         <maven-site-plugin.version>3.4</maven-site-plugin.version>
     </properties>
 

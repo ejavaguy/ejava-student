@@ -56,7 +56,20 @@ public class QueryLocksTest extends QueryBase {
     	public void run() {
     		try {
                     log.debug(context + " selecting with lockMode=" + lockMode);
+                    //h2 won't let us lock on a JOIN -- use subquery
                     List<Actor> actors = em_.createQuery(
+                            "select a from Actor a "
+                            + "where a.person in ("
+                            + "select p from Person p "
+                            + "where p.firstName=:firstName and p.lastName=:lastName "
+                            + "or p.firstName='" + context + "')", Actor.class)
+                            .setLockMode(lockMode)
+                            .setParameter("firstName", actor.getFirstName())
+                            .setParameter("lastName", actor.getLastName())
+                            .setMaxResults(1)
+                            .getResultList();
+                    /*
+                    List<Actor> actorsx = em_.createQuery(
                                     "select a from Actor a JOIN a.person as p " +
                                     "where p.firstName=:firstName and p.lastName=:lastName " +
                                     "or p.firstName='" + context + "'", Actor.class)
@@ -64,7 +77,7 @@ public class QueryLocksTest extends QueryBase {
                                     .setParameter("firstName", actor.getFirstName())
                                     .setParameter("lastName", actor.getLastName())
                                     .setMaxResults(1)
-                                    .getResultList();
+                                    .getResultList();*/
                     try { 
                         log.debug(context + " sleeping " + sleepTime + " msecs"); 
                         Thread.sleep(sleepTime); 
