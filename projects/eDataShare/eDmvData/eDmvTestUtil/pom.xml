@@ -27,8 +27,13 @@
             <scope>compile</scope>
         </dependency>
 
-        <!--  this is what JBoss AS 5.1.0.GA is using  
-        -->
+        <!-- THESE ARE RUNTIME JAXB and StAX IMPLENATIONS - they are declared 
+            here with scope=compile to make it easier on runtime users of the 
+            parser. Just like a database client, normally we would ship our
+            component with only API dependencies and let the client decide.
+            This approach makes it easier on the user that does not care
+            what implementation to use and could override it if needed. -->
+
         <dependency>
             <groupId>sun-jaxb</groupId>
             <artifactId>jaxb-impl</artifactId>

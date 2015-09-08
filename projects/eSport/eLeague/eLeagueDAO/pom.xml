@@ -1,0 +1,248 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <parent>
+        <groupId>info.ejava.examples.projects.eLeague</groupId>
+        <artifactId>eLeague</artifactId>
+        <version>4.1.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>eLeagueDAO</artifactId>
+
+    <name>Projects::eSport::eLeague::DAO</name>
+    <description>
+        This project provides a sparse example of how to setup a JDBC and JPA
+        DAO for use in the class project. It also provides a quick
+        test/demo of the ingest data.
+    </description>
+
+    <dependencies>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>eLeagueBO</artifactId>
+            <version>${project.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+            <scope>compile</scope>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.hibernate.javax.persistence</groupId>
+            <artifactId>hibernate-jpa-2.1-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-entitymanager</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <scope>test</scope>
+        </dependency>
+        
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <scope>test</scope>
+        </dependency>        
+    </dependencies>
+
+    <build>
+         <!--tell the resource plugin to perform filtering on resources 
+             to fill in JDBC URL, etc. -->
+        <testResources>
+            <testResource>
+                <directory>src/test/resources</directory>
+                <filtering>true</filtering>
+            </testResource>
+        </testResources>
+
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <argLine>${surefire.argLine}</argLine>
+                    <systemPropertyVariables>
+                        <jdbc.driver>${jdbc.driver}</jdbc.driver>
+                        <jdbc.url>${jdbc.url}</jdbc.url>
+                        <jdbc.user>${jdbc.user}</jdbc.user>
+                        <jdbc.password>${jdbc.password}</jdbc.password>
+                    </systemPropertyVariables>
+                </configuration>
+            </plugin>
+            
+           <!-- this is an example of creating a reusable test archive 
+                for a downstream module to use during its tests -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>test-jar</goal>
+                        </goals>
+                        <configuration>
+                            <!-- include or exclude as appropriate -->
+                            <includes>
+                                <include>META-INF/persistence.xml</include>
+                                <include>**/*TestBase.class</include>
+                            </includes>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            
+            <!-- this plugin can be used to automatically generate the
+                 DB schema from the Java entity classes. Whether you use it
+                 or not - it is very useful in sanity checking your JPA mappings
+
+                 Change the persistenceunit element to match your persistence unit
+                 name when you copy this.
+
+                 See mvn help:effective-pom to see full definition inherited from 
+                 parent
+                 -->
+            <plugin>
+                <artifactId>hibernate3-maven-plugin</artifactId>
+                <groupId>org.codehaus.mojo</groupId>
+                <configuration>
+                    <hibernatetool destdir="target/classes/ddl">
+                        <classpath>
+                            <path location="${project.build.directory}/test-classes" />
+                        </classpath>
+                        <jpaconfiguration persistenceunit="eLeagueBO-test" />
+                    </hibernatetool>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <profiles>
+        <!-- This profile and plugin is used to setup the DB in a known state prior to
+            running any of the tests within the DAO test cases. Note that this can only
+            run before the first test case and after the last test case. To run in between
+            test cases and testMethods, you will need to write a helper class to read
+            these DDL files and issue against the DB yourself.
+        -->
+        <profile>
+          <id>reset-db</id>
+          <activation>
+            <property>
+              <name>!skipTests</name>
+            </property>
+          </activation>
+          
+          <build>
+            <plugins>
+              <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>sql-maven-plugin</artifactId>        
+                
+                <dependencies>
+                  <dependency>
+                    <groupId>com.h2database</groupId>
+                    <artifactId>h2</artifactId>
+                    <version>${h2db.version}</version>            
+                  </dependency>
+                </dependencies>
+                
+                <configuration>
+                  <username>${jdbc.user}</username>
+                  <password>${jdbc.password}</password>
+                  <driver>${jdbc.driver}</driver>
+                  <url>${jdbc.url}</url>          
+                </configuration>
+                
+                <executions>
+                  <execution>
+                    <id>drop-db-before-test</id>
+                    <phase>process-test-resources</phase>
+                    <goals>
+                      <goal>execute</goal>
+                    </goals>    
+                    <configuration>              
+                      <autocommit>true</autocommit>
+                      <fileset>
+                        <basedir>${basedir}/target</basedir>
+                        <includes>
+                          <include>classes/ddl/*drop.ddl</include>                  
+                        </includes>
+                      </fileset>
+                      <!-- the tables may not exist when tests are run -->
+                      <onError>continue</onError>
+                    </configuration>        
+                  </execution>
+                  
+                  <execution>
+                    <id>create-db-before-test</id>
+                    <phase>process-test-resources</phase>
+                    <goals>
+                      <goal>execute</goal>
+                    </goals>    
+                    <configuration>              
+                      <autocommit>true</autocommit>
+                      <fileset>
+                        <basedir>${basedir}/target</basedir>
+                        <includes>
+                          <include>classes/ddl/*create.ddl</include>                  
+                        </includes>
+                      </fileset>
+                      <print>true</print>
+                    </configuration>        
+                  </execution>
+                  
+                  <execution>
+                    <id>populate-db-before-test</id>
+                    <phase>process-test-resources</phase>
+                    <goals>
+                      <goal>execute</goal>
+                    </goals>    
+                    <configuration>              
+                      <autocommit>true</autocommit>
+                      <fileset>
+                        <basedir>${basedir}/target</basedir>
+                        <includes>
+                          <include>test-classes/ddl/*populate*.ddl</include>                  
+                        </includes>
+                      </fileset>
+                    </configuration>        
+                  </execution>
+                  
+                  <!-- leave residue for post-test analysis
+                <execution>
+                    <id>drop-db-after-test</id>
+                    <phase>test</phase>
+                    <goals>
+                        <goal>execute</goal>
+                    </goals>    
+                    <configuration>              
+                        <autocommit>true</autocommit>
+                        <fileset>
+                            <basedir>${basedir}/target</basedir>
+                            <includes>
+                                <include>classes/ddl/*drop.ddl</include>                  
+                            </includes>
+                        </fileset>
+                    </configuration>        
+                </execution>
+                  -->              
+                </executions>
+              </plugin>          
+              
+            </plugins>        
+          </build>
+        </profile>
+    </profiles>
+
+</project>

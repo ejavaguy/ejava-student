@@ -1,0 +1,61 @@
+<?xml version="1.0"?><project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <parent>
+        <groupId>info.ejava.examples.projects</groupId>
+        <artifactId>projects</artifactId>
+        <version>4.1.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>info.ejava.examples.projects.eSport</groupId>
+    <artifactId>eSport</artifactId>
+    <packaging>pom</packaging>
+
+    <name>Projects::eSport League and Club</name>
+    <description>
+        This project provides the problem description and initial artifacts
+        for the class project.
+    </description>
+
+    <modules>
+        <!-- this project is strictly to generate test data. It is provided
+            with the project assignment. There is no matching concept to be 
+            turned in by the student.
+            -->
+        <module>eSportData</module>
+
+        <!-- this is an example project that demonstrates a thin thread 
+            of what the student implements 
+            -->
+        <module>eLeague</module>
+    </modules>
+
+    <repositories>
+    </repositories>
+    <pluginRepositories>
+    </pluginRepositories>
+
+    <properties>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <!-- THIS IS A REAL DEPENDENCY THAT YOU WOULD COPY INTO YOUR POM.XML -->
+            <dependency>
+                <groupId>info.ejava.examples.projects.eSport</groupId>
+                <artifactId>eLeagueTestUtil</artifactId>
+                <scope>provided</scope>
+                <version>${project.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+    	<pluginManagement>
+            <plugins>
+            </plugins>
+    	</pluginManagement>
+    </build>
+
+    <profiles>
+    </profiles>
+</project>

@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    targetNamespace="http://ejava.info/eLeague/1.0.2009.1"
+    xmlns:eleague="http://ejava.info/eLeague/1.0.2009.1"
+    xmlns="http://ejava.info/eLeague/1.0.2009.1"
+    version="1.0"
+    xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
+    jaxb:version="2.0"
+    xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc">
+
+    <!-- 
+        This file documents the schema for the XML files that are ingested by the
+        parser. This is used to generate the dto classes using Sun's XJC compiler.
+    -->
+    
+    <xs:annotation>
+        <xs:appinfo>
+            <jaxb:globalBindings>
+                <jaxb:javaType name="java.util.Date" xmlType="xs:date"
+                    parseMethod="ejava.projects.eleague.xml.DateConverter.parseDate"
+                    printMethod="ejava.projects.eleague.xml.DateConverter.printDate"/>
+                <jaxb:javaType name="java.util.Date" xmlType="xs:dateTime"
+                    parseMethod="ejava.projects.eleague.xml.DateConverter.parseDate"
+                    printMethod="ejava.projects.eleague.xml.DateConverter.printDate"/>
+                <jaxb:javaType name="java.lang.Float" xmlType="xs:decimal"/>
+                <jaxb:javaType name="java.lang.Integer" xmlType="xs:int"/>
+            </jaxb:globalBindings>
+        </xs:appinfo>
+    </xs:annotation>
+    
+    <xs:complexType name="ReferencedType">
+        <xs:attribute name="refid" type="xs:ID"/>
+    </xs:complexType>
+
+    <xs:element name="contact">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="ReferencedType">
+                    <xs:sequence>
+                        <xs:element name="name" type="xs:token"/>
+                        <xs:element name="e-mail" 
+                            type="xs:NCName" 
+                            minOccurs="0"/>
+                        <xs:element name="login" 
+                            type="xs:NCName" 
+                            minOccurs="0"/>
+                    </xs:sequence>                            
+                    <xs:attribute name="id" type="xs:long" use="required"/>
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:complexType name="ContactRoleType">
+        <xs:sequence>
+            <xs:element name="contact" type="xs:IDREF"/>
+            <xs:element name="role" type="xs:NCName"/>
+        </xs:sequence>
+        <xs:attribute name="id" type="xs:long" use="required"/>
+    </xs:complexType>
+    
+    <xs:complexType name="AddressType">
+        <xs:sequence>
+            <xs:element name="street1" type="xs:token"/>
+            <xs:element name="street2" type="xs:token" minOccurs="0"/>
+            <xs:element name="city" type="xs:token"/>
+            <xs:element name="state" type="xs:NCName"/>
+            <xs:element name="zip" type="xs:NCName"/>
+        </xs:sequence>
+        <xs:attribute name="id" type="xs:long" use="required"/>
+    </xs:complexType>
+    
+    <xs:element name="club">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="ReferencedType">
+                    <xs:sequence>
+                        <xs:element name="name" type="xs:token"/>
+                        <xs:element ref="contact"/>
+                        <xs:element ref="venue" 
+                            minOccurs="0"
+                            maxOccurs="unbounded"/>
+                        <xs:element ref="team" 
+                            minOccurs="0"
+                            maxOccurs="unbounded"/>
+                    </xs:sequence>
+                    <xs:attribute name="id" type="xs:long" use="required"/>
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="venue">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="ReferencedType">
+                    <xs:sequence>
+                        <xs:element name="name" type="xs:Name"/>
+                        <xs:element name="directions" type="xs:token"/>
+                        <xs:element name="adcPage" type="xs:NMTOKEN"/>
+                        <xs:element name="street1" type="xs:token"/>
+                        <xs:element name="street2" type="xs:token" minOccurs="0"/>
+                        <xs:element name="city" type="xs:token"/>
+                        <xs:element name="state" type="xs:NCName"/>
+                        <xs:element name="zip" type="xs:NCName"/>
+                    </xs:sequence>
+                    <xs:attribute name="id" type="xs:long" use="required"/>
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:element name="team">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="ReferencedType">
+                    <xs:sequence>
+                        <xs:element name="name" type="xs:token"/>
+                        <xs:element name="contact-role" type="ContactRoleType"
+                                    minOccurs="0" 
+                                    maxOccurs="unbounded"/>
+                    </xs:sequence>
+                    <xs:attribute name="id" type="xs:long" use="required"/>
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:element name="contest">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="ReferencedType">
+                    <xs:sequence>
+                        <xs:element name="starts" type="xs:dateTime" 
+                                    minOccurs="0"/>
+                        <xs:element name="duration" type="xs:long"/>
+                        <xs:element name="location" type="xs:IDREF"
+                                    minOccurs="0"/>
+                        <xs:element name="homeTeam" type="xs:IDREF"/>
+                        <xs:element name="awayTeam" type="xs:IDREF"/>
+                        <xs:element name="homeScore" type="xs:int"
+                                    minOccurs="0"/>
+                        <xs:element name="awayScore" type="xs:int"
+                                    minOccurs="0"/>
+                    </xs:sequence>
+                    <xs:attribute name="id" type="xs:long" use="required"/>
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:element name="team-season">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="ReferencedType">
+                    <xs:sequence>
+                        <xs:element name="team" type="xs:IDREF"/>                        
+                    </xs:sequence>
+                    <xs:attribute name="id" type="xs:long" use="required"/>
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="division">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="ReferencedType">
+                    <xs:sequence>
+                        <xs:element name="group" type="xs:token"/>
+                        <xs:element name="level" type="xs:token"/>
+                        <xs:element name="ranking" type="xs:int" 
+                                    minOccurs="0"/>
+                        <xs:element ref="contact"
+                                    minOccurs="0"/>
+                        <xs:element ref="team-season" 
+                                    minOccurs="0"
+                                    maxOccurs="unbounded"/>
+                    </xs:sequence>
+                    <xs:attribute name="id" type="xs:long" use="required"/>
+                </xs:extension>
+            </xs:complexContent>            
+        </xs:complexType>
+    </xs:element>
+        
+    <xs:element name="season">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="ReferencedType">
+                    <xs:sequence>
+                        <xs:element name="name" type="xs:token"/>
+                        <xs:element name="starts" type="xs:date"/>
+                        <xs:element name="ends" type="xs:date"/>
+                        <xs:element ref="division"
+                                    minOccurs="0"
+                                    maxOccurs="unbounded"/>
+                        <xs:element ref="contest"
+                                    minOccurs="0"
+                                    maxOccurs="unbounded"/>
+                    </xs:sequence>
+                    <xs:attribute name="id" type="xs:long" use="required"/>
+                </xs:extension>
+            </xs:complexContent>            
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:element name="league-metadata">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="name" type="xs:token"/>
+                <xs:element name="contact" type="xs:IDREF"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    
+    
+    <xs:element name="eLeague">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="contact"
+                            minOccurs="0"
+                            maxOccurs="unbounded">
+                </xs:element>                        
+                <xs:element ref="league-metadata"/>
+                <xs:element ref="club" 
+                            minOccurs="0" 
+                            maxOccurs="unbounded"/>
+                <xs:element ref="season" 
+                            minOccurs="0" 
+                            maxOccurs="unbounded"/>
+                <xs:element name="currentSeason" type="xs:IDREF"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    
+</xs:schema>

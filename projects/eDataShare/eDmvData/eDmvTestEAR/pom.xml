@@ -2,7 +2,7 @@
     <parent>
         <groupId>info.ejava.examples.projects.eDataShare</groupId>
         <artifactId>eDmvData</artifactId>
-        <version>4.0.0-SNAPSHOT</version>
+        <version>4.1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -21,6 +21,12 @@
             <artifactId>eDmvTestEJB</artifactId>
             <version>${project.version}</version>
             <type>ejb</type>
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-logging</groupId>
+                    <artifactId>commons-logging</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
     </dependencies>
 

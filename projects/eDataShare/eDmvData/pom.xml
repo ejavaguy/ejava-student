@@ -13,9 +13,9 @@
     <description>
         This project provides the test data and parser 
         for the class project. Students will create a dependency on the
-        eLeagueTestUtil project and ingest Java obejcts returned from the
+        eDmvTestUtil project and ingest Java obejcts returned from the
         provided parser. You can find an example of how to setup and use the
-        parser within the eSalesBLImpl sub-project.
+        parser within the eDmvBLImpl sub-project.
     </description>
 
     <modules>
@@ -33,9 +33,9 @@
                 </property>
             </activation>
             <modules>
-                <module>eDmvDTO</module>
+                <!-- not using anymore
                 <module>eDmvDataGen</module>
-                <module>eDmvTestUtil</module>
+                -->
             </modules>
         </profile>
         <profile>
@@ -45,8 +45,25 @@
                 <module>eDmvTestEAR</module>
                 <module>eDmvRMITest</module>
             </modules>
+            <properties>
+                <ejava.version>4.1.0-SNAPSHOT</ejava.version>
+            </properties>
+            <dependencyManagement>
+                <dependencies>
+                    <dependency>
+                        <groupId>info.ejava.examples.common</groupId>
+                        <artifactId>ejava-util</artifactId>
+                        <version>${ejava.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>info.ejava.examples.common</groupId>
+                        <artifactId>jboss-rmi-client</artifactId>
+                        <version>${ejava.version}</version>
+                        <type>pom</type>
+                    </dependency>    
+                </dependencies>
+            </dependencyManagement>
         </profile>
-        <!--
         <profile>
             <id>all-modules</id>
             <modules>
@@ -55,6 +72,5 @@
                 <module>eDmvRMITest</module>
             </modules>
         </profile>
-        -->
     </profiles>
 </project>

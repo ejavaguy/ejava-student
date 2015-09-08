@@ -1,0 +1,453 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm 
+        file:///apps/jboss/docs/schema/orm_1_0.xsd"
+    version="1.0">
+    <!--         
+        http://java.sun.com/xml/ns/persistence/orm_1_0.xsd
+    -->    
+    <mapped-superclass class="ejava.projects.eleague.dto.ReferencedType"
+            access="FIELD">
+        <attributes>
+            <transient name="refid"/>
+        </attributes>        
+    </mapped-superclass>
+
+    
+    <entity class="ejava.projects.eleague.dto.Contact" 
+            access="FIELD">
+        <table name="ELEAGUE_CONTACT"/>
+        <attributes>
+            <id name="id">
+                <column name="ID"
+                    nullable="false"/>
+            </id>
+            <basic name="name">
+                <column name="CONTACT_NAME"
+                    nullable="false"
+                    unique="false"
+                    updatable="true"
+                    insertable="true"
+                    length="40"/>
+            </basic>
+            <basic name="eMail">
+                <column name="EMAIL"
+                    nullable="true"
+                    unique="false"
+                    updatable="true"
+                    insertable="true"
+                    length="40"/>
+            </basic>
+            <basic name="login">
+                <column name="LOGIN"
+                    nullable="true"
+                    unique="true"
+                    updatable="true"
+                    insertable="true"
+                    length="16"/>
+            </basic>
+        </attributes>
+    </entity>
+
+
+    <entity class="ejava.projects.eleague.dto.Club" 
+        access="FIELD">
+        <table name="ELEAGUE_CLUB"/>
+        <attributes>
+            <id name="id">
+                <column name="ID"
+                    nullable="false"/>
+            </id>
+            <basic name="name">
+                <column name="CLUB_NAME"
+                    nullable="false"
+                    unique="true"
+                    updatable="true"
+                    insertable="true"
+                    length="40"/>
+            </basic>
+            <one-to-many name="venue"
+                target-entity="ejava.projects.eleague.dto.Venue">
+                <join-column name="CLUB_ID"
+                    nullable="false"
+                    unique="false"
+                    updatable="false"
+                    insertable="true"/>
+                <cascade>
+                    <cascade-persist/>
+                    <cascade-remove/>
+                </cascade>                    
+            </one-to-many>
+            <one-to-many name="team"
+                target-entity="ejava.projects.eleague.dto.Team">
+                <join-column name="CLUB_ID"
+                    nullable="false"
+                    unique="false"
+                    updatable="false"
+                    insertable="true"/>
+                <cascade>
+                    <cascade-persist/>
+                    <cascade-remove/>
+                </cascade>                    
+            </one-to-many>
+            <one-to-one name="contact"
+                target-entity="ejava.projects.eleague.dto.Contact">
+                <join-column name="REP_ID"
+                    nullable="false"
+                    unique="false"
+                    updatable="true"
+                    insertable="true"/>
+                <cascade>
+                    <cascade-persist/>
+                    <cascade-remove/>
+                </cascade>                    
+            </one-to-one>
+        </attributes>
+    </entity>
+    
+    <entity class="ejava.projects.eleague.dto.Venue" 
+        access="FIELD">
+        <table name="ELEAGUE_VENUE"/>
+        <secondary-table name="ELEAGUE_ADDRESS">
+        </secondary-table>
+        <attributes>
+            <id name="id">
+                <column name="ID"
+                    nullable="false"/>
+            </id>
+            <basic name="name">
+                <column name="VENUE_NAME"
+                    nullable="false"
+                    unique="true"
+                    updatable="true"
+                    insertable="true"
+                    length="50"/>
+            </basic>
+            <basic name="adcPage">
+                <column name="ADC_PAGE"
+                    nullable="false"
+                    unique="false"
+                    updatable="true"
+                    insertable="true"
+                    length="16"/>
+            </basic>
+            <basic name="directions">
+                <column name="DIRECTIONS"
+                    nullable="false"
+                    unique="true"
+                    updatable="true"
+                    insertable="true"
+                    length="2000"/>
+            </basic>
+            <basic name="street1">
+                <column name="STREET1"
+                    table="ELEAGUE_ADDRESS"/>
+            </basic>
+            <basic name="street2">
+                <column name="STREET2"
+                    table="ELEAGUE_ADDRESS"/>
+            </basic>
+            <basic name="city">
+                <column name="CITY"
+                    table="ELEAGUE_ADDRESS"/>
+            </basic>
+            <basic name="state">
+                <column name="STATE"
+                    table="ELEAGUE_ADDRESS"/>
+            </basic>
+            <basic name="zip">
+                <column name="ZIP"
+                    table="ELEAGUE_ADDRESS"/>
+            </basic>
+        </attributes>
+    </entity>
+
+    <entity class="ejava.projects.eleague.dto.Team" 
+        access="FIELD">
+        <table name="ELEAGUE_TEAM"/>
+        <attributes>
+            <id name="id">
+                <column name="ID"
+                    nullable="false"/>
+            </id>
+            <basic name="name">
+                <column name="TEAM_NAME"
+                    nullable="false"
+                    unique="false"
+                    updatable="true"
+                    insertable="true"
+                    length="16"/>
+            </basic>
+            <one-to-many name="contactRole"
+                target-entity="ejava.projects.eleague.dto.ContactRoleType">
+                <join-column name="TEAM_ID"
+                    nullable="false"
+                    unique="false"
+                    updatable="false"
+                    insertable="true"/>
+                <cascade/>
+            </one-to-many>
+        </attributes>
+    </entity>
+
+    <entity class="ejava.projects.eleague.dto.TeamSeason" 
+        access="FIELD">
+        <table name="ELEAGUE_TEAM_SEASON"/>
+        <attributes>
+            <id name="id">
+                <column name="ID"
+                    nullable="false"/>
+            </id>
+            <many-to-one name="team"
+                target-entity="ejava.projects.eleague.dto.Team">
+                <join-column name="TEAM_ID"
+                    nullable="false"
+                    unique="false"
+                    updatable="false"
+                    insertable="true"/>
+                <cascade/>
+            </many-to-one>
+        </attributes>
+    </entity>
+    
+    <entity class="ejava.projects.eleague.dto.Season" 
+        access="FIELD">
+        <table name="ELEAGUE_SEASON"/>
+        <attributes>
+            <id name="id">
+                <column name="ID"
+                    nullable="false"/>
+            </id>
+            <basic name="name">
+                <column name="SEASON_NAME"
+                    nullable="false"
+                    unique="true"
+                    updatable="false"
+                    insertable="true"
+                    length="16"/>
+            </basic>
+            <basic name="starts">
+                <column name="START_DATE"
+                    nullable="false"
+                    unique="false"
+                    updatable="true"
+                    insertable="true"/>
+                <temporal>DATE</temporal>
+            </basic>
+            <basic name="ends">
+                <column name="END_DATE"
+                    nullable="false"
+                    unique="false"
+                    updatable="true"
+                    insertable="true"/>
+                <temporal>DATE</temporal>
+            </basic>
+            
+            <one-to-many name="division">
+                <join-column name="SEASON_ID"
+                    unique="false"
+                    insertable="true"
+                    updatable="false"
+                    nullable="false"/>
+            </one-to-many>
+
+            <transient name="contest"/>
+        </attributes>
+    </entity>
+    
+    <entity class="ejava.projects.eleague.dto.Division" 
+        access="FIELD">
+        <table name="ELEAGUE_DIVISION"/>
+        <attributes>
+            <id name="id">
+                <column name="ID"
+                    nullable="false"/>
+            </id>
+            <basic name="group">
+                <column name="DIVGROUP"
+                    nullable="false"
+                    unique="false"
+                    updatable="false"
+                    insertable="true"
+                    length="10"/>
+            </basic>
+            <basic name="level">
+                <column name="DIVLEVEL"
+                    nullable="false"
+                    unique="false"
+                    updatable="false"
+                    insertable="true"
+                    length="10"/>
+            </basic>
+            <basic name="ranking">
+                <column name="RANKING"
+                    nullable="false"
+                    unique="false"
+                    updatable="true"
+                    insertable="true"/>
+            </basic>
+
+            <many-to-one name="contact"
+                target-entity="ejava.projects.eleague.dto.Contact">
+                <join-column name="COORDINATOR_ID"
+                    nullable="true"
+                    insertable="true"
+                    updatable="true"
+                    unique="false"/>
+            </many-to-one>            
+            
+            <one-to-many name="teamSeason"
+                target-entity="ejava.projects.eleague.dto.TeamSeason">
+                    <join-column name="DIVISION_ID"
+                        nullable="false"
+                        unique="false"
+                        updatable="false"
+                        insertable="true"/>                    
+                <cascade/>
+            </one-to-many>
+            
+        </attributes>
+    </entity>
+        
+    <entity class="ejava.projects.eleague.dto.ContactRoleType" 
+        access="FIELD">
+        <table name="ELEAGUE_CONTACT_TEAM_ROLE"/>
+        <attributes>
+            <id name="id">
+                <column name="ID"
+                    nullable="false"/>
+            </id>
+            <basic name="role">
+                <column name="ROLE_NAME"
+                    nullable="false"
+                    length="10"/>
+            </basic>
+            <one-to-one name="contact"
+                target-entity="ejava.projects.eleague.dto.Contact">
+                <join-column name="CONTACT_ID"
+                    insertable="true"
+                    nullable="false"
+                    unique="false"
+                    updatable="false"/>
+            </one-to-one>
+        </attributes>
+    </entity>
+    
+    <entity class="ejava.projects.eleague.dto.LeagueMetadata" 
+        access="FIELD">
+        <table name="ELEAGUE_LEAGUE"/>
+        <attributes>
+            <id name="name">
+                <!-- should have been LEAGUE_NAME -->
+                <column name="CLUB_NAME"
+                    nullable="false"
+                    length="40"/>
+            </id>
+            <one-to-one name="contact"
+                target-entity="ejava.projects.eleague.dto.Contact">
+                <join-column name="COORDINATOR_ID"
+                    nullable="true"
+                    updatable="true"
+                    unique="false"
+                    insertable="true"/>
+            </one-to-one>
+        </attributes>
+    </entity>
+
+<!--
+    <entity class="ejava.projects.eleague.dto.ELeague">
+        <table name="ELEAGUE_LEAGUE"/>
+        <attributes>
+            <id name="name">
+                <column name="LEAGUE_NAME"
+                    nullable="false"/>
+            </id>
+            
+            <one-to-many name="club"
+                target-entity="ejava.projects.eleague.dto.Club"
+                fetch="LAZY">
+                <join-column name="LEAGUE_ID"
+                    nullable="false"
+                    updatable="false"
+                    unique="false"
+                    insertable="true"/>
+            </one-to-many>
+
+            <one-to-many name="season"
+                target-entity="ejava.projects.eleague.dto.Season"
+                fetch="LAZY">
+                <join-column name="LEAGUE_ID"
+                    nullable="false"
+                    updatable="false"
+                    unique="false"
+                    insertable="true"/>
+            </one-to-many>
+
+            <one-to-one name="currentSeason"
+                target-entity="ejava.projects.eleague.dto.Season"
+                fetch="LAZY">
+                <join-column name="CURRENT_SEASON_ID"
+                    nullable="true"
+                    updatable="true"
+                    unique="false"
+                    insertable="true"/>
+            </one-to-one>
+        </attributes>
+    </entity>
+-->    
+    <entity class="ejava.projects.eleague.dto.AddressType" 
+        access="FIELD">
+        <table name="ELEAGUE_ADDRESS"/>
+        <attributes>
+            <id name="id">
+                <column name="ID"
+                    nullable="false"/>
+            </id>
+            <basic name="street1">
+                <column name="STREET1"
+                    nullable="false"
+                    unique="false"
+                    updatable="true"
+                    insertable="true"
+                    length="60"/>
+            </basic>
+            <basic name="street2">
+                <column name="STREET2"
+                    nullable="true"
+                    unique="false"
+                    updatable="true"
+                    insertable="true"
+                    length="60"/>
+            </basic>
+            <basic name="city">
+                <column name="CITY"
+                    nullable="false"
+                    unique="false"
+                    updatable="true"
+                    insertable="true"
+                    length="40"/>
+            </basic>
+            <basic name="state">
+                <column name="STATE"
+                    nullable="false"
+                    unique="false"
+                    updatable="true"
+                    insertable="true"
+                    length="2"/>
+            </basic>
+            <basic name="zip">
+                <column name="ZIP"
+                    nullable="false"
+                    unique="false"
+                    updatable="true"
+                    insertable="true"
+                    length="10"/>
+            </basic>
+        </attributes>
+    </entity>
+
+            
+</entity-mappings>
+    
+    

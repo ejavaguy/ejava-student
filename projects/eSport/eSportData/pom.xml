@@ -1,0 +1,77 @@
+<?xml version="1.0"?><project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <parent>
+        <groupId>info.ejava.examples.projects.eSport</groupId>
+        <artifactId>eSport</artifactId>
+        <version>4.1.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>eSportData</artifactId>
+    <packaging>pom</packaging>
+
+    <name>Projects::eSport::Sport Data</name>
+    <description>
+        This project provides the test data and parser 
+        for the class project. Students will create a dependency on the
+        eLeagueTestUtil project and ingest Java obejcts returned from the
+        provided parser. You can find an example of how to setup and use the
+        parser within the eLeagueBLImpl sub-project.
+    </description>
+
+    <modules>
+        <module>eLeagueDTO</module>
+        <module>eLeagueTestUtil</module>
+    </modules>
+
+    <profiles>
+        <profile>
+            <id>devel</id>
+            <activation>
+                <property>
+                    <name>devel</name>
+                    <value>true</value>
+                </property>
+            </activation>
+            <modules>
+                <!-- not using anymore
+                <module>eLeagueDataGen</module>
+                 -->
+            </modules>
+        </profile>
+        <profile>
+            <id>serverTest</id>
+            <modules>
+                <module>eLeagueTestEJB</module>
+                <module>eLeagueTestEAR</module>
+                <module>eLeagueRMITest</module>
+            </modules>
+            <properties>
+                <ejava.version>4.1.0-SNAPSHOT</ejava.version>
+            </properties>
+            <dependencyManagement>
+                <dependencies>
+                    <dependency>
+                        <groupId>info.ejava.examples.common</groupId>
+                        <artifactId>ejava-util</artifactId>
+                        <version>${ejava.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>info.ejava.examples.common</groupId>
+                        <artifactId>jboss-rmi-client</artifactId>
+                        <version>${ejava.version}</version>
+                        <type>pom</type>
+                    </dependency>    
+                </dependencies>
+            </dependencyManagement>
+        </profile>
+        <profile>
+            <id>all-modules</id>
+            <modules>
+                <module>eLeagueTestEJB</module>
+                <module>eLeagueTestEAR</module>
+                <module>eLeagueRMITest</module>
+            </modules>
+        </profile>
+    </profiles>
+</project>
+

@@ -23,6 +23,15 @@
         Maven setup required to create your implementation of the class project.
     </description>
     <modules>
-        <module>eDataShare</module>
+        <module>eSport</module>
     </modules>
+
+    <profiles>
+        <profile>
+            <id>all-modules</id>
+            <modules>
+                <module>eDataShare</module>
+            </modules>
+        </profile>
+    </profiles>
 </project>

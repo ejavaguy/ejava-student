@@ -40,10 +40,16 @@
                 <groupId>info.ejava.examples.projects.eDataShare</groupId>
                 <artifactId>eDmvTestUtil</artifactId>
                 <version>${project.version}</version>
-                <scope>provided</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>
+
+    <build>
+    	<pluginManagement>
+            <plugins>
+            </plugins>
+    	</pluginManagement>
+    </build>
 
     <profiles>
     </profiles>

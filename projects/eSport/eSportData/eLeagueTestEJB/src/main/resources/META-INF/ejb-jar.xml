@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ejb-jar
+    xmlns="http://java.sun.com/xml/ns/javaee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/ejb-jar_3_1.xsd"
+    version="3.1">
+
+    <enterprise-beans>
+        <session>
+            <ejb-name>ParserTestEJB</ejb-name>
+            <env-entry>
+                <env-entry-name>vals/xmlFile</env-entry-name>
+                <env-entry-type>java.lang.String</env-entry-type>
+                <env-entry-value>/xml/eLeague-all.xml</env-entry-value>
+            </env-entry>
+        </session>
+    </enterprise-beans>
+
+</ejb-jar>
