@@ -70,6 +70,18 @@
         </testResources>
 
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven-compiler-plugin.version}</version>
+                <configuration>
+                    <compilerVersion>${java.target.version}</compilerVersion>
+                    <source>${java.source.version}</source>
+                    <target>${java.target.version}</target>
+                    <useIncrementalCompilation>false</useIncrementalCompilation>
+                </configuration>	                
+            </plugin>
+
             <!-- extends the pluginManagement definition in the parent pom
                  to generates DDL files for persistence unit.
                  See effective-pom for full configuration -->
@@ -120,20 +132,6 @@
 	            <name>JENKINS_URL</name>
 	        </property>
           </activation>
-          <build>
-              <plugins>
-                  <plugin>
-                      <groupId>org.apache.maven.plugins</groupId>
-                      <artifactId>maven-compiler-plugin</artifactId>
-                      <version>${maven-compiler-plugin.version}</version>
-                      <configuration>
-                              <source>${java.source.version}</source>
-                              <target>${java.target.version}</target>
-                               <useIncrementalCompilation>false</useIncrementalCompilation>
-                      </configuration>	                
-                  </plugin>
-              </plugins>
-          </build>
         </profile>
 
         <!-- don't add this to classpath if we are building on Jenkins -->
