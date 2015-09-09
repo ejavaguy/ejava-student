@@ -112,6 +112,30 @@
     </build>
 
     <profiles>
+        <!-- use this in Jenkins -->
+        <profile>
+          <id></id>
+          <activation>
+	        <property>
+	            <name>JENKINS_URL</name>
+	        </property>
+          </activation>
+          <build>
+              <plugins>
+                  <plugin>
+                      <groupId>org.apache.maven.plugins</groupId>
+                      <artifactId>maven-compiler-plugin</artifactId>
+                      <version>${maven-compiler-plugin.version}</version>
+                      <configuration>
+                              <source>${java.source.version}</source>
+                              <target>${java.target.version}</target>
+                               <useIncrementalCompilation>false</useIncrementalCompilation>
+                      </configuration>	                
+                  </plugin>
+              </plugins>
+          </build>
+        </profile>
+
         <!-- don't add this to classpath if we are building on Jenkins -->
         <profile>
             <id>metamodel</id>
