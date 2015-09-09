@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm 
+        http://java.sun.com/xml/ns/persistence/orm_1_0.xsd"
+    version="1.0">
+    
+    <mapped-superclass class="ejava.projects.esales.dto.ReferencedType">
+        <attributes>
+            <transient name="refid"/>
+        </attributes>        
+    </mapped-superclass>
+    
+    <entity class="ejava.projects.esales.dto.Auction" 
+            access="FIELD">
+        <table name="ESALES_AUCTION"/>
+        <attributes>
+            <id name="id">
+                <column name="AUCTION_ID"
+                    nullable="false"/>
+            </id>
+            <basic name="title">
+                <column name="TITLE"
+                    nullable="false"
+                    updatable="true"
+                    length="50"
+                    insertable="true"/>
+            </basic>
+            <basic name="catgory">
+                <column name="CATEGORY"
+                    nullable="false"
+                    updatable="true"
+                    length="20"
+                    insertable="true"/>
+            </basic>
+            <basic name="description">
+                <column name="DESCRIPTION"
+                    length="4000"
+                    nullable="false"
+                    insertable="true" 
+                    updatable="true"/>
+            </basic>
+            <basic name="startTime">
+                <column name="START_TIME" 
+                    updatable="false"
+                    nullable="false"
+                    insertable="true"/>
+                <temporal>TIMESTAMP</temporal>
+            </basic>
+            <basic name="endTime">
+                <column name="END_TIME"
+                    insertable="true"
+                    nullable="true"
+                    updatable="true"/>
+            </basic>
+            <basic name="askingPrice">
+                <column name="ASKING_PRICE" 
+                    updatable="true"
+                   insertable="true"
+                   nullable="false"/>
+            </basic>
+            <basic name="purchasePrice">
+                <column name="PURCHASE_PRICE" 
+                    nullable="true"
+                    updatable="true"
+                    insertable="false"/>
+            </basic>
+            <many-to-one name="buyer" 
+                target-entity="ejava.projects.esales.dto.Account">
+                <join-column name="BUYER_ID"
+                    insertable="false"
+                    updatable="true"
+                    nullable="true"/>
+            </many-to-one>
+            <one-to-many name="bid" 
+                target-entity="ejava.projects.esales.dto.Bid" 
+                mapped-by="item">
+                <cascade>
+                    <cascade-persist/>
+                    <cascade-remove/>
+                </cascade>
+            </one-to-many>
+            <one-to-one name="seller" 
+                target-entity="ejava.projects.esales.dto.Account">
+                <join-column name="SELLER_ID" 
+                    nullable="false"
+                    insertable="true"
+                    updatable="false"/>
+            </one-to-one>
+            <one-to-one name="shipTo" 
+                target-entity="ejava.projects.esales.dto.Address">
+                <join-column name="SHIPTO_ID" 
+                    nullable="true"
+                    insertable="false"/>
+            </one-to-one>
+        </attributes>
+    </entity>
+    
+    <entity class="ejava.projects.esales.dto.Image" 
+        access="FIELD">
+        <table name="ESALES_IMAGE"/>
+        <attributes>
+            <id name="id">
+                <column name="IMAGE_ID" 
+                    nullable="false"/>
+            </id>
+            <basic name="image">
+                <column name="IMAGE"
+                    insertable="true"
+                    nullable="false"
+                    updatable="false"/>
+                <lob/>
+            </basic>
+            <many-to-one name="auction" 
+                target-entity="ejava.projects.esales.dto.Auction">
+                <!--
+                <join-table name="ESALES_ITEM_IMAGE_LINK">
+                    <join-column name="IMAGE_ID"/>
+                    <inverse-join-column name="AUCTION_ID"/>
+                    <unique-constraint>
+                        <column-name>IMAGE_ID</column-name>
+                    </unique-constraint>
+                </join-table>
+                -->
+                <join-column name="AUCTION_ID"/>
+            </many-to-one>
+        </attributes>
+    </entity>
+    
+    <entity class="ejava.projects.esales.dto.Bid" 
+        access="FIELD">
+        <table name="ESALES_BID"/>
+        <attributes>
+            <id name="id"/>
+            <basic name="amount">
+                <column name="AMOUNT"
+                    nullable="false"
+                    insertable="true"
+                    precision="2"
+                    scale="10"/>
+            </basic>
+            <basic name="bidTime">
+                <column name="BIDTIME"
+                    nullable="false"
+                    insertable="true"
+                    updatable="false"/>
+                <temporal>TIMESTAMP</temporal>
+            </basic>
+            
+            <many-to-one name="bidder" 
+                target-entity="ejava.projects.esales.dto.Account">
+                <join-column name="BIDDER_ID"/>
+            </many-to-one>
+            <many-to-one name="item" 
+                target-entity="ejava.projects.esales.dto.Auction">
+                <join-column name="AUCTION_ID"/>
+            </many-to-one>
+        </attributes>
+    </entity>
+    
+    
+    <entity class="ejava.projects.esales.dto.Account" 
+        access="FIELD">
+        <table name="ESALES_ACCT"/>
+        <attributes>
+            <id name="login">
+                <column name="USER_ID"                    
+                    nullable="false"
+                    length="20"/>                
+            </id>
+            <basic name="firstName">
+                <column name="FIRST_NAME"                    
+                    nullable="false"
+                    insertable="true"
+                    length="20"
+                    updatable="true"/>                
+            </basic>
+            <basic name="middleName">
+                <column name="MIDDLE_NAME"                    
+                    nullable="false"
+                    insertable="true"
+                    length="20"
+                    updatable="true"/>                
+            </basic>
+            <basic name="lastName">
+                <column name="LAST_NAME"                    
+                    nullable="false"
+                    insertable="true"
+                    length="20"
+                    updatable="true"/>                
+            </basic>
+            <basic name="email">
+                <column name="EMAIL"
+                    nullable="false"
+                    insertable="true"
+                    length="30"
+                    updatable="true"/>
+            </basic>
+            <basic name="startDate">
+                <column name="START_DATE"
+                    nullable="false"
+                    insertable="true"
+                    updatable="false"/>
+                <temporal>DATE</temporal>
+            </basic>
+            <basic name="endDate">
+                <column name="END_DATE"
+                    nullable="true"
+                    updatable="true"
+                    insertable="true"/>
+                <temporal>DATE</temporal>
+            </basic>
+            
+            <one-to-many name="address" 
+                target-entity="ejava.projects.esales.dto.Address">
+                <join-table name="ESALES_ACCT_ADDRESS_LINK">
+                    <join-column name="USER_ID"/>
+                    <inverse-join-column name="ADDRESS_ID"/>
+                    <unique-constraint>
+                        <column-name>ADDRESS_ID</column-name>
+                    </unique-constraint>
+                </join-table>
+            </one-to-many>
+        </attributes>
+    </entity>
+    
+    <entity class="ejava.projects.esales.dto.Address" 
+        access="FIELD">
+        <table name="ESALES_ADDRESS"/>
+        <attributes>
+            <id name="id">
+                <column name="ADDRESS_ID"
+                    nullable="false"/>
+            </id>
+            <basic name="name">
+                <column name="NAME"
+                    nullable="false"
+                    insertable="true"
+                    length="10"/>
+            </basic>
+            <basic name="addressee">
+                <column name="ADDRESSEE"                    
+                    nullable="false"
+                    insertable="true"
+                    length="20"
+                    updatable="true"/>
+            </basic>
+            <basic name="street">
+                <column name="STREET"
+                    nullable="false"
+                    insertable="true"
+                    length="20"
+                    updatable="true"/>
+            </basic>
+            <basic name="city">
+                <column name="CITY"
+                    nullable="false"
+                    insertable="true"
+                    length="20"
+                    updatable="true"/>
+            </basic>
+            <basic name="state">
+                <column name="STATE"
+                    nullable="false"
+                    insertable="true"
+                    length="2" 
+                    updatable="true"/>
+            </basic>
+            <basic name="zip">
+                <column name="ZIP" 
+                    nullable="false"
+                    insertable="true"
+                    length="10" 
+                    updatable="true"/>
+            </basic>
+        </attributes>
+    </entity>    
+    
+</entity-mappings>
+    
+    

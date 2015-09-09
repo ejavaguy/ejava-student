@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    targetNamespace="http://ejava.info/eSales/1.0.2007.2"
+    xmlns:esales="http://ejava.info/eSales/1.0.2007.2"
+    xmlns="http://ejava.info/eSales/1.0.2007.2"
+    version="1.0"
+    xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
+    jaxb:version="2.0"
+    xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc">
+
+    <!-- 
+        This file documents the schema for the XML files that are ingested by the
+        parser. This is used to generate the dto classes using Sun's XJC compiler.
+    -->
+    
+    <xs:annotation>
+        <xs:appinfo>
+            <jaxb:globalBindings>
+                <jaxb:javaType name="java.util.Date" xmlType="xs:date"
+                    parseMethod="ejava.projects.esales.xml.DateConverter.parseDate"
+                    printMethod="ejava.projects.esales.xml.DateConverter.printDate"/>
+                <jaxb:javaType name="java.util.Date" xmlType="xs:dateTime"
+                    parseMethod="ejava.projects.esales.xml.DateConverter.parseDate"
+                    printMethod="ejava.projects.esales.xml.DateConverter.printDate"/>
+                <jaxb:javaType name="java.lang.Float" xmlType="xs:decimal"/>
+                <jaxb:javaType name="java.lang.Integer" xmlType="xs:integer"/>
+                <!--
+                <jaxb:javaType name="java.lang.Float" xmlType="xs:decimal"
+                    parseMethod="java.lang.Float.parseFloat"
+                    printMethod="ejava.javaee.projects.esales.xml.FloatConverter.printFloat"/>
+                    -->
+            </jaxb:globalBindings>
+        </xs:appinfo>
+    </xs:annotation>
+    
+    <xs:complexType name="ReferencedType">
+        <xs:attribute name="refid" type="xs:ID"/>
+    </xs:complexType>
+    
+    <xs:element name="image">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="esales:ReferencedType">
+                    <xs:sequence>
+                        <xs:element name="auction-ref" type="xs:IDREF"/>
+                        <xs:element name="image" type="xs:base64Binary"/>
+                    </xs:sequence>
+                    <xs:attribute name="id" type="xs:integer"/>
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:element name="auction">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="esales:ReferencedType">
+                    <xs:sequence>
+                        <xs:element name="seller" type="xs:IDREF"/>                        
+                        <xs:element name="title" type="xs:string"/>
+                        <xs:element name="category" type="xs:string"/>
+                        <xs:element name="description" type="xs:string"/>
+                        <xs:element name="startTime" type="xs:dateTime"/>
+                        <xs:element name="endTime" type="xs:dateTime"/>
+                        <xs:element name="askingPrice" type="xs:decimal"/>
+                        <xs:element ref="esales:bid" 
+                            minOccurs="0"
+                            maxOccurs="unbounded"/>
+                        <xs:element name="purchasePrice" 
+                            type="xs:decimal" 
+                            minOccurs="0"/>
+                        <xs:element name="buyer" 
+                            type="xs:IDREF" 
+                            minOccurs="0"/>
+                        <xs:element name="shipTo" 
+                            type="xs:IDREF" 
+                            minOccurs="0"/>
+                    </xs:sequence>
+                    <xs:attribute name="id" type="xs:integer">
+                        <xs:annotation>
+                            <xs:appinfo>
+                                <jaxb:baseType name="int"/>                                
+                            </xs:appinfo>            
+                        </xs:annotation>
+                    </xs:attribute>
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="bid">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="bidTime" type="xs:dateTime"/>
+                <xs:element name="amount" type="xs:decimal"/>
+                <xs:element name="item" type="xs:IDREF"/>
+                <xs:element name="bidder" type="xs:IDREF"/>
+            </xs:sequence>                    
+            <xs:attribute name="id" type="xs:integer"/>
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:element name="address">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="esales:ReferencedType">
+                    <xs:sequence>
+                        <xs:element name="name" type="xs:string"/>
+                        <xs:element name="addressee" type="xs:string"/>
+                        <xs:element name="street" type="xs:string"/>
+                        <xs:element name="city" type="xs:string"/>
+                        <xs:element name="state" type="xs:string"/>
+                        <xs:element name="zip" type="xs:string"/>
+                    </xs:sequence>
+                    <xs:attribute name="id" type="xs:integer"/>
+                </xs:extension>                
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:element name="account">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="esales:ReferencedType">
+                    <xs:sequence>
+                        <xs:element name="login" type="xs:string"/>
+                        <xs:element name="firstName" type="xs:string"/>
+                        <xs:element name="middleName" type="xs:string"/>
+                        <xs:element name="lastName" type="xs:string"/>
+                        <xs:element name="email" type="xs:string"/>
+                        <xs:element name="startDate" type="xs:date"/>
+                        <xs:element name="endDate" 
+                            type="xs:date" 
+                            minOccurs="0"/>  
+                        <xs:element name="address" 
+                            type="xs:IDREFS" 
+                            minOccurs="0"/>
+                    </xs:sequence>
+                </xs:extension>
+            </xs:complexContent>            
+        </xs:complexType>        
+    </xs:element>
+    
+    <xs:element name="eSales">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="esales:address" 
+                    minOccurs="0" 
+                    maxOccurs="unbounded"/>
+                <xs:element ref="esales:account" 
+                    minOccurs="0" 
+                    maxOccurs="unbounded"/>
+                <xs:element 
+                    ref="esales:auction" 
+                    minOccurs="0" 
+                    maxOccurs="unbounded"/>
+                <xs:element 
+                    ref="esales:image" 
+                    minOccurs="0" 
+                    maxOccurs="unbounded"/>
+                <xs:element 
+                    ref="esales:bid" 
+                    minOccurs="0" 
+                    maxOccurs="unbounded"/>
+            </xs:sequence>
+        </xs:complexType>        
+    </xs:element>
+</xs:schema>

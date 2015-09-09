@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="eSalesBLImpl" basedir="..">
+
+    <property file="test-classes/${ant.project.name}.properties"/>
+
+    <path id="ingest.classpath">
+        <pathelement path="${commons.logging.classpath}"/>
+        <pathelement path="${log4j.classpath}"/>
+        <pathelement path="${JDBC_CLASSPATH}"/>
+        <pathelement path="${parser.classpath}"/>
+        <pathelement path="${sibling.classpath}"/>
+        <pathelement path="test-classes"/>
+        <pathelement path="classes"/>
+    </path>
+
+    <path id="acctmgmt.classpath">
+        <pathelement path="${commons.logging.classpath}"/>
+        <pathelement path="${log4j.classpath}"/>
+        <pathelement path="${JDBC_CLASSPATH}"/>
+        <pathelement path="${jpa.classpath}"/>
+        <pathelement path="${parser.classpath}"/>
+        <pathelement path="${sibling.classpath}"/>
+        <pathelement path="test-classes"/>
+        <pathelement path="classes"/>
+    </path>
+
+    <description>
+    This Ant script will run business logic from the command line.
+    </description>
+
+    <target name="echo">
+        <property name="ingest-classpath" refid="ingest.classpath"/>
+        <property name="acctmgmt-classpath" refid="acctmgmt.classpath"/>
+        <echo>basedir=${basedir}</echo>
+        <echo>ingest.classpath=${ingest-classpath}</echo>
+        <echo>acctmgmt.classpath=${acctmgmt-classpath}</echo>
+    </target>
+
+    <target name="coldstart">
+        <mkdir dir="target"/>
+        <unzip src="${esalesDAO}" dest="target">
+            <patternset>
+                <include name="ddl/*"/>
+            </patternset>
+        </unzip>
+        <sql driver="${JDBC_DRIVER}"
+             url="${JDBC_URL}"
+             userid="${JDBC_USER}"
+             password="${JDBC_PASSWORD}"
+             classpath="${JDBC_CLASSPATH}">
+             <fileset dir="target">
+                <include name="ddl/*drop*.ddl"/>
+             </fileset>
+         </sql>
+        <sql driver="${JDBC_DRIVER}"
+             url="${JDBC_URL}"
+             userid="${JDBC_USER}"
+             password="${JDBC_PASSWORD}"
+             classpath="${JDBC_CLASSPATH}">
+             <fileset dir="target">
+                <include name="ddl/*create*.ddl"/>
+             </fileset>
+         </sql>
+    </target>
+
+    <target name="ingest" depends="coldstart">
+        <property name="inputFile" value="xml/eSales-all.xml"/>
+        <java classname="ejava.projects.esales.blimpl.ESalesIngestCommand" fork="true">
+            <classpath>
+                <path refid="ingest.classpath"/>
+            </classpath>
+            <sysproperty key="inputFile"
+                         value="${inputFile}"/>
+            <sysproperty key="jdbc.driver"
+                         value="${JDBC_DRIVER}"/>
+            <sysproperty key="jdbc.url"
+                         value="${JDBC_URL}"/>
+            <sysproperty key="jdbc.user"
+                         value="${JDBC_USER}"/>
+            <sysproperty key="jdbc.password"
+                         value="${JDBC_PASSWORD}"/>
+        </java>
+    </target>
+
+    <target name="ingest1">
+        <antcall target="ingest">
+            <param name="inputFile" value="xml/eSales-1.xml"/>
+        </antcall>
+    </target>
+
+    <target name="ingest10">
+        <antcall target="ingest">
+            <param name="inputFile" value="xml/eSales-10.xml"/>
+        </antcall>
+    </target>
+
+    <target name="ingest100">
+        <antcall target="ingest">
+            <param name="inputFile" value="xml/eSales-100.xml"/>
+        </antcall>
+    </target>
+
+    <target name="listAccounts">
+        <property name="command" value="listAccounts"/>
+        <property name="index" value="0"/>
+        <property name="count" value="10"/>
+        <java classname="ejava.projects.esales.blimpl.AccountMgmtCommand" fork="true">
+            <classpath>
+                <path refid="acctmgmt.classpath"/>
+            </classpath>
+            <sysproperty key="command" value="${command}"/>
+            <sysproperty key="index" value="${index}"/>
+            <sysproperty key="count" value="${count}"/>
+        </java>
+    </target>
+</project>
