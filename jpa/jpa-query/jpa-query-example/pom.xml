@@ -70,6 +70,19 @@
         </testResources>
 
         <plugins>
+            <!-- need to tweak compiler settings to handle generated classes in project -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven-compiler-plugin.version}</version>
+                <configuration>
+                    <compilerVersion>${java.target.version}</compilerVersion>
+                    <source>${java.source.version}</source>
+                    <target>${java.target.version}</target>
+                    <useIncrementalCompilation>false</useIncrementalCompilation>
+                </configuration>	                
+            </plugin>
+
             <!-- extends the pluginManagement definition in the parent pom
                  to generates DDL files for persistence unit.
                  See effective-pom for full configuration -->
@@ -122,17 +135,6 @@
           </activation>
           <build>
               <plugins>
-                  <plugin>
-                      <groupId>org.apache.maven.plugins</groupId>
-                      <artifactId>maven-compiler-plugin</artifactId>
-                      <version>${maven-compiler-plugin.version}</version>
-                      <configuration>
-                          <compilerVersion>${java.target.version}</compilerVersion>
-                          <source>${java.source.version}</source>
-                          <target>${java.target.version}</target>
-                          <useIncrementalCompilation>false</useIncrementalCompilation>
-                      </configuration>	                
-                  </plugin>
               </plugins>
           </build>
         </profile>
