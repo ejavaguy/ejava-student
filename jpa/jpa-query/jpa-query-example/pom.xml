@@ -114,7 +114,7 @@
     <profiles>
         <!-- use this in Jenkins -->
         <profile>
-          <id></id>
+          <id>jenkins</id>
           <activation>
 	        <property>
 	            <name>JENKINS_URL</name>
