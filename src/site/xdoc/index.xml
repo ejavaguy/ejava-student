@@ -41,10 +41,10 @@
           <li>2014-09-30: Posted Updated ORM Relationship TODOs</li>
           <li>2014-09-23: Posted Core JPA TODOs and updated setup for JPA exercises</li>
           <li>2014-09-16: Posted EntityManager TODOs</li>
-          <li>2014-09-09: Addressed many JPA Eclipse warnings in examples</li>
-          <li>2014-09-09: Posted Project 1 description and Business Logic TODOs</li>
           -->
-          <li>2015-08-26: Posted initial class site</li>
+          <li>2015-09-09: Activated project and jpa modules in root-level build</li>
+          <li>2015-09-09: Posted Project 1 description and Business Logic TODOs</li>
+          <li>2015-09-01: Posted initial class site</li>
       </ul>
       </subsection>
       <subsection name="Class To Do" id="todo">
@@ -495,7 +495,7 @@
       -->
 
 
-      <!-- week 02: DevEnv and Business Logic
+      <!-- week 02: DevEnv and Business Logic -->
       <li><ul> 
             <li>Project
                 <ul>
@@ -531,7 +531,12 @@
                 </ul>
             </li>
       </ul></li>
-      -->
+
+      </ul>
+      </subsection>
+
+      <subsection name="Things you should have finished!" id="completed">
+      <ul>
 
       <!-- week 01: Course Intro -->
       <li><ul> 
@@ -540,12 +545,6 @@
           <li>setup development environment by going through exercises 0 and 1</li>
           <li>post your weekly newsgroup contribution based on development environment setup</li>
       </ul></li>
-
-      </ul>
-      </subsection>
-
-      <subsection name="Things you should have finished!" id="completed">
-      <ul>
 
       <li><ul>
           <li>had a nice break!</li>
