@@ -39,8 +39,8 @@
           <li>2014-10-14: Posted Final Project 1 TODOs and Server-side EJB Modules</li>
           <li>2014-10-07: Posted JPA-QL TODOs</li>
           <li>2014-09-30: Posted Updated ORM Relationship TODOs</li>
-          <li>2014-09-23: Posted Core JPA TODOs and updated setup for JPA exercises</li>
           -->
+          <li>2015-09-22: Posted Core JPA TODOs</li>
           <li>2015-09-15: Posted EntityManager TODOs</li>
           <li>2015-09-09: Activated project and jpa modules in root-level build</li>
           <li>2015-09-09: Posted Project 1 description and Business Logic TODOs</li>
@@ -52,11 +52,11 @@
 
       <!-- week 13: Async 
       <li><ul>
-          <li>Setup and deploy your JMS publisher code to eDmv. All
+          <li>Setup and deploy your JMS publisher code to eSales. All
           resources should be injected by the container.</li>
-          <li>Setup and implement a JMS MDB in the eMayberry to receive 
-          updates published by eDmv.</li>
-          <li>Setup and deploy your JMS publisher code to eMayberry.
+          <li>Setup and implement a JMS MDB in the eBidbot to receive 
+          updates published by eSales.</li>
+          <li>Setup and deploy your JMS publisher code to eBidbot.
           Again - all resources should be injected by the container.</li>
           <li>Verify that the JMS JSE Subscriber from last
           week receives published messages from EJB tier</li>
@@ -160,18 +160,18 @@
                   <li>Look over Web UI parts of the ejbsessionBank (Servlets &amp; JSPs) and cdisales (JSF).</li>
                   <li>The webejb example shows an example of RMI and JAX-RS
                       being used as a remote facade. You may use either technique 
-                      for eMayberry. eDmv should use RMI.</li>
+                      for eBidbot. eSales should use RMI.</li>
                 </ul>
             </li>
             <li>Web/Project
                 <ul>
-                  <li>Add a WAR project to eDmv. Add in supporting 
+                  <li>Add a WAR project to eSales. Add in supporting 
                       Web UI implementations.</li>
-                  <li>Add supporting Web UI implementations for eMayberry.  
-                      This WAR may obtain functionality implemented by eDmvEJB. 
-                      However, it should not directly communicate with eDmvEJB. 
-                      eMayberryEJB should act as a facade for all behavior performed 
-                      on behalf of Mayberry</li>
+                  <li>Add supporting Web UI implementations for eBidbot.  
+                      This WAR may obtain functionality implemented by eSalesEJB. 
+                      However, it should not directly communicate with eSalesEJB. 
+                      eBidbotEJB should act as a facade for all behavior performed 
+                      on behalf of eBidbot</li>
                   <li>Re-implement the JUnit end-to-end scenario using a Web UI.
                       Keep both.</li>
                 </ul>
@@ -192,7 +192,7 @@
             </li>
             <li>Project
                 <ul>
-                  <li>Design your remote interfaces and DTO classes for eDmv</li>
+                  <li>Design your remote interfaces and DTO classes for eSales</li>
                   <li>Begin adding the other session beans, remote interfaces,
                   business logic integration, and RMI tests for project 2.</li>
                   <li>Finish implementing EJB use cases for eSales end-to-end testing.</li>
@@ -236,7 +236,7 @@
                   <li>Look over the specification for project 2.</li>
                   <li>Apply the maven, EJB, EAR, RMI Test, and remote interface
                   concepts from the exercises to your project 2.</li>
-                  <li>Have one end-to-end thread through eDmvTest, EJB, and project 1
+                  <li>Have one end-to-end thread through eSalesTest, EJB, and project 1
                   operational</li>
                 </ul>
             </li>
@@ -261,9 +261,9 @@
                   <li>Look over the specification for project 2.</li>
                   <li>Apply the maven, EJB, EAR, RMI Test, and remote interface
                   concepts from the exercises to your project 2.</li>
-                  <li>Have one IT test deploying eDmvEAR with and EJB and invoking
-                  skeletal methods from end-to-end scenario. Mayberry should
-                  pass serializable BOs as DTOs. Dmv should pass separate serializable
+                  <li>Have one IT test deploying eSalesEAR with and EJB and invoking
+                  skeletal methods from end-to-end scenario. eBidbot should
+                  pass serializable BOs as DTOs. eSales should pass separate serializable
                   DTO classes (i.e., not same BO classes).</li>
                 </ul>
             </li>
@@ -365,7 +365,7 @@
       </ul></li>
       -->
 
-      <!-- week 04: JPA Core
+      <!-- week 04: JPA Core -->
       <li><ul> 
             <li>Exercises
                 <ul>
@@ -393,7 +393,7 @@
                   <li>Create unit tests for the ability to create your business objects
                       and get them by primary key.
                       Pay attention to the business rules your application has for ordering
-                      the creation (e.g., must have Club before having a Club Rep).
+                      the creation (e.g., must have AuctionItem before having a Bid).
                       Solve dependency issues with sensible pre-conditions for child objects.</li>
                   <li>Enact your bean validation rules for @PrePersist and @PreUpdate</li>
                 </ul>
@@ -410,11 +410,18 @@
                   slice of the overall dataset.
                   </li>
                   <li>Manually validate a DTO or business object using the programmatic 
-                      validation API in a sample method of your business logic.</li>
+                      validation API in your JUNit test or helper class that is part of 
+                      the application. Try not to make a specific call from within the 
+                      business logic.</li>
                 </ul>
             </li>
       </ul></li>
-      -->
+
+      </ul>
+      </subsection>
+
+      <subsection name="Things you should have finished!" id="completed">
+      <ul>
 
       <!-- week 03: DAOs and EntityManager -->
       <li><ul> 
@@ -435,7 +442,7 @@
                   the details to create a maven module for data tier classes as it is about the JPA 
                   EntityManager.</li>          
               <li>Look over the class project example implementation under the 
-                projects/eDatashare/eDmv directory as it relates to integrating
+                projects/eMarket/eSales directory as it relates to integrating
                 JPA within the individual modules.
               </li>
             </ul>
@@ -495,12 +502,6 @@
             </li>
       </ul></li>
 
-
-      </ul>
-      </subsection>
-
-      <subsection name="Things you should have finished!" id="completed">
-      <ul>
 
       <!-- week 02: DevEnv and Business Logic -->
       <li><ul> 
