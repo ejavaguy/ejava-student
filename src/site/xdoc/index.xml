@@ -38,8 +38,8 @@
           <li>2014-10-19: Posted JNDI/ENC Exercise and EJB TODOs</li>
           <li>2014-10-14: Posted Final Project 1 TODOs and Server-side EJB Modules</li>
           <li>2014-10-07: Posted JPA-QL TODOs</li>
-          <li>2014-09-30: Posted Updated ORM Relationship TODOs</li>
           -->
+          <li>2015-09-29: Posted Updated ORM Relationship TODOs</li>
           <li>2015-09-22: Posted Core JPA TODOs</li>
           <li>2015-09-15: Posted EntityManager TODOs</li>
           <li>2015-09-09: Activated project and jpa modules in root-level build</li>
@@ -310,7 +310,7 @@
       </ul></li>
       -->
 
-      <!-- week 05: JPA Relationships
+      <!-- week 05: JPA Relationships -->
       <li><ul> 
             <li>Exercises
                 <ul>
@@ -363,7 +363,12 @@
                 </ul>
             </li>
       </ul></li>
-      -->
+
+      </ul>
+      </subsection>
+
+      <subsection name="Things you should have finished!" id="completed">
+      <ul>
 
       <!-- week 04: JPA Core -->
       <li><ul> 
@@ -417,11 +422,6 @@
             </li>
       </ul></li>
 
-      </ul>
-      </subsection>
-
-      <subsection name="Things you should have finished!" id="completed">
-      <ul>
 
       <!-- week 03: DAOs and EntityManager -->
       <li><ul> 
