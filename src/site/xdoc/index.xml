@@ -37,8 +37,8 @@
           <li>2014-10-23: Posted typo corrections to Basic EJB Dev Exercise</li>
           <li>2014-10-19: Posted JNDI/ENC Exercise and EJB TODOs</li>
           <li>2014-10-14: Posted Final Project 1 TODOs and Server-side EJB Modules</li>
-          <li>2014-10-07: Posted JPA-QL TODOs</li>
           -->
+          <li>2015-10-07: Posted JPA-QL TODOs</li>
           <li>2015-09-29: Posted Updated ORM Relationship TODOs</li>
           <li>2015-09-22: Posted Core JPA TODOs</li>
           <li>2015-09-15: Posted EntityManager TODOs</li>
@@ -289,7 +289,7 @@
       </ul></li>
       -->
 
-      <!-- week 06: JPAQL
+      <!-- week 06: JPAQL -->
       <li><ul> 
             <li>Exercises
                 <ul>
@@ -308,7 +308,12 @@
                 </ul>
             </li>
       </ul></li>
-      -->
+
+      </ul>
+      </subsection>
+
+      <subsection name="Things you should have finished!" id="completed">
+      <ul>
 
       <!-- week 05: JPA Relationships -->
       <li><ul> 
@@ -363,12 +368,6 @@
                 </ul>
             </li>
       </ul></li>
-
-      </ul>
-      </subsection>
-
-      <subsection name="Things you should have finished!" id="completed">
-      <ul>
 
       <!-- week 04: JPA Core -->
       <li><ul> 
