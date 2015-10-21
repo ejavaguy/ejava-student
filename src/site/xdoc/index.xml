@@ -34,9 +34,8 @@
           <li>2014-11-12: Posted Security Notes and TODOs</li>
           <li>2014-11-05: Posted Web Tier Materials and TODOs</li>
           <li>2014-10-28: Posted Server-Side JPA Notes and Transaction TODOs</li>
-          <li>2014-10-23: Posted typo corrections to Basic EJB Dev Exercise</li>
-          <li>2014-10-19: Posted JNDI/ENC Exercise and EJB TODOs</li>
           -->
+          <li>2015-10-21: Posted EJB TODOs</li>
           <li>2015-10-14: Posted Final Project 1 TODOs, Project2 Spec and Server-side EJB Modules</li>
           <li>2015-10-07: Posted JPA-QL TODOs</li>
           <li>2015-09-29: Posted Updated ORM Relationship TODOs</li>
@@ -210,11 +209,12 @@
       </ul></li>
       -->
 
-      <!-- week 08: Session Beans
+      <!-- week 08: Session Beans -->
       <li><ul>
             <li>Exercises
                 <ul>
-                  <li>Start working through the Java EE exercises.
+                  <li>Continue working through the Java EE exercises (Basic EJB Development,
+                  JNDI/ENC Configuration, and JPA/EJB Remote Interfaces).
                   It is highly recommended that you go through this since it
                   takes you through many of the use cases and common issues
                   related to project 2.</li>
@@ -222,11 +222,7 @@
             </li>
             <li>Examples
                 <ul>
-                  <li>The class examples have been updated to include the 
-                  server-side modules. Be be sure to have your jboss server 
-                  running when building prior to building them from this 
-                  point forward.</li>
-                  <li>Begin looking at ejb-basic and ejbsessionBank example applications; 
+                  <li>Continue looking at ejb-basic and ejbsessionBank example applications; 
                   which form an EJB, EAR, RMI Test, as well as a WAR Client.
                   These will be key component types within project 2.</li>
                 </ul>
@@ -241,8 +237,13 @@
                 </ul>
             </li>
       </ul></li>
-      -->
 
+
+      </ul>
+      </subsection>
+
+      <subsection name="Things you should have finished!" id="completed">
+      <ul>
 
       <!-- week 07: SQL Tuning and Session Beans -->
       <li><ul> 
@@ -286,12 +287,6 @@
                 </ul>
             </li>
       </ul></li>
-
-      </ul>
-      </subsection>
-
-      <subsection name="Things you should have finished!" id="completed">
-      <ul>
 
       <!-- week 06: JPAQL -->
       <li><ul> 
