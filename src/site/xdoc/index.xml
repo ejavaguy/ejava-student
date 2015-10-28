@@ -33,8 +33,8 @@
           <li>2014-11-19: Posted JMS TODOs</li>
           <li>2014-11-12: Posted Security Notes and TODOs</li>
           <li>2014-11-05: Posted Web Tier Materials and TODOs</li>
-          <li>2014-10-28: Posted Server-Side JPA Notes and Transaction TODOs</li>
           -->
+          <li>2015-10-28: Posted Transaction TODOs</li>
           <li>2015-10-21: Posted EJB TODOs</li>
           <li>2015-10-14: Posted Final Project 1 TODOs, Project2 Spec and Server-side EJB Modules</li>
           <li>2015-10-07: Posted JPA-QL TODOs</li>
@@ -179,7 +179,7 @@
       -->
 
 
-      <!-- week 09: (CDI and) Transactions
+      <!-- week 09: (CDI and) Transactions -->
       <li><ul>
             <li>Examples
                 <ul>
@@ -207,7 +207,13 @@
                 </ul>
             </li>
       </ul></li>
-      -->
+
+
+      </ul>
+      </subsection>
+
+      <subsection name="Things you should have finished!" id="completed">
+      <ul>
 
       <!-- week 08: Session Beans -->
       <li><ul>
@@ -237,13 +243,6 @@
                 </ul>
             </li>
       </ul></li>
-
-
-      </ul>
-      </subsection>
-
-      <subsection name="Things you should have finished!" id="completed">
-      <ul>
 
       <!-- week 07: SQL Tuning and Session Beans -->
       <li><ul> 
