@@ -31,8 +31,8 @@
           <li>2014-12-10: Posted Updated Transaction Materials (after semester)</li>
           <li>2014-12-03: Posted Async TODOs</li>
           <li>2014-11-19: Posted JMS TODOs</li>
-          <li>2014-11-12: Posted Security Notes and TODOs</li>
           -->
+          <li>2015-11-11: Posted Security TODOs</li>
           <li>2015-11-04: Posted Web Tier TODOs</li>
           <li>2015-10-28: Posted Transaction TODOs</li>
           <li>2015-10-21: Posted EJB TODOs</li>
@@ -101,7 +101,7 @@
       </ul></li> 
       -->
 
-      <!-- week 11: Security
+      <!-- week 11: Security -->
       <li><ul>
             <li>Project
                 <ul>
@@ -149,8 +149,14 @@
               </ul>
           </li>
       </ul></li>
-      -->
 
+
+
+      </ul>
+      </subsection>
+
+      <subsection name="Things you should have finished!" id="completed">
+      <ul>
 
       <!-- week 10: Web -->
       <li><ul>
@@ -176,13 +182,6 @@
                 </ul>
             </li>
       </ul></li>
-
-
-      </ul>
-      </subsection>
-
-      <subsection name="Things you should have finished!" id="completed">
-      <ul>
 
       <!-- week 09: Transactions -->
       <li><ul>
