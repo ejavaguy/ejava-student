@@ -29,7 +29,9 @@
         <module>jpa</module>
         <module>servers</module>
         <module>ejb</module>
+        <!--
         <module>async</module>
+        -->
         <module>coursedocs</module>
     </modules>
 
