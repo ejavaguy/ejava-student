@@ -7,7 +7,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>eDmvDTO</artifactId>
-    <packaging>pom</packaging>
+    <packaging>jar</packaging>
 
     <name>Projects::Data Share::DMV Data::DTO</name>
     <description>
