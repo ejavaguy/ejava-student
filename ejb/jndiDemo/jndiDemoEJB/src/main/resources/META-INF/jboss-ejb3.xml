@@ -15,7 +15,7 @@
             <ejb-name>AidScheduler</ejb-name>
             <resource-ref>
                 <res-ref-name>jdbc/myds</res-ref-name>
-                <jndi-name>java:jboss/datasources/ExampleDS</jndi-name>
+                <lookup-name>java:jboss/datasources/ExampleDS</lookup-name>
             </resource-ref>
         </session>
     </enterprise-beans>
