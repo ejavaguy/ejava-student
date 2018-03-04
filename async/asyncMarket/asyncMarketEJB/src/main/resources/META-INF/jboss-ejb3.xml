@@ -35,6 +35,7 @@
         <sec:security>
             <ejb-name>BuyerMDB</ejb-name>
             <sec:security-domain>other</sec:security-domain>
+            <sec:run-as-principal/>
         </sec:security>
     </assembly-descriptor>    
 </jboss:ejb-jar>

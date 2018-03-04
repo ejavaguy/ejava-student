@@ -13,6 +13,7 @@
         <sec:security>
             <ejb-name>*</ejb-name>
             <sec:security-domain>other</sec:security-domain>
+            <sec:run-as-principal/>
         </sec:security>
     </assembly-descriptor>    
 </jboss:ejb-jar>
