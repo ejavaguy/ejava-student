@@ -31,7 +31,7 @@ import javax.xml.bind.annotation.XmlType;
 @Table(name="JAXRSINV_PRODUCT")
 @NamedQueries({
 	@NamedQuery(name=Product.FIND_BY_NAME, 
-			query="select p from Product p where name like :criteria")
+			query="select p from Product p where p.name like :criteria")
 })
 public class Product extends InventoryRepresentation {
 	private static final long serialVersionUID = -4058695470696405277L;

@@ -34,7 +34,7 @@ import javax.xml.bind.annotation.XmlType;
 @Table(name="JAXRSINV_CATEGORY")
 @NamedQueries({
 	@NamedQuery(name=Category.FIND_BY_NAME, 
-		query="select c from Category c where name like :criteria"),
+		query="select c from Category c where c.name like :criteria"),
 	@NamedQuery(name=Category.FIND_BY_PRODUCT, 
 		query="select c from Category c " +
 				"where :product member of c.products" )
