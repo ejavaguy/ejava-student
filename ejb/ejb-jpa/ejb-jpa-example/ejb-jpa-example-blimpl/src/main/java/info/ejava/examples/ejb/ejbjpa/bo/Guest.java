@@ -11,7 +11,9 @@ import javax.persistence.Table;
 @Entity
 @Table(name="EJBJPA_GUEST")
 public class Guest implements Serializable {
-    @Id @GeneratedValue
+	private static final long serialVersionUID = 1L;
+
+	@Id @GeneratedValue
     @Column(name="GUEST_ID")
     private int id;
     
