@@ -23,8 +23,8 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <java.source.version>1.7</java.source.version>
-        <java.target.version>1.7</java.target.version>
+        <java.source.version>1.8</java.source.version>
+        <java.target.version>1.8</java.target.version>
 
         <ejava.version>4.1.0-SNAPSHOT</ejava.version>
         <javax.ejb-api.version>3.2</javax.ejb-api.version>
