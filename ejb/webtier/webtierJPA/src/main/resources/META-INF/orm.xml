@@ -39,6 +39,7 @@
             </query>
         </named-query>
         <attributes>
+            <id name="id"/>
             <one-to-many name="grades">
                 <cascade>
                     <cascade-all/>
