@@ -15,7 +15,7 @@ public class ShowEventPK implements Serializable {
 	private Date date;
 	private Date time;
 	
-	protected ShowEventPK(){}
+	public ShowEventPK(){}
 	public ShowEventPK(Date date, Date time) {
 		this.date = date;
 		this.time = time;

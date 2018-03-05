@@ -12,7 +12,7 @@ public class TirePK implements Serializable {
 	private int car;   //shared primary key value from parent and child, name matches child rel
 	private TirePosition position; //child primary key value unique within parent
 	
-	protected TirePK() {}
+	public TirePK() {}
 	public TirePK(int carId, TirePosition position) {
 		this.car=carId;
 		this.position=position;
