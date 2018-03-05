@@ -6,7 +6,8 @@
     xmlns:c="urn:clustering:1.0"
     xmlns:p="urn:ejb-pool:1.0"
     xsi:schemaLocation="http://www.jboss.com/xml/ns/javaee http://www.jboss.org/j2ee/schema/jboss-ejb3-2_0.xsd
-                     http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/ejb-jar_3_1.xsd"
+      http://java.sun.com/xml/ns/javaee http://www.jboss.org/j2ee/schema/jboss-ejb3-spec-2_0.xsd
+      urn:security urn:security"
     version="3.1" 
     impl-version="2.0">
 
@@ -20,19 +21,19 @@
             </env-entry>
             <resource-ref>
                 <res-ref-name>jdbc/ds3</res-ref-name>
-                <jndi-name>java:jboss/datasources/ExampleDS</jndi-name>
+                <lookup-name>java:jboss/datasources/ExampleDS</lookup-name>
             </resource-ref>
             <resource-ref>
                 <res-ref-name>jms/cf3</res-ref-name>
-                <jndi-name>java:/JmsXA</jndi-name>
+                <lookup-name>java:/JmsXA</lookup-name>
             </resource-ref>
             <resource-env-ref>
                 <resource-env-ref-name>jms/queue3</resource-env-ref-name>
-                <jndi-name>java:/queue/test</jndi-name>
+                <lookup-name>java:/queue/test</lookup-name>
             </resource-env-ref>
             <resource-env-ref>
                 <resource-env-ref-name>jms/topic3</resource-env-ref-name>
-                <jndi-name>java:/topic/test</jndi-name>
+                <lookup-name>java:/topic/test</lookup-name>
             </resource-env-ref>
             <persistence-context-ref>
                 <persistence-context-ref-name>jpa/em3</persistence-context-ref-name>
@@ -53,19 +54,19 @@
             </env-entry>
             <resource-ref>
                 <res-ref-name>jdbc/ds3</res-ref-name>
-                <jndi-name>java:jboss/datasources/ExampleDS</jndi-name>
+                <lookup-name>java:jboss/datasources/ExampleDS</lookup-name>
             </resource-ref>
             <resource-ref>
                 <res-ref-name>jms/cf3</res-ref-name>
-                <jndi-name>java:/JmsXA</jndi-name>
+                <lookup-name>java:/JmsXA</lookup-name>
             </resource-ref>
             <resource-env-ref>
                 <resource-env-ref-name>jms/queue3</resource-env-ref-name>
-                <jndi-name>java:/queue/test</jndi-name>
+                <lookup-name>java:/queue/test</lookup-name>
             </resource-env-ref>
             <resource-env-ref>
                 <resource-env-ref-name>jms/topic3</resource-env-ref-name>
-                <jndi-name>java:/topic/test</jndi-name>
+                <lookup-name>java:/topic/test</lookup-name>
             </resource-env-ref>
             <persistence-context-ref>
                 <persistence-context-ref-name>jpa/em3</persistence-context-ref-name>
