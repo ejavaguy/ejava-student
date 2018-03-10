@@ -41,13 +41,16 @@
         <class>ejava.examples.orm.core.annotated.Manufacturer</class>
         <class>ejava.examples.orm.core.annotated.Gadget</class>
         <class>ejava.examples.orm.core.annotated.Pen</class>
+        <class>ejava.examples.orm.core.annotated.MakeModelPK</class>
         <class>ejava.examples.orm.core.annotated.Mower</class>
         <class>ejava.examples.orm.core.annotated.Napsack</class>
+        <class>ejava.examples.orm.core.annotated.NapsackPK</class>
         <class>ejava.examples.orm.core.annotated.Tank</class>
         <class>ejava.examples.orm.core.annotated.Umbrella</class>
         <class>ejava.examples.orm.core.annotated.Vase</class>
         <class>ejava.examples.orm.core.annotated.Watch</class>
         <class>ejava.examples.orm.core.annotated.XRay</class>
+        
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
 
         <properties>

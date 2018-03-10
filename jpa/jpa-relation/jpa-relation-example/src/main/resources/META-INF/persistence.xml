@@ -5,6 +5,8 @@
 
     <persistence-unit name="ormRelations">
         <provider>org.hibernate.ejb.HibernatePersistence</provider>
+        
+        <class>ejava.examples.orm.rel.MediaCopyPK2</class>
         <properties>
             <!-- moved properties to hibernate.properties file
             <property name="javax.persistence.jdbc.url" value="${jdbc.url}"/>
