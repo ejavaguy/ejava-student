@@ -164,9 +164,9 @@ public class JPAAuthorDAOTest extends JPATestBase {
         assertFalse("unexpected last name", 
                 author.getLastName().equals(dbAuthor.getLastName()));
         assertFalse("unexpected subject", 
-                author.getFirstName().equals(dbAuthor.getSubject()));
+                author.getSubject().equals(dbAuthor.getSubject()));
         assertFalse("unexpected publish date", 
-                author.getFirstName().equals(dbAuthor.getPublishDate()));
+                author.getPublishDate().equals(dbAuthor.getPublishDate()));
 
         try {
             //example of using update to make changes in DB

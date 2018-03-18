@@ -50,7 +50,8 @@ public class JPAAuthorDAO implements AuthorDAO {
      * @see ejava.examples.dao.jpa.AuthorDAO#getByQuery(long)
      */
     public Author getByQuery(long id) {
-        Query query = em.createQuery("select a from jpaAuthor a where id=" + id);
+        Query query = em.createQuery("select a from jpaAuthor a where id=:id")
+        		            .setParameter("id", id);
         return (Author)query.getSingleResult();
     }
     
