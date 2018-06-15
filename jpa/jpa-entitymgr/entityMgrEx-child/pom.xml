@@ -19,7 +19,7 @@
     <groupId>myorg.jpa</groupId>
     <artifactId>entityMgrEx-child</artifactId>
 
-    <name>JPA::Entity Manager::Exercise::Solution</name>
+    <name>JPA::EntityManager::Exercise::Solution</name>
     <description>
         This example is functionally the same as entityMgrEx
         except that it has factored out all common properties into

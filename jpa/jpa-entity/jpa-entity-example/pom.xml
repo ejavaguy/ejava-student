@@ -79,20 +79,43 @@
                 </configuration>
             </plugin>
 
-            <!-- generates a DDL file for persistence unit
-                see effective-pom for full configuration -->
+               <!-- generates schema files with DDL commands to create/drop schema within DB
+                -->
             <plugin>
-                <artifactId>hibernate3-maven-plugin</artifactId>
-                <groupId>org.codehaus.mojo</groupId>
-                <configuration>
-                    <hibernatetool destdir="target/classes/ddl">
-                        <classpath>
-                            <path location="${project.build.directory}/test-classes" />
-                        </classpath>
-                        <jpaconfiguration persistenceunit="ormCore" propertyfile="${basedir}/target/test-classes/hibernate.properties" />
-                    </hibernatetool>
-                </configuration>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <dependencies>
+                    <dependency>
+                        <groupId>info.ejava.utils.jpa</groupId>
+                        <artifactId>jpa-schema-gen</artifactId>
+                        <version>${project.version}</version>
+                    </dependency>
+                </dependencies>
+                <executions>
+                    <execution>
+                        <id>generate-schema</id>
+                        <phase>process-test-resources</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+                                <!-- task will create schema and terminate - freeing up the DB connection -->
+                                <java classname="ejava.util.jpa.JPASchemaGen" fork="true" spawn="true">
+                                    <arg value="ormCore"></arg>
+                                    <classpath>
+                                        <path refid="maven.test.classpath"/>
+                                        <path refid="maven.plugin.classpath"/>
+                                    </classpath>
+                                </java>
+                                <!-- wait for DB to come free -->
+                                <sleep milliseconds="1000"/>
+                            </target>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
-        </plugins>      
-    </build>
+
+        </plugins>
+     </build>
 </project>

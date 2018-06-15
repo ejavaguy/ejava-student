@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<persistence xmlns="http://java.sun.com/xml/ns/persistence"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd" version="2.0">
+<persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd"
+             version="2.1">
 
     <persistence-unit name="ormCore">
         <provider>org.hibernate.ejb.HibernatePersistence</provider>
@@ -65,8 +66,12 @@
             <property name="hibernate.hbm2ddl.auto" value="create"/>
             <property name="hibernate.show_sql" value="true"/>            
             <property name="hibernate.format_sql" value="true"/>            
+            <property name="javax.persistence.schema-generation.create-database-schemas" value="true"/>
+            <property name="javax.persistence.schema-generation.scripts.action" value="drop-and-create"/>
+            <property name="javax.persistence.schema-generation.scripts.create-target" value="${project.build.outputDirectory}/ddl/jpaUtil-create.ddl"/>
+            <property name="javax.persistence.schema-generation.scripts.drop-target" value="${project.build.outputDirectory}/ddl/jpaUtil-drop.ddl"/>        
             -->
-        </properties>
+         </properties>
     </persistence-unit>        
     
 </persistence>

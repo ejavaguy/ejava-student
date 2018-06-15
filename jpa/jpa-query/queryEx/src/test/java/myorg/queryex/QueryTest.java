@@ -138,7 +138,7 @@ public class QueryTest extends QueryBase {
 		log.info("*** testNamedQuery ***");
 		
 		Movie movie = em.createNamedQuery("Movie.findByTitle", Movie.class)
-				.setParameter("title", "wag")
+				.setParameter("title", "%wag%")
 				.getSingleResult();
 		log.debug("result=" + movie);
 		assertNotNull("no movie", movie);

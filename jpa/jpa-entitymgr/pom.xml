@@ -18,6 +18,7 @@
     <modules>
         <module>jpa-entitymgr-example</module>
         <module>entityMgrEx-child</module>
+        <module>jpa-schema-gen</module>
     </modules>
 
     <profiles>

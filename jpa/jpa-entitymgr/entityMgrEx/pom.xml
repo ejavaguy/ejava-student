@@ -9,7 +9,7 @@
     <artifactId>entityMgrEx</artifactId>
     <version>1.0-SNAPSHOT</version>
 
-    <name>Entity Manager Exercise</name>
+    <name>EntityManager Exercise</name>
 
    <!-- needed to resolve some hibernate dependencies -->
     <repositories>

@@ -14,8 +14,9 @@ import javax.persistence.*;
 @NamedQueries({ 
 	@NamedQuery(name="Movie.findByTitle", query=
 		"select m from Movie m " +
-		"where lower(m.title) like concat(concat('%',lower(:title)),'%')")
+		"where lower(m.title) like :title")
 })
+//		"where lower(m.title) like concat(concat('%',lower(:title)),'%')")
 @SqlResultSetMappings({
 	@SqlResultSetMapping(name="Movie.movieMapping", entities={
 			@EntityResult(entityClass=Movie.class),
