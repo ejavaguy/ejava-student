@@ -4,10 +4,10 @@ import java.io.Serializable;
 
 import javax.persistence.*;
 
-@MappedSuperclass //bug in hibernate requires use of annotation here vs XML
 public class Person implements Serializable {
     private static final long serialVersionUID = 1L;
     private long id;
+    @Basic
     private String firstName;
     private String lastName;
     

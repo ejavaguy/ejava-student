@@ -1,0 +1,17 @@
+<lifecycles>
+    <lifecycle>
+        <id>generate-schema</id>
+        <phases>
+            <phase>
+                <id>process-test-classes</id>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </phase>
+        </phases>
+    </lifecycle>
+</lifecycles>

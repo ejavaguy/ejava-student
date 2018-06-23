@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>info.ejava.utils.jpa</groupId>
+  <artifactId>jpa-schemagen-maven-plugin</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <packaging>jar</packaging>
+  <name>Test JPA Schema Generation Plugin</name>
+  
+  <properties>
+        <hibernate-jpa-2.1-api.version>1.0.0.Final</hibernate-jpa-2.1-api.version>
+        <hibernate-entitymanager.version>4.3.11.Final</hibernate-entitymanager.version>
+  </properties>
+  
+  <dependencies>
+      <dependency>
+          <groupId>org.hibernate.javax.persistence</groupId>
+          <artifactId>hibernate-jpa-2.1-api</artifactId>
+          <version>${hibernate-jpa-2.1-api.version}</version>
+          <scope>provided</scope>
+      </dependency>
+
+      <dependency>
+          <groupId>org.hibernate</groupId>
+          <artifactId>hibernate-entitymanager</artifactId>
+          <version>${hibernate-entitymanager.version}</version>
+          <scope>test</scope>
+      </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>info.ejava.utils.jpa</groupId>
+        <artifactId>jpa-schemagen-maven-plugin</artifactId>
+        <configuration>
+          <persistenceUnit>jpaUtil-ittest</persistenceUnit>
+        </configuration>
+        <dependencies>
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-entitymanager</artifactId>
+                <version>${hibernate-entitymanager.version}</version>
+            </dependency>
+        </dependencies>
+        <executions>
+            <execution>
+                <goals>
+                  <goal>generate</goal>
+                </goals>
+            </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+</project>

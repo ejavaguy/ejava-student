@@ -21,6 +21,7 @@
         <module>business-logic</module>
         <module>jpa-dao</module>
         <module>jpa-entitymgr</module>
+        <module>jpa-utils</module>
         <module>jpa-entity</module>
         <module>jpa-validation</module>
         <module>jpa-relation</module>

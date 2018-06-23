@@ -31,8 +31,8 @@ public class StudentJPADAO implements StudentDAO {
     public List<Student> find(int index, int count) throws StudentDAOException {
         try {
         return JPAUtil.getEntityManager().createQuery(
-                "select s from Student s " +
-                "").setFirstResult(index)
+                "select s from Student s")
+        		       .setFirstResult(index)
                    .setMaxResults(count)
                    .getResultList();
         }

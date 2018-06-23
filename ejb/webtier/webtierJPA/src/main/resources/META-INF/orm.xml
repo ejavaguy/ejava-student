@@ -3,16 +3,14 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistence/orm_2_0.xsd" version="2.0">
 
-    <!-- hibernate bug requires we declare mapped-upperclass with annotation    
-    <mapped-superclass class="ejava.javaee.webtier.bo.Person"
+    <mapped-superclass class="ejava.examples.webtier.bo.Person"
         metadata-complete="false">
         <attributes>
-            <id name="id">
+            <id name="id" access="PROPERTY">
                 <generated-value/>
             </id>
         </attributes>
     </mapped-superclass>
-    -->
     <entity class="ejava.examples.webtier.bo.Student" 
             access="PROPERTY"
             metadata-complete="true"
@@ -33,13 +31,13 @@
         <named-query name="getGraduatingStudents">
             <query><![CDATA[
                 select s from Student s
-                where 10 <= (select count(g) from s.grades g 
+                where 10 <= (select count(g) 
+                             from s.grades g 
                              where g.grade < 'C')                 
                 ]]> 
             </query>
         </named-query>
         <attributes>
-            <id name="id"/>
             <one-to-many name="grades">
                 <cascade>
                     <cascade-all/>
