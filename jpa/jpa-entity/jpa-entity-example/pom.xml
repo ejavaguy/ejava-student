@@ -79,8 +79,15 @@
                 </configuration>
             </plugin>
 
+            <plugin>
+                <groupId>info.ejava.utils.jpa</groupId>
+                <artifactId>jpa-schemagen-maven-plugin</artifactId>
+                <configuration>
+                    <persistenceUnit>ormCore</persistenceUnit>
+                </configuration>
+           </plugin>
+
                <!-- generates schema files with DDL commands to create/drop schema within DB
-                -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-antrun-plugin</artifactId>
@@ -100,7 +107,7 @@
                         </goals>
                         <configuration>
                             <target>
-                                <!-- task will create schema and terminate - freeing up the DB connection -->
+                                <!- task will create schema and terminate - freeing up the DB connection ->
                                 <java classname="ejava.util.jpa.JPASchemaGen" fork="true" spawn="true">
                                     <arg value="ormCore"></arg>
                                     <classpath>
@@ -108,13 +115,14 @@
                                         <path refid="maven.plugin.classpath"/>
                                     </classpath>
                                 </java>
-                                <!-- wait for DB to come free -->
+                                <!- wait for DB to come free ->
                                 <sleep milliseconds="1000"/>
                             </target>
                         </configuration>
                     </execution>
                 </executions>
             </plugin>
+                -->
 
         </plugins>
      </build>

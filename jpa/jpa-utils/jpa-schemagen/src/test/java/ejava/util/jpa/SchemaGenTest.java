@@ -18,7 +18,7 @@ public class SchemaGenTest {
 	private String readScript(String type) throws FileNotFoundException {
 		Scanner scanner = null;
 		try {
-			File f = new File("target/classes/ddl/jpaUtil-" + type + ".ddl");
+			File f = new File("target/classes/ddl/jpa-schemagen-" + type + ".ddl");
 			scanner = new Scanner(f);
 			scanner.useDelimiter("\\Z");
 			String script = scanner.next();

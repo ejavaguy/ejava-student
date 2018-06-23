@@ -72,7 +72,6 @@
             <plugin>
                 <groupId>info.ejava.utils.jpa</groupId>
                 <artifactId>jpa-schemagen-maven-plugin</artifactId>
-                <extensions>true</extensions>
                 <configuration>
                   <persistenceUnit>jpaUtil</persistenceUnit>
                 </configuration>

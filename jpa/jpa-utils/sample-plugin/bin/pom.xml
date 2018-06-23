@@ -2,31 +2,33 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-      <artifactId>jpa-utils</artifactId>
-      <groupId>info.ejava.utils.jpa</groupId>
-      <version>4.1.0-SNAPSHOT</version>
+    <artifactId>jpa-utils</artifactId>
+    <groupId>info.ejava.utils.jpa</groupId>
+    <version>4.1.0-SNAPSHOT</version>
   </parent>
 
-  <artifactId>jpa-schemagen-maven-plugin</artifactId>
+  <groupId>info.ejava.utils.jpa</groupId>
+  <artifactId>sample-plugin</artifactId>
+  <version>1.0-SNAPSHOT</version>
   <packaging>maven-plugin</packaging>
 
-  <name>JPA::Utils::JPA Schema Generation Maven Plugin</name>
-  
+  <name>sample-plugin Maven Plugin</name>
+
+  <!-- FIXME change it to the project's website -->
+  <url>http://www.example.com</url>
+
   <prerequisites>
     <maven>${maven.version}</maven>
   </prerequisites>
 
   <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.source>1.7</maven.compiler.source>
+    <maven.compiler.target>1.7</maven.compiler.target>
     <maven.version>3.3.9</maven.version>
   </properties>
 
   <dependencies>
-    <dependency>
-        <groupId>org.hibernate</groupId>
-        <artifactId>hibernate-entitymanager</artifactId>
-        <scope>compile</scope>
-     </dependency>
-
     <dependency>
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-plugin-api</artifactId>
@@ -60,6 +62,7 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
+      <version>4.12</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -71,33 +74,6 @@
   </dependencies>
 
   <build>
-    <testResources>
-        <testResource>
-            <directory>src/test/resources</directory>
-            <targetPath>project-to-test/target/test-classes</targetPath>
-            <filtering>true</filtering>
-            <includes>
-                <include>hibernate.properties</include>
-            </includes>
-        </testResource>
-        <testResource>
-            <directory>src/test/resources</directory>
-            <targetPath>project-to-test/target/test-classes</targetPath>
-            <filtering>false</filtering>
-            <excludes>
-                <exclude>hibernate.properties</exclude>
-                <exclude>project-to-test/**</exclude>
-            </excludes>
-        </testResource>
-        <testResource>
-            <directory>src/test/resources</directory>
-            <filtering>false</filtering>
-            <includes>
-                <include>project-to-test/**</include>
-            </includes>
-        </testResource>
-    </testResources>
-    
     <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
       <plugins>
         <plugin>
@@ -143,6 +119,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-plugin-plugin</artifactId>
+        <version>3.5.1</version>
         <configuration>
           <!-- <goalPrefix>maven-archetype-plugin</goalPrefix> -->
           <skipErrorNoDescriptorsFound>true</skipErrorNoDescriptorsFound>

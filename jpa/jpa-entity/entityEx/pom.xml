@@ -79,6 +79,14 @@
                  to generates DDL files for persistence unit.
                  See effective-pom for full configuration -->
             <plugin>
+                <groupId>info.ejava.utils.jpa</groupId>
+                <artifactId>jpa-schemagen-maven-plugin</artifactId>
+                <configuration>
+                    <persistenceUnit>entityEx-test</persistenceUnit>
+                </configuration>
+           </plugin>
+           <!--
+            <plugin>
                 <artifactId>hibernate3-maven-plugin</artifactId>
                 <groupId>org.codehaus.mojo</groupId>
                 <configuration>
@@ -91,6 +99,7 @@
                     </hibernatetool>
                 </configuration>
             </plugin>
+            -->
 
             <!-- package the persistence unit in a test-jar so it can
                  be used by downstream client tests -->

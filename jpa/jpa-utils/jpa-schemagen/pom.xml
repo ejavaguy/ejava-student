@@ -71,12 +71,14 @@
                         </goals>
                         <configuration>
                             <target>
-                                <java classname="ejava.util.jpa.JPASchemaGen" failonerror="true">
-                                    <arg value="jpaUtil-test"></arg>
+                                <java classname="ejava.util.jpa.JPASchemaGen" spawn="true" fork="true">
+                                    <arg value="${project.artifactId}-test"></arg>
                                     <classpath>
                                         <path refid="maven.test.classpath"/>
+                                        <path refid="maven.plugin.classpath"/>
                                     </classpath>
                                 </java>
+                                <sleep milliseconds="1000"/>
                             </target>
                         </configuration>
                     </execution>
