@@ -1,10 +1,8 @@
 package ejava.utils.jpa;
 
 
-import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.plugin.AbstractMojo;
-import org.apache.maven.plugin.MojoExecution;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugin.descriptor.PluginDescriptor;
 import org.apache.maven.plugins.annotations.Execute;
@@ -13,62 +11,64 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.apache.maven.project.MavenProject;
-import org.codehaus.plexus.classworlds.realm.ClassRealm;
-import org.hibernate.boot.registry.BootstrapServiceRegistry;
-import org.hibernate.boot.registry.classloading.internal.ClassLoaderServiceImpl;
-import org.hibernate.boot.registry.classloading.spi.ClassLoaderService;
-import org.hibernate.boot.registry.internal.BootstrapServiceRegistryImpl;
 import org.hibernate.cfg.AvailableSettings;
-import org.hibernate.internal.util.ConfigHelper;
-//import org.hibernate.internal.util.ClassLoaderHelper;
-import org.hibernate.jpa.HibernatePersistenceProvider;
-import org.hibernate.jpa.boot.internal.ParsedPersistenceXmlDescriptor;
-import org.hibernate.jpa.boot.internal.PersistenceXmlParser;
-import org.hibernate.jpa.boot.spi.Bootstrap;
-import org.hibernate.jpa.boot.spi.EntityManagerFactoryBuilder;
-import org.hibernate.jpa.boot.spi.PersistenceUnitDescriptor;
-import org.hibernate.tool.hbm2ddl.SchemaExport;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import javax.persistence.spi.PersistenceProvider;
-import javax.persistence.spi.PersistenceProviderResolverHolder;
-import javax.persistence.spi.PersistenceUnitInfo;
-import javax.persistence.spi.PersistenceUnitTransactionType;
-import javax.persistence.spi.ProviderUtil;
 
+/**
+ * This plugin will generate SQL schema for a specified persistence unit. It is targeted/tuned to 
+ * have the features desired for use with the ejava course examples. Thus it inserts hibernate-specific
+ * extensions to enable pretty-printing and line terminators. Use this as an example of how you could
+ * create something more general purpose if you would like.
+ */
 @Mojo( name = "generate", defaultPhase = LifecyclePhase.PROCESS_TEST_CLASSES , requiresDependencyResolution = ResolutionScope.TEST, threadSafe=true  )
 @Execute(phase=LifecyclePhase.TEST_COMPILE)
-public class MyMojo
-    extends AbstractMojo
-{
-	public MyMojo() {
-		@SuppressWarnings("unused")
-		int i=0;
-	}
+public class MyMojo extends AbstractMojo {
 	
+	/**
+	 * The name of the persistence unit from within META-INF/persistence.xml
+	 */
     @Parameter( property = "persistenceUnit", required=true)
     private String persistenceUnit;
+    
+    /**
+     * The path to write the create script.
+     */
+    @Parameter( property = "createPath", required=false, defaultValue="target/classes/ddl/${persistenceUnit}-create.ddl")
+    private String createPath;
+    
+    /**
+     * The path to write the drop script.
+     */
+    @Parameter( property = "dropPath", required=false, defaultValue="target/classes/ddl/${persistenceUnit}-drop.ddl")
+    private String dropPath;
+    
+    /**
+     * Statement termination string
+     */
+    @Parameter( property = "delimiter", required=false, defaultValue=";")
+    private String delimiter;
+    
+    @Parameter( property = "format", required=false, defaultValue="true")
+    private boolean format;
+    
+    @Parameter( property = "scriptsAction", required=false, defaultValue="drop-and-create")
+    private String scriptsAction;
 
+    /**
+     * Describes the entire project.
+     */
     @Parameter( property = "project", required=true, defaultValue = "${project}" )
     private MavenProject project;
-    
-    @Parameter( property = "plugin", required=true, readonly=true, defaultValue = "${plugin}")
-	private PluginDescriptor descriptor;
     
     protected URLClassLoader getClassLoader() throws DependencyResolutionRequiredException, MalformedURLException {
 		List<String> elements = project.getTestClasspathElements();
@@ -85,6 +85,21 @@ public class MyMojo
 		return classLoader;
     }
     
+    protected String resolvePath(String path) {
+    		path = path.replace("${persistenceUnit}", persistenceUnit);
+    		return !path.startsWith("/") ? project.getBasedir() + File.separator + path : path;
+    }
+    
+    protected Map<String, Object> configure() {
+    		Map<String, Object> properties = new HashMap<>();
+    		properties.put(AvailableSettings.HBM2DDL_SCRIPTS_ACTION, scriptsAction);
+    		properties.put(AvailableSettings.HBM2DDL_SCRIPTS_CREATE_TARGET, resolvePath(createPath));
+    		properties.put(AvailableSettings.HBM2DDL_SCRIPTS_DROP_TARGET, resolvePath(dropPath));
+    		properties.put(AvailableSettings.HBM2DDL_DELIMITER, delimiter);
+    		properties.put(AvailableSettings.FORMAT_SQL, new Boolean(format).toString());
+    		return properties;
+    }
+    
     public void execute() throws MojoFailureException {
     		URLClassLoader classLoader = null;
     		try {
@@ -96,13 +111,9 @@ public class MyMojo
 			getLog().info("META-INF/persistence.xml found= " + (pxml!=null) + ", " + pxml);
 			getLog().info("hibernate.properties found= " + (hprops!=null) + ", " + hprops);
 			
-//			new Thread() {
-//				public void run() {
-					Persistence.generateSchema(persistenceUnit, null);
-//				};
-//			}.start();
-//			try { Thread.sleep(3000); } catch (InterruptedException e) {}
-						
+			Map<String, Object> properties = configure();
+			properties.forEach((k,v) -> getLog().info(k + "=" + v));
+			Persistence.generateSchema(persistenceUnit, properties);
 		} catch (DependencyResolutionRequiredException | MalformedURLException e) {
 			throw new MojoFailureException(e.toString());
 		} finally {
@@ -110,17 +121,33 @@ public class MyMojo
 				try { classLoader.close(); } catch (IOException e) {}
 			}
 		}
-    		
-		//Persistence.generateSchema(persistenceUnit, null);
     }
 
 	public void setPersistenceUnit(String puName) {
 		this.persistenceUnit = puName;
 	}
-	public void setDescriptor(PluginDescriptor descriptor) {
-		this.descriptor = descriptor;
-	}
 	public void setProject(MavenProject project) {
 		this.project = project;
 	}
- }
+
+	public void setCreatePath(String createPath) {
+		this.createPath = createPath;
+	}
+
+	public void setDropPath(String dropPath) {
+		this.dropPath = dropPath;
+	}
+
+	public void setDelimiter(String delimiter) {
+		this.delimiter = delimiter;
+	}
+
+	public void setFormat(boolean format) {
+		this.format = format;
+	}
+
+	public void setScriptsAction(String scriptsAction) {
+		this.scriptsAction = scriptsAction;
+	}
+
+}

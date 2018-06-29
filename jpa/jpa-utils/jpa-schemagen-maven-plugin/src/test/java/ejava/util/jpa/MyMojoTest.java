@@ -24,15 +24,15 @@ public class MyMojoTest //extends AbstractMojoTestCase
     private String readScript(String type) throws FileNotFoundException {
 		Scanner scanner = null;
 		try {
-			File f = new File("target/classes/ddl/jpaUtil-" + type + ".ddl");
+			File f = new File("target/test-classes/project-to-test/target/classes/ddl/jpaUtil-ittest-" + type + ".ddl");
 			assertTrue("file not found: " + f.getPath(), f.exists());
-//			scanner = new Scanner(f);
-//			scanner.useDelimiter("\\A");
-//			String script = scanner.next();
-//			assertNotNull("no create script generated", script);
-//			assertNotEquals("empty script", 0, script.length());
-//			return script;
-			return null;
+			assertNotEquals("empty file created", 0L, f.length());
+			scanner = new Scanner(f);
+			scanner.useDelimiter("\\Z");
+			String script = scanner.next();
+			assertNotNull("no create script generated", script);
+			assertNotEquals("empty script", 0, script.length());
+			return script;
 		} finally {
 			if (scanner!=null) { scanner.close(); }
 		}
@@ -49,7 +49,7 @@ public class MyMojoTest //extends AbstractMojoTestCase
         assertTrue( pom.exists() );
         
         File cls = new File("target/test-classes/ejava/util/jpa/Tablet.class");
-        assertTrue( cls.exists() );
+        assertTrue("make sure base module is compiled, Tablet.class missing. Run mvn from command line first", cls.exists() );
         File target = new File("target/test-classes/project-to-test/target/classes/ejava/util/jpa");
         if (target.exists()) {
 		  for (File f: target.listFiles()) { f.delete(); }
@@ -57,22 +57,11 @@ public class MyMojoTest //extends AbstractMojoTestCase
         }
         target.mkdirs();         
         
+        //place java class compiled in base package into project-to-test/target area
         Path source = FileSystems.getDefault().getPath(cls.getPath());
         Path dest = FileSystems.getDefault().getPath(target.getPath() + "/Tablet.class");
         Files.copy(source, dest);
-        
-//        File pxml = new File("target/test-classes/project-to-test/main/resources/META-INF/persistence.xml");
-//        assertTrue( pxml.exists() );
-//        File target = new File("target/test-classes/project-to-test/target/classes/META-INF");
-//        if (target.exists()) {
-//        		for (File f: target.listFiles()) { f.delete(); }
-//        		target.delete();
-//        }
-//       	target.mkdirs();         
-//        Path source = FileSystems.getDefault().getPath(pxml.getPath());
-//        Path dest = FileSystems.getDefault().getPath(target.getPath() + "/persistence.xml");
-//        Files.copy(source, dest);
-        
+                
         MyMojo myMojo = ( MyMojo ) rule.lookupConfiguredMojo( proj, "generate" );
         assertNotNull( myMojo );
         
@@ -80,9 +69,12 @@ public class MyMojoTest //extends AbstractMojoTestCase
         myMojo.execute();        
 
 		String script = readScript("create");
-//		assertTrue("missing create", script.contains("create table JPAUTIL_TABLET"));
+		assertTrue("missing create", script.contains("create table JPAUTIL_TABLET"));
+		assertTrue("missing line termination", script.contains(";\n"));
+		assertTrue("missing formatting", script.contains(",\n"));
 		script = readScript("drop");
-//		assertTrue("missing drop", script.contains("drop table JPAUTIL_TABLET"));
+		assertTrue("missing drop", script.contains("drop table JPAUTIL_TABLET"));
+		assertTrue("missing line termination", script.contains(";\n"));
     }
 }
 
