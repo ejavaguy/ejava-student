@@ -7,7 +7,7 @@ import org.junit.Rule;
 import static org.junit.Assert.*;
 import org.junit.Test;
 
-import ejava.utils.jpa.MyMojo;
+import ejava.utils.jpa.JPASchemaGenMojo;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -61,7 +61,7 @@ public class GenerateMojoTest {
         Path dest = FileSystems.getDefault().getPath(target.getPath() + "/Tablet.class");
         Files.copy(source, dest);
                 
-        MyMojo myMojo = ( MyMojo ) rule.lookupConfiguredMojo( proj, "generate" );
+        JPASchemaGenMojo myMojo = ( JPASchemaGenMojo ) rule.lookupConfiguredMojo( proj, "generate" );
         assertNotNull( myMojo );
         
         myMojo.setPersistenceUnit("jpaUtil-ittest");

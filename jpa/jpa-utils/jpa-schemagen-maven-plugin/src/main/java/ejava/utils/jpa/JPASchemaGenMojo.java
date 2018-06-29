@@ -32,7 +32,7 @@ import javax.persistence.Persistence;
  */
 @Mojo( name = "generate", defaultPhase = LifecyclePhase.PROCESS_TEST_CLASSES , requiresDependencyResolution = ResolutionScope.TEST, threadSafe=true  )
 @Execute(phase=LifecyclePhase.TEST_COMPILE)
-public class MyMojo extends AbstractMojo {
+public class JPASchemaGenMojo extends AbstractMojo {
 	
 	/**
 	 * The name of the persistence unit from within META-INF/persistence.xml
@@ -103,13 +103,13 @@ public class MyMojo extends AbstractMojo {
     public void execute() throws MojoFailureException {
     		URLClassLoader classLoader = null;
     		try {
-			classLoader = getClassLoader();
+    			classLoader = getClassLoader();
 			
 			Thread.currentThread().setContextClassLoader(classLoader);
 			URL pxml = classLoader.getResource("META-INF/persistence.xml");
 			URL hprops = classLoader.getResource("hibernate.properties");
-			getLog().info("META-INF/persistence.xml found= " + (pxml!=null) + ", " + pxml);
-			getLog().info("hibernate.properties found= " + (hprops!=null) + ", " + hprops);
+			getLog().info("META-INF/persistence.xml found= " + (pxml!=null ? pxml : "false"));
+			getLog().info("hibernate.properties found= " + (hprops!=null ? hprops : "false"));
 			
 			Map<String, Object> properties = configure();
 			properties.forEach((k,v) -> getLog().info(k + "=" + v));
@@ -118,12 +118,37 @@ public class MyMojo extends AbstractMojo {
 			throw new MojoFailureException(e.toString());
 		} finally {
 			if (classLoader!=null) {
+				loadBeforeClosing();
 				try { classLoader.close(); } catch (IOException e) {}
 			}
 		}
     }
 
-	public void setPersistenceUnit(String puName) {
+    /**
+     * kludge to try to avoid an ugly non-fatal stack trace of missing classes 
+     * when plugin shuts down (closing the classloader) and the database attempts
+     * to load new classes to complete its thread shutdown.
+     * @throws MojoFailureException
+     */
+    protected void loadBeforeClosing() throws MojoFailureException {
+    		for (String cls : new String[] {
+    				"org.h2.mvstore.WriteBuffer",
+    				"org.h2.mvstore.MVMap$2",
+    				"org.h2.mvstore.MVMap$2$1",
+    				"org.h2.mvstore.DataUtils$MapEntry",
+    				"org.h2.mvstore.Chunk"
+    				}) {
+    			try {
+    				Thread.currentThread().getContextClassLoader().loadClass(cls);
+    			} catch (ClassNotFoundException ex) {
+    				getLog().info("error pre-loading class[" + cls + "]: "+ ex.toString());
+    				throw new MojoFailureException("error pre-loading class[" + cls + "]: "+ ex.toString());
+    			}
+    		}
+    		
+    }
+
+    public void setPersistenceUnit(String puName) {
 		this.persistenceUnit = puName;
 	}
 	public void setProject(MavenProject project) {

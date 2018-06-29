@@ -58,16 +58,6 @@
             </testResource>
         </testResources>
 
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>info.ejava.utils.jpa</groupId>
-                    <artifactId>jpa-schemagen-maven-plugin</artifactId>
-                    <version>${project.version}</version>
-                </plugin>
-            </plugins>
-         </pluginManagement>
-
         <plugins>
             <plugin>
                 <groupId>info.ejava.utils.jpa</groupId>
@@ -76,7 +66,7 @@
                   <persistenceUnit>jpaUtil</persistenceUnit>
                 </configuration>
                 <dependencies>
-                    <dependency>
+<!--                     <dependency>
                         <groupId>org.hibernate</groupId>
                         <artifactId>hibernate-entitymanager</artifactId>
                         <version>${hibernate-entitymanager.version}</version>
@@ -86,14 +76,7 @@
                         <artifactId>h2</artifactId>
                         <version>${h2db.version}</version>
                     </dependency>
-                </dependencies>
-                <executions>
-                    <execution>
-                        <goals>
-                          <goal>generate</goal>
-                        </goals>
-                    </execution>
-                </executions>
+ -->                </dependencies>
            </plugin>
         </plugins>
         

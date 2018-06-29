@@ -6,6 +6,7 @@
 
     <persistence-unit name="jpaUtil-ittest">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+        <!-- need to name class within plugin test framework, but not for regular use -->
         <class>ejava.util.jpa.Tablet</class>
-    </persistence-unit>        
+    </persistence-unit>
 </persistence>
