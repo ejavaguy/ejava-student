@@ -16,8 +16,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Scanner;
 
-public class MyMojoTest //extends AbstractMojoTestCase
-{
+public class GenerateMojoTest {
     @Rule
     public final MojoRule rule = new MojoRule() {	};
     
