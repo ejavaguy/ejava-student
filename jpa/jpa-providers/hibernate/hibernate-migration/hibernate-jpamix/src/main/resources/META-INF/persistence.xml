@@ -5,7 +5,7 @@
     version="1.0">
 
     <persistence-unit name="hibernate-migration-sales">
-        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         
         <!-- mapped with HBM
         <mapping-file>jpa/Person-orm.xml</mapping-file>

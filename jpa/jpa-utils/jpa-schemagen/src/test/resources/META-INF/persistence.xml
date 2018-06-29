@@ -6,5 +6,14 @@
 
     <persistence-unit name="jpa-schemagen-test">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+        <properties>
+            <property name="javax.persistence.schema-generation.scripts.action" value="drop-and-create"/>
+            <property name="javax.persistence.schema-generation.scripts.create-target" value="${project.build.outputDirectory}/ddl/${project.artifactId}-create.ddl"/>
+            <property name="javax.persistence.schema-generation.scripts.drop-target" value="${project.build.outputDirectory}/ddl/${project.artifactId}-drop.ddl"/>
+
+            <!-- otherwise we would get 1 line per statement without standard delimiter character -->
+            <property name="hibernate.hbm2ddl.delimiter" value=";"/>
+            <property name="hibernate.format_sql" value="true"/>
+        </properties>
     </persistence-unit>        
 </persistence>

@@ -11,7 +11,7 @@
          must be individually named below for schema generation to 
          work correctly -->
     <persistence-unit name="queryEx-test">
-        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         <class>myorg.queryex.Person</class>
         <class>myorg.queryex.Actor</class>
         <class>myorg.queryex.Director</class>

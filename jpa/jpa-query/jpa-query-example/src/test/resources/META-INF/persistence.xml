@@ -11,7 +11,7 @@
          must be individually named below for schema generation to 
          work correctly -->
     <persistence-unit name="jpa-query-example-test">
-        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 
         <class>ejava.jpa.examples.query.Store</class>
         <class>ejava.jpa.examples.query.Sale</class>

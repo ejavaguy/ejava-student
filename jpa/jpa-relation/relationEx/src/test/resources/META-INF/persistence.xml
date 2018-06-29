@@ -11,7 +11,7 @@
          must be individually named below for schema generation to 
          work correctly -->
     <persistence-unit name="relationEx-test">
-        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 
         <class>myorg.relex.Auto</class>
         <!-- one2one uni-directional -->

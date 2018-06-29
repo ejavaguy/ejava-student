@@ -5,7 +5,7 @@
              version="2.1">
         
     <persistence-unit name="book">
-        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         <mapping-file>META-INF/orm.xml</mapping-file>
     </persistence-unit>            
 </persistence>

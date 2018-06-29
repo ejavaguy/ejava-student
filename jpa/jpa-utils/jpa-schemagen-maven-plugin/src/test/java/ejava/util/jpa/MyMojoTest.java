@@ -1,8 +1,6 @@
 package ejava.util.jpa;
 
 
-import org.apache.maven.plugin.MojoExecution;
-import org.apache.maven.plugin.testing.AbstractMojoTestCase;
 import org.apache.maven.plugin.testing.MojoRule;
 
 import org.junit.Rule;
@@ -13,7 +11,6 @@ import ejava.utils.jpa.MyMojo;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.nio.file.CopyOption;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;

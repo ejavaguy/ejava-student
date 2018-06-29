@@ -14,13 +14,17 @@ import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.classworlds.realm.ClassRealm;
+import org.hibernate.boot.registry.BootstrapServiceRegistry;
 import org.hibernate.boot.registry.classloading.internal.ClassLoaderServiceImpl;
 import org.hibernate.boot.registry.classloading.spi.ClassLoaderService;
+import org.hibernate.boot.registry.internal.BootstrapServiceRegistryImpl;
 import org.hibernate.cfg.AvailableSettings;
-import org.hibernate.internal.util.ClassLoaderHelper;
+import org.hibernate.internal.util.ConfigHelper;
+//import org.hibernate.internal.util.ClassLoaderHelper;
 import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.hibernate.jpa.boot.internal.ParsedPersistenceXmlDescriptor;
 import org.hibernate.jpa.boot.internal.PersistenceXmlParser;
+import org.hibernate.jpa.boot.spi.Bootstrap;
 import org.hibernate.jpa.boot.spi.EntityManagerFactoryBuilder;
 import org.hibernate.jpa.boot.spi.PersistenceUnitDescriptor;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
@@ -66,62 +70,40 @@ public class MyMojo
     @Parameter( property = "plugin", required=true, readonly=true, defaultValue = "${plugin}")
 	private PluginDescriptor descriptor;
     
+    protected URLClassLoader getClassLoader() throws DependencyResolutionRequiredException, MalformedURLException {
+		List<String> elements = project.getTestClasspathElements();
+		URL[] urls = new URL[elements.size()];
+		for (int i=0; i<elements.size(); i++) {
+			String path = elements.get(i);
+			URL url = new File(path).toURI().toURL();
+			urls[i] = url;
+		}
+		URLClassLoader classLoader = new URLClassLoader(urls, getClass().getClassLoader());
+		for (URL url: classLoader.getURLs()) {
+			getLog().debug("url=" + url.toString());
+		}
+		return classLoader;
+    }
+    
     public void execute() throws MojoFailureException {
-    		getLog().warn("Here!");
     		URLClassLoader classLoader = null;
     		try {
-    			List<String> elements = project.getTestClasspathElements();
-    			getLog().info("elements.size=" + elements.size());
-    			URL[] urls = new URL[elements.size()];
-			for (int i=0; i<elements.size(); i++) {
-				String path = elements.get(i);
-				//getLog().info("cp element: " + path);
-				URL url = new File(path).toURI().toURL();
-				//getLog().info("url: " + url);
-      			//descriptor.getClassRealm().addURL(url);
-				urls[i] = url;
-			}
-			classLoader = new URLClassLoader(urls, getClass().getClassLoader());
-			for (URL url: classLoader.getURLs()) {
-				getLog().info("url=" + url.toString());
-			}
+			classLoader = getClassLoader();
 			
-			getLog().info("META-INF/persistence.xml found= " + (classLoader.findResource("META-INF/persistence.xml")!=null));
-			getLog().info("hibernate.properties found= " + (classLoader.findResource("hibernate.properties")!=null));
-
-			Map<String, Object> props = new HashMap<>();
-			props.put(AvailableSettings.CLASSLOADERS, Collections.singletonList(classLoader));
-			List<ParsedPersistenceXmlDescriptor> pus = PersistenceXmlParser.locatePersistenceUnits(props);
-			getLog().info("found " + pus.size() + " persistence units");
-			for (ParsedPersistenceXmlDescriptor x: pus) {
-				getLog().debug(x.getName() + ", classLoader: " + x.getClassLoader() + ", root: " + x.getPersistenceUnitRootUrl());				
-			}
+			Thread.currentThread().setContextClassLoader(classLoader);
+			URL pxml = classLoader.getResource("META-INF/persistence.xml");
+			URL hprops = classLoader.getResource("hibernate.properties");
+			getLog().info("META-INF/persistence.xml found= " + (pxml!=null) + ", " + pxml);
+			getLog().info("hibernate.properties found= " + (hprops!=null) + ", " + hprops);
 			
-			final ClassLoader floader = classLoader;
-			ClassLoaderHelper.overridenClassLoader = floader;
-			boolean generated = new HibernatePersistenceProvider() {
-				protected EntityManagerFactoryBuilder getEntityManagerFactoryBuilderOrNull(String persistenceUnitName, Map properties, ClassLoader providedClassLoader) {
-					return super.getEntityManagerFactoryBuilderOrNull(persistenceUnitName, properties, floader);
-				}
-			}.generateSchema(persistenceUnit, props);
-			if (!generated) {
-				throw new MojoFailureException("provider did not generate schema");
-			}
-			
-//			Class<?> p = classLoader.loadClass("javax.persistence.Persistence");
-//			Method m = p.getDeclaredMethod("generateSchema", String.class, Map.class);
-//			getLog().info("urlLoader: " + classLoader);
-//			getLog().info("defaultLoader: " + getClass().getClassLoader());
-//			getLog().info("urlLoader.parent: " + classLoader.getParent());
-//			getLog().info(p.getName() + " was loaded by " + p.getClassLoader());
-//			m.invoke(null, persistenceUnit, null);
+//			new Thread() {
+//				public void run() {
+					Persistence.generateSchema(persistenceUnit, null);
+//				};
+//			}.start();
+//			try { Thread.sleep(3000); } catch (InterruptedException e) {}
+						
 		} catch (DependencyResolutionRequiredException | MalformedURLException e) {
-			throw new MojoFailureException(e.toString());
-//		} catch (ClassNotFoundException | NoSuchMethodException | SecurityException e) {
-//			throw new MojoFailureException(e.toString());
-//		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-//			throw new MojoFailureException(e.toString());
-		} catch (IOException e) {
 			throw new MojoFailureException(e.toString());
 		} finally {
 			if (classLoader!=null) {

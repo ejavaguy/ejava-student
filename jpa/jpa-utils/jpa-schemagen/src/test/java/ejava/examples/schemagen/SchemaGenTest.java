@@ -1,4 +1,4 @@
-package ejava.util.jpa;
+package ejava.examples.schemagen;
 
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
@@ -35,11 +35,14 @@ public class SchemaGenTest {
 	public void createScript() throws FileNotFoundException {
 		String script = readScript("create");
 		assertTrue("missing create", script.contains("create table JPAUTIL_TABLET"));
+		assertTrue("missing line termination", script.contains(";\n"));
+		assertTrue("missing formatting", script.contains(",\n"));
 	}
 	
 	@Test
 	public void dropScript() throws FileNotFoundException {
 		String script = readScript("drop");
 		assertTrue("missing create", script.contains("drop table JPAUTIL_TABLET"));
+		assertTrue("missing line termination", script.contains(";\n"));
 	}	
 }

@@ -11,7 +11,7 @@
          must be individually named below for schema generation to 
          work correctly -->
     <persistence-unit name="movietune-test">
-        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         <class>ejava.jpa.examples.tuning.bo.Person</class>
         <class>ejava.jpa.examples.tuning.bo.Actor</class>
         <class>ejava.jpa.examples.tuning.bo.Director</class>
@@ -21,7 +21,7 @@
 
     <!-- this persistence unit maps the title column to a column with unique values -->
     <persistence-unit name="movietune-test-utitle">
-        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         <mapping-file>jpa/orm-utitle.xml</mapping-file>
         <class>ejava.jpa.examples.tuning.bo.Person</class>
         <class>ejava.jpa.examples.tuning.bo.Actor</class>
@@ -33,7 +33,7 @@
     <!-- this persistence unit scales down the size of the movie to determine if performance
          numbers thrown off by retrieval of large data sizes -->
     <persistence-unit name="movietune-test-thin">
-        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         <mapping-file>jpa/orm-thinmovie.xml</mapping-file>
         <class>ejava.jpa.examples.tuning.bo.Person</class>
         <class>ejava.jpa.examples.tuning.bo.Actor</class>
@@ -45,7 +45,7 @@
     <!-- this persistence unit declares eager fetch for relationships 
         and does not map the plot -->
     <persistence-unit name="movietune-test-thineager">
-        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         <mapping-file>jpa/orm-thineager.xml</mapping-file>
         <class>ejava.jpa.examples.tuning.bo.Person</class>
         <class>ejava.jpa.examples.tuning.bo.Actor</class>
@@ -57,7 +57,7 @@
     <!-- this persistence unit declares eager fetch for relationships 
         and does map the plot-->
     <persistence-unit name="movietune-test-thickeager">
-        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         <mapping-file>jpa/orm-thickeager.xml</mapping-file>
         <class>ejava.jpa.examples.tuning.bo.Person</class>
         <class>ejava.jpa.examples.tuning.bo.Actor</class>

@@ -66,8 +66,10 @@
         <cobertura-maven-plugin.version>2.7</cobertura-maven-plugin.version>
         <exec-maven-plugin.version>1.4.0</exec-maven-plugin.version>
         <findbugs-maven-plugin.version>3.0.2</findbugs-maven-plugin.version>
+        <!--
         <hibernate3-maven-plugin.version>3.0</hibernate3-maven-plugin.version>
         <hibernate3.version>3.6.10.Final</hibernate3.version>
+        -->
         <jetty-maven-plugin.version>9.2.3.v20140905</jetty-maven-plugin.version>
         <maven-jdocbook-plugin.version>2.3.4</maven-jdocbook-plugin.version>
         <maven-jaxb2-plugin.version>0.7.5</maven-jaxb2-plugin.version>
@@ -81,8 +83,8 @@
         <cdi-api.version>1.1</cdi-api.version>
         <faces-api.version>2.2</faces-api.version>
         <h2db.version>1.4.188</h2db.version>
-        <hibernate-jpa-2.1-api.version>1.0.0.Final</hibernate-jpa-2.1-api.version>
-        <hibernate-entitymanager.version>4.3.11.Final</hibernate-entitymanager.version>
+        <hibernate-jpa-2.1-api.version>1.0.2.Final</hibernate-jpa-2.1-api.version>
+        <hibernate-entitymanager.version>5.3.1.Final</hibernate-entitymanager.version>
         <hibernate-validator.version>5.1.0.Final</hibernate-validator.version>
         <hornetq.version>2.4.1.Final</hornetq.version>
         <hsqldb.version>2.2.8</hsqldb.version>
@@ -789,6 +791,7 @@
                     <version>${maven-scm-plugin.version}</version>
                 </plugin>
 
+                <!--
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>hibernate3-maven-plugin</artifactId>
@@ -840,6 +843,7 @@
                         </execution>
                     </executions>
                 </plugin>
+                -->
 
 
                 <plugin>
@@ -1210,6 +1214,7 @@
 	                          </action>
 	                        </pluginExecution>
                             
+                            <!-- 
 	                        <pluginExecution>
 	                          <pluginExecutionFilter>
 	                            <groupId>org.codehaus.mojo</groupId>
@@ -1224,6 +1229,7 @@
 	                            <ignore />
 	                          </action>
 	                        </pluginExecution>
+                             -->
                                                        
 	                        <pluginExecution>
 	                          <pluginExecutionFilter>

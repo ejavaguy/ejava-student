@@ -1,4 +1,4 @@
-package ejava.util.jpa;
+package ejava.examples.schemagen;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
