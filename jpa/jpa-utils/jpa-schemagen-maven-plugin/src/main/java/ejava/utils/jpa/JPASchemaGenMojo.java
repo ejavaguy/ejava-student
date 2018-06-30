@@ -12,12 +12,15 @@ import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.apache.maven.project.MavenProject;
 import org.hibernate.cfg.AvailableSettings;
+import org.hibernate.jpa.boot.internal.ParsedPersistenceXmlDescriptor;
+import org.hibernate.jpa.boot.internal.PersistenceXmlParser;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,9 +38,11 @@ import javax.persistence.Persistence;
 public class JPASchemaGenMojo extends AbstractMojo {
 	
 	/**
-	 * The name of the persistence unit from within META-INF/persistence.xml
+	 * The name of the persistence unit from within META-INF/persistence.xml. Only required
+	 * if there are multiple persistence units within the project. Otherwise, it will use the
+	 * only one found in the path.
 	 */
-    @Parameter( property = "persistenceUnit", required=true)
+    @Parameter( property = "persistenceUnit", required=false)
     private String persistenceUnit;
     
     /**
@@ -104,24 +109,52 @@ public class JPASchemaGenMojo extends AbstractMojo {
     		URLClassLoader classLoader = null;
     		try {
     			classLoader = getClassLoader();
+    			this.persistenceUnit = findPersistenceUnit(classLoader);
+    			getLog().info("Generating database schema for: " + persistenceUnit);
 			
 			Thread.currentThread().setContextClassLoader(classLoader);
 			URL pxml = classLoader.getResource("META-INF/persistence.xml");
 			URL hprops = classLoader.getResource("hibernate.properties");
-			getLog().info("META-INF/persistence.xml found= " + (pxml!=null ? pxml : "false"));
-			getLog().info("hibernate.properties found= " + (hprops!=null ? hprops : "false"));
+			getLog().debug("META-INF/persistence.xml found= " + (pxml!=null ? pxml : "false"));
+			getLog().debug("hibernate.properties found= " + (hprops!=null ? hprops : "false"));
 			
 			Map<String, Object> properties = configure();
-			properties.forEach((k,v) -> getLog().info(k + "=" + v));
+			properties.forEach((k,v) -> getLog().debug(k + "=" + v));
+			
 			Persistence.generateSchema(persistenceUnit, properties);
+			loadBeforeClosing();			
 		} catch (DependencyResolutionRequiredException | MalformedURLException e) {
 			throw new MojoFailureException(e.toString());
 		} finally {
 			if (classLoader!=null) {
-				loadBeforeClosing();
 				try { classLoader.close(); } catch (IOException e) {}
 			}
+			File lockFile=new File(project.getBasedir() + File.separator + "target/h2db/ejava.mv.db");
+			if (lockFile.exists()) {
+			    lockFile.delete();
+			}
 		}
+    }
+    
+    protected String findPersistenceUnit(ClassLoader clsLoader) throws MojoFailureException {
+    		if (persistenceUnit!=null) {
+    			return persistenceUnit;
+    		}
+    		Map<String, Object> properties = new HashMap<>();
+    		properties.put(AvailableSettings.CLASSLOADERS, Collections.singletonList(clsLoader));
+    		List<ParsedPersistenceXmlDescriptor> units = PersistenceXmlParser.locatePersistenceUnits(properties);
+    		if (units.size()==1) {
+    			return units.get(0).getName();
+    		} else if (units.isEmpty()) {
+    			throw new MojoFailureException("no persistenceUnit name specified and none found");
+    		} else {
+    			StringBuilder names = new StringBuilder();
+    			units.forEach(n -> {
+    				if (names.length()>0) { names.append(", "); } 
+    				names.append(n.getName());
+    			});
+    			throw new MojoFailureException(String.format("too many persistence units found[%s], specify persistenceUnit name to use", names));    			
+    		}
     }
 
     /**
@@ -142,7 +175,7 @@ public class JPASchemaGenMojo extends AbstractMojo {
     				Thread.currentThread().getContextClassLoader().loadClass(cls);
     			} catch (ClassNotFoundException ex) {
     				getLog().info("error pre-loading class[" + cls + "]: "+ ex.toString());
-    				throw new MojoFailureException("error pre-loading class[" + cls + "]: "+ ex.toString());
+    				//throw new MojoFailureException("error pre-loading class[" + cls + "]: "+ ex.toString());
     			}
     		}
     		

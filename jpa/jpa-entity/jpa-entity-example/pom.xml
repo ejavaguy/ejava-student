@@ -22,10 +22,10 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>org.hibernate.javax.persistence</groupId>
-            <artifactId>hibernate-jpa-2.1-api</artifactId>
+            <groupId>javax.persistence</groupId>
+            <artifactId>javax.persistence-api</artifactId>
             <scope>provided</scope>
-        </dependency>
+        </dependency>        
 
         <dependency>
             <groupId>org.hibernate</groupId>
@@ -79,13 +79,12 @@
                 </configuration>
             </plugin>
 
+<!--
             <plugin>
                 <groupId>info.ejava.utils.jpa</groupId>
                 <artifactId>jpa-schemagen-maven-plugin</artifactId>
-                <configuration>
-                    <persistenceUnit>ormCore</persistenceUnit>
-                </configuration>
-           </plugin>
+            </plugin>
+            -->
 
                <!-- generates schema files with DDL commands to create/drop schema within DB
             <plugin>

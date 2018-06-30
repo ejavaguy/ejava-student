@@ -24,10 +24,10 @@
           <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>org.hibernate.javax.persistence</groupId>
-            <artifactId>hibernate-jpa-2.1-api</artifactId>
-            <scope>compile</scope>
-        </dependency>
+            <groupId>javax.persistence</groupId>
+            <artifactId>javax.persistence-api</artifactId>
+            <scope>provided</scope>
+        </dependency>        
 
         <dependency>
             <groupId>org.hibernate</groupId>
@@ -65,18 +65,6 @@
                 <configuration>
                   <persistenceUnit>jpaUtil</persistenceUnit>
                 </configuration>
-                <dependencies>
-<!--                     <dependency>
-                        <groupId>org.hibernate</groupId>
-                        <artifactId>hibernate-entitymanager</artifactId>
-                        <version>${hibernate-entitymanager.version}</version>
-                    </dependency>
-                    <dependency>
-                        <groupId>com.h2database</groupId>
-                        <artifactId>h2</artifactId>
-                        <version>${h2db.version}</version>
-                    </dependency>
- -->                </dependencies>
            </plugin>
         </plugins>
         

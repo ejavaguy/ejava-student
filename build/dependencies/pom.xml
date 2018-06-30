@@ -83,7 +83,6 @@
         <cdi-api.version>1.1</cdi-api.version>
         <faces-api.version>2.2</faces-api.version>
         <h2db.version>1.4.188</h2db.version>
-        <hibernate-jpa-2.1-api.version>1.0.2.Final</hibernate-jpa-2.1-api.version>
         <hibernate-entitymanager.version>5.3.1.Final</hibernate-entitymanager.version>
         <hibernate-validator.version>5.1.0.Final</hibernate-validator.version>
         <hornetq.version>2.4.1.Final</hornetq.version>
@@ -95,6 +94,7 @@
         <interceptor-api.version>1.2</interceptor-api.version>
         <jandex.version>1.2.2.Final</jandex.version>
         <javaee-api.version>7.0</javaee-api.version>
+        <javax.persistence-api.version>2.2</javax.persistence-api.version>
         <javax.ejb-api.version>3.2</javax.ejb-api.version>
         <javax.el.version>2.2.4</javax.el.version>        
         <jaxb-api.version>2.1</jaxb-api.version>
@@ -330,6 +330,11 @@
                 <version>${cdi-api.version}</version>
             </dependency>
             <dependency>
+                <groupId>javax.persistence</groupId>
+                <artifactId>javax.persistence-api</artifactId>
+                <version>${javax.persistence-api.version}</version>
+            </dependency>            
+            <dependency>
                 <groupId>org.jboss.weld.servlet</groupId>
                 <artifactId>weld-servlet</artifactId>
                 <version>${weld-servlet.version}</version>
@@ -454,11 +459,11 @@
                 <artifactId>jandex</artifactId>
                 <version>${jandex.version}</version>
             </dependency>
-            <dependency>
-                <groupId>org.hibernate.javax.persistence</groupId>
-                <artifactId>hibernate-jpa-2.1-api</artifactId>
-                <version>${hibernate-jpa-2.1-api.version}</version>
-            </dependency>
+<!--             <dependency> -->
+<!--                 <groupId>org.hibernate.javax.persistence</groupId> -->
+<!--                 <artifactId>hibernate-jpa-2.1-api</artifactId> -->
+<!--                 <version>${hibernate-jpa-2.1-api.version}</version> -->
+<!--             </dependency> -->
             <dependency>
                 <groupId>org.hibernate</groupId>
                 <artifactId>hibernate-validator</artifactId>
@@ -874,6 +879,13 @@
                     <groupId>info.ejava.utils.jpa</groupId>
                     <artifactId>jpa-schemagen-maven-plugin</artifactId>
                     <version>${project.version}</version>
+                    <dependencies>
+                      <dependency>
+                          <groupId>com.h2database</groupId>
+                          <artifactId>h2</artifactId>
+                          <version>${h2db.version}</version>
+                      </dependency>
+                   </dependencies>
                     <executions>
                         <execution>
                             <id>generate-schema</id>

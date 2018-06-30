@@ -39,12 +39,8 @@
 
         <commons-logging.version>1.1.1</commons-logging.version>
         <h2db.version>1.4.188</h2db.version>
-        <hibernate-jpa-2.1-api.version>1.0.2.Final</hibernate-jpa-2.1-api.version>
+        <javax.persistence-api.version>2.2</javax.persistence-api.version>
         <hibernate-entitymanager.version>5.3.1.Final</hibernate-entitymanager.version>
-        <!--
-        <hibernate3-maven-plugin.version>3.0</hibernate3-maven-plugin.version>
-        <hibernate3.version>3.6.10.Final</hibernate3.version>
-        -->
         <junit.version>4.12</junit.version>
         <log4j.version>1.2.17</log4j.version>
         <slf4j.version>1.7.12</slf4j.version>
@@ -61,10 +57,10 @@
               <version>${commons-logging.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.hibernate.javax.persistence</groupId>
-                <artifactId>hibernate-jpa-2.1-api</artifactId>
-                <version>${hibernate-jpa-2.1-api.version}</version>
-            </dependency>
+                <groupId>javax.persistence</groupId>
+                <artifactId>javax.persistence-api</artifactId>
+                <version>${javax.persistence-api.version}</version>
+            </dependency>            
             <dependency>
                 <groupId>org.hibernate</groupId>
                 <artifactId>hibernate-entitymanager</artifactId>
@@ -282,6 +278,18 @@
                 </dependency>
             </dependencies>
         </profile>
+
+        <profile> <!-- tells surefire to run JUnit tests with remote debug -->
+            <id>debugger</id>
+            <activation>
+                <property>
+                    <name>debugger</name>
+                </property>
+            </activation>
+            <properties>
+                <surefire.argLine>-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=8000 -Xnoagent -Djava.compiler=NONE</surefire.argLine>
+            </properties>                                  
+        </profile>        
 
     	<!--  tell Eclipse what to do with some of the plugins -->
         <profile>

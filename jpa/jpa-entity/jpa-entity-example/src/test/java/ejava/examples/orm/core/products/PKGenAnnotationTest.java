@@ -109,7 +109,7 @@ public class PKGenAnnotationTest extends TestBase {
         		"select UID_VAL from ORMCORE_EB_UID " +
 		        "where UID_ID='ORMCORE_EGGBEATER'")
 		        .getResultList();
-        return results.size() == 0 ? null : (Integer)results.get(0);
+        return results.size() == 0 ? null : ((Number)results.get(0)).intValue();
     }
 
 

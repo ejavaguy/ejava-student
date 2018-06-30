@@ -21,6 +21,5 @@
         <module>jpa-schemagen</module>
         <module>jpa-schemagen-maven-plugin</module>
         <module>jpa-schemagen-test</module>
-    <module>sample-plugin</module>
   </modules>
 </project>

@@ -66,10 +66,6 @@
             <property name="hibernate.hbm2ddl.auto" value="create"/>
             <property name="hibernate.show_sql" value="true"/>            
             <property name="hibernate.format_sql" value="true"/>            
-            <property name="javax.persistence.schema-generation.create-database-schemas" value="true"/>
-            <property name="javax.persistence.schema-generation.scripts.action" value="drop-and-create"/>
-            <property name="javax.persistence.schema-generation.scripts.create-target" value="${project.build.outputDirectory}/ddl/jpaUtil-create.ddl"/>
-            <property name="javax.persistence.schema-generation.scripts.drop-target" value="${project.build.outputDirectory}/ddl/jpaUtil-drop.ddl"/>        
             -->
          </properties>
     </persistence-unit>        

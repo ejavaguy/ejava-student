@@ -35,8 +35,8 @@
         <sql-maven-plugin.version>1.4</sql-maven-plugin.version>        
 
         <commons-logging.version>1.0.4</commons-logging.version>
-        <h2db.version>1.3.168</h2db.version>
-        <hibernate-jpa-2.1-api.version>1.0.0.Final</hibernate-jpa-2.1-api.version>
+        <h2db.version>1.4.188</h2db.version>
+        <javax.persistence-api.version>2.2</javax.persistence-api.version>
         <hibernate-entitymanager.version>4.0.1.Final</hibernate-entitymanager.version>
         <hibernate3-maven-plugin.version>3.0</hibernate3-maven-plugin.version>
         <hibernate3.version>3.6.0.Final</hibernate3.version>
@@ -53,10 +53,10 @@
               <version>${commons-logging.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.hibernate.javax.persistence</groupId>
-                <artifactId>hibernate-jpa-2.1-api</artifactId>
-                <version>${hibernate-jpa-2.1-api.version}</version>
-            </dependency>
+                <groupId>javax.persistence</groupId>
+                <artifactId>javax.persistence-api</artifactId>
+                <version>${javax.persistence-api.version}</version>
+            </dependency>            
             <dependency>
                 <groupId>org.hibernate</groupId>
                 <artifactId>hibernate-entitymanager</artifactId>
@@ -219,6 +219,18 @@
                 </dependency>
             </dependencies>
         </profile>
+
+        <profile> <!-- tells surefire to run JUnit tests with remote debug -->
+            <id>debugger</id>
+            <activation>
+                <property>
+                    <name>debugger</name>
+                </property>
+            </activation>
+            <properties>
+                <surefire.argLine>-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=8000 -Xnoagent -Djava.compiler=NONE</surefire.argLine>
+            </properties>                                  
+        </profile>        
 
         <!--  tell Eclipse what to do with some of the plugins -->
         <profile>
