@@ -152,6 +152,10 @@
                             <goals>
                               <goal>generate</goal>
                             </goals>
+                            <configuration>
+                              <createPath>${project.build.directory}/classes/ddl/${persistenceUnit}-createJPA.ddl</createPath>
+                              <dropPath>${project.build.directory}/classes/ddl/${persistenceUnit}-dropJPA.ddl</dropPath>
+                            </configuration>
                         </execution>
                     </executions>
                </plugin>

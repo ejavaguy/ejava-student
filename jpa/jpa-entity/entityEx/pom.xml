@@ -76,7 +76,7 @@
             </plugin>
 
             <!-- extends the pluginManagement definition in the parent pom
-                 to generates DDL files for persistence unit.
+                 to generate DDL files for persistence unit.
                  See effective-pom for full configuration -->
             <plugin>
                 <groupId>info.ejava.utils.jpa</groupId>
@@ -85,21 +85,6 @@
                     <persistenceUnit>entityEx-test</persistenceUnit>
                 </configuration>
            </plugin>
-           <!--
-            <plugin>
-                <artifactId>hibernate3-maven-plugin</artifactId>
-                <groupId>org.codehaus.mojo</groupId>
-                <configuration>
-                    <hibernatetool destdir="target/classes/ddl">
-                        <classpath>
-                            <path location="${project.build.directory}/classes" />
-                            <path location="${project.build.directory}/test-classes" />
-                        </classpath>
-                        <jpaconfiguration persistenceunit="entityEx-test" propertyfile="${basedir}/target/test-classes/hibernate.properties" />
-                    </hibernatetool>
-                </configuration>
-            </plugin>
-            -->
 
             <!-- package the persistence unit in a test-jar so it can
                  be used by downstream client tests -->
