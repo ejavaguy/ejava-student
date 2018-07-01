@@ -18,7 +18,8 @@ public class SchemaGenTest {
 	private String readScript(String type) throws FileNotFoundException {
 		Scanner scanner = null;
 		try {
-			File f = new File("target/classes/ddl/jpaUtil-" + type + ".ddl");
+		    //parent pom configured to write DDL to ${persistenceUnit}-xxxJPA.ddl
+			File f = new File("target/classes/ddl/jpaUtil-" + type + "JPA.ddl");
 			scanner = new Scanner(f);
 			scanner.useDelimiter("\\Z");
 			String script = scanner.next();
