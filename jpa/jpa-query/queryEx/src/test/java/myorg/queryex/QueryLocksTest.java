@@ -55,46 +55,49 @@ public class QueryLocksTest extends QueryBase {
     	public String getErrorText() { return errorText; }
     	public void run() {
     		try {
-                    log.debug(context + " selecting with lockMode=" + lockMode);
-                    //h2 won't let us lock on a JOIN -- use subquery
-                    List<Actor> actors = em_.createQuery(
-                            "select a from Actor a "
-                            + "where a.person in ("
-                            + "select p from Person p "
-                            + "where p.firstName=:firstName and p.lastName=:lastName "
-                            + "or p.firstName='" + context + "')", Actor.class)
+            log.debug(context + " selecting with lockMode=" + lockMode);
+            //h2 won't let us lock on a JOIN -- use subquery
+            List<Actor> actors = em_.createQuery(
+                    "select a from Actor a "
+                    + "where a.person in ("
+                    + "select p from Person p "
+                    + "where p.firstName=:firstName and p.lastName=:lastName "
+                    + "or p.firstName='" + context + "')", Actor.class)
+                    .setLockMode(lockMode)
+                    .setParameter("firstName", actor.getFirstName())
+                    .setParameter("lastName", actor.getLastName())
+                    .setMaxResults(1)
+                    .getResultList();
+            /*
+            List<Actor> actorsx = em_.createQuery(
+                            "select a from Actor a JOIN a.person as p " +
+                            "where p.firstName=:firstName and p.lastName=:lastName " +
+                            "or p.firstName='" + context + "'", Actor.class)
                             .setLockMode(lockMode)
                             .setParameter("firstName", actor.getFirstName())
                             .setParameter("lastName", actor.getLastName())
                             .setMaxResults(1)
-                            .getResultList();
-                    /*
-                    List<Actor> actorsx = em_.createQuery(
-                                    "select a from Actor a JOIN a.person as p " +
-                                    "where p.firstName=:firstName and p.lastName=:lastName " +
-                                    "or p.firstName='" + context + "'", Actor.class)
-                                    .setLockMode(lockMode)
-                                    .setParameter("firstName", actor.getFirstName())
-                                    .setParameter("lastName", actor.getLastName())
-                                    .setMaxResults(1)
-                                    .getResultList();*/
-                    try { 
-                        log.debug(context + " sleeping " + sleepTime + " msecs"); 
-                        Thread.sleep(sleepTime); 
-                    } catch (Exception ex){}
-                    if (actors.size()==0) {
-                            log.debug(context + " creating entity");
-                            em_.persist(actor);
-                            action=Action.INSERT;
-                    } else {
-                            log.debug(context + " updating entity");
-                            actors.get(0).setBirthDate(actor.getBirthDate());
-                            action=Action.UPDATE;
+                            .getResultList();*/
+            try { 
+                log.debug(context + " sleeping " + sleepTime + " msecs"); 
+                Thread.sleep(sleepTime); 
+            } catch (Exception ex){}
+            if (actors.size()==0) {
+                    log.debug(context + " creating entity");
+                    if (!em_.contains(actor.getPerson())) {
+                        em_.persist(actor.getPerson());
                     }
-                    em_.flush();
-                    log.debug(context + " committing transaction version=" + actor.getVersion());
-                            em_.getTransaction().commit();
-                    log.debug(context + " committed transaction version=" + actor.getVersion());
+                    em_.persist(actor);
+                    action=Action.INSERT;
+            } else {
+                    log.debug(context + " updating entity");
+                    actors.get(0).setBirthDate(actor.getBirthDate());
+                    action=Action.UPDATE;
+            }
+            em_.flush();
+            log.debug(context + " committing transaction version=" + actor.getVersion());
+                    em_.getTransaction().commit();
+            log.debug(context + " committed transaction version=" + actor.getVersion());
     		} catch (PersistenceException ex) {
     			log.debug(context + " failed " + ex);
     			em_.getTransaction().rollback();

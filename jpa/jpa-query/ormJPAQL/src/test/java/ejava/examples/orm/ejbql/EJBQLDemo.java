@@ -212,7 +212,7 @@ public class EJBQLDemo extends DemoBase {
         params.put("firstName", "M%");
         rows = executeQuery(
                 "select c from Clerk c " +
-                "where c.firstName like :firstName)",params).size();
+                "where c.firstName like :firstName",params).size();
         assertEquals("unexpected number of rows", 2, rows);        
 
         params = new HashMap<String, Object>();
@@ -386,13 +386,13 @@ public class EJBQLDemo extends DemoBase {
     
         rows = executeQuery(
                 "select TRIM(LEADING 'c' FROM c.firstName) from Customer c " +
-                "where c.firstName='cat')"
+                "where c.firstName='cat'"
                 ).size();
         assertEquals("unexpected number of rows:" + rows, 1, rows);
         
         rows = executeQuery(
                 "select c from Customer c " +
-                "where CONCAT(CONCAT(c.firstName,' '),c.lastName) ='cat inhat')"
+                "where CONCAT(CONCAT(c.firstName,' '),c.lastName) ='cat inhat'"
                 ).size();
         assertEquals("unexpected number of rows:" + rows, 1, rows);
         

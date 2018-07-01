@@ -1239,22 +1239,19 @@
 	                          </action>
 	                        </pluginExecution>
                             
-                            <!-- 
-	                        <pluginExecution>
-	                          <pluginExecutionFilter>
-	                            <groupId>org.codehaus.mojo</groupId>
-	                            <artifactId>hibernate3-maven-plugin</artifactId>
-	                            <versionRange>[2.2,)</versionRange>
-	                            <goals>
-	                              <goal>hbm2ddl</goal>
-	                              <goal>run</goal>
-	                            </goals>
-	                          </pluginExecutionFilter>
-	                          <action>
-	                            <ignore />
-	                          </action>
-	                        </pluginExecution>
-                             -->
+                            <pluginExecution>
+                              <pluginExecutionFilter>
+                                <groupId>info.ejava.utils.jpa</groupId>
+                                <artifactId>jpa-schemagen-maven-plugin</artifactId>
+                                <versionRange>[4.1.0-SNAPSHOT,)</versionRange>
+                                <goals>
+                                  <goal>generate</goal>
+                                </goals>
+                              </pluginExecutionFilter>
+                              <action>
+                                <ignore/>
+                              </action>
+                            </pluginExecution>
                                                        
 	                        <pluginExecution>
 	                          <pluginExecutionFilter>

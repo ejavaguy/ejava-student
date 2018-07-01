@@ -345,7 +345,7 @@ public class JPAQLTest extends QueryBase {
         params.put("firstName", "M%");
         rows = executeQuery(
                 "select c from Clerk c " +
-                "where c.firstName like :firstName)",
+                "where c.firstName like :firstName",
                 params,Clerk.class).size();
         assertEquals("unexpected number of rows", 2, rows);        
 
@@ -627,13 +627,13 @@ public class JPAQLTest extends QueryBase {
     
         rows = executeQuery(
                 "select TRIM(LEADING 'c' FROM c.firstName) from Customer c " +
-                "where c.firstName='cat')",
+                "where c.firstName='cat'",
                 String.class).size();
         assertEquals("unexpected number of rows", 1, rows);
         
         rows = executeQuery(
                 "select c from Customer c " +
-                "where CONCAT(CONCAT(c.firstName,' '),c.lastName) ='cat inhat')",
+                "where CONCAT(CONCAT(c.firstName,' '),c.lastName) ='cat inhat'",
                 Customer.class).size();
         assertEquals("unexpected number of rows", 1, rows);
         

@@ -25,6 +25,7 @@ public class MovieFactory {
 		Actor a5 = new Actor(new Person("p5").setFirstName("Robert").setLastName("De Niro")
 				.setBirthDate(new GregorianCalendar(1943, Calendar.AUGUST, 17).getTime()));
 		for (Actor a: new Actor[]{a1, a2, a3, a4, a5}) {
+	        em.persist(a.getPerson()); //cascadeType.PERSIST not being followed - HHH-6999?
 			em.persist(a);
 		}
 		
@@ -38,9 +39,9 @@ public class MovieFactory {
 		Director d5 = new Director(new Person("d5").setFirstName("Barry").setLastName("Levinson")
 				.setBirthDate(new GregorianCalendar(1942, Calendar.APRIL, 6).getTime()));
 		for (Director d: new Director[]{d1, d2, d3, d4, d5}) {
+            em.persist(d.getPerson());
 			em.persist(d);
 		}
-		
 		
 		Movie m1 = new Movie("m1").setTitle("Animal House").setReleaseDate(new GregorianCalendar(1978, Calendar.JUNE, 1).getTime())
 				.setDirector(d1)
