@@ -39,7 +39,8 @@ public class Borrower  {
     
     @OneToOne(fetch=FetchType.LAZY, 
             optional=true,       //lets make this optional for demo 
-            mappedBy="borrower") //the other side owns foreign key column
+            mappedBy="borrower", //the other side owns foreign key column
+            cascade= { CascadeType.REFRESH }) //recheck of borrow still target of foreign key when refresh borrower
     private Applicant application;
     
     @OneToMany(mappedBy="borrower", //this relationship is owned by Checkout

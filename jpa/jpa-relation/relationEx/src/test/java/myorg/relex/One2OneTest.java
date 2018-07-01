@@ -236,6 +236,12 @@ public class One2OneTest extends JPATestBase {
         assertNull("coach not deleted", em.find(Coach.class, coach.getId()));
     }
     
+    private Calendar toCalendar(Date date) {
+        GregorianCalendar cal = new GregorianCalendar();
+        cal.setTime(date);
+        return cal;
+    }
+    
     /**
      * This test provides a demonstration of creating a one-to-one, uni-directional
      * relationship to a parent class that uses a composite primary key mapped thru an @IdClass
@@ -264,10 +270,12 @@ public class One2OneTest extends JPATestBase {
         		"select show.date show_date, show.time show_time, " +
         		       "tickets.ticket_date ticket_date, tickets.ticket_time ticket_time, tickets.tickets " +
         		"from RELATIONEX_SHOWEVENT show " +
-                "join RELATIONEX_SHOWTICKETS tickets on show.date = tickets.ticket_date and show.time = tickets.ticket_time " +
-                "where tickets.ticket_date = ?1 and tickets.ticket_time = ?2")
+            "join RELATIONEX_SHOWTICKETS tickets on show.date = tickets.ticket_date and show.time = tickets.ticket_time " +
+            "where tickets.ticket_date = ?1 and tickets.ticket_time = ?2")
                 .setParameter(1, tickets.getShow().getDate(), TemporalType.DATE)
-                .setParameter(2, tickets.getShow().getTime(), TemporalType.TIME)
+//                HHH-11875 - Incorrect parameter binding for java.util.Date and TemporalType
+//                .setParameter(2, tickets.getShow().getTime(), TemporalType.TIME)
+                .setParameter(2, toCalendar(tickets.getTime()), TemporalType.TIME) //bug prevents TemporalType.TIME from working with Java.util.Date 
                 .getSingleResult();
         log.info("row=" + Arrays.toString(cols));
         assertEquals("unexpected show_date", tickets2.getShow().getDate(), (Date)cols[0]);
@@ -320,7 +328,9 @@ public class One2OneTest extends JPATestBase {
                 "join RELATIONEX_BOXOFFICE tickets on show.date = tickets.show_date and show.time = tickets.show_time " +
                 "where tickets.show_date = ?1 and tickets.show_time = ?2")
                 .setParameter(1, boxOffice.getShow().getDate(), TemporalType.DATE)
-                .setParameter(2, boxOffice.getShow().getTime(), TemporalType.TIME)
+//              HHH-11875 - Incorrect parameter binding for java.util.Date and TemporalType
+//              .setParameter(2, boxOffice.getShow().getTime(), TemporalType.TIME)
+               .setParameter(2, toCalendar(boxOffice.getShow().getTime()), TemporalType.TIME) //bug prevents TemporalType.TIME from working with Java.util.Date 
                 .getSingleResult();
         log.info("row=" + Arrays.toString(cols));
         assertEquals("unexpected show_date", boxOffice2.getShow().getDate(), (Date)cols[0]);

@@ -79,16 +79,10 @@
                  to generates DDL files for persistence unit.
                  See effective-pom for full configuration -->
             <plugin>
-                <artifactId>hibernate3-maven-plugin</artifactId>
-                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>jpa-schemagen-maven-plugin</artifactId>
+                <groupId>info.ejava.utils.jpa</groupId>
                 <configuration>
-                    <hibernatetool destdir="target/classes/ddl">
-                        <classpath>
-                            <path location="${project.build.directory}/classes" />
-                            <path location="${project.build.directory}/test-classes" />
-                        </classpath>
-                        <jpaconfiguration persistenceunit="relationEx-test" propertyfile="${basedir}/target/test-classes/hibernate.properties" />
-                    </hibernatetool>
+                    <persistenceunit>relationEx-test</persistenceunit>
                 </configuration>
             </plugin>
 

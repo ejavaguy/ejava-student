@@ -208,14 +208,12 @@ public class RelationshipOwnershipTest extends DemoBase {
         applicant = em.find(Applicant.class, applicantId);
 
         //verify that relationship from cache written to DB
-        assertNotNull("borrower was not updated with applicant:" + 
-                borrower.getApplication(), 
+        assertNotNull("borrower was not updated with applicant", 
                 borrower.getApplication());
         assertNotNull("applicant was not updated with borrower", 
-                applicant.getBorrower());
-        
+                applicant.getBorrower());        
 
-        //remove relationship from borrower
+        //remove relationship from borrower (aka owning side)
         applicant.setBorrower(null);
         log.info("writing rel owner (application) to DB:" + applicant);
         log.info("writing rel inverse (borrower) to DB:" + borrower);
