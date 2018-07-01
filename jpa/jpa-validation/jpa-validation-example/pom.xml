@@ -20,32 +20,32 @@
           <groupId>commons-logging</groupId>
           <artifactId>commons-logging</artifactId>
         </dependency>
-    
         <dependency>
             <groupId>javax.validation</groupId>
             <artifactId>validation-api</artifactId>
-        </dependency>                
+        </dependency>
+        <dependency>
+            <groupId>javax.el</groupId>
+            <artifactId>javax.el-api</artifactId>
+        </dependency>    
+                        
+        <dependency>
+            <groupId>javax.persistence</groupId>
+            <artifactId>javax.persistence-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+                
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-validator</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>javax.el</groupId>
-            <artifactId>javax.el-api</artifactId>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.glassfish.web</groupId>
+            <groupId>org.glassfish</groupId>
             <artifactId>javax.el</artifactId>
             <scope>test</scope>
         </dependency>        
 
-        <dependency>
-            <groupId>javax.persistence</groupId>
-            <artifactId>javax.persistence-api</artifactId>
-            <scope>provided</scope>
-        </dependency>        
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-entitymanager</artifactId>
@@ -85,16 +85,10 @@
                  to generates DDL files for persistence unit.
                  See effective-pom for full configuration -->
             <plugin>
-                <artifactId>hibernate3-maven-plugin</artifactId>
-                <groupId>org.codehaus.mojo</groupId>
+                <groupId>info.ejava.utils.jpa</groupId>
+                <artifactId>jpa-schemagen-maven-plugin</artifactId>
                 <configuration>
-                    <hibernatetool destdir="target/classes/ddl">
-                        <classpath>
-                            <path location="${project.build.directory}/classes" />
-                            <path location="${project.build.directory}/test-classes" />
-                        </classpath>
-                        <jpaconfiguration persistenceunit="jpa-validation-example-test" propertyfile="${basedir}/target/test-classes/hibernate.properties" />
-                    </hibernatetool>
+                    <persistenceunit>jpa-validation-example-test</persistenceunit>
                 </configuration>
             </plugin>
 

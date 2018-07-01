@@ -2,6 +2,7 @@ package ejava.jpa.example.validation;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -34,13 +35,14 @@ public class JPATestBase {
     public void tearDown() throws Exception {
         try {
             log.debug("tearDown() started, em=" + em);
-            if (!em.getTransaction().isActive()) {
-                em.getTransaction().begin();
-                em.getTransaction().commit();            
-            } else if (!em.getTransaction().getRollbackOnly()) {
-                em.getTransaction().commit();                        	
+            EntityTransaction tx = em.getTransaction();
+            if (!tx.isActive()) {
+                tx.begin();
+                tx.commit();            
+            } else if (tx.getRollbackOnly()) {
+                tx.rollback();                        	
             } else {
-            	em.getTransaction().rollback();
+            	    tx.commit();
             }
             em.close();
             log.debug("tearDown() complete, em=" + em);

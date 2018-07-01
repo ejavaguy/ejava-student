@@ -68,10 +68,12 @@ public class CascadeTest extends JPATestBase {
 		p.addItem(item1).addItem(item2);
 		try {
 			em.persist(p);
+			em.flush();  //trigger the validation
 		} catch (ConstraintViolationException ex) {
 			for (ConstraintViolation<?> v: ex.getConstraintViolations()) {
 				log.info(v.getPropertyPath() + ":" + v.getInvalidValue() + " " + v.getMessage());
 			}
+			em.getTransaction().setRollbackOnly();
 		}
 	}
 

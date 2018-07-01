@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 
 import javax.validation.ConstraintViolationException;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.Test;
@@ -49,6 +50,7 @@ public class JPAValidation extends JPATestBase {
 		    .setBirthDate(new Date());
 		try {
 			em.persist(p);
+			em.flush(); //trigger the validation
 		} catch (ConstraintViolationException ex) {
 			log.info("caught expected exception:" + ex);
 		}
