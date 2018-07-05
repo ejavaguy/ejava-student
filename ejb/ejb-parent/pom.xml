@@ -4,7 +4,7 @@
     <parent>
         <groupId>info.ejava.examples.jpa</groupId>
         <artifactId>jpa-parent</artifactId>
-        <version>4.1.0-SNAPSHOT</version>
+        <version>5.0.0-SNAPSHOT</version>
         <relativePath/>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -23,9 +23,9 @@
     </description>
 
     <properties>
-        <ejava.version>4.1.0-SNAPSHOT</ejava.version>
+        <ejava.version>5.0.0-SNAPSHOT</ejava.version>
         <javax.ejb-api.version>3.2</javax.ejb-api.version>
-        <wildfly.version>9.0.1.Final</wildfly.version>
+        <wildfly.version>13.0.0.Final</wildfly.version>
         <wildfly-controller-client.version>8.2.1.Final</wildfly-controller-client.version>
 
         <cargo-maven2-plugin.version>1.4.15</cargo-maven2-plugin.version>

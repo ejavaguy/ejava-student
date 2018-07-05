@@ -4,7 +4,7 @@
     <parent>
         <artifactId>jpa-utils</artifactId>
         <groupId>info.ejava.utils.jpa</groupId>
-        <version>4.1.0-SNAPSHOT</version>
+        <version>5.0.0-SNAPSHOT</version>
     </parent>
 
     <groupId>info.ejava.utils.jpa</groupId>
@@ -72,9 +72,9 @@
                         <configuration>
                             <target>
                                 <java classname="ejava.examples.schemagen.JPASchemaGen">
-                                    <arg value="${project.artifactId}-test"></arg>
+                                    <arg value="${project.artifactId}-test" />
                                     <classpath>
-                                        <path refid="maven.test.classpath"/>
+                                        <path refid="maven.test.classpath" />
                                     </classpath>
                                 </java>
                             </target>
