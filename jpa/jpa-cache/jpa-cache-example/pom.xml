@@ -25,7 +25,38 @@
         <groupId>javax.persistence</groupId>
         <artifactId>javax.persistence-api</artifactId>
         <scope>provided</scope>
-    </dependency>        
+    </dependency>
+    
+ <!-- scope needed for hibernate @Cache annotation -->     
+    <dependency>
+        <groupId>org.hibernate</groupId>
+        <artifactId>hibernate-entitymanager</artifactId>
+        <scope>provided</scope>
+    </dependency>
+    
+ <!-- for  jcache=JCacheRegionFactory region strategy-->
+    <dependency>
+        <groupId>org.hibernate</groupId>
+        <artifactId>hibernate-jcache</artifactId>
+        <version>${hibernate-entitymanager.version}</version>
+        <scope>provided</scope>
+    </dependency>
+    
+ <!-- EhcacheCachingProvider cache provider-->   
+    <dependency>
+      <groupId>org.ehcache.modules</groupId>
+      <artifactId>ehcache-107</artifactId>
+      <version>3.5.2</version>
+        <scope>compile</scope>
+    </dependency>
+    
+<!-- Ehcache 3.x -->     
+    <dependency>
+        <groupId>org.ehcache</groupId>
+        <artifactId>ehcache</artifactId>
+        <version>3.5.2</version>
+    </dependency>
+    
 
     <dependency>
         <groupId>org.hibernate</groupId>
@@ -37,11 +68,7 @@
         <artifactId>slf4j-log4j12</artifactId>
         <scope>test</scope>
     </dependency>
-    <dependency>
-        <groupId>org.hibernate</groupId>
-        <artifactId>hibernate-ehcache</artifactId>
-        <version>${hibernate-entitymanager.version}</version>
-    </dependency>
+
 
     <!-- core project testing dependencies -->
     <dependency>
@@ -84,21 +111,30 @@
             </configuration>
         </plugin>
 
-        <!-- generates a DDL file for persistence unit
-             Must comment out hibernate4 2nd-level cache in peristence.xml to enable this
+        <!-- generates a DDL file for persistence unit -->
         <plugin>
-            <artifactId>hibernate3-maven-plugin</artifactId>
-            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>jpa-schemagen-maven-plugin</artifactId>
+            <groupId>info.ejava.utils.jpa</groupId>
             <configuration>
-                <hibernatetool destdir="target/classes/ddl">
-                    <classpath>
-                        <path location="${project.build.directory}/test-classes" />
-                    </classpath>
-                    <jpaconfiguration persistenceunit="jpaCache" propertyfile="${basedir}/target/test-classes/hibernate.properties" />
-                </hibernatetool>
+                <persistenceunit>jpaCache</persistenceunit>
             </configuration>
         </plugin>
-        -->
     </plugins>      
   </build>
+
+<!--
+  <repositories>
+    <repository>
+        <id>sonatype-nexus-snapshots</id>
+        <name>Sonatype Nexus Snapshots</name>
+        <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        <releases>
+            <enabled>false</enabled>
+        </releases>
+        <snapshots>
+            <enabled>true</enabled>
+        </snapshots>
+    </repository>
+  </repositories>
+  -->
 </project>

@@ -8,15 +8,43 @@
         <shared-cache-mode>ENABLE_SELECTIVE</shared-cache-mode>
 
         <properties>
-        <!-- Hibernate 4 2nd-level cache properties 
-         -->
+            <property name="hibernate.cache.region.factory_class" 
+                      value="org.hibernate.cache.jcache.JCacheRegionFactory" />     
+            <property name="hibernate.javax.cache.provider" 
+                      value="org.ehcache.jsr107.EhcacheCachingProvider"/>
+            <property name="hibernate.cache.use_query_cache" value="true" />
+
+        <!-- Hibernate 5 2nd-level cache properties 
             <property name="hibernate.cache.region.factory_class"
-                value="org.hibernate.cache.ehcache.EhCacheRegionFactory" />      
+                value="org.hibernate.cache.ehcache.EhCacheRegionFactory" />     
+            <property name="hibernate.cache.use_query_cache" value="true" />
+                                 
             <property name="hibernate.cache.provider_class"
                 value="org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory" />
+
+            <property name="hibernate.cache.region.factory_class"
+                value="org.hibernate.cache.jcache.JCacheRegionFactory" />     
+            <property name="hibernate.cache.provider_class"
+                value="org.hibernate.cache.EhCacheProvider" />     
+            
             <property name="hibernate.cache.use_second_level_cache" value="true" />
             <property name="hibernate.cache.use_query_cache" value="true" />
-        </properties>
+         -->
+
+         <!-- 
+            <property name="hibernate.cache.provider_class"
+                value="org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory" />
+
+            <property name="hibernate.cache.region.factory_class"
+                value="jcache" />
+            <property
+                name="hibernate.javax.cache.provider"
+                value="org.ehcache.jsr107.EhcacheCachingProvider"/>                
+            <property
+                name="hibernate.javax.cache.uri"
+                value="file:/path/to/ehcache.xml"/>
+          -->   
+            </properties>
     </persistence-unit>        
     
 </persistence>

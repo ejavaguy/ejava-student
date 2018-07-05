@@ -50,7 +50,10 @@
    <logger name="org.hibernate.SQL">
       <level value="DEBUG"/>
       <appender-ref ref="logfile"/>  
-      <appender-ref ref="CONSOLE"/>  
+   </logger>
+   <logger name="org.hibernate">
+      <level value="TRACE"/>
+      <appender-ref ref="logfile"/>  
    </logger>
    <root>
       <priority value="fatal"/>    

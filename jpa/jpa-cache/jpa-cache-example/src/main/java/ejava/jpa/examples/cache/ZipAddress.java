@@ -2,9 +2,13 @@ package ejava.jpa.examples.cache;
 
 import javax.persistence.*;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 @Entity
 @Table(name="JPACACHE_ZIPADDR")
 @Cacheable(true)
+@Cache(usage=CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class ZipAddress {
 	@Id
 	@Column(length=10)
