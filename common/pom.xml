@@ -19,6 +19,5 @@
     <modules>
         <module>jboss-rmi-client</module>
         <module>ejava-util</module>
-    <module>jpa-schemagen-maven-plugin</module>
   </modules>
 </project>

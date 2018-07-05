@@ -17,7 +17,7 @@
      </description>
 
      <properties>
-        <jboss.javaee7.spec.version>1.0.0.Final</jboss.javaee7.spec.version>
+        <jboss.javaee7.spec.version>1.1.1.Final</jboss.javaee7.spec.version>
      </properties>
 
     <dependencyManagement>
@@ -29,7 +29,7 @@
             versions of artifacts. Here we use the jboss-javaee-7.0 stack (you can
             read this as the JBoss stack of the Java EE 7 APIs). You can actually
             use this stack with any version of WildFly that implements Java EE 7, not
-            just WildFly 8! -->
+            just WildFly 8! 
             <dependency>
                 <groupId>org.jboss.spec</groupId>
                 <artifactId>jboss-javaee-7.0</artifactId>
@@ -45,36 +45,57 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+-->
         </dependencies>
     </dependencyManagement>
 
     <dependencies>
 
+        <!-- Include the ejb client jars -->
+        <dependency>
+            <groupId>org.wildfly.bom</groupId>
+            <artifactId>ejb-client-bom</artifactId>
+            <version>${wildfly.version}</version>
+            <type>pom</type>
+            <scope>compile</scope>
+        </dependency>
+
+        <!-- We depend on the EJB remote business interfaces of this application -->
+        <dependency>
+            <groupId>org.wildfly.quickstarts</groupId>
+            <artifactId>ejb-remote-server-side</artifactId>
+            <version>${wildfly.version}</version>
+            <type>ejb-client</type>
+        </dependency>
+
        <!-- Import the transaction spec API, we use runtime scope because we aren't using any direct
-        reference to the spec API in our client code -->
+        reference to the spec API in our client code
       <dependency>
          <groupId>org.jboss.spec.javax.transaction</groupId>
          <artifactId>jboss-transaction-api_1.2_spec</artifactId>
          <scope>runtime</scope>
       </dependency>
+ -->
 
       <!-- Import the EJB 3.x API, we use runtime scope because we aren't using any direct
-       reference to EJB spec API in our client code -->
+       reference to EJB spec API in our client code 
       <dependency>
          <groupId>org.jboss.spec.javax.ejb</groupId>
          <artifactId>jboss-ejb-api_3.2_spec</artifactId>
          <scope>runtime</scope>
       </dependency>
+-->
 
        <!-- JBoss EJB client API jar. We use runtime scope because the EJB client API
-        isn't directly used in this example. We just need it in our runtime classpath -->
+        isn't directly used in this example. We just need it in our runtime classpath 
        <dependency>
            <groupId>org.jboss</groupId>
            <artifactId>jboss-ejb-client</artifactId>
            <scope>runtime</scope>
        </dependency>
+-->
 
-       <!-- client communications with the server use XNIO -->
+       <!-- client communications with the server use XNIO 
        <dependency>
            <groupId>org.jboss.xnio</groupId>
            <artifactId>xnio-api</artifactId>
@@ -85,34 +106,39 @@
            <artifactId>xnio-nio</artifactId>
            <scope>runtime</scope>
        </dependency>
+-->
 
-      <!-- The client needs JBoss remoting to access the server -->
+      <!-- The client needs JBoss remoting to access the server 
        <dependency>
             <groupId>org.jboss.remoting</groupId>
             <artifactId>jboss-remoting</artifactId>
             <scope>runtime</scope>
        </dependency>
+-->
 
-      <!-- Remote EJB accesses can be secured -->
+      <!-- Remote EJB accesses can be secured 
        <dependency>
            <groupId>org.jboss.sasl</groupId>
            <artifactId>jboss-sasl</artifactId>
            <scope>runtime</scope>
        </dependency>
+-->
 
-       <!-- data serialization for invoking remote EJBs -->
+       <!-- data serialization for invoking remote EJBs 
        <dependency>
            <groupId>org.jboss.marshalling</groupId>
            <artifactId>jboss-marshalling-river</artifactId>
            <scope>runtime</scope>
        </dependency>
+-->
 
-       <!-- used for non-EJB-specific, generic JNDI lookups -->
+       <!-- used for non-EJB-specific, generic JNDI lookups 
        <dependency>
             <groupId>org.jboss</groupId>
             <artifactId>jboss-remote-naming</artifactId>
             <scope>runtime</scope>
        </dependency>
+-->
 
        <!-- used if hibernate entities re-used as DTOs 
        <dependency>

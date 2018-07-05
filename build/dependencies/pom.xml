@@ -111,7 +111,7 @@
         <sql-maven-plugin.version>1.5</sql-maven-plugin.version>
         <validation-api.version>2.0.1.Final</validation-api.version>
         <weld-servlet.version>2.2.6.Final</weld-servlet.version>
-        <wildfly.version>9.0.1.Final</wildfly.version>
+        <wildfly.version>13.0.0.Final</wildfly.version>
         <wildfly-controller-client.version>8.2.1.Final</wildfly-controller-client.version>
         <xercesImpl.version>2.9.1</xercesImpl.version>
 
@@ -455,11 +455,6 @@
                 <artifactId>jandex</artifactId>
                 <version>${jandex.version}</version>
             </dependency>
-<!--             <dependency> -->
-<!--                 <groupId>org.hibernate.javax.persistence</groupId> -->
-<!--                 <artifactId>hibernate-jpa-2.1-api</artifactId> -->
-<!--                 <version>${hibernate-jpa-2.1-api.version}</version> -->
-<!--             </dependency> -->
             <dependency>
                 <groupId>org.hibernate</groupId>
                 <artifactId>hibernate-validator</artifactId>

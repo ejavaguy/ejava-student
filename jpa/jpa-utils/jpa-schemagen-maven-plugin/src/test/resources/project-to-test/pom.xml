@@ -11,17 +11,17 @@
   <name>Test JPA Schema Generation Plugin</name>
   
   <properties>
-        <hibernate-jpa-2.1-api.version>1.0.0.Final</hibernate-jpa-2.1-api.version>
+        <javax.persistence-api.version>2.2</javax.persistence-api.version>
         <hibernate-entitymanager.version>4.3.11.Final</hibernate-entitymanager.version>
   </properties>
   
   <dependencies>
       <dependency>
-          <groupId>org.hibernate.javax.persistence</groupId>
-          <artifactId>hibernate-jpa-2.1-api</artifactId>
-          <version>${hibernate-jpa-2.1-api.version}</version>
+          <groupId>javax.persistence</groupId>
+          <artifactId>javax.persistence-api</artifactId>
+          <version>${javax.persistence-api.version}</version>
           <scope>provided</scope>
-      </dependency>
+      </dependency>        
 
       <dependency>
           <groupId>org.hibernate</groupId>

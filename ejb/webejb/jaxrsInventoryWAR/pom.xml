@@ -39,12 +39,12 @@
             <scope>provided</scope>
         </dependency>        
 
-        <!-- JPA provider for annotations -->        
+        <!-- JPA provider for annotations -->
         <dependency>
-            <groupId>org.hibernate.javax.persistence</groupId>
-            <artifactId>hibernate-jpa-2.1-api</artifactId>
+            <groupId>javax.persistence</groupId>
+            <artifactId>javax.persistence-api</artifactId>
             <scope>test</scope>
-        </dependency>
+        </dependency>        
         <!-- JAX-RS provider -->
         <dependency>
             <groupId>org.jboss.resteasy</groupId>

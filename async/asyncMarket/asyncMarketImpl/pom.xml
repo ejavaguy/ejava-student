@@ -25,6 +25,11 @@
 
         <!-- src/main, test, and runtime classpaths -->
         <dependency>
+            <groupId>javax.persistence</groupId>
+            <artifactId>javax.persistence-api</artifactId>
+            <scope>provided</scope>
+        </dependency>        
+        <dependency>
             <groupId>javax.transaction</groupId>
             <artifactId>jta</artifactId>
             <scope>provided</scope>
@@ -95,11 +100,6 @@
             </activation>
             <dependencies>
                 <dependency>
-                    <groupId>org.hibernate.javax.persistence</groupId>
-                    <artifactId>hibernate-jpa-2.1-api</artifactId>
-                    <scope>provided</scope>
-                </dependency>
-                <dependency>
                     <groupId>org.hibernate</groupId>
                     <artifactId>hibernate-entitymanager</artifactId>
                     <scope>test</scope>
@@ -113,15 +113,10 @@
             <build>
                 <plugins>
                     <plugin>
-                        <artifactId>hibernate3-maven-plugin</artifactId>
-                        <groupId>org.codehaus.mojo</groupId>
+                        <groupId>info.ejava.utils.jpa</groupId>
+                        <artifactId>jpa-schemagen-maven-plugin</artifactId>
                         <configuration>
-                            <hibernatetool destdir="target/classes/ddl">
-                                <classpath>
-                                    <path location="${project.build.directory}/test-classes" />
-                                </classpath>
-                                <jpaconfiguration persistenceunit="asyncMarket-test" propertyfile="${basedir}/target/test-classes/hibernate.properties" />
-                            </hibernatetool>
+                            <persistenceUnit>asyncMarket-test</persistenceUnit>
                         </configuration>
                     </plugin>
                 </plugins>

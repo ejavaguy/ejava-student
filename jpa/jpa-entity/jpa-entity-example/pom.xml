@@ -79,12 +79,10 @@
                 </configuration>
             </plugin>
 
-<!--
             <plugin>
                 <groupId>info.ejava.utils.jpa</groupId>
                 <artifactId>jpa-schemagen-maven-plugin</artifactId>
             </plugin>
-            -->
 
                <!-- generates schema files with DDL commands to create/drop schema within DB
             <plugin>
