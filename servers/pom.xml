@@ -18,6 +18,6 @@
     </description>
 
     <modules>
-        <module>ejava-wildfly901</module>
+        <module>ejava-wildfly1300</module>
     </modules>
 </project>
