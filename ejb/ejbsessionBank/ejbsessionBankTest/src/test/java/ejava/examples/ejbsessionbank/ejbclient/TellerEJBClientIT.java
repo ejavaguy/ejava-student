@@ -57,7 +57,6 @@ ejb:(ear)/(module)/(distinctName)/(ejbClass)!(remoteInterface)?stateful
      */
     @Override
     public void setUp() throws Exception {
-        super.jndiProperties = JNDIUtil.getJNDIProperties("jboss.ejbclient.");
         super.jndiName = TellerEJBClientIT.jndiName;
         super.statsJNDI = TellerEJBClientIT.statsJNDI;
         super.setUp();

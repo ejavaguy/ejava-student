@@ -68,15 +68,10 @@
             <build>
                 <plugins>
                     <plugin>
-                        <artifactId>hibernate3-maven-plugin</artifactId>
-                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>jpa-schemagen-maven-plugin</artifactId>
+                        <groupId>info.ejava.utils.jpa</groupId>
                         <configuration>
-                            <hibernatetool destdir="target/classes/ddl">
-                                <classpath>
-                                    <path location="${project.build.directory}/test-classes" />
-                                </classpath>
-                                <jpaconfiguration persistenceunit="ejbsessionBank-test" propertyfile="${basedir}/target/test-classes/hibernate.properties" />
-                            </hibernatetool>
+                            <persistenceUnit>ejbsessionBank-test</persistenceUnit>
                         </configuration>
                     </plugin>
                 </plugins>

@@ -52,7 +52,6 @@ public class TellerRemotingIT extends TellerAccountITBase {
      */
     @Override
     public void setUp() throws Exception {
-        super.jndiProperties = JNDIUtil.getJNDIProperties("jboss.remoting.");
         super.jndiName = jndiName;
         super.statsJNDI = statsJNDI;
         super.setUp();

@@ -27,9 +27,6 @@ import ejava.util.jndi.JNDIUtil;
   */
 public class TellerRemoteITBase {
     private static final Log log = LogFactory.getLog(TellerRemoteITBase.class);
-
-    //in-memory jndi.properties environment initialized by derived class
-    protected Properties jndiProperties;
     
     //naming technique-specific JNDI name for teller initialized by derived class
     protected String jndiName;
@@ -48,12 +45,12 @@ public class TellerRemoteITBase {
     	log.info("*** setUpClass() ***");
         //give application time to fully deploy
         if (Boolean.parseBoolean(System.getProperty("cargo.startstop", "false"))) {
-                long waitTime=15000;
-        log.info(String.format("pausing %d secs for server deployment to complete", waitTime/1000));
-        Thread.sleep(waitTime);
+            long waitTime=15000;
+            log.info(String.format("pausing %d secs for server deployment to complete", waitTime/1000));
+            Thread.sleep(waitTime);
         }
         else {
-        log.info(String.format("startstop not set"));
+            log.info(String.format("startstop not set"));
         }
     }
     
@@ -66,13 +63,10 @@ public class TellerRemoteITBase {
     @Before
     public void setUp() throws Exception {
     	log.info("== setUp() ==");
-    	
-    	assertNotNull("jndiProperties not initialized", jndiProperties);
 
     	//get the InitialContext from the jndi.properties environment
     	log.debug("getting jndi initial context");
-        jndiProperties.list(System.out);
-        jndi = new InitialContext(jndiProperties);    
+        jndi = new InitialContext();
         
        //be sure server is running and application fully deployed
         JNDIUtil.lookup(jndi, TellerRemote.class, jndiName, 15);
