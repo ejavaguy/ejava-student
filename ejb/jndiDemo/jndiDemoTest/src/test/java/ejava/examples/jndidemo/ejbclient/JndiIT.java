@@ -66,19 +66,8 @@ public class JndiIT  {
     public void setUp() throws Exception {
         log.debug("getting jndi initial context");
         jndi = new InitialContext();
-        //can't call this when java.naming.factory.initial not specified
-        //log.debug("jndi=" + jndi.getEnvironment());
-        
-        //instead -- dump the jndi.properties and jboss-ejb-client.properties files
-        InputStream is = getClass().getResourceAsStream("/jndi.properties");
-        assertNotNull("jndi.properties not found", is);
-        log.debug("jndi.properties\n" + IOUtils.toString(is));
-        is.close();
-        is = getClass().getResourceAsStream("/jboss-ejb-client.properties");
-        assertNotNull("jboss-ejb-client.properties 1 not found", is);
-        log.debug("jboss-ejb-client.properties\n" + IOUtils.toString(is));
-        is.close();
-        
+        log.debug("jndi=" + jndi.getEnvironment());
+                
         log.debug("aidName=" + aidName);
         log.debug("bakeName=" + bakeName);
         log.debug("trainName=" + trainName);
