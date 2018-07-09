@@ -41,7 +41,7 @@ public abstract class GreeterBase {
     public void setUp() throws Exception {
         logger.info("using jndiProperties={}", jndiProperties);
         logger.info("using jndiName={}", jndiName);
-        jndi = new InitialContext(jndiProperties);
+        jndi = new InitialContext();
         greeter = (GreeterRemote) jndi.lookup(jndiName);
     }
 

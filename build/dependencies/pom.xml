@@ -130,26 +130,22 @@
         <jndi.user>known</jndi.user>
         <jndi.password>password1!</jndi.password>
 
-        <!-- used with JBoss RMI client -->
-        <!--
-        <java.naming.factory.initial>org.jboss.as.naming.InitialContextFactory</java.naming.factory.initial>
-        <java.naming.factory.url.pkgs>org.jboss.ejb.client.naming</java.naming.factory.url.pkgs>
-        <java.naming.provider.url/>
-        -->
-        <jboss.remoting.java.naming.factory.initial>org.jboss.naming.remote.client.InitialContextFactory</jboss.remoting.java.naming.factory.initial>
-        <jboss.remoting.java.naming.provider.url>http-remoting://${jboss.host}:${jboss.http.port}</jboss.remoting.java.naming.provider.url>
+        <!-- used with JBoss RMI client 
+        <jboss.remoting.java.naming.factory.initial>org.wildfly.naming.client.WildFlyInitialContextFactory</jboss.remoting.java.naming.factory.initial>
+        <jboss.remoting.java.naming.provider.url>remote+http://${jboss.host}:${jboss.http.port}</jboss.remoting.java.naming.provider.url>
         <jboss.remoting.java.naming.factory.url.pkgs/>
         <jboss.remoting.java.naming.security.principal>${jndi.user}</jboss.remoting.java.naming.security.principal>
         <jboss.remoting.java.naming.security.credentials>${jndi.password}</jboss.remoting.java.naming.security.credentials>
 
-        <jboss.ejbclient.java.naming.factory.initial></jboss.ejbclient.java.naming.factory.initial>
-        <jboss.ejbclient.java.naming.provider.url/>
+        <jboss.ejbclient.java.naming.factory.initial>org.wildfly.naming.client.WildFlyInitialContextFactory</jboss.ejbclient.java.naming.factory.initial>
+        <jboss.ejbclient.java.naming.provider.url>remote+http://${jboss.host}:${jboss.http.port}</jboss.ejbclient.java.naming.provider.url>
         <jboss.ejbclient.java.naming.factory.url.pkgs>org.jboss.ejb.client.naming</jboss.ejbclient.java.naming.factory.url.pkgs>
         <jboss.ejbclient.java.naming.security.principal>${jndi.user}</jboss.ejbclient.java.naming.security.principal>
         <jboss.ejbclient.java.naming.security.credentials>${jndi.password}</jboss.ejbclient.java.naming.security.credentials>
+        -->
 
-        <java.naming.factory.initial>${jboss.remoting.java.naming.factory.initial}</java.naming.factory.initial>
-        <java.naming.provider.url>${jboss.remoting.java.naming.provider.url}</java.naming.provider.url>
+        <java.naming.factory.initial>org.wildfly.naming.client.WildFlyInitialContextFactory</java.naming.factory.initial>
+        <java.naming.provider.url>remote+http://${jboss.host}:${jboss.http.port}</java.naming.provider.url>
         <java.naming.factory.url.pkgs/>
     </properties>
 

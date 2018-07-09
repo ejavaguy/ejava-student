@@ -14,8 +14,10 @@ import ejava.util.jndi.JNDIUtil;
  * <p/>
  * 
  * <pre>
- * jboss.ejbclient.java.naming.factory.initial = jboss.ejbclient.java.naming.provider.url = jboss.ejbclient.java.naming.factory.url.pkgs = org.jboss.ejb.client.naming
- * </pre>
+jboss.ejbclient.java.naming.factory.initial
+jboss.ejbclient.java.naming.provider.url 
+jboss.ejbclient.java.naming.factory.url.pkgs = org.jboss.ejb.client.naming
+</pre>
  * 
  * </p>
  * There is also expected to be a jboss-ejb-client.properties file

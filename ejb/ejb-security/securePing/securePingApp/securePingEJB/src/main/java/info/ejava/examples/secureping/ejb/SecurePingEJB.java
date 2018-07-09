@@ -98,9 +98,9 @@ public class SecurePingEJB
     }
     
     @PermitAll
-    public String getPrincipal() {
+    public String whoAmI() {
         String name= ctx.getCallerPrincipal().getName();
-        logger.debug("getPrincipal(), name=" + name);
-    	return name;
+        logger.debug("whoAmI()=" + name);
+        return name;
     }
 }

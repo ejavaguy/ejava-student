@@ -1,31 +1,27 @@
 package info.ejava.examples.securepingclient.ejbclient;
 
 
-import static org.junit.Assert.*;
-import info.ejava.examples.secureping.ejb.SecurePingClient;
-import info.ejava.examples.secureping.ejb.SecurePingClientRemote;
-import info.ejava.examples.secureping.ejb.SecurePingRemote;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.StringWriter;
+import java.util.Arrays;
 import java.util.Properties;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
-import javax.security.auth.callback.CallbackHandler;
 
-import org.jboss.ejb.client.ContextSelector;
-import org.jboss.ejb.client.EJBClientConfiguration;
-import org.jboss.ejb.client.EJBClientContext;
-import org.jboss.ejb.client.PropertiesBasedEJBClientConfiguration;
-import org.jboss.ejb.client.remoting.ConfigBasedEJBClientContextSelector;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import info.ejava.examples.secureping.ejb.SecurePingClient;
+import info.ejava.examples.secureping.ejb.SecurePingClientRemote;
 
 /**
  * This class performs a check of the SecurePingClientEJB using RMI Calls.
@@ -40,24 +36,12 @@ public class SecurePingClientEJBClientIT extends SecurePingClientTestBase {
     //reference to remote interface for SecurePingEJB
     SecurePingClient securePing;
     
-    //callback handlers
-    CallbackHandler knownLogin;
-    CallbackHandler userLogin;
-    CallbackHandler adminLogin;
-    
     @Before
-    public void setUp() throws Exception {
-        //create different types of logins
-        knownLogin = new BasicCallbackHandler(knownUser, knownPassword);
-        userLogin = new BasicCallbackHandler(userUser, userPassword);
-        adminLogin = new BasicCallbackHandler(adminUser, adminPassword);
+    public void setUp() throws Exception {        
+        logger.debug("known login=" + Arrays.toString(knownLogin));
+        logger.debug("user login=" + Arrays.toString(userLogin));
+        logger.debug("admin login=" + Arrays.toString(adminLogin));        
         
-        logger.debug("known login=" + knownLogin);
-        logger.debug("user login=" + userLogin);
-        logger.debug("admin login=" + adminLogin);        
-        
-        Properties jndiProperties = new Properties();
-        jndiProperties.put("jboss.naming.client.ejb.context", false); //override anything we put there for Remoting
         Context jndi = new InitialContext();
         logger.debug("looking up jndi.name=" + jndiName);
         securePing = (SecurePingClientRemote)jndi.lookup(jndiName);
@@ -76,22 +60,23 @@ public class SecurePingClientEJBClientIT extends SecurePingClientTestBase {
      * the CallbackHandler is consulted for the new identity.
      * @See https://developer.jboss.org/message/730760
      */
-    private void runAs(CallbackHandler login) throws NamingException, IOException {
-        if (BasicCallbackHandler.getLogin()!=login) {
-            InputStream is = getClass().getResourceAsStream("/jboss-ejb-client.properties");
-            assertNotNull("unable to locate jboss-ejb-client.properties", is);
+    private void runAs(String[] login) throws NamingException, IOException {
+        if (!Arrays.equals(login, currentLogin) || securePing==null) {
+            Properties props = new Properties();
+            if (login!=null) {
+                props.put(Context.SECURITY_PRINCIPAL, login[0]);
+                props.put(Context.SECURITY_CREDENTIALS, login[1]);
+            }
+            InitialContext jndi = null;
             try {
-                Properties props = new Properties();
-                props.load(is);
-                StringWriter sw = new StringWriter();
-                props.store(sw,null);
-                //logger.debug("props=" + sw);
-                BasicCallbackHandler.setLogin(login);
-                EJBClientConfiguration cfg = new PropertiesBasedEJBClientConfiguration(props);
-                ContextSelector<EJBClientContext> contextSelector = new ConfigBasedEJBClientContextSelector(cfg);
-                EJBClientContext.setSelector(contextSelector);
+                jndi = new InitialContext(props);
+                logger.debug("looking up jndi.name={} as {}", jndiName, login==null?"anonymous" : login[0]);
+                securePing = (SecurePingClientRemote)jndi.lookup(jndiName);
+                logger.debug("found={}", securePing);
+                logger.debug("login={}, whoAmI={}", login==null ? null : Arrays.toString(login), securePing.whoAmI());
+                currentLogin = login;
             } finally {
-                is.close();
+                if (jndi!=null) { jndi.close(); }
             }
         }
     }

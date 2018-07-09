@@ -7,7 +7,9 @@ import info.ejava.examples.secureping.ejb.SecurePingRemote;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.Map;
 import java.util.Properties;
 
@@ -15,18 +17,24 @@ import javax.ejb.EJBAccessException;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
+import javax.security.auth.callback.Callback;
 import javax.security.auth.callback.CallbackHandler;
+import javax.security.auth.callback.NameCallback;
+import javax.security.auth.callback.PasswordCallback;
+import javax.security.auth.callback.UnsupportedCallbackException;
 
-import org.jboss.ejb.client.ContextSelector;
-import org.jboss.ejb.client.EJBClientConfiguration;
+//import org.jboss.ejb.client.ContextSelector;
+//import org.jboss.ejb.client.EJBClientConfiguration;
 import org.jboss.ejb.client.EJBClientContext;
-import org.jboss.ejb.client.PropertiesBasedEJBClientConfiguration;
-import org.jboss.ejb.client.remoting.ConfigBasedEJBClientContextSelector;
+//import org.jboss.ejb.client.PropertiesBasedEJBClientConfiguration;
+//import org.jboss.ejb.client.remoting.ConfigBasedEJBClientContextSelector;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import ejava.util.jndi.JNDIUtil;
 
 /**
  * This class demonstrates accessing the application server and EJB using
@@ -41,74 +49,29 @@ public class SecurePingEJBClientIT extends SecurePingTestBase {
             "ejb:securePingEAR/securePingEJB/SecurePingEJB!"+SecurePingRemote.class.getName());    
     private SecurePingRemote securePing;
     
-    Map<String,CallbackHandler> logins = new HashMap<String, CallbackHandler>();
-    CallbackHandler knownLogin;
-    CallbackHandler userLogin;
-    CallbackHandler adminLogin;
-    CallbackHandler jmxLogin;
-    String skipFlush = System.getProperty("skip.flush");
-    
-    @Before
-    public void setUp() throws Exception {
-        //create different types of logins
-        knownLogin = new BasicCallbackHandler(knownUser, knownPassword);
-        userLogin = new BasicCallbackHandler(userUser, userPassword);
-        adminLogin = new BasicCallbackHandler(adminUser, adminPassword);
-        jmxLogin = new BasicCallbackHandler(jmxUser, jmxPassword);
-        
-        logger.debug("known login={}", knownLogin);
-        logger.debug("user login={}", userLogin);
-        logger.debug("admin login={}", adminLogin);
-        logger.debug("jmx login={}", jmxLogin);
-
-        //account for how maven and Ant will expand string
-        /*
-        if (skipFlush == null || 
-            "${skip.flush}".equals(skipFlush) ||
-            "false".equalsIgnoreCase(skipFlush)) {
-        	LoginContext lc = new LoginContext("securePingTest", jmxLogin);
-        	lc.login();
-            //new ResetAuthenticationCache().execute();
-            lc.logout();
-        }
-            */
-
-        Properties jndiProperties = new Properties();
-        jndiProperties.put("jboss.naming.client.ejb.context", false); //override anything we put there for Remoting
-        Context jndi = new InitialContext(jndiProperties);
-        logger.debug("looking up jndi.name={}", jndiName);
-        securePing = (SecurePingRemote)jndi.lookup(jndiName);
-        logger.debug("found={}", securePing);
-        jndi.close();
-    }
-    
-    @After
-    public void tearDown() throws Exception{
-        runAs(null);
-    }
-    
     /*
      * This method will change the callback handler to the specified instance
      * and force EJBClient to reload the connection. This is required so that
      * the CallbackHandler is consulted for the new identity.
      * @See https://developer.jboss.org/message/730760
      */
-    private void runAs(CallbackHandler login) throws NamingException, IOException {
-        if (BasicCallbackHandler.getLogin()!=login) {
-            InputStream is = getClass().getResourceAsStream("/jboss-ejb-client.properties");
-            assertNotNull("unable to locate jboss-ejb-client.properties", is);
+    private void runAs(String[] login) throws NamingException, IOException {
+        if (!Arrays.equals(login, currentLogin) || securePing==null) {
+            Properties props = new Properties();
+            if (login!=null) {
+                props.put(Context.SECURITY_PRINCIPAL, login[0]);
+                props.put(Context.SECURITY_CREDENTIALS, login[1]);
+            }
+            InitialContext jndi = null;
             try {
-                Properties props = new Properties();
-                props.load(is);
-                StringWriter sw = new StringWriter();
-                props.store(sw,null);
-                //logger.debug("props={}", sw);
-                BasicCallbackHandler.setLogin(login);
-                EJBClientConfiguration cfg = new PropertiesBasedEJBClientConfiguration(props);
-                ContextSelector<EJBClientContext> contextSelector = new ConfigBasedEJBClientContextSelector(cfg);
-                EJBClientContext.setSelector(contextSelector);
+                jndi = new InitialContext(props);
+                logger.debug("looking up jndi.name={} as {}", jndiName, login==null?"anonymous" : login[0]);
+                securePing = (SecurePingRemote)jndi.lookup(jndiName);
+                logger.debug("found={}", securePing);
+                logger.debug("login={}, whoAmI={}", login==null ? null : Arrays.toString(login), securePing.whoAmI());
+                currentLogin = login;
             } finally {
-                is.close();
+                if (jndi!=null) { jndi.close(); }
             }
         }
     }
@@ -124,19 +87,20 @@ public class SecurePingEJBClientIT extends SecurePingTestBase {
 
         runAs(null);
         try {
-            securePing.getPrincipal();
+            String name = securePing.whoAmI();
+            logger.debug("anonymous user whoAmI=", name);
         } catch (Exception ex) {
             logger.debug("expected exception:{}", ex.getMessage());
         }
         
         runAs(knownLogin);
-        assertEquals("unexpected user", knownUser, securePing.getPrincipal());
+        assertEquals("unexpected user", knownUser, securePing.whoAmI());
         
         runAs(userLogin);
-        assertEquals("unexpected user", userUser, securePing.getPrincipal());
+        assertEquals("unexpected user", userUser, securePing.whoAmI());
         
         runAs(adminLogin);
-        assertEquals("unexpected user", adminUser, securePing.getPrincipal());
+        assertEquals("unexpected user", adminUser, securePing.whoAmI());
     }
 
     /**
@@ -172,10 +136,10 @@ public class SecurePingEJBClientIT extends SecurePingTestBase {
     public void testPingAll() throws Exception {
         logger.info("*** testPingAll ***");
         try {
-        	runAs(null);
+        	    runAs(null);
             logger.info(securePing.pingAll());
-            fail("anonymous user not detected"); 
-        }
+            //fail("anonymous user not detected"); 
+        } 
         catch (Exception ex) {
             logger.info("expected error annonymous calling pingAll:" + ex);
         }

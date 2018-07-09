@@ -19,6 +19,12 @@ public class SecurePingClientTestBase {
     protected String adminPassword = System.getProperty("admin.password","password1!");
     protected String jmxUser = System.getProperty("jmx.username","admin");
     protected String jmxPassword = System.getProperty("jmx.password","password1!");    
+
+    protected String[] knownLogin = new String[] { knownUser, knownPassword };
+    protected String[] userLogin = new String[] { userUser, userPassword };
+    protected String[] adminLogin = new String[] { adminUser, adminPassword };
+    protected String[] jmxLogin = new String[] { jmxUser, jmxPassword };
+    protected static String[] currentLogin;
     
 	@BeforeClass
 	public static void setUpClass() throws Exception {

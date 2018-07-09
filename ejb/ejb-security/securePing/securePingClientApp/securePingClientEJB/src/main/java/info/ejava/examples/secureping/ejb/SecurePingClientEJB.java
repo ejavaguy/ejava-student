@@ -91,6 +91,15 @@ public class SecurePingClientEJB
     }
     
     /**
+     * Return the identify of this caller within the context of this EJB invocation.
+     */
+    @Override
+    public String whoAmI() {
+        logger.debug("whoAmI=", ctx.getCallerPrincipal().getName());
+        return ctx.getCallerPrincipal().getName();
+    }
+    
+    /**
      * Return info from this bean and the securePingServer after performing
      * a run-as. Most of the details are written to the log since the return
      * type here is a simple boolean.
