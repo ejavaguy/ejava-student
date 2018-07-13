@@ -53,6 +53,7 @@ public class AuctionItemTest extends MarketTestBase {
             personDAO.createPerson(person);
             bidders.add(person);
         }
+        em.flush();
         
         for (Person p : bidders) {
             Bid highest = item.getHighestBid();
@@ -65,6 +66,7 @@ public class AuctionItemTest extends MarketTestBase {
         }        
         
         item.closeBids();
+        em.flush();
         
         assertEquals("unexpected number of bids for item:" + 
                 item.getBids().size(),
