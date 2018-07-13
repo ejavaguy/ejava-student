@@ -2,26 +2,26 @@ package ejava.examples.javase5;
 
 import static org.junit.Assert.*;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.junit.Test;
 
 public class AutoboxingTest {
-    private static final Log log = LogFactory.getLog(AutoboxingTest.class);
+    private static final Logger logger = LoggerFactory.getLogger(AutoboxingTest.class);
     
     
     private Integer passInteger(Integer i) {
-        log.info("received Integer=" + i);
+        logger.info("received Integer=" + i);
         return i;
     }
     private Long passLong(Long i) {
-        log.info("received Long=" + i);
+        logger.info("received Long=" + i);
         return i;
     }
 
     @Test
     public void testAutobox() {
-        log.info("testAutoBox");
+        logger.info("testAutoBox");
         
         //parameter values being manually wrapped
         //return values being manually unwrapped

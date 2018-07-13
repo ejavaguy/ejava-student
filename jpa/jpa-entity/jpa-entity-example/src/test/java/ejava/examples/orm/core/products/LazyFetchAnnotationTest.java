@@ -2,8 +2,8 @@ package ejava.examples.orm.core.products;
 
 import static org.junit.Assert.*;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.junit.Test;
 
 import ejava.examples.orm.core.annotated.Umbrella;
@@ -16,7 +16,7 @@ import ejava.examples.orm.core.annotated.Umbrella;
  * before inspecting the object.
  */
 public class LazyFetchAnnotationTest extends TestBase {
-    private static Log log = LogFactory.getLog(BasicAnnotationTest.class);
+    private static final Logger log = LoggerFactory.getLogger(BasicAnnotationTest.class);
     
     /**
      * This test provides a demo of persisting and getting a class that

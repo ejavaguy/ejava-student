@@ -4,8 +4,8 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Rule;
@@ -23,7 +23,7 @@ import ejava.jpa.examples.tuning.bo.Person;
 @BenchmarkMethodChart(filePrefix = "benchmark-lists")
 @BenchmarkOptions(warmupRounds=1, benchmarkRounds=3, concurrency=1)
 public class MovieRoleFKIndexTest extends QueryBase {
-	private static final Log log = LogFactory.getLog(MovieRoleFKIndexTest.class);
+	private static final Logger log = LoggerFactory.getLogger(MovieRoleFKIndexTest.class);
 	
 	@Rule
 	public BenchmarkRule benchmarkRun = new BenchmarkRule();

@@ -2,17 +2,17 @@ package ejava.examples.javase5;
 
 import java.lang.reflect.Method;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.junit.Test;
 
 public class AnnotationTest {
-    private static final Log log = LogFactory.getLog(AnnotationTest.class);
+    private static final Logger logger = LoggerFactory.getLogger(AnnotationTest.class);
     
     private void log(String title, Object[] values) {
-        log.info(title + " contained " + values.length + " elements");
+        logger.info(title + " contained " + values.length + " elements");
         for (Object o : values) {
-            log.info(o);
+            logger.info("{}",o);
         }
     }
     

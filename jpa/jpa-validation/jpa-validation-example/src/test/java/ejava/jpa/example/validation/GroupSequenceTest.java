@@ -9,8 +9,8 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 
-import org.apache.commons.logging.LogFactory;
-import org.apache.commons.logging.Log;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.junit.Test;
 
 /**
@@ -20,7 +20,7 @@ import org.junit.Test;
  * validators.
  */
 public class GroupSequenceTest {
-	private static final Log log = LogFactory.getLog(GroupSequenceTest.class);
+	private static final Logger log = LoggerFactory.getLogger(GroupSequenceTest.class);
 	private static final ValidatorFactory vf = Validation.buildDefaultValidatorFactory();
 	private static final Validator val = vf.getValidator();
 

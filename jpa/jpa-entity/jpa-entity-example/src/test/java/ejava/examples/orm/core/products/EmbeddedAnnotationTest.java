@@ -2,8 +2,8 @@ package ejava.examples.orm.core.products;
 
 import static org.junit.Assert.*;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.junit.Test;
 
 import ejava.examples.orm.core.annotated.Manufacturer;
@@ -14,7 +14,7 @@ import ejava.examples.orm.core.annotated.XRay;
  * Manufacturer into its table mapping.
  */
 public class EmbeddedAnnotationTest extends TestBase {
-    private static Log log = LogFactory.getLog(EmbeddedAnnotationTest.class);
+    private static final Logger log = LoggerFactory.getLogger(EmbeddedAnnotationTest.class);
     
     /**
      */

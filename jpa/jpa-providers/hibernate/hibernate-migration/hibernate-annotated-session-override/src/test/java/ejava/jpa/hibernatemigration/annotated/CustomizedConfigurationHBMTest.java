@@ -5,8 +5,8 @@ import static org.junit.Assert.*;
 import java.io.Serializable;
 
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -21,7 +21,7 @@ import ejava.jpa.hibernatemigration.BaseAnnotatedMigrationTest;
 import ejava.jpa.hibernatemigration.CustomizedConfiguration;
 
 public class CustomizedConfigurationHBMTest extends BaseAnnotatedMigrationTest {
-	private static final Log log = LogFactory.getLog(CustomizedConfigurationHBMTest.class);
+	private static final Logger log = LoggerFactory.getLogger(CustomizedConfigurationHBMTest.class);
 	private static SessionFactory sessionFactory;
 	private Session session;
 	

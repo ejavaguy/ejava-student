@@ -12,9 +12,9 @@
     <name>EJB::Java EE Tx::Tx Hotel::DAO</name>
     <dependencies>
         <dependency>
-          <groupId>commons-logging</groupId>
-          <artifactId>commons-logging</artifactId>
-          <scope>compile</scope>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
@@ -33,6 +33,11 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -99,15 +104,10 @@
             <build>
                 <plugins>
                     <plugin>
-                        <artifactId>hibernate3-maven-plugin</artifactId>
-                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>jpa-schemagen-maven-plugin</artifactId>
+                        <groupId>info.ejava.utils.jpa</groupId>
                         <configuration>
-                            <hibernatetool destdir="target/classes/ddl">
-                                <classpath>
-                                    <path location="${project.build.directory}/test-classes" />
-                                </classpath>
-                                <jpaconfiguration persistenceunit="txagent-test" propertyfile="${basedir}/target/test-classes/hibernate.properties" />
-                            </hibernatetool>
+                            <persistenceUnit>txagent-test</persistenceUnit>
                         </configuration>
                     </plugin>
                 </plugins>

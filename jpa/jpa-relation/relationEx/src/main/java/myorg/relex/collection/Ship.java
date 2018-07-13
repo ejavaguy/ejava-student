@@ -11,8 +11,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This class is used as a common base implementation by several implementations
@@ -21,7 +21,7 @@ import org.apache.commons.logging.LogFactory;
 @MappedSuperclass
 public abstract class Ship {
 	@Transient
-	protected final Log log = LogFactory.getLog(getClass());
+	protected final Logger log = LoggerFactory.getLogger(getClass());
 	private static AtomicInteger instanceId = new AtomicInteger();
 	@Transient
 	private int oid = instanceId.getAndAdd(1);
@@ -77,7 +77,8 @@ public abstract class Ship {
 		    .append(".equals(id=")
 		    .append(obj==null?null : ((Ship)obj).id + ",oid=" + ((Ship)obj).oid)
 		    .append(")=")
-		    .append(equals));
+		    .append(equals)
+                    .toString());
 		return equals;
 	}
 	

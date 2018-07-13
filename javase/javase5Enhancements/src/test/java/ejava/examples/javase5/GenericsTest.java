@@ -7,12 +7,12 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.junit.Test;
 
 public class GenericsTest {
-    private static final Log log = LogFactory.getLog(GenericsTest.class);
+    private static final Logger logger = LoggerFactory.getLogger(GenericsTest.class);
     
     private static class TestType {
         public String name;
@@ -25,7 +25,7 @@ public class GenericsTest {
     @SuppressWarnings({ "rawtypes", "unchecked" })
     @Test
     public void testRawCollection() {
-        log.info("testRawCollection");
+        logger.info("testRawCollection");
         
         TestType anObject = new TestType();
         anObject.name = "test object";
@@ -35,7 +35,7 @@ public class GenericsTest {
         
         //the cast to (TestType) is required here
         TestType rawObject = (TestType)rawCollection.get(0);
-        log.info("raw way=" + rawObject.name);                
+        logger.info("raw way=" + rawObject.name);                
     }    
 
     /**
@@ -44,7 +44,7 @@ public class GenericsTest {
      */
     @Test
     public void testTypedCollection() {
-        log.info("testTypedCollection");
+        logger.info("testTypedCollection");
         
         TestType anObject = new TestType();
         anObject.name = "test object";
@@ -55,7 +55,7 @@ public class GenericsTest {
         //no cast necessary
         TestType typedObject = typedCollection.get(0);
         
-        log.info("typed way=" + typedObject.name);        
+        logger.info("typed way=" + typedObject.name);        
     }    
     
     /**
@@ -65,7 +65,7 @@ public class GenericsTest {
     @SuppressWarnings("unchecked")
     @Test
 	public void testCheckedCollection() {
-        log.info("testCheckedCollection");
+        logger.info("testCheckedCollection");
         
         TestType anObject = new TestType();
         anObject.name = "test object";
@@ -94,7 +94,7 @@ public class GenericsTest {
             rawCollection.add(new String("caught"));
         }
         catch (ClassCastException ex) {
-            log.info("caught you!");
+            logger.info("caught you!");
             wasCaught = true;
         }
         assertTrue("checked type not caught", wasCaught);
@@ -103,10 +103,10 @@ public class GenericsTest {
         for(Iterator<TestType> itr=typedCollection.iterator(); itr.hasNext();) {
             try {
                 TestType checkedObject = itr.next();
-                log.info("got " + checkedObject);
+                logger.info("got " + checkedObject);
             }
             catch (ClassCastException ex) {
-                log.info("ouch");
+                logger.info("ouch");
                 exceptions++;
             }
         }

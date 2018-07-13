@@ -4,8 +4,8 @@ import static org.junit.Assert.*;
 
 import java.util.Date;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.junit.Test;
 
 import ejava.examples.daoex.AuthorDAO;
@@ -18,7 +18,7 @@ import ejava.examples.daoex.jpa.JPAAuthorDAO;
  * @author jcstaff
  */
 public class JPAAuthorDAOTest extends JPATestBase {
-    private static Log log = LogFactory.getLog(JPAAuthorDAOTest.class);
+    private static final Logger log = LoggerFactory.getLogger(JPAAuthorDAOTest.class);
     private AuthorDAO dao;
         
     @Override
@@ -100,7 +100,7 @@ public class JPAAuthorDAOTest extends JPATestBase {
             em.getTransaction().commit();
         }
         catch (Exception ex) {
-            log.fatal(ex);
+            log.error("",ex);
             em.getTransaction().rollback();
             fail("" + ex);
         }
@@ -112,7 +112,7 @@ public class JPAAuthorDAOTest extends JPATestBase {
             log.info("got author:" + author2);
         }
         catch (Exception ex) {
-            log.fatal(ex);
+            log.error("",ex);
             fail("" + ex);
         }
         
@@ -177,7 +177,7 @@ public class JPAAuthorDAOTest extends JPATestBase {
             log.info("updated author:" + author);
         }
         catch (Exception ex) {
-            log.fatal(ex);
+            log.error("",ex);
             if (em.getTransaction().isActive()) {
                 em.getTransaction().rollback();
             }
@@ -191,7 +191,7 @@ public class JPAAuthorDAOTest extends JPATestBase {
             log.info("got author:" + author2);
         }
         catch (Exception ex) {
-            log.fatal(ex);
+            log.error("",ex);
             fail("" + ex);
         }
         
@@ -228,7 +228,7 @@ public class JPAAuthorDAOTest extends JPATestBase {
             log.info("created author:" + author);
         }
         catch (Exception ex) {
-            log.fatal(ex);
+            log.error("",ex);
             em.getTransaction().rollback();
             fail("" + ex);
         }
@@ -250,7 +250,7 @@ public class JPAAuthorDAOTest extends JPATestBase {
             assertTrue("tmp Author is not managed", em.contains(tmp));
         }
         catch (Exception ex) {
-            log.fatal(ex);
+            log.error("",ex);
             em.getTransaction().rollback();
             fail("" + ex);
         }
@@ -262,7 +262,7 @@ public class JPAAuthorDAOTest extends JPATestBase {
             log.info("got author:" + author3);
         }
         catch (Exception ex) {
-            log.fatal(ex);
+            log.error("",ex);
             fail("" + ex);
         }
         
@@ -289,7 +289,7 @@ public class JPAAuthorDAOTest extends JPATestBase {
             log.info("created author:" + author);
         }
         catch (Exception ex) {
-            log.fatal(ex);
+            log.error("",ex);
             em.getTransaction().rollback();
             fail("" + ex);
         }
@@ -301,7 +301,7 @@ public class JPAAuthorDAOTest extends JPATestBase {
             log.info("removed author:" + author);
         }
         catch (Exception ex) {
-            log.fatal(ex);
+            log.error("",ex);
             em.getTransaction().rollback();
             fail("" + ex);
         }
@@ -312,7 +312,7 @@ public class JPAAuthorDAOTest extends JPATestBase {
             log.info("removed author:" + author);
         }
         catch (Exception ex) {
-            log.fatal(ex);
+            log.error("",ex);
             fail("" + ex);
         }
         if (author2 != null) {

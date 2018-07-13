@@ -31,14 +31,14 @@ import myorg.queryex.MovieRole;
 import myorg.queryex.Person;
 import myorg.queryex.QueryBase;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 public class CriteriaTest extends QueryBase {
-	private static final Log log = LogFactory.getLog(CriteriaTest.class);
+	private static final Logger log = LoggerFactory.getLogger(CriteriaTest.class);
 	private EntityManager em2; //second persistence context for parallel queries
 	
 	@Before

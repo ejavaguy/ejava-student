@@ -12,8 +12,8 @@ import javax.persistence.NonUniqueResultException;
 import javax.persistence.TemporalType;
 import javax.persistence.TypedQuery;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.junit.Test;
 
 import ejava.jpa.examples.query.Clerk;
@@ -23,7 +23,7 @@ import ejava.jpa.examples.query.Sale;
 import ejava.jpa.examples.query.Store;
 
 public class QueryTest extends QueryBase {
-	private static final Log log = LogFactory.getLog(QueryTest.class);
+	private static final Logger log = LoggerFactory.getLogger(QueryTest.class);
 	
 	@Test
     public void testSingleResult() {
@@ -107,7 +107,7 @@ public class QueryTest extends QueryBase {
     public void testDateParameter() {
         log.info("*** testDateParameter() ***");
         
-        log.info(em.createQuery("select c from Clerk c", Clerk.class).getResultList());
+        log.info("{}", em.createQuery("select c from Clerk c", Clerk.class).getResultList());
         
         Calendar hireDate = new GregorianCalendar(1972, Calendar.JANUARY, 1);
         TypedQuery<Clerk> query = em.createQuery(

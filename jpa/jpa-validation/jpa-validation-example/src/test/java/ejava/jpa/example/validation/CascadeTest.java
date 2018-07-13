@@ -14,8 +14,8 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 
-import org.apache.commons.logging.LogFactory;
-import org.apache.commons.logging.Log;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.junit.Test;
 
 /**
@@ -23,7 +23,7 @@ import org.junit.Test;
  * across relationships for both simple POJOs and JPA entities.
  */
 public class CascadeTest extends JPATestBase {
-	private static final Log log = LogFactory.getLog(CascadeTest.class);
+	private static final Logger log = LoggerFactory.getLogger(CascadeTest.class);
 	
 	ValidatorFactory vf = Validation.buildDefaultValidatorFactory();
 	Validator val = vf.getValidator();

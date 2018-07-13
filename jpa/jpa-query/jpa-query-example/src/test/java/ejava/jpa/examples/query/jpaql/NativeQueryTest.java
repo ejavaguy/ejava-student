@@ -7,15 +7,15 @@ import java.util.List;
 import javax.persistence.Query;
 import javax.persistence.Table;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.junit.Test;
 
 import ejava.jpa.examples.query.Customer;
 import ejava.jpa.examples.query.QueryBase;
 
 public class NativeQueryTest extends QueryBase {
-	private static final Log log = LogFactory.getLog(NativeQueryTest.class);
+	private static final Logger log = LoggerFactory.getLogger(NativeQueryTest.class);
 
     @SuppressWarnings("unchecked")
     @Test

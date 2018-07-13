@@ -14,8 +14,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.Tuple;
 import javax.persistence.TypedQuery;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.hibernate.LazyInitializationException;
 import org.junit.Test;
 
@@ -27,7 +27,7 @@ import ejava.jpa.examples.query.Sale;
 import ejava.jpa.examples.query.Store;
 
 public class JPAQLTest extends QueryBase {
-	private static final Log log = LogFactory.getLog(BulkQueryTest.class);
+	private static final Logger log = LoggerFactory.getLogger(BulkQueryTest.class);
 
     private <T> List<T> executeQuery(String ejbqlString, Class<T> resultType) {
         return executeQuery(ejbqlString, null, resultType);

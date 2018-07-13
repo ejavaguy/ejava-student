@@ -15,15 +15,15 @@ import javax.persistence.criteria.Root;
 import javax.persistence.metamodel.Attribute;
 import javax.persistence.metamodel.EntityType;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.junit.Test;
 
 /**
  * This test case provides an example of each of the different query types.
  */
 public class QueryTypesTest extends QueryBase {
-	private static final Log log = LogFactory.getLog(QueryTypesTest.class);
+	private static final Logger log = LoggerFactory.getLogger(QueryTypesTest.class);
 
 	@Test
 	public void exampleJPAQL() {

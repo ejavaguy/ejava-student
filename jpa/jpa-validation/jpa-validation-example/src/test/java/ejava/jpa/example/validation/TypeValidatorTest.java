@@ -9,12 +9,12 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.junit.Test;
 
 public class TypeValidatorTest {
-	private static final Log log = LogFactory.getLog(TypeValidatorTest.class);
+	private static final Logger log = LoggerFactory.getLogger(TypeValidatorTest.class);
 	ValidatorFactory cf = Validation.buildDefaultValidatorFactory();
 	Validator val = cf.getValidator();
 	

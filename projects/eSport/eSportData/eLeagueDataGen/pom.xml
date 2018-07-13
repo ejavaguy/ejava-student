@@ -30,9 +30,9 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>commons-logging</groupId>
-            <artifactId>commons-logging</artifactId>
-            <scope>compile</scope>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <scope>provided</scope>
         </dependency>
 
         <!-- StAX API (javax.xml.stream); -->
@@ -74,6 +74,11 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -180,65 +185,16 @@
 
                     <!-- generates a DDL file for persistence unit -->
                     <plugin>
-                        <artifactId>hibernate3-maven-plugin</artifactId>
-                        <groupId>org.codehaus.mojo</groupId>
-                        <extensions>true</extensions>
-                        <executions>
-                            <execution>
-                                <id>generate-drop-ddl</id>
-                                <phase>generate-sources</phase>
-                                <goals>
-                                    <goal>hbm2ddl</goal>
-                                </goals>
-                                <configuration>
-                                    <componentProperties>
-                                        <outputfilename>
-                                            ${project.artifactId}-drop.ddl
-                                        </outputfilename>
-                                        <drop>true</drop>
-                                        <create>false</create>
-                                    </componentProperties>
-                                </configuration>
-                            </execution>
-                            <execution>
-                                <id>generate-create-ddl</id>
-                                <phase>generate-sources</phase>
-                                <goals>
-                                    <goal>hbm2ddl</goal>
-                                </goals>
-                                <configuration>
-                                    <componentProperties>
-                                        <outputfilename>
-                                            ${project.artifactId}-create.ddl
-                                        </outputfilename>
-                                        <drop>false</drop>
-                                        <create>true</create>
-                                    </componentProperties>
-                                </configuration>
-                            </execution>
-                        </executions>
+                        <artifactId>jpa-schemagen-maven-plugin</artifactId>
+                        <groupId>info.ejava.utils.jpa</groupId>
+                    </plugin>
+                    <plugin>
+                        <artifactId>jpa-schemagen-maven-plugin</artifactId>
+                        <groupId>info.ejava.utils.jpa</groupId>
                         <configuration>
-                            <components>
-                                <component>
-                                    <name>hbm2ddl</name>
-                                    <implementation>
-                                        jpaconfiguration
-                                    </implementation>
-                                    <outputDirectory>
-                                        target/classes/ddl
-                                    </outputDirectory>
-                                </component>
-                            </components>
-                            <componentProperties>
-                                <persistenceunit>
-                                    eLeagueData
-                                </persistenceunit>
-                                <export>false</export>
-                                <format>true</format>
-                            </componentProperties>
+                            <persistenceUnit>eLeagueBO-test</persistenceUnit>
                         </configuration>
                     </plugin>
-
                 </plugins>
             </build>
         </profile>

@@ -14,12 +14,12 @@ import myorg.relex.one2manybi.Tire;
 import myorg.relex.one2manybi.TirePK;
 import myorg.relex.one2manybi.TirePosition;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.junit.*;
 
 public class One2ManyBiTest extends JPATestBase {
-    private static Log log = LogFactory.getLog(One2ManyBiTest.class);
+    private static Logger log = LoggerFactory.getLogger(One2ManyBiTest.class);
     @Test
     public void testSample() {
         log.info("testSample");

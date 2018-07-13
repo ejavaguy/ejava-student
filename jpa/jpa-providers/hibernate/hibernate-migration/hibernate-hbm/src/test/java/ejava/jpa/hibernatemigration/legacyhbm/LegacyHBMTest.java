@@ -2,8 +2,8 @@ package ejava.jpa.hibernatemigration.legacyhbm;
 
 import java.io.Serializable;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -15,7 +15,7 @@ import org.junit.BeforeClass;
 import ejava.jpa.hibernatemigration.BaseMigrationTest;
 
 public class LegacyHBMTest extends BaseMigrationTest {
-	private static final Log log = LogFactory.getLog(LegacyHBMTest.class);
+	private static final Logger log = LoggerFactory.getLogger(LegacyHBMTest.class);
 	private static SessionFactory sessionFactory;
 	private Session session;
 	

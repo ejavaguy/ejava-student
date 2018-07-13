@@ -34,15 +34,15 @@ import myorg.relex.one2one.ShowTickets;
 import myorg.relex.one2one.BoxOffice;
 import myorg.relex.one2one.Ticket;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.junit.*;
 
 /**
  * Verifies several one-to-one relationships.
  */
 public class One2OneTest extends JPATestBase {
-    private static Log log = LogFactory.getLog(One2OneTest.class);
+    private static Logger log = LoggerFactory.getLogger(One2OneTest.class);
     
     /**
      * This test provides a demonstration of a simple one-to-one, uni-directional

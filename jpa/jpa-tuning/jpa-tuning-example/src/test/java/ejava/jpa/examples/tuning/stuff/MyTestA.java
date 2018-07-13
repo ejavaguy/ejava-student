@@ -1,7 +1,7 @@
 package ejava.jpa.examples.tuning.stuff;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -18,7 +18,7 @@ import ejava.jpa.examples.tuning.TestBase;
 @AxisRange(min = 0, max = 1)
 //@BenchmarkMethodChart(filePrefix="target/MyTestA")
 public class MyTestA extends TestBase {
-	private static final Log log = LogFactory.getLog(MyTestA.class);
+	private static final Logger log = LoggerFactory.getLogger(MyTestA.class);
 	
 	@BeforeClass
 	public static void setUpClass() {

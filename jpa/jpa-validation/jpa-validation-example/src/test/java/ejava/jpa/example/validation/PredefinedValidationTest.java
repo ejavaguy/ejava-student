@@ -14,8 +14,8 @@ import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import javax.validation.groups.Default;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.junit.Test;
 
 /**
@@ -23,7 +23,7 @@ import org.junit.Test;
  * Validation API before we get to application-specific extensions.
  */
 public class PredefinedValidationTest {
-	private static Log log = LogFactory.getLog(PredefinedValidationTest.class);
+	private static Logger log = LoggerFactory.getLogger(PredefinedValidationTest.class);
 
 	private ValidatorFactory vf = Validation.buildDefaultValidatorFactory();
 	private Validator val = vf.getValidator();

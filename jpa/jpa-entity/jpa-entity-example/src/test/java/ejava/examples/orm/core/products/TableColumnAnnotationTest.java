@@ -6,8 +6,8 @@ import java.math.BigDecimal;
 
 import javax.persistence.PersistenceException;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -19,7 +19,7 @@ import ejava.examples.orm.core.annotated.Car;
  * to the database with with specific table and column annotations. 
  */
 public class TableColumnAnnotationTest extends TestBase {
-    private static Log log = LogFactory.getLog(TableColumnAnnotationTest.class);
+    private static final Logger log = LoggerFactory.getLogger(TableColumnAnnotationTest.class);
     
     @Before
     public void cleanup() {

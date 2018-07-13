@@ -18,12 +18,12 @@ import myorg.relex.one2many.Suspect;
 import myorg.relex.one2many.Todo;
 import myorg.relex.one2many.TodoList;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.junit.*;
 
 public class One2ManyTest extends JPATestBase {
-    private static Log log = LogFactory.getLog(One2ManyTest.class);
+    private static Logger log = LoggerFactory.getLogger(One2ManyTest.class);
 
     /**
      * This method provides a demonstration of a one-to-many, uni-directional relationship

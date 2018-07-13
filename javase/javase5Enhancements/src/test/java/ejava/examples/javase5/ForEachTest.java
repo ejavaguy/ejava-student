@@ -6,19 +6,19 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.junit.Test;
 
 public class ForEachTest {
-    private static final Log log = LogFactory.getLog(ForEachTest.class); 
+    private static final Logger logger = LoggerFactory.getLogger(ForEachTest.class); 
     
     /**
      * legacy way
      */
     @Test
     public void testIteratorCollection() {
-        log.info("testForEachCollection");
+        logger.info("testForEachCollection");
         
         Collection<String> collection = new ArrayList<String>();
         collection.add(new String("1"));
@@ -27,7 +27,7 @@ public class ForEachTest {
         
         int i=0;
         for(Iterator<String> itr = collection.iterator(); itr.hasNext(); ) {
-            log.info(itr.next());
+            logger.info(itr.next());
             i++;
         }
         assertTrue("unexpected count:" + i, i==collection.size());        
@@ -39,7 +39,7 @@ public class ForEachTest {
      */
     @Test
     public void testForLoopCollection() {
-        log.info("testForEachCollection");
+        logger.info("testForEachCollection");
         
         Collection<String> collection = new ArrayList<String>();
         collection.add(new String("1"));
@@ -48,7 +48,7 @@ public class ForEachTest {
         
         int i=0;
         for(String s: collection) {
-            log.info(s);
+            logger.info(s);
             i++;
         }
         assertTrue("unexpected count:" + i, i==collection.size());        
@@ -60,7 +60,7 @@ public class ForEachTest {
      */
     @Test
     public void testIteratorArray() {
-        log.info("testIteratorArray");
+        logger.info("testIteratorArray");
         
         String[] array = new String[3];
         array[0] = new String("1");
@@ -69,7 +69,7 @@ public class ForEachTest {
         
         int i=0;
         for(i=0; i<array.length; i++) {
-            log.info(array[i]);
+            logger.info(array[i]);
         }
         assertTrue("unexpected count:" + i, i==array.length);        
     }
@@ -80,7 +80,7 @@ public class ForEachTest {
      */
     @Test
     public void testForLoopArray() {
-        log.info("testForEachArray");
+        logger.info("testForEachArray");
         
         String[] array = new String[3];
         array[0] = new String("1");
@@ -89,7 +89,7 @@ public class ForEachTest {
         
         int i=0;
         for(String s: array) {
-            log.info(s);
+            logger.info(s);
             i++;
         }
         assertTrue("unexpected count:" + i, i==array.length);        

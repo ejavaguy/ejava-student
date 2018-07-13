@@ -5,8 +5,8 @@ import static org.junit.Assert.*;
 import java.util.Arrays;
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.junit.Test;
 
 import ejava.jpa.examples.query.Customer;
@@ -14,7 +14,7 @@ import ejava.jpa.examples.query.QueryBase;
 import ejava.jpa.examples.query.Sale;
 
 public class NamedQueryTest extends QueryBase {
-	private static final Log log = LogFactory.getLog(NamedQueryTest.class);
+	private static final Logger log = LoggerFactory.getLogger(NamedQueryTest.class);
 
     @Test
     public void testNamedQuery() {

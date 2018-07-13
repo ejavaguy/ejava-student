@@ -10,8 +10,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -32,7 +32,7 @@ import ejava.jpa.examples.tuning.dao.MovieDAOImpl;
 @BenchmarkOptions(warmupRounds=0, benchmarkRounds=1)
 @BenchmarkHistoryChart
 public class TestBase {
-    protected static Log log = LogFactory.getLog(TestBase.class);
+    protected static Logger log = LoggerFactory.getLogger(TestBase.class);
     protected static String PERSISTENCE_UNIT = "movietune-test-thin";
     protected static EntityManagerFactory emf;
     private static EntityManager em_;

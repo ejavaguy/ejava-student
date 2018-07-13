@@ -2,8 +2,8 @@ package ejava.examples.orm.rel.annotated;
 
 import javax.persistence.*;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * The class provides a set of OneToOne relationship examples.
@@ -14,7 +14,7 @@ import org.apache.commons.logging.LogFactory;
  */
 @Entity @Table(name="ORMREL_APPLICANT")
 public class Applicant  {
-    private static Log log = LogFactory.getLog(Applicant.class);
+    private static Logger log = LoggerFactory.getLogger(Applicant.class);
     @Id @GeneratedValue
     private long id;
     

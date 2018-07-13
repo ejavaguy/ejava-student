@@ -1,19 +1,19 @@
 package myorg.mypackage.ex1;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class App {
-    private static Log log = LogFactory.getLog(App.class);
+    private static Logger logger = LoggerFactory.getLogger(App.class);
 
     public int returnOne() { 
         //System.out.println( "Here's One!" );
-        log.debug( "Here's One!" );
+        logger.debug( "Here's One!" );
         return 1; 
     }
 
     public static void main( String[] args ) {
         //System.out.println( "Hello World!" );
-        log.info( "Hello World!" );
+        logger.info( "Hello World!" );
     }
 }

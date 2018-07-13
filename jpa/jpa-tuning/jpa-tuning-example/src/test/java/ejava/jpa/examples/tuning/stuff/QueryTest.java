@@ -14,8 +14,8 @@ import javax.persistence.NonUniqueResultException;
 import javax.persistence.TemporalType;
 import javax.persistence.TypedQuery;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -27,7 +27,7 @@ import ejava.jpa.examples.tuning.bo.Person;
 
 @Ignore
 public class QueryTest extends QueryBase {
-	private static final Log log = LogFactory.getLog(QueryTest.class);
+	private static final Logger log = LoggerFactory.getLogger(QueryTest.class);
     protected EntityManager em;    
 
     @Before public void setUp() { em=emf.createEntityManager(); }

@@ -10,8 +10,8 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -20,7 +20,7 @@ import org.junit.Test;
 
 
 public class AutoTest {
-    private static Log log = LogFactory.getLog(Auto.class);
+    private static final Logger log = LoggerFactory.getLogger(Auto.class);
     private static final String PERSISTENCE_UNIT = "${artifactId}-test";
     private static EntityManagerFactory emf;
     private EntityManager em;    
@@ -55,7 +55,7 @@ public class AutoTest {
             log.debug("tearDown() complete, em=" + em);
         }
         catch (Exception ex) {
-            log.fatal("tearDown failed", ex);
+            log.error("tearDown failed", ex);
             throw ex;
         }
      }

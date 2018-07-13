@@ -4,8 +4,8 @@ import java.util.Random;
 
 import javax.persistence.EntityManager;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import ejava.examples.blpurchase.bl.Purchasing;
 import ejava.examples.blpurchase.bo.Account;
@@ -17,7 +17,7 @@ import ejava.examples.blpurchase.bo.Product;
  * aspects of the application.
  */
 public class PurchasingImpl implements Purchasing {
-	private static Log log = LogFactory.getLog(PurchasingImpl.class);
+	private static final Logger log = LoggerFactory.getLogger(PurchasingImpl.class);
 	private EntityManager em;
 	private Random random=new Random();
 	

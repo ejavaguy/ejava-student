@@ -3,8 +3,8 @@ package ejava.jpa.hibernatemigration;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.hibernate.cfg.DefaultNamingStrategy;
 
 /**
@@ -17,7 +17,7 @@ import org.hibernate.cfg.DefaultNamingStrategy;
  */
 @SuppressWarnings("serial")
 public class CustomizedNamingStrategy extends DefaultNamingStrategy {
-	private static final Log log = LogFactory.getLog(CustomizedNamingStrategy.class);
+	private static final Logger log = LoggerFactory.getLogger(CustomizedNamingStrategy.class);
 	//mapping from className to tableName
 	private Map<String, String> classTableMap = new HashMap<String, String>();
 	//tableName override

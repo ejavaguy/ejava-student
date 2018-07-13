@@ -1,7 +1,7 @@
 package ejava.examples.orm.core.products;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.junit.Test;
 
 import ejava.examples.orm.core.mapped.Tank;
@@ -11,7 +11,7 @@ import ejava.examples.orm.core.mapped.Tank;
  * annotations.
  */
 public class TransientMappingTest extends TestBase {
-    private static Log log = LogFactory.getLog(BasicAnnotationTest.class);
+    private static final Logger log = LoggerFactory.getLogger(BasicAnnotationTest.class);
     
     /**
      * This test provides a demo of persisting a class that has mapped

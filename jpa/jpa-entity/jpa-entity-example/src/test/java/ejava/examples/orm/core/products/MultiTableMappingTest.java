@@ -2,8 +2,8 @@ package ejava.examples.orm.core.products;
 
 import static org.junit.Assert.*;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.junit.Test;
 
 import ejava.examples.orm.core.mapped.Watch;
@@ -14,7 +14,7 @@ import ejava.examples.orm.core.mapped.Watch;
  * mapping details, but essentially 3 tables make-up a single Watch object.
  */
 public class MultiTableMappingTest extends TestBase {
-    private static Log log = LogFactory.getLog(MultiTableMappingTest.class);
+    private static final Logger log = LoggerFactory.getLogger(MultiTableMappingTest.class);
     
     /**
      */

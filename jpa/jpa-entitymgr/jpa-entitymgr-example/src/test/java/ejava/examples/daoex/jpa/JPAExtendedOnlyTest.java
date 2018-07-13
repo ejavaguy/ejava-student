@@ -6,8 +6,8 @@ import static org.junit.Assert.*;
 
 import java.util.Date;
 import javax.persistence.Query;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.junit.Test;
 
 import ejava.examples.daoex.bo.Author;
@@ -18,7 +18,7 @@ import ejava.examples.daoex.bo.Author;
  * DAO in order to simplify the presentation of the code.
  */
 public class JPAExtendedOnlyTest extends JPATestBase{
-    private static Log log_ = LogFactory.getLog(JPAExtendedOnlyTest.class);
+    private static final Logger log_ = LoggerFactory.getLogger(JPAExtendedOnlyTest.class);
     /**
      * This test verifies we can persist an entity.
      */
@@ -91,7 +91,7 @@ public class JPAExtendedOnlyTest extends JPATestBase{
             em.getTransaction().commit();
         }
         catch (Exception ex) {
-            log_.fatal(ex);
+            log_.error("",ex);
             em.getTransaction().rollback();
             fail("" + ex);
         }
@@ -105,7 +105,7 @@ public class JPAExtendedOnlyTest extends JPATestBase{
             log_.info("got author:" + author2);
         }
         catch (Exception ex) {
-            log_.fatal(ex);
+            log_.error("",ex);
             fail("" + ex);
         }
         
@@ -155,7 +155,7 @@ public class JPAExtendedOnlyTest extends JPATestBase{
             log_.info("updated author:" + author);
         }
         catch (Exception ex) {
-            log_.fatal(ex);
+            log_.error("",ex);
             if (em.getTransaction().isActive()) {
                 em.getTransaction().rollback();
             }
@@ -168,7 +168,7 @@ public class JPAExtendedOnlyTest extends JPATestBase{
             log_.info("got author:" + author2);
         }
         catch (Exception ex) {
-            log_.fatal(ex);
+            log_.error("",ex);
             fail("" + ex);
         }
         
@@ -205,7 +205,7 @@ public class JPAExtendedOnlyTest extends JPATestBase{
             log_.info("created author:" + author);
         }
         catch (Exception ex) {
-            log_.fatal(ex);
+            log_.error("",ex);
             em.getTransaction().rollback();
             fail("" + ex);
         }
@@ -223,7 +223,7 @@ public class JPAExtendedOnlyTest extends JPATestBase{
             log_.info("merged author:" + tmp);
         }
         catch (Exception ex) {
-            log_.fatal(ex);
+            log_.error("",ex);
             em.getTransaction().rollback();
             fail("" + ex);
         }
@@ -234,7 +234,7 @@ public class JPAExtendedOnlyTest extends JPATestBase{
             log_.info("got author:" + author3);
         }
         catch (Exception ex) {
-            log_.fatal(ex);
+            log_.error("",ex);
             fail("" + ex);
         }
         
@@ -261,7 +261,7 @@ public class JPAExtendedOnlyTest extends JPATestBase{
             log_.info("created author:" + author);
         }
         catch (Exception ex) {
-            log_.fatal(ex);
+            log_.error("",ex);
             em.getTransaction().rollback();
             fail("" + ex);
         }
@@ -273,7 +273,7 @@ public class JPAExtendedOnlyTest extends JPATestBase{
             log_.info("removed author:" + author);
         }
         catch (Exception ex) {
-            log_.fatal(ex);
+            log_.error("",ex);
             em.getTransaction().rollback();
             fail("" + ex);
         }
@@ -284,7 +284,7 @@ public class JPAExtendedOnlyTest extends JPATestBase{
             log_.info("removed author:" + author);
         }
         catch (Exception ex) {
-            log_.fatal(ex);
+            log_.error("",ex);
             fail("" + ex);
         }
         if (author2 != null) {

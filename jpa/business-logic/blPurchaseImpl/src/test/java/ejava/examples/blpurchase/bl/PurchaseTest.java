@@ -3,8 +3,8 @@ package ejava.examples.blpurchase.bl;
 import java.util.List;
 import java.util.Random;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import static org.junit.Assert.*;
 
 import org.junit.After;
@@ -19,7 +19,7 @@ import ejava.examples.blpurchase.bo.Product;
  * This test verifies the top-level requirements our purchase application.
  */
 public class PurchaseTest {
-	private static final Log log = LogFactory.getLog(PurchaseTest.class);
+	private static final Logger log = LoggerFactory.getLogger(PurchaseTest.class);
 
 	private Catalog catalog;
 	private Purchasing purchasing;

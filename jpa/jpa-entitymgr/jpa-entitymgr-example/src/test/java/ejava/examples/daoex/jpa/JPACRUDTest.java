@@ -7,8 +7,8 @@ import java.util.Date;
 
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.junit.Test;
 
 import ejava.examples.daoex.bo.Author;
@@ -21,7 +21,7 @@ import ejava.examples.daoex.bo.Author;
  * that should surround the use of the API.
  */
 public class JPACRUDTest extends JPATestBase {
-    static Log log = LogFactory.getLog(JPACRUDTest.class);
+    static final Logger log = LoggerFactory.getLogger(JPACRUDTest.class);
     /**
      * This test verifies we can persist an entity.
      */
@@ -147,7 +147,7 @@ public class JPACRUDTest extends JPATestBase {
             em.getTransaction().commit();
         }
         catch (Exception ex) {
-            log.fatal(ex);
+            log.error("",ex);
             em.getTransaction().rollback();
             fail("" + ex);
         }
@@ -161,7 +161,7 @@ public class JPACRUDTest extends JPATestBase {
             log.debug("got author:" + author2);
         }
         catch (Exception ex) {
-            log.fatal(ex);
+            log.error("", ex);
             fail("" + ex);
         }
         
@@ -231,7 +231,7 @@ public class JPACRUDTest extends JPATestBase {
             log.debug("updated author:" + author);
         }
         catch (Exception ex) {
-            log.fatal(ex);
+            log.error("",ex);
             if (em.getTransaction().isActive()) {
                 em.getTransaction().rollback();
             }
@@ -245,7 +245,7 @@ public class JPACRUDTest extends JPATestBase {
             log.debug("got author:" + author2);
         }
         catch (Exception ex) {
-            log.fatal(ex);
+            log.error("",ex);
             fail("" + ex);
         }
         
@@ -330,7 +330,7 @@ public class JPACRUDTest extends JPATestBase {
             log.debug("created author:" + author);
         }
         catch (Exception ex) {
-            log.fatal(ex);
+            log.error("",ex);
             em.getTransaction().rollback();
             fail("" + ex);
         }
@@ -342,7 +342,7 @@ public class JPACRUDTest extends JPATestBase {
             log.debug("removed author:" + author);
         }
         catch (Exception ex) {
-            log.fatal(ex);
+            log.error("",ex);
             em.getTransaction().rollback();
             fail("" + ex);
         }
@@ -353,7 +353,7 @@ public class JPACRUDTest extends JPATestBase {
             log.debug("removed author:" + author);
         }
         catch (Exception ex) {
-            log.fatal(ex);
+            log.error("",ex);
             fail("" + ex);
         }
         if (author2 != null) {

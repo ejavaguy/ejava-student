@@ -2,14 +2,14 @@ package ejava.examples.orm.rel.composite;
 
 import static org.junit.Assert.*;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.junit.Test;
 
 import ejava.examples.orm.rel.DemoBase;
 
 public class CompositeTest extends DemoBase {
-	private static final Log log = LogFactory.getLog(CompositeTest.class);
+	private static final Logger log = LoggerFactory.getLogger(CompositeTest.class);
 
 	@Test
 	public void testManyToOneIdClassPKReuse() {

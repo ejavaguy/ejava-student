@@ -4,13 +4,13 @@ import static org.junit.Assert.*;
 
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.junit.Before;
 import org.junit.Test;
 
 public class BulkUpdateTest extends QueryBase {
-    private static final Log log = LogFactory.getLog(BulkUpdateTest.class);
+    private static final Logger log = LoggerFactory.getLogger(BulkUpdateTest.class);
 	public static enum Action { INSERT, UPDATE, FAIL };
 	
 	@Before

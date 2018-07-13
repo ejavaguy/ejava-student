@@ -3,8 +3,8 @@ package ejava.examples.daoex.jpa;
 import static org.junit.Assert.*;
 import java.util.Date;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.junit.Test;
 
 import ejava.examples.daoex.bo.Author;
@@ -14,7 +14,7 @@ import ejava.examples.daoex.bo.Author;
  * membership.
  */
 public class JPAMembershipTest extends JPATestBase {
-    static Log log = LogFactory.getLog(JPAMembershipTest.class);
+    static final Logger log = LoggerFactory.getLogger(JPAMembershipTest.class);
 
     /**
      * Demonstrates how to detach an object from the persistence context

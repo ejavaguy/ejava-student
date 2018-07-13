@@ -8,15 +8,15 @@ import java.util.List;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.junit.Test;
 
 import ejava.jpa.examples.query.Clerk;
 import ejava.jpa.examples.query.QueryBase;
 
 public class BulkQueryTest extends QueryBase {
-	private static final Log log = LogFactory.getLog(BulkQueryTest.class);
+	private static final Logger log = LoggerFactory.getLogger(BulkQueryTest.class);
     
     @Test
     public void testBulkUpdate() {

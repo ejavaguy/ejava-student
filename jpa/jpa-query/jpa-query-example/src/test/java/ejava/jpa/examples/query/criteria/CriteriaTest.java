@@ -25,8 +25,8 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.persistence.criteria.Subquery;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.hibernate.LazyInitializationException;
 import org.junit.Test;
 
@@ -38,7 +38,7 @@ import ejava.jpa.examples.query.Sale;
 import ejava.jpa.examples.query.Store;
 
 public class CriteriaTest extends QueryBase {
-	private static final Log log = LogFactory.getLog(CriteriaTest.class);
+	private static final Logger log = LoggerFactory.getLogger(CriteriaTest.class);
 
 	private <T> List<T> executeQuery(CriteriaQuery<T> qdef) {
         return executeQuery(qdef, null);

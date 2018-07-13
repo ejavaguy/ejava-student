@@ -16,15 +16,15 @@ import javax.persistence.EntityManager;
 import javax.persistence.LockModeType;
 import javax.persistence.PersistenceException;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
 public class BulkUpdateTest extends QueryBase {
-    private static final Log log = LogFactory.getLog(BulkUpdateTest.class);
+    private static final Logger log = LoggerFactory.getLogger(BulkUpdateTest.class);
 	public static enum Action { INSERT, UPDATE, FAIL };
 	
 	@Before

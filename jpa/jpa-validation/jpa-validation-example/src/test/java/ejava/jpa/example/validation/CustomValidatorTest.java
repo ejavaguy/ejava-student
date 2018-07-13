@@ -11,12 +11,12 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.junit.Test;
 
 public class CustomValidatorTest {
-	private static final Log log = LogFactory.getLog(CustomValidatorTest.class);
+	private static final Logger log = LoggerFactory.getLogger(CustomValidatorTest.class);
 
 	private ValidatorFactory vf = Validation.buildDefaultValidatorFactory();
 	private Validator val = vf.getValidator();

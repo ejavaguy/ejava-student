@@ -6,8 +6,8 @@ package ${package};
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -15,7 +15,7 @@ import org.junit.BeforeClass;
 
 
 public class QueryBase {
-    private static Log log = LogFactory.getLog(QueryBase.class);
+    private static Logger log = LoggerFactory.getLogger(QueryBase.class);
     private static final String PERSISTENCE_UNIT = "queryEx-test";
     protected static EntityManagerFactory emf;
     protected EntityManager em;    
@@ -52,7 +52,7 @@ public class QueryBase {
             log.debug("tearDown() complete, em=" + em);
         }
         catch (Exception ex) {
-            log.fatal("tearDown failed", ex);
+            log.error("tearDown failed", ex);
             throw ex;
         }
      }

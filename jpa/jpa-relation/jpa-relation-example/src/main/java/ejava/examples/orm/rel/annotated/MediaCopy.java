@@ -2,8 +2,8 @@ package ejava.examples.orm.rel.annotated;
 
 import javax.persistence.*;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import ejava.examples.orm.rel.MediaCopyPK;
 
@@ -42,7 +42,7 @@ import ejava.examples.orm.rel.MediaCopyPK;
 @Entity @Table(name="ORMREL_MEDIACOPY")
 @IdClass(MediaCopyPK.class)
 public class MediaCopy {
-    private static final Log log = LogFactory.getLog(MediaCopy.class);
+    private static final Logger log = LoggerFactory.getLogger(MediaCopy.class);
     @Id //mapped to COPY_NO by IdClass
     private int copyNo;    
     @Id //mapped to MEDIACOPY_MID by IdClass

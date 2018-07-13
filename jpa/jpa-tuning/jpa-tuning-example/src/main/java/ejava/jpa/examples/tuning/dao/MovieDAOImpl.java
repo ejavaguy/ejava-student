@@ -22,8 +22,8 @@ import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Root;
 import javax.persistence.criteria.Subquery;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import ejava.jpa.examples.tuning.bo.Actor;
 import ejava.jpa.examples.tuning.bo.Movie;
@@ -32,7 +32,7 @@ import ejava.jpa.examples.tuning.bo.MovieRole;
 import ejava.jpa.examples.tuning.bo.Person;
 
 public class MovieDAOImpl {
-	private static final Log log = LogFactory.getLog(MovieDAOImpl.class);
+	private static final Logger log = LoggerFactory.getLogger(MovieDAOImpl.class);
 	private EntityManager em;
 	
 	public void setEntityManager(EntityManager em) {

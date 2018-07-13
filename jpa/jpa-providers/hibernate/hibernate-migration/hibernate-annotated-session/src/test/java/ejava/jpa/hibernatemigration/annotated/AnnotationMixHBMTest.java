@@ -2,8 +2,8 @@ package ejava.jpa.hibernatemigration.annotated;
 
 import java.io.Serializable;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AnnotationConfiguration;
@@ -15,7 +15,7 @@ import org.junit.BeforeClass;
 import ejava.jpa.hibernatemigration.BaseAnnotatedMigrationTest;
 
 public class AnnotationMixHBMTest extends BaseAnnotatedMigrationTest {
-	private static final Log log = LogFactory.getLog(AnnotationMixHBMTest.class);
+	private static final Logger log = LoggerFactory.getLogger(AnnotationMixHBMTest.class);
 	private static SessionFactory sessionFactory;
 	private Session session;
 	

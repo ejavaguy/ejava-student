@@ -4,8 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.hibernate.HibernateException;
 import org.hibernate.MappingException;
 import org.hibernate.cfg.AnnotationConfiguration;
@@ -19,7 +19,7 @@ import org.hibernate.mapping.PersistentClass;
  */
 public class CustomizedConfiguration extends AnnotationConfiguration {
 	private static final long serialVersionUID = 1L;
-	private static final Log log = LogFactory.getLog(CustomizedConfiguration.class);
+	private static final Logger log = LoggerFactory.getLogger(CustomizedConfiguration.class);
 	private Map<String, String> tableMap = new HashMap<String, String>();
 	
 	@Override

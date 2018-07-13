@@ -13,12 +13,12 @@ import myorg.relex.many2one.Occupant;
 import myorg.relex.many2one.State;
 import myorg.relex.many2one.StateResident;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.junit.*;
 
 public class Many2OneTest extends JPATestBase {
-    private static Log log = LogFactory.getLog(Many2OneTest.class);
+    private static Logger log = LoggerFactory.getLogger(Many2OneTest.class);
 
     /**
      * This test demonstrates the ability to form a many to one, unit directional relationship

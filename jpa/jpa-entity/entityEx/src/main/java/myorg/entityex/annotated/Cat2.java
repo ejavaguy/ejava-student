@@ -3,14 +3,14 @@ package myorg.entityex.annotated;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @javax.persistence.Entity
 @javax.persistence.Table(name="ENTITYEX_CAT")
 @javax.persistence.Access(javax.persistence.AccessType.FIELD)
 public class Cat2 {
-	private static final Log log = LogFactory.getLog(Cat2.class);
+	private static final Logger log = LoggerFactory.getLogger(Cat2.class);
 	@javax.persistence.Id
 	@javax.persistence.Column(name="CAT_ID")
 	@javax.persistence.GeneratedValue

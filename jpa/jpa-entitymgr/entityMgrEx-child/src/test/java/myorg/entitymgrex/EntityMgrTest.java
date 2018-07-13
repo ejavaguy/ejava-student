@@ -9,8 +9,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static org.junit.Assert.*;
 import org.junit.After;
@@ -21,7 +21,7 @@ import org.junit.Test;
 
 
 public class EntityMgrTest {
-    private static Log log = LogFactory.getLog(EntityMgrTest.class);
+    private static final Logger log = LoggerFactory.getLogger(EntityMgrTest.class);
     private static final String PERSISTENCE_UNIT = "entityMgrEx";
     private static EntityManagerFactory emf;
     private EntityManager em;    
@@ -51,7 +51,7 @@ public class EntityMgrTest {
             log.debug("tearDown() complete, em=" + em);
         }
         catch (Exception ex) {
-            log.fatal("tearDown failed", ex);
+            log.error("tearDown failed", ex);
             throw ex;
         }
      }

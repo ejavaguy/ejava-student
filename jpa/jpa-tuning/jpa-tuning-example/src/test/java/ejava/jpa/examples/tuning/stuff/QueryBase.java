@@ -1,11 +1,10 @@
 package ejava.jpa.examples.tuning.stuff;
 
-import javax.persistence.EntityManager;
-
-import javax.persistence.EntityManagerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import javax.persistence.Persistence;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityManager;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
@@ -15,7 +14,7 @@ import ejava.jpa.examples.tuning.MovieFactory;
 
 @Ignore
 public class QueryBase {
-    private static Log log = LogFactory.getLog(QueryBase.class);
+    private static Logger log = LoggerFactory.getLogger(QueryBase.class);
     private static final String PERSISTENCE_UNIT = "queryEx-test";
     protected static EntityManagerFactory emf;
 

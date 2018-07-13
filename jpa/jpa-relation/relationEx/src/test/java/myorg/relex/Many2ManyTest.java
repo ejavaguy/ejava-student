@@ -7,12 +7,12 @@ import myorg.relex.many2many.Group;
 import myorg.relex.many2many.Individual;
 import myorg.relex.many2many.Node;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.junit.*;
 
 public class Many2ManyTest extends JPATestBase {
-    private static Log log = LogFactory.getLog(Many2ManyTest.class);
+    private static Logger log = LoggerFactory.getLogger(Many2ManyTest.class);
 
     /**
      * This test demonstrates the capability to form and work with a many-to-many,

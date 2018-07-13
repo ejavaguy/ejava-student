@@ -2,8 +2,8 @@ package ejava.examples.orm.core.annotated;
 
 import javax.persistence.*;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This class provides an example of using LAZY fetch hints. We use 
@@ -13,7 +13,7 @@ import org.apache.commons.logging.LogFactory;
 @Entity
 @Table(name="ORMCORE_UMBRELLA")
 public class Umbrella {
-    private static Log log = LogFactory.getLog(Umbrella.class);
+    private static final Logger log = LoggerFactory.getLogger(Umbrella.class);
     private long id;
     private String make;
     private String model;

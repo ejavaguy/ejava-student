@@ -1,7 +1,7 @@
 package ejava.jpa.examples.tuning.stuff;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -18,7 +18,7 @@ import org.junit.runners.Suite;
 	MyTestB.class
 })
 public class MyTestSuiteTest {
-	private static final Log log = LogFactory.getLog(MyTestSuiteTest.class);
+	private static final Logger log = LoggerFactory.getLogger(MyTestSuiteTest.class);
 	
 	@BeforeClass
 	public static void setUpClass() {

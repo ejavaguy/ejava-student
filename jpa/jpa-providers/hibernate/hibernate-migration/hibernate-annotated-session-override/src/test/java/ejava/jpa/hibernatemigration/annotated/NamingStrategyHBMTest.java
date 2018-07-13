@@ -5,8 +5,8 @@ import static org.junit.Assert.*;
 import java.io.Serializable;
 
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AnnotationConfiguration;
@@ -23,7 +23,7 @@ import ejava.jpa.hibernatemigration.CustomizedConfiguration;
 import ejava.jpa.hibernatemigration.ProjectNamingStrategy;
 
 public class NamingStrategyHBMTest extends BaseAnnotatedMigrationTest {
-	private static final Log log = LogFactory.getLog(NamingStrategyHBMTest.class);
+	private static final Logger log = LoggerFactory.getLogger(NamingStrategyHBMTest.class);
 	private static SessionFactory sessionFactory;
 	private Session session;
 	

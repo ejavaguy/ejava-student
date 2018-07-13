@@ -7,8 +7,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -17,7 +17,7 @@ import org.junit.BeforeClass;
 import ejava.jpa.hibernatemigration.BaseAnnotatedMigrationTest;
 
 public class JPAAnnotationTest extends BaseAnnotatedMigrationTest {
-	private static final Log log = LogFactory.getLog(JPAAnnotationTest.class);
+	private static final Logger log = LoggerFactory.getLogger(JPAAnnotationTest.class);
 	private static final String PERSISTENCE_UNIT_NAME = "hibernate-migration-sales";
 	private static EntityManagerFactory emf;
 	private EntityManager em;

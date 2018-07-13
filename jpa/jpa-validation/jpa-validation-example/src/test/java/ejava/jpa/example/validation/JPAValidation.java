@@ -7,8 +7,8 @@ import java.util.GregorianCalendar;
 
 import javax.validation.ConstraintViolationException;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.junit.Test;
 
 /**
@@ -16,7 +16,7 @@ import org.junit.Test;
  * JPA
  */
 public class JPAValidation extends JPATestBase {
-	private static final Log log = LogFactory.getLog(JPAValidation.class);
+	private static final Logger log = LoggerFactory.getLogger(JPAValidation.class);
 
 	/**
 	 * This test demonstrates we can persist and update an entity with 

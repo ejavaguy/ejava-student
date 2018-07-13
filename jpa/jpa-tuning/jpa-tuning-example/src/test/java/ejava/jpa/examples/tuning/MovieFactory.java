@@ -4,12 +4,12 @@ import javax.persistence.EntityManager;
 
 import javax.persistence.EntityTransaction;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.junit.Assert;
 
 public class MovieFactory {
-	private static final Log log = LogFactory.getLog(MovieFactory.class);
+	private static final Logger log = LoggerFactory.getLogger(MovieFactory.class);
 	private EntityManager em;
 
 	public MovieFactory setEntityManager(EntityManager em) {
@@ -167,23 +167,23 @@ public class MovieFactory {
 			try {
 				boolean exists = s.sql.exists();
 				if (!drop && !exists) {
-					log.info(text);
+					log.info("{}",text);
 					em.createNativeQuery(s.sql.getCreate()).executeUpdate();
 					if (s.sql.getPopulate()!=null) {
 						text=new StringBuilder(s.sql.getPopulate());
-						log.info(text);
+						log.info("{}",text);
 						em.createNativeQuery(s.sql.getPopulate()).executeUpdate();
 					}
 				} else if (drop && exists) {
-					log.info(text);
+					log.info("{}", text);
 					em.createNativeQuery(s.sql.getDrop()).executeUpdate();
 				} else {
 					text.append(" (noop)");
-					log.debug(text);
+					log.debug("{}",text);
 				}
 			} catch (Exception ex) {
 				if (s.required) {
-					log.error(text);
+					log.error("{}",text);
 					log.error("failed:" + s.sql, ex);
 					throw new RuntimeException("failed:" + s.sql, ex);
 				}

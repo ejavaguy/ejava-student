@@ -8,8 +8,8 @@ import java.util.Map;
 
 import javax.persistence.*;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -17,7 +17,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class ZipTest {
-	private static Log log = LogFactory.getLog(ZipTest.class);
+	private static final Logger log = LoggerFactory.getLogger(ZipTest.class);
 	private static final String PU_NAME = "jpaCache";
 	private static EntityManagerFactory emf;
 	private EntityManager em;

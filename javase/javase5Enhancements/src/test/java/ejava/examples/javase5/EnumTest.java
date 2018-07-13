@@ -1,12 +1,12 @@
 package ejava.examples.javase5;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import junit.framework.TestCase;
 
 public class EnumTest extends TestCase {
-    private static final Log log = LogFactory.getLog(EnumTest.class);
+    private static final Logger logger = LoggerFactory.getLogger(EnumTest.class);
     
     private enum Day { SUN, MON, TUE, WED, THU, FRI, SAT };
     
@@ -14,8 +14,8 @@ public class EnumTest extends TestCase {
         
         Day day1 = Day.SUN;
         Day day2 = Day.WED;
-        log.debug("day1=" + day1.name() + ", ordinal=" + day1.ordinal());
-        log.debug("day2=" + day2.name() + ", ordinal=" + day2.ordinal());
+        logger.debug("day1=" + day1.name() + ", ordinal=" + day1.ordinal());
+        logger.debug("day2=" + day2.name() + ", ordinal=" + day2.ordinal());
         
         assertTrue(day1 + " wasn't before " + day2, day1.compareTo(day2) < 0);        
     }
@@ -33,7 +33,7 @@ public class EnumTest extends TestCase {
         
         for (Rate rate : Rate.values()) {
             Double pay = hours * wage * rate.amount();
-            log.info("pay for " + rate.name() + "=" + pay);    
+            logger.info("pay for " + rate.name() + "=" + pay);    
         }                
     }    
     
@@ -45,7 +45,7 @@ public class EnumTest extends TestCase {
 
     public void testEnumBehavior() {
         for (Worker w : Worker.values()) {
-            log.info(w.name() + " worker says \'" + w.go() + "\' when tasked");
+            logger.info(w.name() + " worker says \'" + w.go() + "\' when tasked");
         }
     }
 }

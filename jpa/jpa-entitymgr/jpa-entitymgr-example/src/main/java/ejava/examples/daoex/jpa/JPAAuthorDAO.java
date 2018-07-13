@@ -3,8 +3,8 @@ package ejava.examples.daoex.jpa;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import ejava.examples.daoex.AuthorDAO;
 import ejava.examples.daoex.bo.Author;
@@ -21,7 +21,7 @@ import ejava.examples.daoex.bo.Author;
  */
 public class JPAAuthorDAO implements AuthorDAO {
     @SuppressWarnings("unused")
-    private static Log log_ = LogFactory.getLog(JPAAuthorDAO.class);
+    private static final Logger log_ = LoggerFactory.getLogger(JPAAuthorDAO.class);
     private EntityManager em;
     
     /*

@@ -2,15 +2,15 @@ package myorg.relex.collection;
 
 import javax.persistence.*;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 /**
  * This class represents an example entity that has an order in its parent's list.
  */
 @Entity
 @Table(name="RELATIONEX_SEGMENT")
 public class Segment implements Comparable<Segment>{
-	private static final Log log = LogFactory.getLog(Segment.class);
+	private static final Logger log = LoggerFactory.getLogger(Segment.class);
 	@Id @GeneratedValue
 	private int id;
 	

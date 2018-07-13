@@ -2,8 +2,8 @@ package ejava.examples.orm.rel.annotated;
 
 import javax.persistence.*;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This class provides an example of the "inverse side" of a OneToOne 
@@ -13,7 +13,7 @@ import org.apache.commons.logging.LogFactory;
 @Entity
 @Table(name="ORMREL_PHOTO")
 public class Photo {
-    private static Log log = LogFactory.getLog(Photo.class);
+    private static Logger log = LoggerFactory.getLogger(Photo.class);
 
     @Id @GeneratedValue @Column(name="PHOTO_ID")
     private long id;

@@ -4,12 +4,12 @@ import java.util.Date;
 
 import javax.persistence.*;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Entity @Table(name="ORMREL_CHECKOUT")
 public class Checkout {
-    private static Log log = LogFactory.getLog(Checkout.class); 
+    private static Logger log = LoggerFactory.getLogger(Checkout.class); 
     private static long CHECKOUT_DAYS = 1000 * 60 * 60 * 24 * 14;
 
     @Id @GeneratedValue @Column(name="CHECKOUT_ID")

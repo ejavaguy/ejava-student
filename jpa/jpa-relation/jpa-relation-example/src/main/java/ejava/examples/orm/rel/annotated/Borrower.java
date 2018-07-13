@@ -7,8 +7,8 @@ import java.util.Iterator;
 
 import javax.persistence.*;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This class forms a uni-directional, one-to-one relationship with the
@@ -21,7 +21,7 @@ import org.apache.commons.logging.LogFactory;
  */
 @Entity @Table(name="ORMREL_BORROWER")
 public class Borrower  {
-    private static Log log = LogFactory.getLog(Borrower.class);
+    private static Logger log = LoggerFactory.getLogger(Borrower.class);
     @Id @Column(name="BORROWER_ID")
     private long id;
     @Temporal(value=TemporalType.DATE)

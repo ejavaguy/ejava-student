@@ -5,8 +5,8 @@ import static org.junit.Assert.*;
 
 import java.util.Date;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.junit.Test;
 
 import ejava.examples.daoex.bo.Author;
@@ -16,7 +16,7 @@ import ejava.examples.daoex.bo.Author;
  * methods.
  */
 public class JPASyncTest extends JPATestBase {
-    static Log log = LogFactory.getLog(JPASyncTest.class);
+    static final Logger log = LoggerFactory.getLogger(JPASyncTest.class);
 
     /**
      * Demonstrates updating the cached state of an object once the 

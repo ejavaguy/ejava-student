@@ -4,8 +4,8 @@ import static org.junit.Assert.*;
 
 import javax.persistence.PersistenceException;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -16,7 +16,7 @@ import ejava.examples.orm.core.mapped.Car;
  * to the database with with specific table and column elements in orm.xml. 
  */
 public class TableColumnMappingTest extends TestBase {
-    private static Log log = LogFactory.getLog(TableColumnMappingTest.class);
+    private static final Logger log = LoggerFactory.getLogger(TableColumnMappingTest.class);
     
     @Before
     public void cleanup() {

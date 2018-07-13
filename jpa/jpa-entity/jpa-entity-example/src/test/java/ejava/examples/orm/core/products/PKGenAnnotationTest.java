@@ -6,8 +6,8 @@ import java.util.List;
 
 import javax.persistence.PersistenceException;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.junit.Assume;
 import org.junit.Test;
 
@@ -21,7 +21,7 @@ import ejava.examples.orm.core.annotated.Gadget;
  * keys setup using class annotations.
  */
 public class PKGenAnnotationTest extends TestBase {
-    private static Log log = LogFactory.getLog(BasicAnnotationTest.class);
+    private static final Logger log = LoggerFactory.getLogger(BasicAnnotationTest.class);
     
     static String getText(Throwable ex) {
         StringBuilder text = new StringBuilder(ex.getMessage());

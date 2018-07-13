@@ -2,19 +2,20 @@ package myorg.mypackage.ex1;
 
 import static org.junit.Assert.*;
 import org.junit.Test;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 /**
  * Unit test for simple App.
  */
 public class AppTest {
-    private static Log log = LogFactory.getLog(AppTest.class);
+    private static Logger logger = LoggerFactory.getLogger(AppTest.class);
 
     @Test
     public void testApp() {
         //System.out.println("testApp");
-        log.info("testApp");
+        logger.info("testApp");
         App app = new App();
         assertTrue("app didn't return 1", app.returnOne() == 1);
     }
@@ -22,7 +23,7 @@ public class AppTest {
     //@Test
     public void testFail() {
         //System.out.println("testFail");
-        log.info("testFail");
+        logger.info("testFail");
         App app = new App();
         assertTrue("app didn't return 0", app.returnOne() == 0);
     }

@@ -6,12 +6,12 @@ import java.util.List;
 
 import javax.persistence.*;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.junit.*;
 
 public class QueryBase {
-    private static Log log = LogFactory.getLog(QueryBase.class);
+    private static final Logger log = LoggerFactory.getLogger(QueryBase.class);
     private static final String PERSISTENCE_UNIT = "jpa-query-example-test";
     private List<EntityManager> ems = new ArrayList<EntityManager>();
     protected static EntityManagerFactory emf;
@@ -68,7 +68,7 @@ public class QueryBase {
             emgr.close();
         }
         catch (Exception ex) {
-            log.fatal("tearDown failed", ex);
+            log.error("tearDown failed", ex);
             throw ex;
         }
     }

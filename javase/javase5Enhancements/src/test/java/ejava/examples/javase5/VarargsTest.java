@@ -2,18 +2,18 @@ package ejava.examples.javase5;
 
 import static org.junit.Assert.*;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.junit.Test;
 
 public class VarargsTest {
-    private static final Log log = LogFactory.getLog(VarargsTest.class);
+    private static final Logger logger = LoggerFactory.getLogger(VarargsTest.class);
     
     private int sumArray(Integer[] values) {
         int result = 0;
         for (int i=0; i<values.length; i++) {
             result += values[i];
-            log.info("sum: result +=" + values[i] + "=" + result);
+            logger.info("sum: result +=" + values[i] + "=" + result);
         }
         return result;
     }
@@ -22,7 +22,7 @@ public class VarargsTest {
         int result = 0;
         for(int value : values) {
             result += value;
-            log.info("sum: result +=" + value + "=" + result);
+            logger.info("sum: result +=" + value + "=" + result);
         }
         return result;
         

@@ -1,12 +1,12 @@
 package myorg.relex;
 
 import javax.persistence.*;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.junit.*;
 
 public class JPATestBase {
-    private static Log log = LogFactory.getLog(Auto.class);
+    private static Logger log = LoggerFactory.getLogger(Auto.class);
     private static final String PERSISTENCE_UNIT = "relationEx-test";
     private static EntityManagerFactory emf;
     protected EntityManager em;    
@@ -41,7 +41,7 @@ public class JPATestBase {
             log.debug("tearDown() complete, em=" + em);
         }
         catch (Exception ex) {
-            log.fatal("tearDown failed", ex);
+            log.error("tearDown failed", ex);
             throw ex;
         }
      }

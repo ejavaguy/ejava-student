@@ -5,8 +5,8 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import ejava.examples.blpurchase.bl.Catalog;
 import ejava.examples.blpurchase.bo.Account;
@@ -14,7 +14,7 @@ import ejava.examples.blpurchase.bo.Cart;
 import ejava.examples.blpurchase.bo.Product;
 
 public class CatalogImpl implements Catalog {
-	private static final Log log = LogFactory.getLog(CatalogImpl.class);
+	private static final Logger log = LoggerFactory.getLogger(CatalogImpl.class);
 	private EntityManager em;
 
 	public void setEntityManager(EntityManager entityManager) {

@@ -2,8 +2,8 @@ package ejava.examples.orm.rel.annotated;
 
 import javax.persistence.*;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This class provides an example of the owning side of a OneToOne 
@@ -14,7 +14,7 @@ import org.apache.commons.logging.LogFactory;
 @Entity
 @Table(name="ORMREL_PERSON")
 public class Person  {
-    private static Log log = LogFactory.getLog(Person.class);
+    private static Logger log = LoggerFactory.getLogger(Person.class);
     @Id @GeneratedValue @Column(name="PERSON_ID")
     private long id;
     private String firstName;
