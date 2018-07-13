@@ -18,10 +18,11 @@
   <dependencies>
     <!-- core dependencies -->
     <dependency>
-      <groupId>commons-logging</groupId>
-      <artifactId>commons-logging</artifactId>
-      <scope>compile</scope>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-api</artifactId>
+        <scope>compile</scope>
     </dependency>
+
     <!-- contains the core business objects passed between tiers -->
     <dependency>
       <groupId>${project.groupId}</groupId>
@@ -38,10 +39,20 @@
 
     <!-- core project testing dependencies -->
     <dependency>
+        <groupId>org.hibernate</groupId>
+        <artifactId>hibernate-entitymanager</artifactId>
+        <scope>test</scope>
+    </dependency>
+    <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <scope>test</scope>
     </dependency>        
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-log4j12</artifactId>
+      <scope>test</scope>
+    </dependency>
     <dependency>
       <groupId>log4j</groupId>
       <artifactId>log4j</artifactId>
@@ -49,4 +60,12 @@
     </dependency>    
   </dependencies>
 
+  <build>
+      <testResources>
+          <testResource>
+              <directory>src/test/resources</directory>
+              <filtering>true</filtering>
+          </testResource>
+      </testResources>
+  </build>
 </project>

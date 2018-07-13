@@ -11,32 +11,18 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import ejava.examples.webtier.dao.DAOFactory;
-import ejava.examples.webtier.dao.DAOTypeFactory;
 import ejava.util.jndi.JNDIUtil;
 
 @SuppressWarnings("serial")
 public class JPADAOInit extends HttpServlet {
-    Log log = LogFactory.getLog(JPADAOInit.class);
+    private Logger logger = LoggerFactory.getLogger(JPADAOInit.class);
     
     @PersistenceContext(unitName="webtier")
     private EntityManager em;
     
-    public void init() {
-        try {            
-            log.debug("initializing JPA DAOs");
-            DAOTypeFactory daoType = DAOFactory.getDAOTypeFactory();
-            log.debug("servlet got typeFactory:" + daoType);
-        }
-        catch (Throwable th) {
-            log.fatal("error initializing JPA",th);
-            super.getServletContext().log("error initializing JPA", th);
-        }
-    }
-
     protected void doGet(HttpServletRequest request, 
                          HttpServletResponse response) 
         throws ServletException, IOException {
@@ -44,8 +30,8 @@ public class JPADAOInit extends HttpServlet {
         StringBuilder text = new StringBuilder();
         try {
             InitialContext jndi = new InitialContext();
-            log.debug(new JNDIUtil().dump(jndi,""));
-            log.debug(new JNDIUtil().dump(jndi,"java:comp/env"));
+            logger.debug(new JNDIUtil().dump(jndi,""));
+            logger.debug(new JNDIUtil().dump(jndi,"java:comp/env"));
         }
         catch (Exception ex) {
             text.append(ex.toString());            
@@ -60,12 +46,4 @@ public class JPADAOInit extends HttpServlet {
         pw.print("</body>");
         pw.print("</html>");
     }
-
-    protected void doPost(HttpServletRequest request, 
-                          HttpServletResponse response) 
-         throws ServletException, IOException {
-        doGet(request, response);
-    }
-    
-    
 }

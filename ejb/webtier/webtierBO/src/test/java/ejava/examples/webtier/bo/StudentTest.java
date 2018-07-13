@@ -8,19 +8,19 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import ejava.examples.webtier.bo.Grade;
 import ejava.examples.webtier.bo.Student;
 
 public class StudentTest {
-    Log log = LogFactory.getLog(StudentTest.class);
+    Logger logger = LoggerFactory.getLogger(StudentTest.class);
 
     @Test
     public void testGrade() {
-        log.info("*** testGrade ***");
+        logger.info("*** testGrade ***");
         
         Grade grade = new Grade();
         assertTrue("id assigned", grade.getId()==0);
@@ -58,7 +58,7 @@ public class StudentTest {
     
     @Test
     public void testStudent() {
-        log.info("*** testStudent ***");
+        logger.info("*** testStudent ***");
         
         Student student = new Student();
         assertEquals("id assigned", 0, student.getId());

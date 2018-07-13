@@ -1,18 +1,22 @@
 package ejava.examples.webtier.bl;
 
+import static org.junit.Assert.*;
+
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import org.junit.Test;
+
 import ejava.examples.webtier.bl.RegistrarException;
 import ejava.examples.webtier.bo.Grade;
 import ejava.examples.webtier.bo.Student;
-import ejava.examples.webtier.jpa.JPAUtil;
 
 public class BusinessLogicDemo extends DemoBase {
 
+    @Test
     public void testAddStudent() throws RegistrarException {
-        log.info("*** testAddStudent ***");
+        logger.info("*** testAddStudent ***");
         
         Student student = new Student();
         student.setFirstName("cat");
@@ -20,8 +24,9 @@ public class BusinessLogicDemo extends DemoBase {
         registrar.addStudent(student);
     }
     
+    @Test
     public void testCompleteCourse() throws RegistrarException {
-        log.info("*** testCompleteCourse ***");
+        logger.info("*** testCompleteCourse ***");
         Calendar cal = new GregorianCalendar();
         
         Student student = new Student();
@@ -71,8 +76,9 @@ public class BusinessLogicDemo extends DemoBase {
     
     }
     
+    @Test
     public void testDropStudent() throws RegistrarException {
-        log.info("*** testDropStudent ***");
+        logger.info("*** testDropStudent ***");
         Calendar cal = new GregorianCalendar();
 
         Student student = new Student();
@@ -97,8 +103,9 @@ public class BusinessLogicDemo extends DemoBase {
                 0, students.size());
     }
     
+    @Test
     public void testGetStudent() throws RegistrarException {
-        log.info("*** testDropStudent ***");
+        logger.info("*** testDropStudent ***");
         Calendar cal = new GregorianCalendar();
 
         Student student = new Student();
@@ -121,10 +128,10 @@ public class BusinessLogicDemo extends DemoBase {
         assertNotNull("student not gotten", student2);
         
         registrar.dropStudent(student);
-        JPAUtil.getEntityManager().flush();
-        JPAUtil.getEntityManager().clear();
-        JPAUtil.getEntityManager().getTransaction().commit();
-        JPAUtil.getEntityManager().getTransaction().begin();
+        em.flush();
+        em.clear();
+        em.getTransaction().commit();
+        em.getTransaction().begin();
         
         students = registrar.getStudents(0, 100);
         assertEquals("unexpected number of students:" + students.size(),

@@ -55,12 +55,12 @@
         <filter-class>ejava.examples.webtier.web.JPAFilter</filter-class>
         <!--
         <init-param>      
-           <param-name>hibernate.jndi.naming.factory.initial</param-name>
-           <param-value>org.jnp.interfaces.LocalOnlyContextFactory</param-value>
+           <param-name></param-name>
+           <param-value></param-value>
         </init-param>
         <init-param>
-           <param-name>hibernate.jndi.java.naming.factory.url.pkgs</param-name> 
-           <param-value>org.jboss.naming:org.jnp.interfaces</param-value>
+           <param-name></param-name> 
+           <param-value></param-value>
         </init-param>
         -->
     </filter>

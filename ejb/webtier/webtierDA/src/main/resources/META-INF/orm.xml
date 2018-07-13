@@ -6,13 +6,13 @@
     <mapped-superclass class="ejava.examples.webtier.bo.Person"
         metadata-complete="false">
         <attributes>
-            <id name="id" access="PROPERTY">
-                <generated-value/>
+            <id name="id" access="FIELD">
+                <generated-value strategy="IDENTITY"/>
             </id>
         </attributes>
     </mapped-superclass>
     <entity class="ejava.examples.webtier.bo.Student" 
-            access="PROPERTY"
+            access="FIELD"
             metadata-complete="true"
             name="Student">
         <table name="WEBTIER_STUDENT"/>
@@ -47,7 +47,7 @@
     </entity>    
     
     <entity class="ejava.examples.webtier.bo.Grade"
-            access="PROPERTY"
+            access="FIELD"
             metadata-complete="true"
             name="Grade">
         <table name="WEBTIER_GRADE"/>

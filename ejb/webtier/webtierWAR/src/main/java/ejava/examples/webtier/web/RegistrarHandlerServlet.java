@@ -6,31 +6,31 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.EntityManager;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import ejava.examples.webtier.bl.Registrar;
 import ejava.examples.webtier.bl.RegistrarException;
 import ejava.examples.webtier.bl.RegistrarImpl;
 import ejava.examples.webtier.bo.Student;
+import ejava.examples.webtier.dao.StudentDAO;
+import ejava.examples.webtier.jpa.StudentJPADAO;
 
 @SuppressWarnings("serial")
 public class RegistrarHandlerServlet extends HttpServlet {
-    Log log = LogFactory.getLog(RegistrarHandlerServlet.class);
-    Registrar registrar;
-    Map<String, Handler> handlers = new HashMap<String, Handler>();
+    private Logger logger = LoggerFactory.getLogger(RegistrarHandlerServlet.class);
+    private Map<String, Handler> handlers = new HashMap<String, Handler>();
 
     public void init() {
-        registrar = new RegistrarImpl();
-        
         String level = super.getServletConfig().getInitParameter("level");  
-        log.info("level=" + level);
+        logger.info("level=" + level);
         
         //create proper handlers per role
         if (level != null && "admin".equals(level)) {
@@ -46,6 +46,21 @@ public class RegistrarHandlerServlet extends HttpServlet {
         else {
             
         }
+    }
+    
+    /**
+     * Create a new instance of the registrar per request so that we do not
+     * have two calling threads using the same instance. JPAFilter will return
+     * the same EntityManager instance to all calls within the same thread.
+     * @return
+     */
+    protected Registrar getRegistrar() {
+        EntityManager em = JPAFilter.getEntityManager();
+        StudentDAO studentDao = new StudentJPADAO();
+        ((StudentJPADAO)studentDao).setEntityManager(em);
+        Registrar registrar = new RegistrarImpl();
+        ((RegistrarImpl)registrar).setStudentDAO(studentDao);
+        return registrar;
     }
     
     protected void doGet(HttpServletRequest request,
@@ -92,16 +107,16 @@ public class RegistrarHandlerServlet extends HttpServlet {
             student.setLastName(request.getParameter("lastName"));
             
             try {
-                log.debug("creating new student:" + student);
-                Student newStudent = registrar.addStudent(student);
+                logger.debug("creating new student:" + student);
+                Student newStudent = getRegistrar().addStudent(student);
                 request.setAttribute("student", newStudent);
-                log.debug("new student created:" + student);
+                logger.debug("new student created:" + student);
                 
                 RequestDispatcher rd = getServletContext().getRequestDispatcher(
                         "/WEB-INF/content/DisplayStudent.jsp");
                 rd.forward(request, response);
             } catch (RegistrarException ex) {
-                log.fatal("error creating student:" + ex);
+                logger.error("error creating student:" + ex);
                 request.setAttribute("exception", ex);
                 RequestDispatcher rd = getServletContext().getRequestDispatcher(
                     "DisplayException.jsp");
@@ -121,17 +136,17 @@ public class RegistrarHandlerServlet extends HttpServlet {
             catch(Exception ex) {}
             
             try {
-                log.debug("generating " + count + " students");
+                logger.debug("generating " + count + " students");
                 List<Student> students = new ArrayList<Student>();
                 for(int i=0; i<count; i++) {
                     Student student = new Student();
                     student.setFirstName("gen");
                     student.setLastName("student" + i);
                     @SuppressWarnings("unused")
-                    Student newStudent = registrar.addStudent(student);
+                    Student newStudent = getRegistrar().addStudent(student);
                     students.add(student);
                 }
-                log.debug("new students created");
+                logger.debug("new students created");
                 request.setAttribute("students", students);
                 request.setAttribute("index", 0);
                 request.setAttribute("count", count);
@@ -143,7 +158,7 @@ public class RegistrarHandlerServlet extends HttpServlet {
                         "/WEB-INF/content/DisplayStudents.jsp");
                 rd.forward(request, response);
             } catch (RegistrarException ex) {
-                log.fatal("error generating students:" + ex);
+                logger.error("error generating students:" + ex);
                 request.setAttribute("exception", ex);
                 RequestDispatcher rd = getServletContext().getRequestDispatcher(
                     "DisplayException.jsp");
@@ -172,21 +187,21 @@ public class RegistrarHandlerServlet extends HttpServlet {
             int index = 0;
             try { index = Integer.parseInt(indexStr); }
             catch(Exception ex) {
-                log.info("error in index format (" + indexStr +
+                logger.info("error in index format (" + indexStr +
                         ") defaulting to " + index);
             }
             int count = 20;
             try { count = Integer.parseInt(countStr); }
             catch(Exception ex) {
-                log.info("error in count format (" + countStr +
+                logger.info("error in count format (" + countStr +
                         ") defaulting to " + count);
             }            
             
             try {
-                log.debug("getting students(" + index + ", " + count + "):" +
+                logger.debug("getting students(" + index + ", " + count + "):" +
                         params);
                 List<Student> students = 
-                    registrar.getStudents("getStudentsByName", 
+                    getRegistrar().getStudents("getStudentsByName", 
                             params, index, count);
                 int nextIndex = (students.size() < count) ?
                         0 : index + count;
@@ -196,13 +211,13 @@ public class RegistrarHandlerServlet extends HttpServlet {
                 request.setAttribute("nextIndex", nextIndex);
                 request.setAttribute("firstName", firstName);
                 request.setAttribute("lastName", lastName);
-                log.debug("students found:" + students.size());
+                logger.debug("students found:" + students.size());
                 
                 RequestDispatcher rd = getServletContext().getRequestDispatcher(
                         "/WEB-INF/content/DisplayStudents.jsp");
                 rd.forward(request, response);
             } catch (RegistrarException ex) {
-                log.fatal("error getting students:" + ex);
+                logger.error("error getting students:" + ex);
                 request.setAttribute("exception", ex);
                 RequestDispatcher rd = getServletContext().getRequestDispatcher(
                     "/WEB-INF/content/DisplayException.jsp");
@@ -220,7 +235,7 @@ public class RegistrarHandlerServlet extends HttpServlet {
             long id = 0;
             try { id = Long.parseLong(idStr); }
             catch(Exception ex) {
-                log.info("error in id format:" + idStr);
+                logger.info("error in id format:" + idStr);
                 request.setAttribute("exception", ex);
                 RequestDispatcher rd = getServletContext().getRequestDispatcher(
                     "/WEB-INF/content/DisplayException.jsp");
@@ -230,16 +245,16 @@ public class RegistrarHandlerServlet extends HttpServlet {
             
             
             try {
-                log.debug("getting student:");
-                Student student = registrar.getStudent(id);
+                logger.debug("getting student:");
+                Student student = getRegistrar().getStudent(id);
                 request.setAttribute("student", student);
-                log.debug("student found:" + student);
+                logger.debug("student found:" + student);
                 
                 RequestDispatcher rd = getServletContext().getRequestDispatcher(
                         "/WEB-INF/content/DisplayStudent.jsp");
                 rd.forward(request, response);
             } catch (RegistrarException ex) {
-                log.fatal("error getting student:" + ex);
+                logger.error("error getting student:" + ex);
                 request.setAttribute("exception", ex);
                 RequestDispatcher rd = getServletContext().getRequestDispatcher(
                     "/WEB-INF/content/DisplayException.jsp");
@@ -258,7 +273,7 @@ public class RegistrarHandlerServlet extends HttpServlet {
             long id = 0;
             try { id = Long.parseLong(idStr); }
             catch(Exception ex) {
-                log.info("error in id format:" + idStr);
+                logger.info("error in id format:" + idStr);
                 request.setAttribute("exception", ex);
                 RequestDispatcher rd = getServletContext().getRequestDispatcher(
                     "/WEB-INF/content/DisplayException.jsp");
@@ -267,18 +282,18 @@ public class RegistrarHandlerServlet extends HttpServlet {
             
             
             try {
-                log.debug("removing student:");
-                Student student = registrar.getStudent(id); 
-                student = registrar.dropStudent(student);
+                logger.debug("removing student:");
+                Student student = getRegistrar().getStudent(id); 
+                student = getRegistrar().dropStudent(student);
                 request.setAttribute("student", student);
                 request.setAttribute("removed", true);
-                log.debug("student removed:" + student);
+                logger.debug("student removed:" + student);
                 
                 RequestDispatcher rd = getServletContext().getRequestDispatcher(
                         "/WEB-INF/content/DisplayStudent.jsp");
                 rd.forward(request, response);
             } catch (RegistrarException ex) {
-                log.fatal("error getting student:" + ex);
+                logger.error("error getting student:" + ex);
                 request.setAttribute("exception", ex);
                 RequestDispatcher rd = getServletContext().getRequestDispatcher(
                     "/WEB-INF/content/DisplayException.jsp");

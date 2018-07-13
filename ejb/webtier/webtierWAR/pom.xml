@@ -28,9 +28,9 @@
             <scope>provided</scope>
         </dependency>        
         <dependency>
-            <groupId>commons-logging</groupId>
-            <artifactId>commons-logging</artifactId>
-            <scope>compile</scope>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <scope>provided</scope>
         </dependency>
 
         <!-- This will also bring in the appropriate JPA API
@@ -38,7 +38,7 @@
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-entitymanager</artifactId>
-            <scope>compile</scope>
+            <scope>provided</scope>
         </dependency>
         
         <!-- this brings in interfaces, BO, and core business logic -->
@@ -52,7 +52,7 @@
         <!-- this brings in a JPA implementation of the DAO -->
         <dependency>
             <groupId>${project.groupId}</groupId>          
-            <artifactId>webtierJPA</artifactId>
+            <artifactId>webtierDA</artifactId>
             <version>${project.version}</version>          
             <scope>compile</scope>
         </dependency>
@@ -67,6 +67,14 @@
     
     <build>
         <finalName>webtierWAR</finalName>
+
+        <testResources>
+            <testResource>
+                <directory>src/test/resources</directory>
+                <filtering>true</filtering>
+            </testResource>
+        </testResources>
+
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -80,9 +88,14 @@
                         <port>9090</port>
                         <idleTimeout>60000</idleTimeout>
                     </httpConnector>
+                    <!--
                     <scanIntervalSeconds>10</scanIntervalSeconds>
+                    -->
+                    <reload>manual</reload>
+                    <useTestClasspath>true</useTestClasspath>
+                    <useProvidedScope>true</useProvidedScope>
                     <webApp>
-                        <contextPath>/</contextPath>
+                        <contextPath>/${project.build.finalName}</contextPath>
                     </webApp>
 
                     <systemProperties>
@@ -98,17 +111,17 @@
                 </configuration>       
                 <dependencies>
                     <dependency>
-                        <groupId>log4j</groupId>
-                        <artifactId>log4j</artifactId>
-                        <version>${log4j.version}</version>
-                        <scope>compile</scope>
-                    </dependency>    
-                    <dependency>
                         <groupId>org.slf4j</groupId>
                         <artifactId>slf4j-log4j12</artifactId>
                         <version>${slf4j.version}</version>
                         <scope>compile</scope>
                     </dependency>
+                    <dependency>
+                        <groupId>log4j</groupId>
+                        <artifactId>log4j</artifactId>
+                        <version>${log4j.version}</version>
+                        <scope>compile</scope>
+                    </dependency>    
                     <dependency>
                         <groupId>com.h2database</groupId>
                         <artifactId>h2</artifactId>
@@ -117,6 +130,50 @@
                     </dependency>
                 </dependencies>
             </plugin>          
+
+            <plugin>
+                <groupId>org.codehaus.cargo</groupId>
+                <artifactId>cargo-maven2-plugin</artifactId>
+                <configuration>
+                    <!-- artifacts to deploy to server -->
+                    <deployables>
+                        <deployable>
+                            <groupId>${project.groupId}</groupId>
+                            <artifactId>webtierWAR</artifactId>
+                            <type>war</type>
+                        </deployable>
+                    </deployables>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
+
+
+    <profiles>
+    <!-- this profiles allow the WAR to be undeployed before it is deleted
+        during the clean target. This behavior requires the WAR to be
+        present, so it cannot be part of the default behavior. It is
+        only activated when -Pundeploy is present so that
+        normal cleans do not fail.  -->
+        <profile>
+            <id>undeploy</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.cargo</groupId>
+                        <artifactId>cargo-maven2-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>undeploy-ear</id>
+                                <phase>pre-clean</phase>
+                                <goals>
+                                    <goal>undeploy</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>                    
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>

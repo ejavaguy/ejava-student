@@ -20,7 +20,6 @@
     <modules>
         <module>webtierBO</module>
         <module>webtierDA</module>
-        <module>webtierJPA</module>
         <module>webtierBL</module>
         <module>webtierWAR</module>
     </modules>

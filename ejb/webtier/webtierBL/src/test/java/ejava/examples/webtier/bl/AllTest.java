@@ -1,39 +1,32 @@
 package ejava.examples.webtier.bl;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import ejava.examples.webtier.jpa.JPAUtil;
-
-import junit.extensions.TestSetup;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This class provides the main entry point for each of the individual test
  * cases. It provides one-time setUp and tearDown functionality needed by 
  * all individual test cases.
- * 
- * @author jcstaff
- * $Id:$
  */
-public class AllTest extends TestCase {
-    private static Log log_ = LogFactory.getLog(AllTest.class);
+@RunWith(Suite.class)
+@Suite.SuiteClasses({
+        //list of classes in test suite
+    BusinessLogicDemo.class
+})
+public class AllTest {
+    private static final Logger logger = LoggerFactory.getLogger(AllTest.class);
 
-    public static Test suite() {
-        log_.debug("creating test suite");
-        TestSuite tests = new TestSuite();
-        tests.addTestSuite(BusinessLogicDemo.class);
-        
-        TestSetup wrapper = new TestSetup(tests) {
-            public void setUp() throws Exception {
-            }
-            public void tearDown() throws Exception {
-                JPAUtil.close();
-            }
-        };
-        
-        return wrapper;
+    @BeforeClass
+    public static void setUpSuite() {
+        logger.info("anything setup before suite");
+    }
+
+    @AfterClass
+    public static void tearDoanSuite() {
+        logger.info("anything torn down after suite");
     }
 }

@@ -2,12 +2,9 @@ package ejava.examples.webtier.bo;
 
 import java.io.Serializable;
 
-import javax.persistence.*;
-
 public class Person implements Serializable {
     private static final long serialVersionUID = 1L;
     private long id;
-    @Basic
     private String firstName;
     private String lastName;
     
@@ -18,7 +15,6 @@ public class Person implements Serializable {
         setFirstName(firstName);
         setLastName(lastName);
     }
-    @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
     public long getId() {
         return id;
     }

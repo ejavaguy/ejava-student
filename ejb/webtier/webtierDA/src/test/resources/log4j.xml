@@ -24,6 +24,12 @@
       
    </appender>
 
+   <logger name="org.hibernate.SQL">
+      <level value="debug"/>
+   </logger>
+   <logger name="org.hibernate.types">
+      <level value="trace"/>
+   </logger>
    <logger name="ejava">
       <level value="debug"/>
    </logger>

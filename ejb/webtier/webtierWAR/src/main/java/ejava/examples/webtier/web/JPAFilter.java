@@ -1,15 +1,17 @@
 package ejava.examples.webtier.web;
 
 import java.io.IOException;
-import java.util.Enumeration;
-import java.util.Properties;
+import java.util.HashMap;
 
 import javax.naming.Context;
 import javax.naming.NameClassPair;
 import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
+import javax.persistence.Persistence;
+import javax.persistence.PersistenceUnit;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -17,100 +19,86 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import ejava.examples.webtier.dao.DAOFactory;
-import ejava.examples.webtier.dao.DAOTypeFactory;
-import ejava.examples.webtier.jpa.JPADAOTypeFactory;
-import ejava.examples.webtier.jpa.JPAUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class JPAFilter implements Filter {
-    private static Log log = LogFactory.getLog(JPAFilter.class);
-    private String puName = "webtier";
-    private Properties emfProperties = new Properties();
-    @PersistenceContext(unitName="webtier")
-    private EntityManager pc;
-
+    private static Logger logger = LoggerFactory.getLogger(JPAFilter.class);
+    private static final String PU_NAME = "webtier";
+    private boolean containerManaged=false;
+    @PersistenceUnit(unitName=PU_NAME)
+    private EntityManagerFactory emf;
+    private static ThreadLocal<EntityManager> em = new ThreadLocal<>();
     
     public void init(FilterConfig config) throws ServletException {
-        log.debug("filter initializing JPA DAOs"); 
-        new JPADAOTypeFactory();
-        DAOTypeFactory daoType = DAOFactory.getDAOTypeFactory();
-        log.debug("filter got typeFactory:" + daoType.getName());
+        logger.info("filter initializing JPA DAOs, em=f{}", emf);
+        System.out.println(String.format("filter initializing JPA DAOs, em=%s", emf));
         
-        for(Enumeration<?> e=config.getInitParameterNames();
-            e.hasMoreElements(); ) {
-            String key = (String)e.nextElement();
-            String value=(String)config.getInitParameter(key);
-            emfProperties.put(key, value);
+        if (emf==null) {
+            emf = Persistence.createEntityManagerFactory(PU_NAME);
+        } else {
+            containerManaged=true;
         }
-        log.debug("emfProperties=" + emfProperties);
     }    
 
     public void doFilter(ServletRequest request, 
             ServletResponse response, 
             FilterChain chain) throws IOException, ServletException {
         
-        log.debug("injected entity manager=" + pc);
-        EntityManager em = getEntityManager();               
+        logger.debug("injected entity manager={}", emf);
+        EntityManager entityMgr = initEntityManager();               
 
-        if (!em.getTransaction().isActive()) {
-            log.debug("filter: beginning JPA transaction");
-            em.getTransaction().begin();
+        EntityTransaction tx = entityMgr.getTransaction();
+        if (!tx.isActive()) {
+            logger.debug("filter: beginning JPA transaction");
+            tx.begin();
         }
         
         chain.doFilter(request, response);
 
-        if (em.getTransaction().isActive()) {
-            if (em.getTransaction().getRollbackOnly()==true) {
-                log.debug("filter: rolling back JPA transaction");
-                em.getTransaction().rollback();
+        if (tx.isActive()) {
+            if (tx.getRollbackOnly()==true) {
+                logger.debug("filter: rolling back JPA transaction");
+                tx.rollback();
             }
             else {
-                log.debug("filter: committing JPA transaction");
-                em.flush();                
-                em.clear();
-                em.getTransaction().commit();
+                logger.debug("filter: committing JPA transaction");
+                tx.commit();
             }
         }
         else {
-            log.debug("filter: no transaction was active");
+            logger.debug("filter: no transaction was active");
         }
+        
+        closeEntityManager();        
     }
 
     public void destroy() {
-        JPAUtil.close();
+        if (!containerManaged) {
+            emf.close();
+        }
     }
 
-    private EntityManager getEntityManager() throws ServletException {
-        if (JPAUtil.peekEntityManager() == null) {
-            JPAUtil.setEntityManagerFactoryProperties(emfProperties);
+    private EntityManager initEntityManager() throws ServletException {
+        EntityManager entityMgr = getEntityManager();
+        if (entityMgr==null) {
+            entityMgr = emf.createEntityManager();
+            em.set(entityMgr);
         }
-        return JPAUtil.getEntityManager(puName);
-    }        
-
+        return entityMgr;
+    }
     
-    @SuppressWarnings("unused")
-    private Properties getInitialContextProperties() {
-       Properties props = new Properties();
-       props.put("java.naming.factory.initial", 
-               "org.jnp.interfaces.LocalOnlyContextFactory");
-       props.put("java.naming.factory.url.pkgs", 
-               "org.jboss.naming:org.jnp.interfaces");
-       return props;
-    }    
-
-    @SuppressWarnings("unused")
-    private Properties getEntityManagerFactoryProperties() {
-        Properties props = new Properties();
-        props.put("hibernate.jndi.naming.factory.initial", 
-                "org.jnp.interfaces.LocalOnlyContextFactory");
-        props.put("hibernate.jndi.java.naming.factory.url.pkgs", 
-                "org.jboss.naming:org.jnp.interfaces");
-                
-        return props;
-     }    
+    private void closeEntityManager() {
+        EntityManager entityMgr = getEntityManager();
+        if (entityMgr!=null) {
+            entityMgr.close();
+            em.set(null);
+        }        
+    }
+    
+    public static final EntityManager getEntityManager() {
+        return em.get();
+    }
     
     @SuppressWarnings("unused")
     private void dump(Context context, String name) {
@@ -119,7 +107,7 @@ public class JPAFilter implements Filter {
             doDump(0, text, context, name);
         }
         catch (NamingException ex) {}
-        log.debug(text.toString());
+        logger.debug(text.toString());
     }
 
     private void doDump(int level, StringBuilder text, Context context, String name) 

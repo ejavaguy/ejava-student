@@ -17,9 +17,9 @@
   <dependencies>
     <!-- core dependencies -->
     <dependency>
-      <groupId>commons-logging</groupId>
-      <artifactId>commons-logging</artifactId>
-      <scope>compile</scope>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-api</artifactId>
+        <scope>compile</scope>
     </dependency>
 
     <!-- contains the core business objects passed between tiers -->
@@ -49,20 +49,12 @@
         <scope>test</scope>
     </dependency>
 
-    <!-- interface for DAO implementations -->
+    <!-- interface and DAO implementation -->
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>webtierDA</artifactId>
       <version>${project.version}</version>
       <scope>compile</scope>
-    </dependency>
-
-    <!-- a DAO implementation -->
-    <dependency>
-      <groupId>${project.groupId}</groupId>
-      <artifactId>webtierJPA</artifactId>
-      <version>${project.version}</version>
-      <scope>test</scope>
     </dependency>
 
     <!-- core project testing dependencies -->
@@ -77,4 +69,13 @@
       <scope>test</scope>
     </dependency>    
   </dependencies>
+
+  <build>
+      <testResources>
+          <testResource>
+              <directory>src/test/resources</directory>
+              <filtering>true</filtering>
+          </testResource>
+      </testResources>
+  </build>
 </project>
