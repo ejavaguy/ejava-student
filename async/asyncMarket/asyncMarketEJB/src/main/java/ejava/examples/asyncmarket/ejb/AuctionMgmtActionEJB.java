@@ -18,7 +18,7 @@ import org.slf4j.LoggerFactory;
  */
 @Stateless
 public class AuctionMgmtActionEJB {
-	private static Log log = LogFactory.getLog(AuctionMgmtActionEJB.class);
+	private static Logger log = LoggerFactory.getLogger(AuctionMgmtActionEJB.class);
 	
     /**
      * Perform action synchronously while caller waits.

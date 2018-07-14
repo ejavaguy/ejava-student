@@ -22,7 +22,7 @@ import org.junit.Test;
  * @author jcstaff
  */
 public class ClientAckQueueTest extends JMSTestBase {
-    static Log log = LogFactory.getLog(ClientAckQueueTest.class);
+    static Logger log = LoggerFactory.getLogger(ClientAckQueueTest.class);
     protected Destination destination;        
     protected MessageCatcher catcher1;
     protected MessageCatcher catcher2;

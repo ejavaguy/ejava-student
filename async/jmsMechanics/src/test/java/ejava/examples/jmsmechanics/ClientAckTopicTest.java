@@ -22,7 +22,7 @@ import org.junit.Test;
  * @author jcstaff
  */
 public class ClientAckTopicTest extends JMSTestBase {
-    static Log log = LogFactory.getLog(ClientAckTopicTest.class);
+    static Logger log = LoggerFactory.getLogger(ClientAckTopicTest.class);
     Destination destination;        
     MessageCatcher catcher1;
     MessageCatcher catcher2;

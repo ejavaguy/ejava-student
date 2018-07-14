@@ -21,7 +21,7 @@ import org.junit.Test;
  * @author jcstaff
  */
 public class TransactedTopicSessionTest extends JMSTestBase {
-    static Log log = LogFactory.getLog(TransactedTopicSessionTest.class);
+    static Logger log = LoggerFactory.getLogger(TransactedTopicSessionTest.class);
     protected Destination destination;        
     protected MessageCatcher catcher1;
     protected MessageCatcher catcher2;

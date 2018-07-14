@@ -19,7 +19,7 @@ import org.junit.BeforeClass;
 
 
 public class JMSTestBase {
-	private static final Log log = LogFactory.getLog(JMSTestBase.class);
+	private static final Logger log = LoggerFactory.getLogger(JMSTestBase.class);
     protected static boolean jmsEmbedded = Boolean.parseBoolean( 
 		System.getProperty("jms.embedded", "true"));
     protected int msgCount = Integer.parseInt(System.getProperty("multi.message.count", "20"));

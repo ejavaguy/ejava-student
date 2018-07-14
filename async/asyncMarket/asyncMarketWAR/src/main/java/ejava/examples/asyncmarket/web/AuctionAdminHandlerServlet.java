@@ -22,7 +22,7 @@ import ejava.examples.asyncmarket.ejb.UserMgmtLocal;
 
 @SuppressWarnings("serial")
 public class AuctionAdminHandlerServlet extends HttpServlet {
-    private static Log log = LogFactory.getLog(AuctionAdminHandlerServlet.class);
+    private static Logger log = LoggerFactory.getLogger(AuctionAdminHandlerServlet.class);
     private Map<String, Handler> handlers = new HashMap<String, Handler>();
     @EJB(beanInterface=AuctionMgmtLocal.class)
     private AuctionMgmt auctionMgmt;

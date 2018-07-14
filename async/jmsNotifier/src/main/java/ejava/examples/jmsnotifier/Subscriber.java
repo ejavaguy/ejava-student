@@ -22,7 +22,7 @@ import org.slf4j.LoggerFactory;
  * @author jcstaff
  */
 public class Subscriber implements Runnable {
-    private static final Log log = LogFactory.getLog(Subscriber.class);
+    private static final Logger log = LoggerFactory.getLogger(Subscriber.class);
     protected ConnectionFactory connFactory;
     protected Destination destination;
     protected boolean stop = false;

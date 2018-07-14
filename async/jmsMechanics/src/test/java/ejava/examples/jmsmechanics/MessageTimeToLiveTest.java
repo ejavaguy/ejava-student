@@ -27,7 +27,7 @@ import org.junit.Test;
  * @author jcstaff
  */
 public class MessageTimeToLiveTest extends JMSTestBase {
-    static Log log = LogFactory.getLog(MessageTimeToLiveTest.class);
+    static Logger log = LoggerFactory.getLogger(MessageTimeToLiveTest.class);
     protected Destination destination;        
 
     @Before

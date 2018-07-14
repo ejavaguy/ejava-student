@@ -31,7 +31,7 @@ import org.junit.Test;
  * @author jcstaff
  */
 public class MessageSelectorQueueTest extends JMSTestBase {
-    static Log log = LogFactory.getLog(MessageSelectorQueueTest.class);
+    static Logger log = LoggerFactory.getLogger(MessageSelectorQueueTest.class);
     protected Destination destination;        
 
     @Before

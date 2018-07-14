@@ -25,7 +25,7 @@ import ejava.examples.asyncmarket.ejb.UserMgmtLocal;
 
 @SuppressWarnings("serial")
 public class SellerHandlerServlet extends HttpServlet {
-    private static Log log = LogFactory.getLog(SellerHandlerServlet.class);
+    private static Logger log = LoggerFactory.getLogger(SellerHandlerServlet.class);
     private Map<String, Handler> handlers = new HashMap<String, Handler>();
     @EJB(beanInterface=SellerLocal.class)
     private Seller seller;

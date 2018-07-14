@@ -23,7 +23,7 @@ import org.junit.Test;
  * @author jcstaff
  */
 public class DupsOKQueueTest extends JMSTestBase {
-    static Log log = LogFactory.getLog(DupsOKQueueTest.class);
+    static Logger log = LoggerFactory.getLogger(DupsOKQueueTest.class);
     protected Destination destination;        
     protected MessageCatcher catcher1;
     protected MessageCatcher catcher2;

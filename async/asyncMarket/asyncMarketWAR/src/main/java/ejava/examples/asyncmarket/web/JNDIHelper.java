@@ -32,7 +32,7 @@ import ejava.util.ejb.EJBClient;
  * TODO: factor out JNDI properties into a jndi.properties file
  */
 public class JNDIHelper {
-    private static final Log log = LogFactory.getLog(JNDIHelper.class);
+    private static final Logger log = LoggerFactory.getLogger(JNDIHelper.class);
     public static final String AUCTION_MGMT_REMOTE_JNDI=
     	EJBClient.getRemoteLookupName("asyncMarketEAR", "asyncMarketEJB", 
 			"AuctionMgmtEJB", AuctionMgmtRemote.class.getName());    

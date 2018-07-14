@@ -23,7 +23,7 @@ import org.slf4j.LoggerFactory;
  * @author jcstaff
  */
 public class MessageCatcher implements Runnable {
-    private static final Log log = LogFactory.getLog(MessageCatcher.class);
+    private static final Logger log = LoggerFactory.getLogger(MessageCatcher.class);
     protected ConnectionFactory connFactory;
     protected String user;
     protected String password;
@@ -134,7 +134,7 @@ public class MessageCatcher implements Runnable {
             execute();
         }
         catch (Exception ex) {
-            log.fatal("error running " + name, ex);
+            log.error("error running " + name, ex);
         }
     }    
 
@@ -168,7 +168,7 @@ public class MessageCatcher implements Runnable {
             catcher.execute();
         }
         catch (Exception ex) {
-            log.fatal(ex);
+            log.error(ex);
             System.exit(-1);            
         }
     }

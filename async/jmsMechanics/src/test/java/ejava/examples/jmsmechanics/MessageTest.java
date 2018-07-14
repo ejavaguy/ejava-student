@@ -38,7 +38,7 @@ import org.junit.Test;
  * @author jcstaff
  */
 public class MessageTest extends JMSTestBase {
-    static Log log = LogFactory.getLog(MessageTest.class);
+    static Logger log = LoggerFactory.getLogger(MessageTest.class);
     protected Destination destination;        
     
     protected Session session = null;

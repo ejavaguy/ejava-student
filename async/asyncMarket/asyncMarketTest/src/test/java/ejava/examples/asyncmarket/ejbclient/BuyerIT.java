@@ -15,7 +15,7 @@ import ejava.examples.asyncmarket.bo.AuctionItem;
 import ejava.examples.asyncmarket.bo.Order;
 
 public class BuyerIT extends MarketITBase {
-    Log log = LogFactory.getLog(BuyerIT.class);
+    Logger log = LoggerFactory.getLogger(BuyerIT.class);
     InitialContext jndi;
     
     @Test

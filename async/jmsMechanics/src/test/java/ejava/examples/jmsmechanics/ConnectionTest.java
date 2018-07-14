@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.junit.Test;
 
 public class ConnectionTest extends JMSTestBase {
-    static Log log = LogFactory.getLog(ConnectionTest.class);
+    static Logger log = LoggerFactory.getLogger(ConnectionTest.class);
 
     @Test
     public void testConnectionMetadata() throws Exception {

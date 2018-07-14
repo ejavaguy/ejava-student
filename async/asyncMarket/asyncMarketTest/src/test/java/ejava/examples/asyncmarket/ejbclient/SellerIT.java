@@ -12,7 +12,7 @@ import org.junit.Test;
 import ejava.examples.asyncmarket.bo.AuctionItem;
 
 public class SellerIT extends MarketITBase {
-    Log log = LogFactory.getLog(SellerIT.class);
+    Logger log = LoggerFactory.getLogger(SellerIT.class);
     
     @Test
     public void testSeller() throws Exception {

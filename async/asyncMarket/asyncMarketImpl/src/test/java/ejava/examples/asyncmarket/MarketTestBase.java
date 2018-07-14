@@ -30,7 +30,7 @@ import ejava.examples.asyncmarket.jpa.JPAPersonDAO;
  * within this module.
  */
 public abstract class MarketTestBase  {
-    protected Log log = LogFactory.getLog(getClass());
+    protected Logger log = LoggerFactory.getLogger(getClass());
     private static final String PERSISTENCE_UNIT = "asyncMarket-test";
     private static EntityManagerFactory emf;
     protected EntityManager em;

@@ -25,7 +25,7 @@ import org.slf4j.LoggerFactory;
  * @author jcstaff
  */
 public class Requestor implements Runnable, MessageListener {
-    private static final Log log = LogFactory.getLog(Requestor.class);
+    private static final Logger log = LoggerFactory.getLogger(Requestor.class);
     protected ConnectionFactory connFactory;
     protected Destination requestQueue;
     protected boolean stop = false;

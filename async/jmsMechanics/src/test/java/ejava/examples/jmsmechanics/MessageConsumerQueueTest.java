@@ -28,7 +28,7 @@ import org.junit.Test;
  * @author jcstaff
  */
 public class MessageConsumerQueueTest extends JMSTestBase {
-    static Log log = LogFactory.getLog(MessageConsumerQueueTest.class);
+    static Logger log = LoggerFactory.getLogger(MessageConsumerQueueTest.class);
     Destination destination;        
 
     @Before

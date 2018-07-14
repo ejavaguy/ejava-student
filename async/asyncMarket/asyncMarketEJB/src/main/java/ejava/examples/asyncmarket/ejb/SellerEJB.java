@@ -41,7 +41,7 @@ import ejava.examples.asyncmarket.jpa.JPAPersonDAO;
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
 public class SellerEJB
     implements SellerLocal, SellerRemote {
-    Log log = LogFactory.getLog(SellerEJB.class);
+    private static final Logger log = LoggerFactory.getLogger(SellerEJB.class);
     
     @Resource(lookup="java:/JmsXA")
     private ConnectionFactory connFactory;

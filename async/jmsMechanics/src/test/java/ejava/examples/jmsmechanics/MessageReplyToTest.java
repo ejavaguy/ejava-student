@@ -29,7 +29,7 @@ import org.junit.Test;
  * @author jcstaff
  */
 public class MessageReplyToTest extends JMSTestBase {
-    static Log log = LogFactory.getLog(MessageReplyToTest.class);
+    static Logger log = LoggerFactory.getLogger(MessageReplyToTest.class);
     protected Destination destination;        
 
     @Before

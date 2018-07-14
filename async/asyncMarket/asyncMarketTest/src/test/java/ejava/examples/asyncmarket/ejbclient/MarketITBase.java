@@ -26,7 +26,7 @@ import ejava.util.ejb.EJBClient;
 import junit.framework.TestCase;
 
 public abstract class MarketITBase extends TestCase {
-	private static final Log log = LogFactory.getLog(MarketITBase.class);
+	private static final Logger log = LoggerFactory.getLogger(MarketITBase.class);
 	protected static String auctionmgmtJNDI = System.getProperty("jndi.name.auctionmgmt",
 		EJBClient.getRemoteLookupName("asyncMarketEAR", "asyncMarketEJB", 
 				"AuctionMgmtEJB", AuctionMgmtRemote.class.getName()));

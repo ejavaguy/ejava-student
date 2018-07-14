@@ -22,7 +22,7 @@ import org.junit.Test;
  * @author jcstaff
  */
 public class JMSQueueBasicsTest extends JMSTestBase {
-    static Log log = LogFactory.getLog(JMSQueueBasicsTest.class);
+    static Logger log = LoggerFactory.getLogger(JMSQueueBasicsTest.class);
     String destinationJNDI = System.getProperty("jndi.name.testQueue",
         "queue/ejava/examples/jmsMechanics/queue1");
     int msgCount = Integer.parseInt(System.getProperty("multi.message.count", "20"));

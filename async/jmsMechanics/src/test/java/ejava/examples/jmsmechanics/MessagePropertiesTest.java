@@ -24,7 +24,7 @@ import org.junit.Test;
  * @author jcstaff
  */
 public class MessagePropertiesTest extends JMSTestBase {
-    static Log log = LogFactory.getLog(MessagePropertiesTest.class);
+    static Logger log = LoggerFactory.getLogger(MessagePropertiesTest.class);
     protected Destination destination;        
     protected MessageCatcher catcher1;
     protected MessageCatcher catcher2;

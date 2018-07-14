@@ -49,7 +49,7 @@ import ejava.examples.asyncmarket.jpa.JPAPersonDAO;
 @Stateless
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
 public class AuctionMgmtEJB implements AuctionMgmtRemote, AuctionMgmtLocal {
-    private static final Log log = LogFactory.getLog(AuctionMgmtEJB.class);
+    private static final Logger log = LoggerFactory.getLogger(AuctionMgmtEJB.class);
     
     @PersistenceContext(unitName="asyncMarket")
     private EntityManager em;

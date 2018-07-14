@@ -12,7 +12,7 @@ import ejava.examples.asyncmarket.MarketTestBase;
 import ejava.examples.asyncmarket.bo.Person;
 
 public class PersonTest extends MarketTestBase {
-    Log log = LogFactory.getLog(PersonTest.class);
+    Logger log = LoggerFactory.getLogger(PersonTest.class);
     
     @Test
     public void testPerson() {

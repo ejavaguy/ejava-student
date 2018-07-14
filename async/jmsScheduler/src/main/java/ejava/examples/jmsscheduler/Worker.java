@@ -25,7 +25,7 @@ import org.slf4j.LoggerFactory;
  * @author jcstaff
  */
 public class Worker implements Runnable {
-    private static final Log log = LogFactory.getLog(Worker.class);
+    private static final Logger log = LoggerFactory.getLogger(Worker.class);
     protected ConnectionFactory connFactory;
     protected Destination requestQueue;
     protected Destination dlq;

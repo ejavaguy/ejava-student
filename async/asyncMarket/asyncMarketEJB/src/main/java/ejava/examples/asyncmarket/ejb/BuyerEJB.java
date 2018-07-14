@@ -28,7 +28,7 @@ import ejava.examples.asyncmarket.jpa.JPAPersonDAO;
 @Stateless
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
 public class BuyerEJB implements BuyerRemote, BuyerLocal {
-    private static final Log log = LogFactory.getLog(BuyerEJB.class);
+    private static final Logger log = LoggerFactory.getLogger(BuyerEJB.class);
     
     @PersistenceContext(unitName="asyncMarket")
     private EntityManager em;

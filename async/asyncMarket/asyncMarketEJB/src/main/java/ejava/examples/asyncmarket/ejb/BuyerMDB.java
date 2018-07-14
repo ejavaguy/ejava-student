@@ -58,7 +58,7 @@ import ejava.examples.asyncmarket.jpa.JPAOrderDAO;
                 propertyValue="Auto-acknowledge")            
 })
 public class BuyerMDB implements MessageListener {
-    private static final Log log = LogFactory.getLog(BuyerMDB.class);
+    private static final Logger log = LoggerFactory.getLogger(BuyerMDB.class);
     
     @EJB
     private BuyerLocal buyer;

@@ -25,7 +25,7 @@ import org.junit.Test;
  *
  */
 public class QueueBrowserTest extends JMSTestBase {
-    static Log log = LogFactory.getLog(QueueBrowserTest.class);
+    static Logger log = LoggerFactory.getLogger(QueueBrowserTest.class);
     protected Destination destination;        
     protected MessageCatcher catcher1;
     protected MessageCatcher catcher2;

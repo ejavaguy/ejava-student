@@ -26,7 +26,7 @@ import org.junit.Test;
  * @author jcstaff
  */
 public class DurableSubscriberTest extends JMSTestBase {
-    static Log log = LogFactory.getLog(DurableSubscriberTest.class);
+    static Logger log = LoggerFactory.getLogger(DurableSubscriberTest.class);
     protected Destination destination;        
 
     @Before

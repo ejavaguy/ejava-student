@@ -9,7 +9,7 @@ import org.junit.Test;
  * beans.
  */
 public class AsyncMethodIT extends MarketITBase {
-    Log log = LogFactory.getLog(AsyncMethodIT.class);
+    Logger log = LoggerFactory.getLogger(AsyncMethodIT.class);
     
     @Test
     public void testAsync() throws Exception {

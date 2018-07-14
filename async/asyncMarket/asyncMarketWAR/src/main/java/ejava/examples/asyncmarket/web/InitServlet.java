@@ -14,7 +14,7 @@ import ejava.examples.asyncmarket.ejb.AuctionMgmtLocal;
 
 @SuppressWarnings("serial")
 public class InitServlet extends HttpServlet {
-    private static Log log = LogFactory.getLog(InitServlet.class);
+    private static Logger log = LoggerFactory.getLogger(InitServlet.class);
     @EJB(beanInterface=AuctionMgmtLocal.class)
     private AuctionMgmt auctionMgmt;
 

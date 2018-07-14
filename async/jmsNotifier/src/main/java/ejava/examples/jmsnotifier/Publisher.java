@@ -19,7 +19,7 @@ import org.slf4j.LoggerFactory;
  * @author jcstaff
  */
 public class Publisher implements Runnable {
-    private static final Log log = LogFactory.getLog(Publisher.class);
+    private static final Logger log = LoggerFactory.getLogger(Publisher.class);
     protected ConnectionFactory connFactory;
     protected Destination destination;
     protected boolean stop = false;

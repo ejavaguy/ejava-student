@@ -14,7 +14,7 @@ import ejava.examples.asyncmarket.bo.AuctionItem;
 import ejava.examples.asyncmarket.bo.Bid;
 
 public class AuctionMgmtIT extends MarketITBase {
-    Log log = LogFactory.getLog(AuctionMgmtIT.class);
+    Logger log = LoggerFactory.getLogger(AuctionMgmtIT.class);
     
     @Test
     public void testAuction() throws Exception {

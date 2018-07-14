@@ -22,7 +22,7 @@ import static org.junit.Assert.*;
  * @author jcstaff
  */
 public class JMSTopicBasicsTest extends JMSTestBase {
-    static Log log = LogFactory.getLog(JMSTopicBasicsTest.class);
+    static Logger log = LoggerFactory.getLogger(JMSTopicBasicsTest.class);
     protected Destination destination;        
     protected MessageCatcher catcher1;
     protected MessageCatcher catcher2;

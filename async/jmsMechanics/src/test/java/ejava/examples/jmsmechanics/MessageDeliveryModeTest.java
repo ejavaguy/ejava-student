@@ -28,7 +28,7 @@ import static org.junit.Assert.*;
  * @author jcstaff
  */
 public class MessageDeliveryModeTest extends JMSTestBase {
-    static Log log = LogFactory.getLog(MessageDeliveryModeTest.class);
+    static Logger log = LoggerFactory.getLogger(MessageDeliveryModeTest.class);
     protected Destination destination;        
     
     @Before

@@ -30,7 +30,7 @@ import ejava.util.jndi.JNDIUtil;
  * JMS server launched separately from mavn during the pre-integration phase.
  */
 public class JMSNotifierIT {
-	static final Log log = LogFactory.getLog(JMSNotifierIT.class);
+	static final Logger log = LoggerFactory.getLogger(JMSNotifierIT.class);
     protected static String adminUser = System.getProperty("admin.user", "admin1");
     protected static String adminPassword = System.getProperty("admin.password", "password1!");
     protected static boolean jmsEmbedded = Boolean.parseBoolean(System.getProperty("jms.embedded", "true"));

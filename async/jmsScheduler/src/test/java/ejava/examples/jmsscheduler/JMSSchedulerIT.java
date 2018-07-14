@@ -33,7 +33,7 @@ import ejava.util.jndi.JNDIUtil;
  * launched separately from mavn during the pre-integration phase.
  */
 public class JMSSchedulerIT {
-	static final Log log = LogFactory.getLog(JMSSchedulerIT.class);
+    static final Logger log = LoggerFactory.getLogger(JMSSchedulerIT.class);
     private static String adminUser = System.getProperty("admin.user", "admin1");
     private static String adminPassword = System.getProperty("admin.password", "password1!");
 	private static String requestorUsername;

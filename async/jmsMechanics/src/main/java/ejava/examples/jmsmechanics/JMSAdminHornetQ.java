@@ -19,7 +19,7 @@ import org.hornetq.api.jms.management.JMSManagementHelper;
  * server.
  */
 public class JMSAdminHornetQ implements JMSAdmin {
-	private static final Log log = LogFactory.getLog(JMSAdminHornetQ.class);
+	private static final Logger log = LoggerFactory.getLogger(JMSAdminHornetQ.class);
 	private Connection connection;
 	private Queue managementQueue;
 	private String jndiPrefix;

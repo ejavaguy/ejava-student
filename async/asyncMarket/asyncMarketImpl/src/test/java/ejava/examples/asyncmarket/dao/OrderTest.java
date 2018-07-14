@@ -17,7 +17,7 @@ import ejava.examples.asyncmarket.bo.Order;
 import ejava.examples.asyncmarket.bo.Person;
 
 public class OrderTest extends MarketTestBase {
-    Log log = LogFactory.getLog(OrderTest.class);
+    Logger log = LoggerFactory.getLogger(OrderTest.class);
 
     @Test
     public void testOrder() throws Exception {

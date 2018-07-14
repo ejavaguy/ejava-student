@@ -17,7 +17,7 @@ import ejava.examples.asyncmarket.bo.Bid;
 import ejava.examples.asyncmarket.bo.Person;
 
 public class AuctionItemTest extends MarketTestBase {
-    Log log = LogFactory.getLog(AuctionItemTest.class);
+    Logger log = LoggerFactory.getLogger(AuctionItemTest.class);
     
     @Test
     public void testAuction() {

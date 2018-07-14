@@ -27,7 +27,7 @@ import org.junit.Test;
  * @author jcstaff
  */
 public class MessagePriorityTest extends JMSTestBase {
-    static Log log = LogFactory.getLog(MessagePriorityTest.class);
+    static Logger log = LoggerFactory.getLogger(MessagePriorityTest.class);
     protected Destination destination;        
 
     @Before

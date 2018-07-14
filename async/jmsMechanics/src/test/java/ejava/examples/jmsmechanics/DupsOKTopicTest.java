@@ -22,7 +22,7 @@ import org.junit.Test;
  * @author jcstaff
  */
 public class DupsOKTopicTest extends JMSTestBase {
-    static Log log = LogFactory.getLog(DupsOKTopicTest.class);
+    static Logger log = LoggerFactory.getLogger(DupsOKTopicTest.class);
     protected Destination destination;        
     protected MessageCatcher catcher1;
     protected MessageCatcher catcher2;

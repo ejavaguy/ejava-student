@@ -21,7 +21,7 @@ import org.junit.Test;
  * @author jcstaff
  */
 public class TemporaryQueueTest extends JMSTestBase {
-    static Log log = LogFactory.getLog(TemporaryQueueTest.class);
+    static Logger log = LoggerFactory.getLogger(TemporaryQueueTest.class);
     protected Session session = null;
     protected MessageCatcher catcher1;
     protected MessageCatcher catcher2;
