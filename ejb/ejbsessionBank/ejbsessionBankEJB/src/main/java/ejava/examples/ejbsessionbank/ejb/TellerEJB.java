@@ -13,8 +13,8 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import ejava.examples.ejbsessionbank.bl.BankException;
 import ejava.examples.ejbsessionbank.bl.Teller;
@@ -42,7 +42,7 @@ import ejava.examples.ejbsessionbank.jpa.JPAOwnerDAO;
  */
 @Stateless
 public class TellerEJB implements TellerLocal, TellerRemote {
-    private static final Log log = LogFactory.getLog(TellerEJB.class);
+    private static final Logger log = LoggerFactory.getLogger(TellerEJB.class);
 
     @Resource
     protected SessionContext ctx;
@@ -84,7 +84,7 @@ public class TellerEJB implements TellerLocal, TellerRemote {
             ((TellerImpl)teller).setOwnerDAO(ownerDAO);
         }
         catch (Exception ex) {
-            log.fatal("error loading dao class:" + daoClassName, ex);
+            log.error("error loading dao class:" + daoClassName, ex);
             throw new EJBException("error loading dao class:" + daoClassName 
                + ", " + ex);
         }
@@ -112,7 +112,7 @@ public class TellerEJB implements TellerLocal, TellerRemote {
         }
         catch (DAOException ex) {
             ctx.setRollbackOnly();
-            log.fatal("internal error creating account", ex);
+            log.error("internal error creating account", ex);
             throw new BankException("internal error creating account:" + ex);
         }
     }
@@ -126,7 +126,7 @@ public class TellerEJB implements TellerLocal, TellerRemote {
         }
         catch (DAOException ex) {
             ctx.setRollbackOnly();
-            log.fatal("internal error closing account", ex);
+            log.error("internal error closing account", ex);
             throw new BankException("internal error closing account:" + ex);
         }
     }
@@ -138,7 +138,7 @@ public class TellerEJB implements TellerLocal, TellerRemote {
         }
         catch (DAOException ex) {
             ctx.setRollbackOnly();
-            log.fatal("internal error getting account", ex);
+            log.error("internal error getting account", ex);
             throw new BankException("internal error getting account:" + ex);
         }
     }
@@ -150,7 +150,7 @@ public class TellerEJB implements TellerLocal, TellerRemote {
         }
         catch (DAOException ex) {
             ctx.setRollbackOnly();
-            log.fatal("internal getting accounts", ex);
+            log.error("internal getting accounts", ex);
             throw new BankException("internal getting accounts:" + ex);
         }
     }
@@ -162,7 +162,7 @@ public class TellerEJB implements TellerLocal, TellerRemote {
         }
         catch (DAOException ex) {
             ctx.setRollbackOnly();
-            log.fatal("internal getting accounts", ex);
+            log.error("internal getting accounts", ex);
             throw new BankException("internal getting accounts:" + ex);
         }
     }
@@ -175,7 +175,7 @@ public class TellerEJB implements TellerLocal, TellerRemote {
         }
         catch (DAOException ex) {
             ctx.setRollbackOnly();
-            log.fatal("internal error updating account", ex);
+            log.error("internal error updating account", ex);
             throw new BankException("internal error updating account:" + ex);
         }
     }
@@ -191,7 +191,7 @@ public class TellerEJB implements TellerLocal, TellerRemote {
         }
         catch (DAOException ex) {
             ctx.setRollbackOnly();
-            log.fatal("internal error getting ledger", ex);
+            log.error("internal error getting ledger", ex);
             throw new BankException("internal error getting ledger:" + ex);
         }
     }
@@ -208,7 +208,7 @@ public class TellerEJB implements TellerLocal, TellerRemote {
         }
         catch (DAOException ex) {
             ctx.setRollbackOnly();
-            log.fatal("internal error getting ledger", ex);
+            log.error("internal error getting ledger", ex);
             throw new BankException("internal error getting ledger:" + ex);
         }
     }
@@ -224,7 +224,7 @@ public class TellerEJB implements TellerLocal, TellerRemote {
         }
         catch (DAOException ex) {
             ctx.setRollbackOnly();
-            log.fatal("internal error getting ledger ave balance", ex);
+            log.error("internal error getting ledger ave balance", ex);
             throw new BankException(
                     "internal error getting ledger ave balance:" + ex);
         }
@@ -241,7 +241,7 @@ public class TellerEJB implements TellerLocal, TellerRemote {
         }
         catch (DAOException ex) {
             ctx.setRollbackOnly();
-            log.fatal("internal error getting ledger count", ex);
+            log.error("internal error getting ledger count", ex);
             throw new BankException(
                     "internal error getting ledger count:" + ex);
         }
@@ -258,7 +258,7 @@ public class TellerEJB implements TellerLocal, TellerRemote {
         }
         catch (DAOException ex) {
             ctx.setRollbackOnly();
-            log.fatal("internal error getting ledger sum", ex);
+            log.error("internal error getting ledger sum", ex);
             throw new BankException(
                     "internal error getting ledger sum:" + ex);
         }
@@ -281,7 +281,7 @@ public class TellerEJB implements TellerLocal, TellerRemote {
         }
         catch (DAOException ex) {
             ctx.setRollbackOnly();
-            log.fatal("internal error updating account", ex);
+            log.error("internal error updating account", ex);
             throw new BankException("internal error updating account:" + ex);
         }
     }
@@ -294,7 +294,7 @@ public class TellerEJB implements TellerLocal, TellerRemote {
         }
         catch (DAOException ex) {
             ctx.setRollbackOnly();
-            log.fatal("internal error updating account", ex);
+            log.error("internal error updating account", ex);
             throw new BankException("internal error updating account:" + ex);
         }
     }
@@ -307,7 +307,7 @@ public class TellerEJB implements TellerLocal, TellerRemote {
         }
         catch (DAOException ex) {
             ctx.setRollbackOnly();
-            log.fatal("internal error updating account", ex);
+            log.error("internal error updating account", ex);
             throw new BankException("internal error updating account:" + ex);
         }
     }
@@ -319,7 +319,7 @@ public class TellerEJB implements TellerLocal, TellerRemote {
         }
         catch (DAOException ex) {
             ctx.setRollbackOnly();
-            log.fatal("internal error updating account", ex);
+            log.error("internal error updating account", ex);
             throw new BankException("internal error updating account:" + ex);
         }
     }
@@ -331,7 +331,7 @@ public class TellerEJB implements TellerLocal, TellerRemote {
         }
         catch (DAOException ex) {
             ctx.setRollbackOnly();
-            log.fatal("internal error updating account", ex);
+            log.error("internal error updating account", ex);
             throw new BankException("internal error updating account:" + ex);
         }
     }

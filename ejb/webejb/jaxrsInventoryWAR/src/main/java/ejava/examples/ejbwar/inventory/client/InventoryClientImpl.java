@@ -10,8 +10,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
@@ -38,7 +38,7 @@ import ejava.examples.ejbwar.inventory.rs.ProductsResource;
  * methods to specific resource URIs for products and categories.
  */
 public class InventoryClientImpl implements InventoryClient {
-	private static final Log log = LogFactory.getLog(InventoryClientImpl.class);
+	private static final Logger log = LoggerFactory.getLogger(InventoryClientImpl.class);
 	private HttpClient client;
 	/**
 	 * Defines the HTTP URL for the WAR that hosts the JAX-RS resources.

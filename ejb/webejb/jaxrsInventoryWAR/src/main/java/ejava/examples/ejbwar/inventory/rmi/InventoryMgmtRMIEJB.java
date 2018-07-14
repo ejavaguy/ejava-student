@@ -3,8 +3,8 @@ package ejava.examples.ejbwar.inventory.rmi;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import ejava.examples.ejbwar.inventory.bo.Categories;
 import ejava.examples.ejbwar.inventory.bo.Category;
@@ -17,7 +17,7 @@ import ejava.examples.ejbwar.inventory.ejb.InventoryMgmtEJB;
  */
 @Stateless
 public class InventoryMgmtRMIEJB implements InventoryMgmtRemote {
-	private static final Log log = LogFactory.getLog(InventoryMgmtRMIEJB.class);
+	private static final Logger log = LoggerFactory.getLogger(InventoryMgmtRMIEJB.class);
 	
 	@Inject
 	private InventoryMgmtEJB ejb;

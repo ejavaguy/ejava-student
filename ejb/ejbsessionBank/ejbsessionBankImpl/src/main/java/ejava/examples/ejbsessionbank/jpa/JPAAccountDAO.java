@@ -7,8 +7,8 @@ import java.util.Map;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import ejava.examples.ejbsessionbank.bo.Account;
 import ejava.examples.ejbsessionbank.bo.Ledger;
@@ -16,7 +16,7 @@ import ejava.examples.ejbsessionbank.dao.AccountDAO;
 import ejava.examples.ejbsessionbank.dao.DAOException;
 
 public class JPAAccountDAO implements AccountDAO {
-    private static Log log = LogFactory.getLog(JPAAccountDAO.class); 
+    private static Logger log = LoggerFactory.getLogger(JPAAccountDAO.class); 
     public static final String ACCOUNT_BY_NUM = "getAccountsByAccountNumber"; 
     public static final String ACCOUNT_NUM_PARAM = "accountNumber"; 
     public static final String GET_LEDGER = "getLedger"; 
@@ -36,7 +36,7 @@ public class JPAAccountDAO implements AccountDAO {
             return account;
         }
         catch (Throwable ex) {
-            log.fatal("error in createAccount", ex);
+            log.error("error in createAccount", ex);
             throw new DAOException(
                     "error creating account:" + account,ex);
         }
@@ -60,7 +60,7 @@ public class JPAAccountDAO implements AccountDAO {
             return query.getResultList();
         }
         catch (Throwable ex) {
-            log.fatal("error in findAccounts", ex);
+            log.error("error in findAccounts", ex);
             throw new DAOException(
                     "error executing named query:" + queryName,ex);
         }
@@ -71,7 +71,7 @@ public class JPAAccountDAO implements AccountDAO {
             return em.find(Account.class, id);
         }
         catch (Throwable ex) {
-            log.fatal("error in getAccountById", ex);
+            log.error("error in getAccountById", ex);
             throw new DAOException(
                     "error finding account:" + id,ex);
         }
@@ -95,7 +95,7 @@ public class JPAAccountDAO implements AccountDAO {
             return account;
         }
         catch (Throwable ex) {
-            log.fatal("error in removeAccount", ex);
+            log.error("error in removeAccount", ex);
             throw new DAOException(
                     "error removing account:" + account,ex);
         }
@@ -106,7 +106,7 @@ public class JPAAccountDAO implements AccountDAO {
             return em.merge(account);
         }
         catch (Throwable ex) {
-            log.fatal("error in updateAccount", ex);
+            log.error("error in updateAccount", ex);
             throw new DAOException(
                     "error removing account:" + account,ex);
         }
@@ -118,7 +118,7 @@ public class JPAAccountDAO implements AccountDAO {
                                   .getSingleResult();
         }
         catch (Throwable ex) {
-            log.fatal("error in getLedger", ex);
+            log.error("error in getLedger", ex);
             throw new DAOException(
                     "error getting ledger",ex);
         }
@@ -130,7 +130,7 @@ public class JPAAccountDAO implements AccountDAO {
                                .getSingleResult();
         }
         catch (Throwable ex) {
-            log.fatal("error in getLedgerBalance", ex);
+            log.error("error in getLedgerBalance", ex);
             throw new DAOException(
                     "error getting ledger ave balance",ex);
         }
@@ -140,11 +140,11 @@ public class JPAAccountDAO implements AccountDAO {
         try {
             Object count =  em.createNamedQuery(GET_LEDGER_CNT)
                               .getSingleResult();
-            log.fatal("getLedgerCount data type=" + count.getClass());            
+            log.error("getLedgerCount data type=" + count.getClass());            
             return ((Long)count).longValue();
         }
         catch (Throwable ex) {
-            log.fatal("error in getLedgerCount", ex);
+            log.error("error in getLedgerCount", ex);
             throw new DAOException(
                     "error getting ledger count",ex);
         }
@@ -156,7 +156,7 @@ public class JPAAccountDAO implements AccountDAO {
                                .getSingleResult();
         }
         catch (Throwable ex) {
-            log.fatal("error in getLedgerSum", ex);
+            log.error("error in getLedgerSum", ex);
             throw new DAOException(
                     "error getting ledger sum",ex);
         }

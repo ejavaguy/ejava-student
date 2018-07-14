@@ -4,8 +4,8 @@ package ejava.examples.ejbsessionbank.blimpl;
 import java.util.Collection;
 
 import static org.junit.Assert.*;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.junit.Test;
 
 import ejava.examples.ejbsessionbank.DemoBase;
@@ -20,7 +20,7 @@ import ejava.examples.ejbsessionbank.jpa.JPAAccountDAO;
 import ejava.examples.ejbsessionbank.jpa.JPAOwnerDAO;
 
 public class TellerTest extends DemoBase {
-    private Log log = LogFactory.getLog(TellerTest.class);
+    private Logger log = LoggerFactory.getLogger(TellerTest.class);
     Teller teller;
 
     @Override

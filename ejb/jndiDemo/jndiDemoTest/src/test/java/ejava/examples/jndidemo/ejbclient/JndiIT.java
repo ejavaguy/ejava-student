@@ -11,8 +11,8 @@ import javax.naming.NamingException;
 import static org.junit.Assert.*;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -29,7 +29,7 @@ import ejava.util.ejb.EJBClient;
  * aspects of how the EJBs are configured.
  */
 public class JndiIT  {
-    private static final Log log = LogFactory.getLog(JndiIT.class);
+    private static final Logger log = LoggerFactory.getLogger(JndiIT.class);
     private InitialContext jndi;
     
     static final String EAR_NAME=System.getProperty("ear.name","jndiDemoEAR");

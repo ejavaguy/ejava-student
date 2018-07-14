@@ -3,13 +3,13 @@ package ejava.examples.ejbsessionbank.bo;
 import javax.persistence.Query;
 
 import static org.junit.Assert.*;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import ejava.examples.ejbsessionbank.DemoBase;
 
 public class AccountTest extends DemoBase {
-    Log log = LogFactory.getLog(AccountTest.class);
+    Logger log = LoggerFactory.getLogger(AccountTest.class);
     
     public void testCreateAccount() {
         log.info("*** testCreateAccount ***");

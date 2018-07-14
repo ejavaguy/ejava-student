@@ -3,8 +3,8 @@ package ejava.examples.txagent.blimpl;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import ejava.examples.txagent.bl.AgentReservationException;
 import ejava.examples.txagent.bl.AgentReservationSession;
@@ -17,8 +17,7 @@ import ejava.examples.txhotel.bo.Person;
 import ejava.examples.txhotel.bo.Reservation;
 
 public class AgentSessionImpl implements AgentReservationSession {
-    private static final Log log = 
-        LogFactory.getLog(AgentSessionImpl.class);
+    private static final Logger log = LoggerFactory.getLogger(AgentSessionImpl.class);
     private Booking booking = new Booking();
     private BookingDAO bookingDAO;
     private HotelReservationSession reservationist;

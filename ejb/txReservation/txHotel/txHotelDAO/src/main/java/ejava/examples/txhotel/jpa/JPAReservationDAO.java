@@ -7,8 +7,8 @@ import java.util.Map;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import ejava.examples.txhotel.bo.Person;
 import ejava.examples.txhotel.bo.Reservation;
@@ -16,7 +16,7 @@ import ejava.examples.txhotel.dao.DAOException;
 import ejava.examples.txhotel.dao.ReservationDAO;
 
 public class JPAReservationDAO implements ReservationDAO {
-    private Log log = LogFactory.getLog(JPAReservationDAO.class);
+    private static final Logger log = LoggerFactory.getLogger(JPAReservationDAO.class);
     
     private EntityManager em;
     

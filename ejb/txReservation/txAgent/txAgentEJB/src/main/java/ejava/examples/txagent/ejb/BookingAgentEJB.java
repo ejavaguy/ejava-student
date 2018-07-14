@@ -13,8 +13,8 @@ import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import ejava.examples.txagent.bl.AgentReservationException;
 import ejava.examples.txagent.bl.BookingAgent;
@@ -36,7 +36,7 @@ import ejava.examples.txhotel.ejb.HotelRegistrationRemote;
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
 public class BookingAgentEJB implements BookingAgentRemote,
         BookingAgentLocal {
-    private Log log = LogFactory.getLog(BookingAgentEJB.class);
+    private static final Logger log = LoggerFactory.getLogger(BookingAgentEJB.class);
     
     @EJB(name="ejb/HotelReservation")
     //@EJB(mappedName="ejb:txHotelEAR/txHotelEJB//HotelRegistrationEJB!ejava.examples.txhotel.ejb.HotelRegistrationRemote")
@@ -97,7 +97,7 @@ public class BookingAgentEJB implements BookingAgentRemote,
 		         	text.append(", exception=" + ex2);
 		        }
 	        }
-	        finally              { log.debug(text); }
+	        finally              { log.debug("{}",text); }
         }
         
         //manual construction

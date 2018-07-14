@@ -21,8 +21,8 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import ejava.examples.ejbwar.inventory.bo.Product;
 import ejava.examples.ejbwar.inventory.bo.Products;
@@ -34,7 +34,7 @@ import ejava.examples.ejbwar.inventory.ejb.InventoryMgmtEJB;
  */
 @Path("/products")
 public class ProductsResource {
-	private static final Log log = LogFactory.getLog(ProductsResource.class);
+	private static final Logger log = LoggerFactory.getLogger(ProductsResource.class);
 	@Inject
 	private InventoryMgmtEJB ejb;
 	@Context

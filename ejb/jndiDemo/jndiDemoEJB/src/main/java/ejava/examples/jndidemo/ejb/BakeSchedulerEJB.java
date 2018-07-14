@@ -108,6 +108,6 @@ public class BakeSchedulerEJB
         cook = (CookLocal)ctx.lookup("ejb/cook");
         try { 
         	log.debug(new JNDIUtil().dump(new InitialContext(), "java:comp/env"));
-        } catch (NamingException ex) { log.fatal("" + ex); }
+        } catch (NamingException ex) { log.error("" + ex); }
     }
 }

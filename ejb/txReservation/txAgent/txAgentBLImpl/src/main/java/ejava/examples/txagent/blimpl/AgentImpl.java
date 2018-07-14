@@ -2,8 +2,8 @@ package ejava.examples.txagent.blimpl;
 
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import ejava.examples.txagent.bl.AgentReservationException;
 import ejava.examples.txagent.bl.BookingAgent;
@@ -14,7 +14,7 @@ import ejava.examples.txhotel.bl.HotelReservationist;
 import ejava.examples.txhotel.bo.Reservation;
 
 public class AgentImpl implements BookingAgent {
-    private static Log log = LogFactory.getLog(AgentImpl.class);
+    private static Logger log = LoggerFactory.getLogger(AgentImpl.class);
     private BookingDAO bookingDAO;
     private HotelReservationist reservationist;
 

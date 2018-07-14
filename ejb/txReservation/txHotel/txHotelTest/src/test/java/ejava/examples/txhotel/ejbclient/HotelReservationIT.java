@@ -13,8 +13,8 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -28,7 +28,7 @@ import ejava.util.ejb.EJBClient;
 import ejava.util.jndi.JNDIUtil;
 
 public class HotelReservationIT extends HotelRemoteTestBase {
-    static final Log log = LogFactory.getLog(HotelReservationIT.class);
+    static final Logger log = LoggerFactory.getLogger(HotelReservationIT.class);
     static String registrarJNDI = System.getProperty("jndi.name.hotel",
     	EJBClient.getEJBClientLookupName("txHotelEAR", "txHotelEJB", "", 
     		"HotelRegistrationEJB", HotelRegistrationRemote.class.getName(), false));

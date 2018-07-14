@@ -9,8 +9,8 @@ import javax.ejb.LockType;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This class provides an example of a Singleton EJB. The container will
@@ -27,7 +27,7 @@ import org.apache.commons.logging.LogFactory;
 //establish an access timeout either at class or method level
 @AccessTimeout(value=3000)
 public class StatsEJB implements StatsLocal, StatsRemote {
-	static final Log log = LogFactory.getLog(StatsEJB.class);
+	static final Logger log = LoggerFactory.getLogger(StatsEJB.class);
 	private int delta;
 	private int total;
 	

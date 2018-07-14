@@ -7,15 +7,15 @@ import java.util.Map;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import ejava.examples.txagent.bo.Booking;
 import ejava.examples.txagent.dao.DAOException;
 import ejava.examples.txagent.dao.BookingDAO;
 
 public class JPABookingDAO implements BookingDAO {
-    Log log = LogFactory.getLog(JPABookingDAO.class);
+    Logger log = LoggerFactory.getLogger(JPABookingDAO.class);
     
     private EntityManager em;
     

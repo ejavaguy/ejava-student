@@ -20,8 +20,8 @@ import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.core.Response.ResponseBuilder;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import ejava.examples.ejbwar.customer.bo.Customer;
 import ejava.examples.ejbwar.customer.bo.Customers;
@@ -33,7 +33,7 @@ import ejava.examples.ejbwar.customer.ejb.CustomerMgmtLocal;
  */
 @Path("customers")
 public class CustomersResource {
-	private static final Log log = LogFactory.getLog(CustomersResource.class);
+	private static final Logger log = LoggerFactory.getLogger(CustomersResource.class);
 	@Inject
 	private CustomerMgmtLocal ejb;
 	@Context
@@ -109,7 +109,7 @@ public class CustomersResource {
 		}
 	}
 	
-	public static ResponseBuilder serverError(Log log, String context, Exception ex) {
+	public static ResponseBuilder serverError(Logger log, String context, Exception ex) {
 		String message = String.format("unexpected error %s: %s",context, ex.getLocalizedMessage());
 		log.warn(message, ex);
 		return Response.serverError()

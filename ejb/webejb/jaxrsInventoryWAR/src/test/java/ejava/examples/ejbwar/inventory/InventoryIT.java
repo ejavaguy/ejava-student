@@ -2,8 +2,8 @@ package ejava.examples.ejbwar.inventory;
 
 import static org.junit.Assert.*;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -22,7 +22,7 @@ import ejava.examples.ejbwar.inventory.client.InventoryClient;
  * inventory application deployed to the server.
  */
 public class InventoryIT {
-	private static final Log log = LogFactory.getLog(InventoryIT.class);
+	private static final Logger log = LoggerFactory.getLogger(InventoryIT.class);
 	private InventoryClient inventoryClient;
 	private CustomerClient customerClient;
 	
@@ -103,7 +103,7 @@ public class InventoryIT {
 		//get the full category
 		Category category = inventoryClient.getCategory(categories.getCategories().get(0).getId());
 		assertNotNull("unable to find category", category);
-		log.info(category);
+		log.info("{}", category);
 		
 		//verify category has product
 		assertEquals("unexpected product count", 1, category.getProductCount());

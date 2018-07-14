@@ -4,15 +4,15 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This EJB provides helper methods used by remote test clients.
  */
 @Stateless
 public class TestUtilEJB implements TestUtilRemote {
-	private static final Log log = LogFactory.getLog(TestUtilEJB.class);
+    private static final Logger log = LoggerFactory.getLogger(TestUtilEJB.class);
 
     @PersistenceContext(unitName="txhotel")
     private EntityManager em;

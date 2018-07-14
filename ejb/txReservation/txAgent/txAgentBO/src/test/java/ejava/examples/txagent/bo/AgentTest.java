@@ -4,8 +4,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import ejava.examples.txhotel.bo.Person;
 import ejava.examples.txhotel.bo.Reservation;
@@ -14,7 +14,7 @@ import ejava.examples.txagent.bo.Booking;
 import junit.framework.TestCase;
 
 public class AgentTest extends TestCase {
-    Log log = LogFactory.getLog(AgentTest.class);
+    private static final Logger log = LoggerFactory.getLogger(AgentTest.class);
 
     public void testBooking() {
         log.info("*** testBooking ***");

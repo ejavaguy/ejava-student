@@ -6,8 +6,8 @@ import javax.ejb.ScheduleExpression;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import ejava.examples.asyncmarket.AuctionMgmt;
 import ejava.examples.asyncmarket.ejb.AuctionMgmtLocal;

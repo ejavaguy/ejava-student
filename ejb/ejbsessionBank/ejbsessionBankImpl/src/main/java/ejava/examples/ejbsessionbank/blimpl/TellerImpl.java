@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import ejava.examples.ejbsessionbank.bl.BankException;
 import ejava.examples.ejbsessionbank.bl.Teller;
@@ -25,7 +25,7 @@ import ejava.examples.ejbsessionbank.dao.OwnerDAO;
  *
  */
 public class TellerImpl implements Teller {
-    Log log = LogFactory.getLog(TellerImpl.class);
+    Logger log = LoggerFactory.getLogger(TellerImpl.class);
     public static final String OVERDRAWN_ACCOUNTS = "getOverdrawnAccounts";
     public static final String ALL_ACCOUNTS = "getAccounts";
     private AccountDAO acctDAO;

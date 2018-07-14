@@ -15,8 +15,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import ejava.examples.ejbsessionbank.bl.Teller;
 import ejava.examples.ejbsessionbank.bo.Account;
@@ -28,7 +28,7 @@ import ejava.util.jndi.JNDIUtil;
 
 @SuppressWarnings("serial")
 public class TellerHandlerServlet extends HttpServlet {
-    private static final Log log = LogFactory.getLog(TellerHandlerServlet.class);
+    private static final Logger log = LoggerFactory.getLogger(TellerHandlerServlet.class);
     public static final String COMMAND_PARAM = "command";
     public static final String EXCEPTION_PARAM = "exception";
     public static final String HANDLER_TYPE_KEY = "type";
@@ -89,7 +89,7 @@ public class TellerHandlerServlet extends HttpServlet {
             }            
         }
         catch (Exception ex) {
-            log.fatal("error initializing handler", ex);
+            log.error("error initializing handler", ex);
             throw new ServletException("error initializing handler", ex);
         }
     }
@@ -193,7 +193,7 @@ public class TellerHandlerServlet extends HttpServlet {
                 rd.forward(request, response);                
             }
             catch (Exception ex) {
-                log.fatal("error creating account:" + ex, ex);
+                log.error("error creating account:" + ex, ex);
                 request.setAttribute(EXCEPTION_PARAM, ex);
                 RequestDispatcher rd = 
                     getServletContext().getRequestDispatcher(DISPLAY_EXCEPTION);
@@ -216,7 +216,7 @@ public class TellerHandlerServlet extends HttpServlet {
                 rd.forward(request, response);                
             }
             catch (Exception ex) {
-                log.fatal("error creating account:" + ex, ex);
+                log.error("error creating account:" + ex, ex);
                 request.setAttribute(EXCEPTION_PARAM, ex);
                 RequestDispatcher rd = 
                     getServletContext().getRequestDispatcher(DISPLAY_EXCEPTION);
@@ -244,7 +244,7 @@ public class TellerHandlerServlet extends HttpServlet {
                 rd.forward(request, response);                
             }
             catch (Exception ex) {
-                log.fatal("error depositing to account:" + ex, ex);
+                log.error("error depositing to account:" + ex, ex);
                 request.setAttribute(EXCEPTION_PARAM, ex);
                 RequestDispatcher rd = 
                     getServletContext().getRequestDispatcher(DISPLAY_EXCEPTION);
@@ -272,7 +272,7 @@ public class TellerHandlerServlet extends HttpServlet {
                 rd.forward(request, response);                
             }
             catch (Exception ex) {
-                log.fatal("error withdrawing from account:" + ex, ex);
+                log.error("error withdrawing from account:" + ex, ex);
                 request.setAttribute(EXCEPTION_PARAM, ex);
                 RequestDispatcher rd = 
                     getServletContext().getRequestDispatcher(DISPLAY_EXCEPTION);
@@ -293,7 +293,7 @@ public class TellerHandlerServlet extends HttpServlet {
                 response.sendRedirect(request.getContextPath() + MAIN_PAGE);
             }
             catch (Exception ex) {
-                log.fatal("error closing account:" + ex, ex);
+                log.error("error closing account:" + ex, ex);
                 request.setAttribute(EXCEPTION_PARAM, ex);
                 RequestDispatcher rd = 
                     getServletContext().getRequestDispatcher(DISPLAY_EXCEPTION);
@@ -320,7 +320,7 @@ public class TellerHandlerServlet extends HttpServlet {
                 response.sendRedirect(request.getContextPath() + MAIN_PAGE);
             }
             catch (Exception ex) {
-                log.fatal("error closing account:" + ex, ex);
+                log.error("error closing account:" + ex, ex);
                 request.setAttribute(EXCEPTION_PARAM, ex);
                 RequestDispatcher rd = 
                     getServletContext().getRequestDispatcher(DISPLAY_EXCEPTION);
@@ -354,7 +354,7 @@ public class TellerHandlerServlet extends HttpServlet {
                 rd.forward(request, response);                
             }
             catch (Exception ex) {
-                log.fatal("error getting accounts:" + ex, ex);
+                log.error("error getting accounts:" + ex, ex);
                 request.setAttribute(EXCEPTION_PARAM, ex);
                 RequestDispatcher rd = 
                     getServletContext().getRequestDispatcher(DISPLAY_EXCEPTION);
@@ -377,7 +377,7 @@ public class TellerHandlerServlet extends HttpServlet {
                 rd.forward(request, response);                
             }
             catch (Exception ex) {
-                log.fatal("error getting ledger:" + ex, ex);
+                log.error("error getting ledger:" + ex, ex);
                 request.setAttribute(EXCEPTION_PARAM, ex);
                 RequestDispatcher rd = 
                     getServletContext().getRequestDispatcher(DISPLAY_EXCEPTION);
@@ -411,7 +411,7 @@ public class TellerHandlerServlet extends HttpServlet {
                 response.sendRedirect(request.getContextPath() + MAIN_PAGE);
             }
             catch (Exception ex) {
-                log.fatal("error getting ledger:" + ex, ex);
+                log.error("error getting ledger:" + ex, ex);
                 request.setAttribute(EXCEPTION_PARAM, ex);
                 RequestDispatcher rd = 
                     getServletContext().getRequestDispatcher(DISPLAY_EXCEPTION);

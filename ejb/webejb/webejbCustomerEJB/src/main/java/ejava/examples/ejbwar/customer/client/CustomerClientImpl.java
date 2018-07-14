@@ -8,8 +8,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpDelete;
@@ -29,7 +29,7 @@ import ejava.examples.ejbwar.customer.rs.CustomersResource;
  * methods to specific resource URIs for products and categories.
  */
 public class CustomerClientImpl implements CustomerClient {
-	private static final Log log = LogFactory.getLog(CustomerClientImpl.class);
+	private static final Logger log = LoggerFactory.getLogger(CustomerClientImpl.class);
 	private HttpClient client;
 	/**
 	 * Defines the HTTP URL for the WAR that hosts the JAX-RS resources.

@@ -3,8 +3,8 @@ package ejava.examples.ejbsessionbank.ejbclient;
 import java.util.List;
 
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.hibernate.LazyInitializationException;
 import org.junit.Test;
@@ -22,7 +22,7 @@ import ejava.examples.ejbsessionbank.dto.OwnerDTO;
  * mechanisms.
  */
 public class TellerOwnerITBase extends TellerRemoteITBase {
-    private static Log log = LogFactory.getLog(TellerOwnerITBase.class);
+    private static Logger log = LoggerFactory.getLogger(TellerOwnerITBase.class);
 
     /**
      * Demonstrates how a Lazy Load exception can occur when processing

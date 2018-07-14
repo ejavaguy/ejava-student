@@ -34,8 +34,8 @@ import javax.jms.Topic;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import ejava.examples.asyncmarket.MarketException;
 import ejava.examples.asyncmarket.bo.AuctionItem;

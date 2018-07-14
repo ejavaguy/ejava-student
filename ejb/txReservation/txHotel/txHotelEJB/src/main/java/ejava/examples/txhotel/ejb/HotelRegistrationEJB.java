@@ -11,8 +11,8 @@ import javax.ejb.SessionContext;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import ejava.examples.txhotel.bl.HotelReservationException;
 import ejava.examples.txhotel.bl.HotelReservationist;
@@ -31,7 +31,7 @@ import ejava.examples.txhotel.jpa.JPAReservationDAO;
 //@Stateless - will be supplied in ejb-jar.xml due to multi deploy
 public class HotelRegistrationEJB implements HotelRegistrationRemote,
         HotelRegistrationLocal {
-    private Log log = LogFactory.getLog(HotelRegistrationEJB.class);
+    private static final Logger log = LoggerFactory.getLogger(HotelRegistrationEJB.class);
     
     @PersistenceContext(unitName="txhotel")
     private EntityManager em;

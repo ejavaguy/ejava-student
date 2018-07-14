@@ -9,8 +9,8 @@ import java.util.Map;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import ejava.examples.ejbsessionbank.bo.Account;
 import ejava.examples.ejbsessionbank.bo.Owner;
@@ -18,7 +18,7 @@ import ejava.examples.ejbsessionbank.dao.DAOException;
 import ejava.examples.ejbsessionbank.dao.OwnerDAO;
 
 public class JPAOwnerDAO implements OwnerDAO {
-    static final Log log = LogFactory.getLog(JPAOwnerDAO.class);
+    static final Logger log = LoggerFactory.getLogger(JPAOwnerDAO.class);
     
     static final String COUNT_ACCOUNT_REFERENCES_QUERY = 
         "countAccountReferences";

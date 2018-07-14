@@ -12,8 +12,8 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -35,7 +35,7 @@ import ejava.util.ejb.EJBClient;
 import ejava.util.jndi.JNDIUtil;
 
 public abstract class AgentBLTestBase {
-    protected static final Log log = LogFactory.getLog(AgentBLTestBase.class);
+    protected static final Logger log = LoggerFactory.getLogger(AgentBLTestBase.class);
     private static final String PERSISTENCE_UNIT = "txagent-test";
     protected BookingDAO bookingDAO;
     protected static EntityManagerFactory emf; 

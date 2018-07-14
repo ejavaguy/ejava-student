@@ -4,8 +4,8 @@ import static org.junit.Assert.*;
 
 import java.util.Collection;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.junit.Test;
 
 import ejava.examples.ejbsessionbank.DemoBase;
@@ -20,7 +20,7 @@ import ejava.examples.ejbsessionbank.jpa.JPAAccountDAO;
  *
  */
 public class JPAAccountDAOTest extends DemoBase {
-    private static Log log = LogFactory.getLog(JPAAccountDAOTest.class);
+    private static Logger log = LoggerFactory.getLogger(JPAAccountDAOTest.class);
     protected AccountDAO accountDAO;
 
     @Override

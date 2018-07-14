@@ -8,8 +8,8 @@ import java.util.Properties;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -26,7 +26,7 @@ import ejava.util.jndi.JNDIUtil;
  * various remote tests in this module.
   */
 public class TellerRemoteITBase {
-    private static final Log log = LogFactory.getLog(TellerRemoteITBase.class);
+    private static final Logger log = LoggerFactory.getLogger(TellerRemoteITBase.class);
     
     //naming technique-specific JNDI name for teller initialized by derived class
     protected String jndiName;

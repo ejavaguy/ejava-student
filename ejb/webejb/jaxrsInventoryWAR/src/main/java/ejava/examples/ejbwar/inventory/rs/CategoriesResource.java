@@ -14,8 +14,8 @@ import javax.ws.rs.core.Request;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import ejava.examples.ejbwar.inventory.bo.Categories;
 import ejava.examples.ejbwar.inventory.bo.Category;
@@ -28,7 +28,7 @@ import ejava.examples.ejbwar.inventory.ejb.InventoryMgmtEJB;
  */
 @Path("categories") //part of the method's final URI
 public class CategoriesResource {
-	private static final Log log = LogFactory.getLog(CategoriesResource.class);
+	private static final Logger log = LoggerFactory.getLogger(CategoriesResource.class);
 	
 	@Inject
 	private InventoryMgmtEJB ejb;

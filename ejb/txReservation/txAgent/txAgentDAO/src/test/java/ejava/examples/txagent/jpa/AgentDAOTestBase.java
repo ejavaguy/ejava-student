@@ -8,8 +8,8 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.junit.After;
 import org.junit.Before;
 
@@ -18,7 +18,7 @@ import ejava.examples.txagent.dao.BookingDAO;
 import ejava.examples.txagent.jpa.JPABookingDAO;
 
 public abstract class AgentDAOTestBase {
-    protected Log log = LogFactory.getLog(getClass());
+    protected Logger log = LoggerFactory.getLogger(getClass());
     private static final String PERSISTENCE_UNIT = "txagent-test";
     protected BookingDAO bookingDAO = null;
     protected EntityManager em;

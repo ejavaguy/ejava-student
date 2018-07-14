@@ -7,14 +7,14 @@ import javax.ejb.SessionContext;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import ejava.examples.jndidemo.Scheduler;
 import ejava.util.jndi.JNDIUtil;
 
 public abstract class SchedulerBase implements Scheduler {
-    protected Log log = LogFactory.getLog(getClass());
+    protected Logger log = LoggerFactory.getLogger(getClass());
     protected SessionContext ctx;
     
     protected abstract void setSessionContext(SessionContext ctx);

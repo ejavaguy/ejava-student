@@ -15,8 +15,8 @@ import javax.ejb.SessionContext;
 import javax.ejb.SessionSynchronization;
 import javax.ejb.StatefulTimeout;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import ejava.examples.txhotel.bl.HotelReservationException;
 import ejava.examples.txhotel.bl.HotelReservationSession;
@@ -61,8 +61,7 @@ import ejava.examples.txhotel.bo.Reservation;
 public class HotelReservationSessionEJB
     implements HotelReservationSessionLocal, HotelReservationSessionRemote,
     SessionSynchronization {
-    private static final Log log = 
-        LogFactory.getLog(HotelReservationSessionEJB.class);
+    private static final Logger log = LoggerFactory.getLogger(HotelReservationSessionEJB.class);
     private HotelReservationSession impl;
     
     @Resource

@@ -8,8 +8,8 @@ import java.util.List;
 
 import java.util.Map;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.junit.Test;
 
 import ejava.examples.ejbsessionbank.DemoBase;
@@ -19,7 +19,7 @@ import ejava.examples.ejbsessionbank.dao.AccountDAO;
 import ejava.examples.ejbsessionbank.dao.OwnerDAO;
 
 public class JPAOwnerDAOTest extends DemoBase {
-    private Log log = LogFactory.getLog(JPAOwnerDAO.class);
+    private Logger log = LoggerFactory.getLogger(JPAOwnerDAO.class);
     protected OwnerDAO ownerDAO;
     protected AccountDAO accountDAO;
     

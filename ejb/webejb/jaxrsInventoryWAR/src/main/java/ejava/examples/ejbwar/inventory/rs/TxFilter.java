@@ -18,8 +18,8 @@ import javax.transaction.Status;
 import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This class will cause the JTA transaction the determines the scope
@@ -27,7 +27,7 @@ import org.apache.commons.logging.LogFactory;
  * after all JAXB marshalling is complete.
  */
 public class TxFilter implements Filter {
-    private static final Log log = LogFactory.getLog(TxFilter.class);
+    private static final Logger log = LoggerFactory.getLogger(TxFilter.class);
     @Inject
     private UserTransaction tx;
     

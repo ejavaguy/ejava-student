@@ -8,8 +8,8 @@ import java.util.Date;
 
 import javax.naming.NamingException;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -29,7 +29,7 @@ import ejava.examples.ejbwar.inventory.client.InventoryClient;
  * deployed as part of a WAR-based deployment.
  */
 public class InventoryRMIIT {
-	private static final Log log = LogFactory.getLog(InventoryRMIIT.class);
+	private static final Logger log = LoggerFactory.getLogger(InventoryRMIIT.class);
 	private InventoryClient inventoryClient;
 	private CustomerMgmtRemote customerClient;
 	private static final DateFormat df = new SimpleDateFormat("HH:mm:ss.SSSZ");
@@ -125,7 +125,7 @@ public class InventoryRMIIT {
 		//get the full category
 		Category category = inventoryClient.getCategory(categories.getCategories().get(0).getId());
 		assertNotNull("unable to find category", category);
-		log.info(category);
+		log.info("{}", category);
 		
 		//verify category has product
 		assertEquals("unexpected product count", 1, category.getProductCount());

@@ -11,8 +11,8 @@ import java.util.Map;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -33,7 +33,7 @@ import ejava.util.jndi.JNDIUtil;
  *
  */
 public class HotelReservationSessionIT extends HotelRemoteTestBase {
-    private static final Log log = LogFactory.getLog(HotelReservationSessionIT.class);
+    private static final Logger log = LoggerFactory.getLogger(HotelReservationSessionIT.class);
     static InitialContext jndi;
     static final String sessionJNDI = System.getProperty("jndi.name.hotelsession",
     	EJBClient.getEJBClientLookupName("txHotelEAR", "txHotelEJB", "", 

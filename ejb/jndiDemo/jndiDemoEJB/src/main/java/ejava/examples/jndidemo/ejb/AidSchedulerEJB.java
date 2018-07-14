@@ -47,7 +47,7 @@ public class AidSchedulerEJB extends SchedulerBase
         try { 
         	Context enc = (Context) new InitialContext().lookup("java:comp");
         	log.debug(new JNDIUtil().dump(enc, "env"));
-        } catch (NamingException ex) { log.fatal("" + ex); }        
+        } catch (NamingException ex) { log.error("" + ex); }        
     }
     
     public String getName() { return "AidScheduler"; }    

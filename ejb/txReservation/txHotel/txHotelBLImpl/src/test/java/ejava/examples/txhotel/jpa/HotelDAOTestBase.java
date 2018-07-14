@@ -8,8 +8,8 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.junit.After;
 import org.junit.Before;
 
@@ -27,7 +27,7 @@ import ejava.examples.txhotel.jpa.JPAReservationDAO;
  * DAO tests for the Hotel application.
  */
 public abstract class HotelDAOTestBase {
-    protected Log log = LogFactory.getLog(getClass());
+    protected Logger log = LoggerFactory.getLogger(getClass());
     private static final String PERSISTENCE_UNIT = "txhotel-test";
     protected HotelReservationist reservationist;
     protected HotelReservationSession reservationSession;

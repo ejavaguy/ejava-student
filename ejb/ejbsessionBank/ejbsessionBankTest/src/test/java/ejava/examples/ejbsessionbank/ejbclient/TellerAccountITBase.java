@@ -5,8 +5,8 @@ import static org.junit.Assert.*;
 
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.junit.Test;
 
 import ejava.examples.ejbsessionbank.bl.BankException;
@@ -20,7 +20,7 @@ import ejava.examples.ejbsessionbank.bo.Ledger;
  * logic.
   */
 public class TellerAccountITBase extends TellerRemoteITBase {
-    private static final Log log = LogFactory.getLog(TellerAccountITBase.class);
+    private static final Logger log = LoggerFactory.getLogger(TellerAccountITBase.class);
 
     /**
      * Tests ability to create an account from the remote client.
@@ -37,7 +37,7 @@ public class TellerAccountITBase extends TellerRemoteITBase {
             log.debug("account created:" + account);
         }
         catch (Exception ex) {
-            log.fatal("error creating account:" + ex, ex);
+            log.error("error creating account:" + ex, ex);
             fail("error creating account:" + ex);
         }        
         
@@ -72,7 +72,7 @@ public class TellerAccountITBase extends TellerRemoteITBase {
                     (int)(100*account2.getBalance()));
         }
         catch (Exception ex) {
-            log.fatal("error getting account:" + ex, ex);
+            log.error("error getting account:" + ex, ex);
             fail("error getting account:" + ex);
         }        
     }    
@@ -120,7 +120,7 @@ public class TellerAccountITBase extends TellerRemoteITBase {
                     account2.getBalance(), .1);
         }
         catch (Exception ex) {
-            log.fatal("error updating account:" + ex, ex);
+            log.error("error updating account:" + ex, ex);
             fail("error updating account:" + ex);
         }        
     }    
@@ -159,7 +159,7 @@ public class TellerAccountITBase extends TellerRemoteITBase {
             teller.closeAccount(account.getAccountNumber());
         }
         catch (BankException ex) {
-            log.fatal("error getting overdrawn accounts:" + ex, ex);
+            log.error("error getting overdrawn accounts:" + ex, ex);
             fail("error getting overdrawn accounts:" + ex);
         }
     }
@@ -191,7 +191,7 @@ public class TellerAccountITBase extends TellerRemoteITBase {
                     1, accounts.size());
         }
         catch (BankException ex) {
-            log.fatal("error getting overdrawn accounts:" + ex, ex);
+            log.error("error getting overdrawn accounts:" + ex, ex);
             fail("error getting overdrawn accounts:" + ex);
         }
     }
@@ -226,7 +226,7 @@ public class TellerAccountITBase extends TellerRemoteITBase {
             assertEquals("unexpected number of accounts:"+index, TOTAL, index);
         }
         catch (BankException ex) {
-            log.fatal("error getting accounts:" + ex, ex);
+            log.error("error getting accounts:" + ex, ex);
             fail("error getting accounts:" + ex);
         }
     }
@@ -256,7 +256,7 @@ public class TellerAccountITBase extends TellerRemoteITBase {
                     TOTAL, ledger.getNumberOfAccounts());
         }
         catch (BankException ex) {
-            log.fatal("error getting ledger:" + ex, ex);
+            log.error("error getting ledger:" + ex, ex);
             fail("error getting ledger:" + ex);
         }
     }
@@ -287,7 +287,7 @@ public class TellerAccountITBase extends TellerRemoteITBase {
                     TOTAL, ledger.getNumberOfAccounts());
         }
         catch (BankException ex) {
-            log.fatal("error getting ledger2:" + ex, ex);
+            log.error("error getting ledger2:" + ex, ex);
             fail("error getting ledger2:" + ex);
         }
     }
