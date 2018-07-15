@@ -12,14 +12,6 @@
 
   <name>JPA::Utils::JPA Schema Generation Maven Plugin</name>
   
-  <prerequisites>
-    <maven>${maven.version}</maven>
-  </prerequisites>
-
-  <properties>
-    <maven.version>3.3.9</maven.version>
-  </properties>
-
   <dependencies>
     <dependency>
         <groupId>org.hibernate</groupId>
