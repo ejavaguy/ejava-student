@@ -57,7 +57,7 @@ public class MessageDeliveryModeTest extends JMSTestBase {
                     messages.add(message);
                 }
             } catch (Exception ex) {
-                log.fatal("error handling message", ex);
+                log.error("error handling message", ex);
             }
         }        
         public int getCount() { return count; }

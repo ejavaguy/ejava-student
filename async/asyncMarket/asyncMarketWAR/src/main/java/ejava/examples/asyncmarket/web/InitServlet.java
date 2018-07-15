@@ -37,7 +37,7 @@ public class InitServlet extends HttpServlet {
         	}
         }
         catch (Exception ex) {
-            log.fatal("error initializing", ex);
+            log.error("error initializing", ex);
             throw new ServletException("error initializing", ex);
         }
     }

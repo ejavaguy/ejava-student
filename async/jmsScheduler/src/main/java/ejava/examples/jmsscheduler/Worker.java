@@ -164,7 +164,7 @@ public class Worker implements Runnable {
             execute();
         }
         catch (Exception ex) {
-            log.fatal("error running " + name, ex);
+            log.error("error running " + name, ex);
         }
     }    
 
@@ -237,7 +237,7 @@ public class Worker implements Runnable {
             worker.execute();
         }
         catch (Exception ex) {
-            log.fatal("",ex);
+            log.error("",ex);
             if (noExit) {
             	throw new RuntimeException("worker error", ex);
             }

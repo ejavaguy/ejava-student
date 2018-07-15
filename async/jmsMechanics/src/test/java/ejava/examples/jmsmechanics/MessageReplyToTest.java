@@ -79,7 +79,7 @@ public class MessageReplyToTest extends JMSTestBase {
                 producer.send(replyDestination, reply);
                 
             } catch (JMSException ex) {
-                log.fatal("error handling message", ex);
+                log.error("error handling message", ex);
             }
         }        
     }

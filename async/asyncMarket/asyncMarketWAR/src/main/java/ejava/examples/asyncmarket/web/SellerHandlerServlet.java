@@ -69,7 +69,7 @@ public class SellerHandlerServlet extends HttpServlet {
             }                    
         }
         catch (Exception ex) {
-            log.fatal("error initializing handler", ex);
+            log.error("error initializing handler", ex);
             throw new ServletException("error initializing handler", ex);
         }
         finally {

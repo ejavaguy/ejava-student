@@ -142,7 +142,7 @@ public class Subscriber implements Runnable {
             execute();
         }
         catch (Exception ex) {
-            log.fatal("error running " + name, ex);
+            log.error("error running " + name, ex);
         }
     }    
 
@@ -221,7 +221,7 @@ public class Subscriber implements Runnable {
             subscriber.execute();
         }
         catch (Exception ex) {
-            log.fatal("",ex);
+            log.error("",ex);
             System.exit(-1);            
             if (noExit) {
             	throw new RuntimeException("error in subscriber", ex);

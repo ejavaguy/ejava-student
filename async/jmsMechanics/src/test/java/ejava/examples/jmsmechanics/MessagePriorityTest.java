@@ -52,7 +52,7 @@ public class MessagePriorityTest extends JMSTestBase {
                     messages.add(message);
 				}
             } catch (JMSException ex) {
-                log.fatal("error handling message", ex);
+                log.error("error handling message", ex);
             }
         }        
         public int getCount() { return count; }

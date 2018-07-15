@@ -54,7 +54,7 @@ public class MessageTimeToLiveTest extends JMSTestBase {
                         "msecs");
                 messages.add(message);
             } catch (JMSException ex) {
-                log.fatal("error handling message", ex);
+                log.error("error handling message", ex);
             }
         }        
         public int getCount() { return count; }

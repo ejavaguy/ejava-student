@@ -168,7 +168,7 @@ public class MessageCatcher implements Runnable {
             catcher.execute();
         }
         catch (Exception ex) {
-            log.error(ex);
+            log.error("",ex);
             System.exit(-1);            
         }
     }

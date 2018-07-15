@@ -144,7 +144,7 @@ public class Requestor implements Runnable, MessageListener {
             execute();
         }
         catch (Exception ex) {
-            log.fatal("error running " + name, ex);
+            log.error("error running " + name, ex);
         }
     }    
 
@@ -242,7 +242,7 @@ public class Requestor implements Runnable, MessageListener {
             requestor.execute();
         }
         catch (Exception ex) {
-            log.fatal("",ex);
+            log.error("",ex);
             if (noExit) {
             	throw new RuntimeException("requestor error", ex);
             }
