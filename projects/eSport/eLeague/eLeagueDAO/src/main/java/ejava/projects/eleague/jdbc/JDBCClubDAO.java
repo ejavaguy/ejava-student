@@ -8,8 +8,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import ejava.projects.eleague.dao.ClubDAO;
 import ejava.projects.eleague.dao.ClubDAOException;
@@ -23,7 +23,7 @@ import ejava.projects.eleague.bo.Venue;
  *
  */
 public class JDBCClubDAO implements ClubDAO {
-	private static Log log = LogFactory.getLog(JDBCClubDAO.class);
+	private static Logger log = LoggerFactory.getLogger(JDBCClubDAO.class);
 	private Connection connection;
 	
 	/**

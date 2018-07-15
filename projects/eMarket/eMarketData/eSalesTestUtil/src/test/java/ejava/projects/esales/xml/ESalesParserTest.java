@@ -11,14 +11,14 @@ import java.io.FilenameFilter;
 import java.io.InputStream;
 import java.lang.reflect.Method;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class ESalesParserTest {
-	private static final Log log = LogFactory.getLog(ESalesParser.class);
+	private static final Logger log = LoggerFactory.getLogger(ESalesParser.class);
 	private String inputDir = System.getProperty("inputDir");
 	
 	@Before
@@ -73,6 +73,6 @@ public class ESalesParserTest {
 						value + "\n");
 			}
 		}
-		log.debug(text);
+		log.debug("{}",text);
 	}
 }

@@ -9,8 +9,8 @@ import java.util.Map;
 import javax.xml.bind.JAXBException;
 import javax.xml.stream.XMLStreamException;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import ejava.projects.edmv.bl.EDmvException;
 import ejava.projects.edmv.dao.DAOException;
@@ -27,7 +27,7 @@ import ejava.projects.edmv.xml.EDmvParser;
  *
  */
 public class EDmvIngestor {
-	private static final Log log = LogFactory.getLog(EDmvIngestor.class);
+	private static final Logger log = LoggerFactory.getLogger(EDmvIngestor.class);
 	InputStream is;
 	PersonDAO personDAO;
 	VehicleDAO vehicleDAO;

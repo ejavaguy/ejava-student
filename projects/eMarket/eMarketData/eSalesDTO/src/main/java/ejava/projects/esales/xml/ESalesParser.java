@@ -17,8 +17,8 @@ import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
 
 import com.sun.xml.bind.IDResolver;
@@ -32,7 +32,7 @@ import com.sun.xml.bind.IDResolver;
  */
 public class ESalesParser {
     @SuppressWarnings("unused")
-    private Log log = LogFactory.getLog(ESalesParser.class);
+    private static final Logger log = LoggerFactory.getLogger(ESalesParser.class);
     protected XMLInputFactory xmlif = XMLInputFactory.newInstance();
     protected Unmarshaller um;
     protected XMLStreamReader xmlr;

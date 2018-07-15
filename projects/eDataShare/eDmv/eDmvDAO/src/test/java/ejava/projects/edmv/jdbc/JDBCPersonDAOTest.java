@@ -6,8 +6,8 @@ import static org.junit.Assert.*;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.junit.Test;
 
 import ejava.projects.edmv.bo.Person;
@@ -23,7 +23,7 @@ import ejava.projects.edmv.dao.PersonDAO;
  *
  */
 public class JDBCPersonDAOTest extends JDBCDAOTestBase {
-	static Log log = LogFactory.getLog(JDBCPersonDAOTest.class);
+	static Logger log = LoggerFactory.getLogger(JDBCPersonDAOTest.class);
 	PersonDAO dao;
 	
 	/**

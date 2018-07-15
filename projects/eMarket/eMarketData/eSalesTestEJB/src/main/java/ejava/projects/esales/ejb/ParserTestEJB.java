@@ -16,14 +16,14 @@ import javax.annotation.Resource;
 import javax.ejb.EJBException;
 import javax.ejb.Stateless;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import ejava.projects.esales.xml.ESalesParser;
 
 @Stateless
 public class ParserTestEJB implements ParserTestRemote {
-	private static final Log log = LogFactory.getLog(ParserTestEJB.class);
+	private static final Logger log = LoggerFactory.getLogger(ParserTestEJB.class);
 
 	@Resource(name="vals/xmlFile")
 	private String xmlFile;

@@ -13,8 +13,8 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import ejava.projects.eleague.dao.ELeagueDAO;
 import ejava.projects.eleague.dao.JPALeagueDAO;
@@ -30,7 +30,7 @@ import ejava.projects.eleague.dto.TeamSeason;
 import ejava.projects.eleague.dto.Venue;
 
 public class DataGenerator {
-	Log log = LogFactory.getLog(DataGenerator.class);
+	private static final Logger log = LoggerFactory.getLogger(DataGenerator.class);
 	private ELeagueDAO dao;
 	private int refId=1;
 	public static final String OUTPUT_FILE = 

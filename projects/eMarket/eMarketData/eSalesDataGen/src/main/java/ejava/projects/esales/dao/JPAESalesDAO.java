@@ -7,14 +7,14 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import ejava.projects.esales.dto.Auction;
 import ejava.projects.esales.dto.Image;
 
 public class JPAESalesDAO implements ESalesDAO {
-	private static final Log log = LogFactory.getLog(JPAESalesDAO.class);
+	private static final Logger log = LoggerFactory.getLogger(JPAESalesDAO.class);
 	public static final String PERSISTENCE_UNIT = "eSalesData";
 	private EntityManager em;
 

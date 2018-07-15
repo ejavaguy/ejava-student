@@ -21,8 +21,8 @@ import javax.xml.bind.Marshaller;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import junit.framework.TestCase;
 
@@ -33,7 +33,7 @@ import junit.framework.TestCase;
  *
  */
 public class EDmvBindingTest extends TestCase {
-    private Log log = LogFactory.getLog(EDmvBindingTest.class);
+    private Logger log = LoggerFactory.getLogger(EDmvBindingTest.class);
     private Marshaller m;
     
     public void setUp() throws Exception {
@@ -93,7 +93,7 @@ public class EDmvBindingTest extends TestCase {
             parser.getObject(
                     "Person", "VehicleRegistration")) != null) {
                     //"VehicleRegistration")) != null) {
-            log.debug(object);
+            log.debug("{}",object);
             if (object instanceof Person) {
                 Person person = (Person) object;
                 Person expected = 

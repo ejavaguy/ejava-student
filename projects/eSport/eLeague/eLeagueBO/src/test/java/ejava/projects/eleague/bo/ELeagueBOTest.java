@@ -3,8 +3,8 @@ package ejava.projects.eleague.bo;
 import static org.junit.Assert.*;
 
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.junit.Test;
 
 import ejava.projects.eleague.bo.Address;
@@ -19,7 +19,7 @@ import ejava.projects.eleague.bo.Address;
  *
  */
 public class ELeagueBOTest {
-	Log log = LogFactory.getLog(ELeagueBOTest.class);
+	Logger log = LoggerFactory.getLogger(ELeagueBOTest.class);
 	
 	@Test
     public void testVenue() {

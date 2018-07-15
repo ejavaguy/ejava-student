@@ -6,15 +6,14 @@ import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import ejava.projects.esales.jdbc.JDBCAccountDAO;
 
 public class ESalesIngestCommand {
 	@SuppressWarnings("unused")
-	private static final Log log = 
-		LogFactory.getLog(ESalesIngestCommand.class);
+	private static final Logger log = LoggerFactory.getLogger(ESalesIngestCommand.class);
 	private static final String jdbcDriver = 
 		System.getProperty("jdbc.driver");
 	private static final String jdbcURL = 

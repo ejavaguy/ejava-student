@@ -6,8 +6,8 @@ import static org.junit.Assert.*;
 
 import java.io.InputStream;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.junit.Test;
 
 import ejava.projects.edmv.blimpl.EDmvIngestor;
@@ -24,7 +24,7 @@ import ejava.projects.edmv.jpa.JPAVehicleDAO;
  *
  */
 public class EDmvIngestorTest extends JPADAOTestBase {
-	private static Log log = LogFactory.getLog(EDmvIngestorTest.class);
+	private static Logger log = LoggerFactory.getLogger(EDmvIngestorTest.class);
 
 	private PersonDAO personDAO;
 	private VehicleDAO vehicleDAO;

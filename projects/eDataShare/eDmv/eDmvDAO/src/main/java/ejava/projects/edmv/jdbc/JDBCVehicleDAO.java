@@ -8,8 +8,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import ejava.projects.edmv.bo.Person;
 import ejava.projects.edmv.bo.VehicleRegistration;
@@ -24,7 +24,7 @@ import ejava.projects.edmv.dao.VehicleDAO;
  *
  */
 public class JDBCVehicleDAO implements VehicleDAO {
-	private static Log log = LogFactory.getLog(JDBCVehicleDAO.class);
+	private static Logger log = LoggerFactory.getLogger(JDBCVehicleDAO.class);
 	private Connection connection;
 	
 	public void setConnection(Connection connection) {

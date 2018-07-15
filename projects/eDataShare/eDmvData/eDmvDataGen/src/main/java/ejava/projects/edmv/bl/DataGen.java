@@ -43,8 +43,8 @@ import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import ejava.projects.edmv.bo.DMVPerson;
 import ejava.projects.edmv.bo.DMVPersonPhysicalDetails;
@@ -62,7 +62,7 @@ import ejava.projects.edmv.dao.DMVVehicleDAO;
  *
  */
 public class DataGen {
-    private Log log = LogFactory.getLog(DataGen.class); 
+    private Logger log = LoggerFactory.getLogger(DataGen.class); 
     protected DMVPersonDAO personDAO;
     protected DMVVehicleDAO vehicleDAO;
     private int id = 0;

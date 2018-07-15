@@ -5,8 +5,8 @@ import static org.junit.Assert.*;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.junit.Test;
 
 import ejava.projects.esales.bo.Account;
@@ -23,7 +23,7 @@ import ejava.projects.esales.dao.AccountDAO;
  *
  */
 public class JDBCAccountDAOTest extends JDBCDAOTestBase {
-	private static Log log = LogFactory.getLog(JDBCAccountDAO.class);
+	private static Logger log = LoggerFactory.getLogger(JDBCAccountDAO.class);
 
 	private AccountDAO dao;
 	

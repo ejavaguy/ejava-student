@@ -3,8 +3,8 @@ package ejava.projects.esales.bo;
 import static org.junit.Assert.*;
 
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.junit.Test;
 
 /**
@@ -17,7 +17,7 @@ import org.junit.Test;
  *
  */
 public class ESalesBOTest {
-	Log log = LogFactory.getLog(ESalesBOTest.class);
+    private static final Logger log = LoggerFactory.getLogger(ESalesBOTest.class);
 	
 	@Test
     public void testAccount() {

@@ -2,9 +2,8 @@ package ejava.projects.edmv.bo;
 
 import static org.junit.Assert.*;
 
-import org.apache.commons.logging.Log;
-
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.junit.Test;
 
 /**
@@ -15,7 +14,7 @@ import org.junit.Test;
  *
  */
 public class EDmvBOTest {
-    private static Log log = LogFactory.getLog(EDmvBOTest.class);
+    private static Logger log = LoggerFactory.getLogger(EDmvBOTest.class);
 
     @Test
     public void testPerson() {

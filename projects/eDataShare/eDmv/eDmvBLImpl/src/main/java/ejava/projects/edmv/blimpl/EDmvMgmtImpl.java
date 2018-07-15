@@ -2,8 +2,8 @@ package ejava.projects.edmv.blimpl;
 
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import ejava.projects.edmv.bl.EDmvException;
 import ejava.projects.edmv.bl.PersonMgmt;
@@ -24,7 +24,7 @@ import ejava.projects.edmv.dao.VehicleDAO;
  *
  */
 public class EDmvMgmtImpl implements PersonMgmt, VehicleMgmt {
-    private Log log = LogFactory.getLog(EDmvMgmtImpl.class); 
+    private Logger log = LoggerFactory.getLogger(EDmvMgmtImpl.class); 
 	private PersonDAO personDAO;
 	private VehicleDAO vehicleDAO;
 	

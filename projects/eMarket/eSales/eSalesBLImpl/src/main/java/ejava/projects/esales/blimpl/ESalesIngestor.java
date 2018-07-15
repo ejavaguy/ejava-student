@@ -5,15 +5,15 @@ import java.io.InputStream;
 import javax.xml.bind.JAXBException;
 import javax.xml.stream.XMLStreamException;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import ejava.projects.esales.dao.AccountDAO;
 import ejava.projects.esales.dto.ESales;
 import ejava.projects.esales.xml.ESalesParser;
 
 public class ESalesIngestor {
-	private static final Log log = LogFactory.getLog(ESalesIngestor.class);
+	private static final Logger log = LoggerFactory.getLogger(ESalesIngestor.class);
 	InputStream is;
 	AccountDAO accountDAO;
 	ESalesParser parser;

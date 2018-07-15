@@ -12,8 +12,8 @@ import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.Iterator;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -28,7 +28,7 @@ import ejava.projects.eleague.dto.Season;
  *
  */
 public class ELeagueParserTest {
-	private static final Log log = LogFactory.getLog(ELeagueParserTest.class);
+	private static final Logger log = LoggerFactory.getLogger(ELeagueParserTest.class);
 	private String inputDir = System.getProperty("inputDir", "target/classes/xml");
 	
 	@Before

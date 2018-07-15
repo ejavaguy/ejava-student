@@ -5,8 +5,8 @@ import java.io.InputStream;
 import javax.xml.bind.JAXBException;
 import javax.xml.stream.XMLStreamException;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import ejava.projects.eleague.dao.ClubDAO;
 import ejava.projects.eleague.dto.ELeague;
@@ -14,7 +14,7 @@ import ejava.projects.eleague.dto.Season;
 import ejava.projects.eleague.xml.ELeagueParser;
 
 public class ELeagueIngestor {
-	private static final Log log = LogFactory.getLog(ELeagueIngestor.class);
+	private static final Logger log = LoggerFactory.getLogger(ELeagueIngestor.class);
 	InputStream is;
 	ClubDAO clubDAO;
 	ELeagueParser parser;

@@ -7,8 +7,8 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import ejava.projects.esales.bl.AccountMgmt;
 import ejava.projects.esales.bo.Account;
@@ -16,8 +16,7 @@ import ejava.projects.esales.jpa.JPAAccountDAO;
 
 public class AccountMgmtCommand extends ESalesIngestCommand {
 	@SuppressWarnings("unused")
-	private static final Log log = 
-		LogFactory.getLog(AccountMgmtCommand.class);
+	private static final Logger log = LoggerFactory.getLogger(AccountMgmtCommand.class);
 	private static String command = System.getProperty("command");
 	private static String indexStr = System.getProperty("index","0");
 	private static String countStr = System.getProperty("count","1");

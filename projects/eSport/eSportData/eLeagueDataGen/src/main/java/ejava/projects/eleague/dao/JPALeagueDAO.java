@@ -10,8 +10,8 @@ import java.util.Random;
 
 import javax.persistence.EntityManager;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import ejava.projects.eleague.dto.Club;
 import ejava.projects.eleague.dto.Contact;
@@ -26,7 +26,7 @@ import ejava.projects.eleague.dto.TeamSeason;
 import ejava.projects.eleague.dto.Venue;
 
 public class JPALeagueDAO implements ELeagueDAO {
-	private static final Log log = LogFactory.getLog(JPALeagueDAO.class);
+	private static final Logger log = LoggerFactory.getLogger(JPALeagueDAO.class);
 	public static final String PERSISTENCE_UNIT = "eLeagueData";
 	private EntityManager em;
 	

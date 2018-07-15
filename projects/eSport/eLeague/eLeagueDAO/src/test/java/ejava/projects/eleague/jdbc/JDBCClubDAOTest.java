@@ -5,8 +5,8 @@ import static org.junit.Assert.*;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.junit.Test;
 
 import ejava.projects.eleague.bo.Address;
@@ -24,7 +24,7 @@ import ejava.projects.eleague.jdbc.JDBCClubDAO;
  *
  */
 public class JDBCClubDAOTest extends JDBCDAOTestBase {
-	private static Log log = LogFactory.getLog(JDBCClubDAO.class);
+	private static Logger log = LoggerFactory.getLogger(JDBCClubDAO.class);
 	private ClubDAO dao;
 	
 	@Override

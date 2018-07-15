@@ -18,8 +18,8 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import ejava.projects.esales.dao.ESalesDAO;
 import ejava.projects.esales.dao.JPAESalesDAO;
@@ -31,7 +31,7 @@ import ejava.projects.esales.dto.ESales;
 import ejava.projects.esales.dto.Image;
 
 public class DataGenerator {
-	Log log = LogFactory.getLog(DataGenerator.class);
+	private static final Logger log = LoggerFactory.getLogger(DataGenerator.class);
 	private ESalesDAO dao;
 	public static final String OUTPUT_FILE = 
 		"ejava.projects.esales.datagen.outputFile";

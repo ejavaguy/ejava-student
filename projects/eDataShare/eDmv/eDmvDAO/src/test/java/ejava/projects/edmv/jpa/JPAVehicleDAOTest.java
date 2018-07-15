@@ -3,8 +3,8 @@ package ejava.projects.edmv.jpa;
 import static org.junit.Assert.*;
 
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.junit.Test;
 
 import ejava.projects.edmv.bo.Person;
@@ -23,7 +23,7 @@ import ejava.projects.edmv.jpa.JPAVehicleDAO;
  *
  */
 public class JPAVehicleDAOTest extends JPADAOTestBase {
-	private static Log log = LogFactory.getLog(JPAVehicleDAOTest.class);
+	private static Logger log = LoggerFactory.getLogger(JPAVehicleDAOTest.class);
 
 	private VehicleDAO vehicleDAO;
 	private PersonDAO personDAO;

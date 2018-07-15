@@ -5,13 +5,13 @@ import java.io.File;
 import java.io.FileWriter;
 import java.util.Map;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import junit.framework.TestCase;
 
 public class DataGeneratorTest extends TestCase {
-	Log log = LogFactory.getLog(DataGenerator.class);
+	Logger log = LoggerFactory.getLogger(DataGenerator.class);
 	String outputDir = System.getProperty("outputDir");
 	String auctionCountStr = System.getProperty("auction.count");
 	int auctionCount=-1;

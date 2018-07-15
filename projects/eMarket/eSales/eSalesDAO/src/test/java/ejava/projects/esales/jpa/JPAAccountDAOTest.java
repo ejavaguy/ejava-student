@@ -3,8 +3,8 @@ package ejava.projects.esales.jpa;
 import static org.junit.Assert.*;
 
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.junit.Test;
 
 import ejava.projects.esales.bo.Account;
@@ -20,7 +20,7 @@ import ejava.projects.esales.dao.AccountDAO;
  *
  */
 public class JPAAccountDAOTest extends JPADAOTestBase {
-	private static Log log = LogFactory.getLog(JPAAccountDAO.class);
+	private static Logger log = LoggerFactory.getLogger(JPAAccountDAO.class);
 	private AccountDAO dao;
 	
 	@Override

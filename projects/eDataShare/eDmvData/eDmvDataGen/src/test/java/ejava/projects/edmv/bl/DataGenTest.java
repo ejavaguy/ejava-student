@@ -10,8 +10,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import ejava.projects.edmv.dao.DMVPersonDAO;
 import ejava.projects.edmv.dao.DMVVehicleDAO;
@@ -31,7 +31,7 @@ import junit.framework.TestCase;
  *
  */
 public class DataGenTest extends TestCase {
-    protected Log log = LogFactory.getLog(DataGenTest.class);
+    protected Logger log = LoggerFactory.getLogger(DataGenTest.class);
     protected static String PERSISTENCE_UNIT = "eDmvData";
     protected static String outputDirName = 
         System.getProperty("outputDir");

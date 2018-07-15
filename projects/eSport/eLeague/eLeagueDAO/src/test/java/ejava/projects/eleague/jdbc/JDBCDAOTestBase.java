@@ -4,8 +4,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.junit.After;
 import org.junit.Before;
 
@@ -14,7 +14,7 @@ import org.junit.Before;
  * tearing down the connection to the JDBC database.
  */
 public class JDBCDAOTestBase {
-    private static final Log log = LogFactory.getLog(JDBCDAOTestBase.class);
+    private static final Logger log = LoggerFactory.getLogger(JDBCDAOTestBase.class);
 
     private static String jdbcDriver = System.getProperty("jdbc.driver", "org.h2.Driver");
     private static String jdbcURL = System.getProperty("jdbc.url", "jdbc:h2:./target/h2db/ejava");

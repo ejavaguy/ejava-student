@@ -16,8 +16,8 @@ import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
 
 import com.sun.xml.bind.IDResolver;
@@ -31,7 +31,7 @@ import com.sun.xml.bind.IDResolver;
  */
 public class ELeagueParser {
 	@SuppressWarnings("unused")
-	private Log log = LogFactory.getLog(ELeagueParser.class);
+	private Logger log = LoggerFactory.getLogger(ELeagueParser.class);
 	protected XMLInputFactory xmlif = XMLInputFactory.newInstance();
 	protected Unmarshaller um;
 	protected XMLStreamReader xmlr;

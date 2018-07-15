@@ -13,8 +13,8 @@ import java.util.GregorianCalendar;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
@@ -39,7 +39,7 @@ import junit.framework.TestCase;
  *
  */
 public class ELeagueBindingTest extends TestCase {
-    private Log log = LogFactory.getLog(ELeagueBindingTest.class);
+    private Logger log = LoggerFactory.getLogger(ELeagueBindingTest.class);
     private Marshaller m;
     
     public void setUp() throws Exception {

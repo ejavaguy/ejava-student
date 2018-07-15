@@ -3,8 +3,8 @@ package ejava.projects.eleague.jpa;
 import static org.junit.Assert.*;
 
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.junit.Test;
 
 import ejava.projects.eleague.bo.Address;
@@ -19,7 +19,7 @@ import ejava.projects.eleague.jpa.JPAClubDAO;
  * 
  */
 public class JPAClubDAOTest extends JPADAOTestBase {
-	private static Log log = LogFactory.getLog(JPAClubDAO.class);
+	private static Logger log = LoggerFactory.getLogger(JPAClubDAO.class);
 	//this code assumes all the JDBC properties were placed in 
 	//META-INF/persistence.xml when the file was copied from src to the 
 	//target tree

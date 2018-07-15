@@ -5,8 +5,8 @@ import static org.junit.Assert.*;
 
 import java.io.InputStream;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.junit.Test;
 
 import ejava.projects.edmv.bl.PersonMgmt;
@@ -23,7 +23,7 @@ import ejava.projects.edmv.jpa.JPAVehicleDAO;
  * This class provides an end-to-end demonstration of the DMV business logic.
  */
 public class DmvEndToEndTest extends JPADAOTestBase {
-	private static Log log = LogFactory.getLog(DmvEndToEndTest.class);
+	private static Logger log = LoggerFactory.getLogger(DmvEndToEndTest.class);
 	protected PersonDAO personDAO;
 	protected VehicleDAO vrDAO;
 	protected PersonMgmt personMgmt;
