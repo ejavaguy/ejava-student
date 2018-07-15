@@ -3,8 +3,10 @@ package ejava.projects.eleague.bo;
 import java.io.Serializable;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
@@ -21,8 +23,15 @@ import javax.persistence.Table;
 @Entity @Table(name="ELEAGUE_VEN")
 public class Venue implements Serializable {
 	private static final long serialVersionUID = 1L;
+
+	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	private long id;
+	
+	@Column(length=40)
     private String name;
+
+    @OneToOne(cascade=CascadeType.ALL)
+    @JoinColumn(name="ADDR_ID", insertable=true, nullable=false)
     private Address address;
     
     public Venue() {}
@@ -35,7 +44,6 @@ public class Venue implements Serializable {
         this.address = address;
     }
     
-    @Id @GeneratedValue
     public long getId() {
         return id;
     }
@@ -49,8 +57,6 @@ public class Venue implements Serializable {
         this.name = name;
     }
     
-    @OneToOne(cascade=CascadeType.ALL)
-    @JoinColumn(name="ADDR_ID", insertable=true, nullable=false)
     public Address getAddress() {
         return address;
     }

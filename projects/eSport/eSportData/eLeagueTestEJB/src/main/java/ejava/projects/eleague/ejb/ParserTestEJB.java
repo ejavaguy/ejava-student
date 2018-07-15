@@ -111,7 +111,7 @@ public class ParserTestEJB implements ParserTestRemote {
 	}
 	
 	void testSeason(Season season) {
-		log.debug(new StringBuilder()
+		log.debug("{}", new StringBuilder()
 			.append("season=")
 			.append(season.getId())
 			.append(", refId=")
@@ -139,7 +139,7 @@ public class ParserTestEJB implements ParserTestRemote {
 	}
 
 	void testDivision(Division d) {
-		log.debug(new StringBuilder()
+		log.debug("{}", new StringBuilder()
 			.append("division=")
 			.append(d.getId())
 			.append(", group=")
@@ -169,7 +169,7 @@ public class ParserTestEJB implements ParserTestRemote {
 	}
 
 	void testTeamSeason(TeamSeason ts) {
-		log.debug(new StringBuilder()
+		log.debug("{}", new StringBuilder()
 			.append("teamSeason=")
 			.append(ts.getId())
 			.append(", refId=")
@@ -185,7 +185,7 @@ public class ParserTestEJB implements ParserTestRemote {
 	}
 
 	void testLeagueMetadata(LeagueMetadata md) {
-		log.debug(new StringBuilder()
+		log.debug("{}", new StringBuilder()
 			.append("league=")
 			.append(md.getName())
 			.append(", contactName=")
@@ -197,7 +197,7 @@ public class ParserTestEJB implements ParserTestRemote {
 	}
 
 	void testContact(Contact contact) {
-		log.debug(new StringBuilder()
+		log.debug("{}", new StringBuilder()
 			.append("contact=")
 			.append(contact.getId())
 			.append(", name=")
@@ -212,17 +212,17 @@ public class ParserTestEJB implements ParserTestRemote {
 	}
 
 	void testClub(Club club) {
-		log.debug(new StringBuilder()
-		.append("club=")
-		.append(club.getId())
-		.append(", name=")
-		.append(club.getName())
-		.append(", refId=")
-		.append(club.getRefid())
-		.append(", teams=")
-		.append(club.getTeam().size())
-		.append(", venues=")
-		.append(club.getVenue().size()));
+		log.debug("{}", new StringBuilder()
+                  .append("club=")
+                  .append(club.getId())
+                  .append(", name=")
+                  .append(club.getName())
+                  .append(", refId=")
+                  .append(club.getRefid())
+                  .append(", teams=")
+                  .append(club.getTeam().size())
+                  .append(", venues=")
+                  .append(club.getVenue().size()));
 
 		assertNotNull("club id null", club.getId());
 		assertNotNull("club contact null", club.getContact());
@@ -240,7 +240,7 @@ public class ParserTestEJB implements ParserTestRemote {
 	}
 	
 	private void testVenue(Venue venue) {
-		log.debug(new StringBuilder()
+		log.debug("{}", new StringBuilder()
 			.append("venue=")
 			.append(venue.getId())
 			.append(", name=")
@@ -271,7 +271,7 @@ public class ParserTestEJB implements ParserTestRemote {
 	}
 
 	void testTeam(Team team) {
-		log.debug(new StringBuilder()
+		log.debug("{}", new StringBuilder()
 			.append("team=")
 			.append(team.getId())
 			.append(", name=")
@@ -291,7 +291,7 @@ public class ParserTestEJB implements ParserTestRemote {
 	}
 
 	void testContactRole(ContactRoleType role) {
-		log.debug(new StringBuilder()
+		log.debug("{}", new StringBuilder()
 			.append("contactRole=")
 			.append(role.getId())
 			.append(", role=")

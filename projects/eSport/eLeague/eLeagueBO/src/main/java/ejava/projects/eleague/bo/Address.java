@@ -5,6 +5,7 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -20,7 +21,11 @@ import javax.persistence.Table;
 @Entity @Table(name="ELEAGUE_ADDR")
 public class Address implements Serializable {
 	private static final long serialVersionUID = 1L;
+
+	@Id @GeneratedValue(strategy=GenerationType.IDENTITY) @Column(name="ID")
 	private long id;
+
+	@Column(name="CITY", length=20)
 	private String city;
 	
 	public Address() {} 	
@@ -33,7 +38,6 @@ public class Address implements Serializable {
 		this.city = city;
 	}
 	
-	@Id @GeneratedValue @Column(name="ID")
 	public long getId() {
 		return id;
 	}
@@ -41,7 +45,6 @@ public class Address implements Serializable {
 		this.id = id;
 	}
 	
-	@Column(name="CITY")
 	public String getCity() {
 		return city;
 	}

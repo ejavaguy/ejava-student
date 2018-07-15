@@ -39,6 +39,12 @@
       
    </appender>
 
+   <logger name="orh.hibernate.SQL">
+      <level value="debug"/>
+   </logger>
+   <logger name="orh.hibernate.type">
+      <level value="trace"/>
+   </logger>
    <logger name="ejava">
       <level value="debug"/>
    </logger>

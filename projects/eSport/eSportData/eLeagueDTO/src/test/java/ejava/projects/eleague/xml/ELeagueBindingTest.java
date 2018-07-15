@@ -99,7 +99,7 @@ public class ELeagueBindingTest extends TestCase {
         while ((object = 
             parser.getObject(
                     "contact", "league-metadata", "club", "season")) != null) {
-            log.debug(object);
+            log.debug("{}",object);
             if (object instanceof Contact) {
                 Contact contact = (Contact) object;
                 Contact expected = 
