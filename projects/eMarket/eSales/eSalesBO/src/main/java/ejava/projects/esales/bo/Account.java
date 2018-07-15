@@ -24,12 +24,20 @@ import javax.persistence.Table;
 @SuppressWarnings("serial")
 @Entity @Table(name="ESALES_ACCT")
 public class Account implements Serializable {
+    @Id @Column(name="USER_ID", length=20)
 	private String userId;
+
+    @Column(name="FIRST_NAME", length=32)
 	private String firstName;
+
+	@OneToMany(cascade=CascadeType.ALL)
+    @JoinTable(name="ESALES_ACCT_ADDRESS_LINK",
+            joinColumns=@JoinColumn(name="USER_ID"),
+            inverseJoinColumns=@JoinColumn(name="ADDRESS_ID"))
 	private List<Address> addresses = new ArrayList<Address>();
 	
 
-	protected Account() {}   //JPA requires a no-arg ctor
+	public Account() {}   //JPA requires a no-arg ctor
 	public Account(String userId) {
 		setUserId(userId);
 	}
@@ -39,7 +47,6 @@ public class Account implements Serializable {
 		this.addresses = addresses;
 	}
 	
-	@Id @Column(name="USER_ID")
 	public String getUserId() {
 		return userId;
 	}
@@ -47,7 +54,6 @@ public class Account implements Serializable {
 		this.userId = userId;
 	}
 
-	@Column(name="FIRST_NAME")
 	public String getFirstName() {
 		return firstName;
 	}
@@ -55,10 +61,6 @@ public class Account implements Serializable {
 		this.firstName = firstName;
 	}
 
-	@OneToMany(cascade=CascadeType.ALL)
-	@JoinTable(name="ESALES_ACCT_ADDRESS_LINK",
-			joinColumns=@JoinColumn(name="USER_ID"),
-			inverseJoinColumns=@JoinColumn(name="ADDRESS_ID"))
 	public List<Address> getAddresses() {
 		return addresses;
 	}
