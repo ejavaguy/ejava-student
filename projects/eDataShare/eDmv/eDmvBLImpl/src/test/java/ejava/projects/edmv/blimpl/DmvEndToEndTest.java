@@ -54,7 +54,7 @@ public class DmvEndToEndTest extends JPADAOTestBase {
 		//the user shall be able to get a list of people in the application
 		int count=0;
 		for (Person p: em.createQuery("select p from Person p", Person.class).getResultList()) {
-			log.debug(p);
+			log.debug("{}",p);
 			count += 1;
 		}
 		assertEquals("unexpected number of people listed", 1000, count);
@@ -64,7 +64,7 @@ public class DmvEndToEndTest extends JPADAOTestBase {
 		for (VehicleRegistration vr: 
 			em.createQuery("select vr from VehicleRegistration vr", VehicleRegistration.class)
 				.getResultList()) {
-			log.debug(vr);
+			log.debug("{}",vr);
 			count += 1;
 		}
 		assertEquals("unexpected number of vehicles listed", 1000, count);

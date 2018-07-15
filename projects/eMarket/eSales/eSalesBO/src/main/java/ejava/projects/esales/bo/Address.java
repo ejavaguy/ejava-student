@@ -24,10 +24,10 @@ public class Address implements Serializable {
     @Id @GeneratedValue(strategy=GenerationType.IDENTITY) @Column(name="ID")
 	private long id;
 
-    @Column(name="NAME", length=32)
+    @Column(name="NAME", length=10)
 	private String name;
 
-    @Column(name="CITY", length=32)
+    @Column(name="CITY", length=20)
 	private String city;
 	
 	public Address() {} 	

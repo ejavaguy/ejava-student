@@ -167,7 +167,7 @@
                 <executions>
                   <execution>
                       <id>drop-db-before-test</id>
-                      <phase>process-test-resources</phase>
+                      <phase>process-test-classes</phase>
                       <goals>
                           <goal>execute</goal>
                       </goals>    
@@ -186,7 +186,7 @@
                   
                   <execution>
                       <id>create-db-before-test</id>
-                      <phase>process-test-resources</phase>
+                      <phase>process-test-classes</phase>
                       <goals>
                           <goal>execute</goal>
                       </goals>    
@@ -204,7 +204,7 @@
                   
                   <execution>
                       <id>populate-db-before-test</id>
-                      <phase>process-test-resources</phase>
+                      <phase>process-test-classes</phase>
                       <goals>
                           <goal>execute</goal>
                       </goals>    

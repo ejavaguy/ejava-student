@@ -17,8 +17,17 @@ import javax.persistence.*;
 @Table(name="EDMV_VREG")
 @SuppressWarnings("serial")
 public class VehicleRegistration implements Serializable {
+    @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
     private long id;
+    
+    @Column(length=20)
     private String vin;
+
+    @ManyToMany()
+    @JoinTable(name="EDMV_VREG_OWNER_LINK",
+            joinColumns={@JoinColumn(name="VEHICLE_ID")},
+            inverseJoinColumns={@JoinColumn(name="OWNER_ID")}
+    )
     private List<Person> owners = new ArrayList<Person>();
    
     //jpa requires a no-arg ctor
@@ -27,7 +36,6 @@ public class VehicleRegistration implements Serializable {
         this.id = id;
     }
    
-    @Id @GeneratedValue
     public long getId() {
         return id;
     }
@@ -44,11 +52,6 @@ public class VehicleRegistration implements Serializable {
         this.vin = vin;
     }
     
-    @ManyToMany()
-    @JoinTable(name="EDMV_VREG_OWNER_LINK",
-            joinColumns={@JoinColumn(name="VEHICLE_ID")},
-            inverseJoinColumns={@JoinColumn(name="OWNER_ID")}
-    )
     public List<Person> getOwners() {
         return owners;
     }

@@ -15,7 +15,10 @@ import javax.persistence.*;
 @Table(name="EDMV_PERSON")
 @SuppressWarnings("serial")
 public class Person implements Serializable {
+    @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
     private long id;
+    
+    @Column(name="LAST_NAME", length=20)
     private String lastName;    
 
     //JPA requires a no-arg ctor
@@ -24,7 +27,6 @@ public class Person implements Serializable {
         this.id = id;
     }
     
-    @Id @GeneratedValue
     public long getId() {
         return id;
     }
@@ -34,7 +36,6 @@ public class Person implements Serializable {
         this.id = id;
     }
     
-    @Column(name="LAST_NAME")
     public String getLastName() {
         return lastName;
     }

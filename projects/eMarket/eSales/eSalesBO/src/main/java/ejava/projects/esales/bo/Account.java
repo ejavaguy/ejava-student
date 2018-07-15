@@ -27,7 +27,7 @@ public class Account implements Serializable {
     @Id @Column(name="USER_ID", length=20)
 	private String userId;
 
-    @Column(name="FIRST_NAME", length=32)
+    @Column(name="FIRST_NAME", length=20)
 	private String firstName;
 
 	@OneToMany(cascade=CascadeType.ALL)
