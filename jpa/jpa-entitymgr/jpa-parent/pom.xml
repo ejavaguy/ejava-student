@@ -236,20 +236,6 @@
                             <pluginExecution>
                               <pluginExecutionFilter>
                                 <groupId>org.codehaus.mojo</groupId>
-                                <artifactId>hibernate3-maven-plugin</artifactId>
-                                <versionRange>[2.2,)</versionRange>
-                                <goals>
-                                  <goal>hbm2ddl</goal>
-                                </goals>
-                              </pluginExecutionFilter>
-                              <action>
-                                <ignore/>
-                              </action>
-                            </pluginExecution>
-
-                            <pluginExecution>
-                              <pluginExecutionFilter>
-                                <groupId>org.codehaus.mojo</groupId>
                                 <artifactId>sql-maven-plugin</artifactId>
                                 <versionRange>[1.0.0,)</versionRange>
                                 <goals>

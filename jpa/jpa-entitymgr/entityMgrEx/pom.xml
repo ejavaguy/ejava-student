@@ -368,20 +368,6 @@
                             <pluginExecution>
                               <pluginExecutionFilter>
                                 <groupId>org.codehaus.mojo</groupId>
-                                <artifactId>hibernate3-maven-plugin</artifactId>
-                                <versionRange>[3.0,)</versionRange>
-                                <goals>
-                                  <goal>run</goal>
-                                </goals>
-                              </pluginExecutionFilter>
-                              <action>
-                                <ignore/>
-                              </action>
-                            </pluginExecution>
-
-                            <pluginExecution>
-                              <pluginExecutionFilter>
-                                <groupId>org.codehaus.mojo</groupId>
                                 <artifactId>sql-maven-plugin</artifactId>
                                 <versionRange>[1.0.0,)</versionRange>
                                 <goals>
