@@ -101,7 +101,7 @@
         <jsr250-api.version>1.0</jsr250-api.version>
         <jta.version>1.0.1B</jta.version>
         <junit.version>4.12</junit.version>
-        <maven-jaxb2-plugin.version>0.7.1</maven-jaxb2-plugin.version>
+        <maven-jaxb2-plugin.version>0.14.0</maven-jaxb2-plugin.version>
         <mysql-connector-java.version>5.0.5</mysql-connector-java.version>
         <netty.version>3.2.6.Final</netty.version>
         <ojdbc6.version>11.2.0.3</ojdbc6.version>
