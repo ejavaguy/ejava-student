@@ -1,13 +1,14 @@
 package ejava.examples.ejbsessionbank.web;
 
 import java.io.IOException;
-
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
 import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -28,9 +29,9 @@ import ejava.util.jndi.JNDIUtil;
 
 @SuppressWarnings("serial")
 public class TellerHandlerServlet extends HttpServlet {
-    private static final Logger log = LoggerFactory.getLogger(TellerHandlerServlet.class);
+    private static final Logger logger = LoggerFactory.getLogger(TellerHandlerServlet.class);
     public static final String COMMAND_PARAM = "command";
-    public static final String EXCEPTION_PARAM = "exception";
+    public static final String EXCEPTION_PARAM = "javax.servlet.error.exception";
     public static final String HANDLER_TYPE_KEY = "type";
     public static final String ADMIN_TYPE = "admin";
     public static final String CREATE_ACCOUNT_COMMAND = "Create Account";
@@ -42,12 +43,13 @@ public class TellerHandlerServlet extends HttpServlet {
     public static final String CREATE_ACCOUNTS_COMMAND = "Create Accounts";
     public static final String GET_LEDGER_COMMAND = "Get Ledger";
     public static final String STEAL_ALL_ACCOUNTS_COMMAND = "Steal All Accounts";
-    public static final String jndiName = EJBClient.getRemoteLookupName(
-    	"ejbsessionBankEAR", "ejbsessionBankEJB",  
-    	"TellerEJB", TellerRemote.class.getName());
-    
+    public static final String jndiName = 
+         EJBClient.getEJBClientLookupName("ejbsessionBankEAR", "ejbsessionBankEJB", "", "TellerEJB", TellerRemote.class.getName(), false);
+        
     private static final String UNKNOWN_COMMAND_URL = 
         "/WEB-INF/content/UnknownCommand.jsp";
+    private static final String ERROR_URL = 
+            "/WEB-INF/content/ErrorPage.jsp";
     private Map<String, Handler> handlers = new HashMap<String, Handler>();
     
     /**
@@ -58,8 +60,7 @@ public class TellerHandlerServlet extends HttpServlet {
      */
     @javax.ejb.EJB(beanInterface=TellerLocal.class)
     private Teller injectedTeller;
-
-    private Properties env=null;
+    private Teller teller;
 
     /**
      * Init verify the teller reference to the EJB logic is in place and
@@ -67,12 +68,14 @@ public class TellerHandlerServlet extends HttpServlet {
      * the servlet init parameters.
      */
     public void init() throws ServletException {
-        log.debug("init() called; teller=" + injectedTeller);
+        logger.debug("init() called; teller=" + injectedTeller);
         
         try {
             ServletConfig config = getServletConfig();
-            if (injectedTeller==null) { //not running on server, prepare manual lookups
-                env=JNDIUtil.getJNDIProperties("jboss.remoting.");
+            
+            teller = injectedTeller!=null ? injectedTeller : getTeller();
+            if (teller==null) {
+                throw new Exception("no teller injected or found in JNDI lookup");
             }
             
             //build a list of handlers for individual commands
@@ -89,9 +92,44 @@ public class TellerHandlerServlet extends HttpServlet {
             }            
         }
         catch (Exception ex) {
-            log.error("error initializing handler", ex);
+            logger.error("error initializing handler", ex);
             throw new ServletException("error initializing handler", ex);
         }
+    }
+    
+    /**
+     * This helper method will return a Teller in development based on a JNDI lookup.
+     * @return teller if found
+     * @throws NamingException
+     * @throws IOException 
+     */
+    protected Teller getTeller() throws NamingException, IOException {
+        Teller teller = null;
+        InputStream is = null;
+        InitialContext jndi = null;
+        try {
+            //manually load the JNDI properties to make sure we don't get a Jetty JNDI tree in dev
+            if ((is=getClass().getResourceAsStream("/jndi.properties"))==null) {
+                logger.warn("no jndi.properties found, check classpath");
+            } else {
+                Properties jndiProperties = new Properties();
+                jndiProperties.load(is);
+                logger.info("jndiProperties={}", jndiProperties);
+    
+                jndi = new InitialContext(jndiProperties);
+                logger.debug("looking up: {}", jndiName);
+                teller = (Teller)jndi.lookup(jndiName);
+                logger.debug("found {}", teller);
+            }
+          } finally {
+            if (is!=null) {
+                try { is.close(); } catch(Exception ex) {}
+            }
+            if (jndi!=null) {
+                try { jndi.close(); } catch(Exception ex) {}
+            }
+        }
+        return teller;
     }
 
     /**
@@ -101,18 +139,12 @@ public class TellerHandlerServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, 
                          HttpServletResponse response) 
         throws ServletException, IOException {
-        log.debug("doGet() called");
+        logger.debug("doGet() called");
 
         String command = request.getParameter(COMMAND_PARAM);
-        log.debug("command=" + command);
+        logger.debug("command=" + command);
 
-        InitialContext jndi = null;
-        Teller teller = injectedTeller; //assign to what was injected
         try {
-        	if (teller==null) { //not injected -- manually lookup
-        	    jndi=new InitialContext(env);
-     	        teller = (Teller)jndi.lookup(jndiName);
-        	}
             if (command != null) {
                 Handler handler = handlers.get(command);
                 if (handler != null) {
@@ -128,16 +160,16 @@ public class TellerHandlerServlet extends HttpServlet {
             else {
                 throw new Exception("no " + COMMAND_PARAM + " supplied"); 
             }
-        }
-        catch (Exception ex) {
+        } catch (NamingException ex) {
+            request.setAttribute(EXCEPTION_PARAM, ex);
+            RequestDispatcher rd = getServletContext().getRequestDispatcher(
+                    ERROR_URL);
+                    rd.forward(request, response);
+        } catch (Exception ex) {
             request.setAttribute(EXCEPTION_PARAM, ex);
             RequestDispatcher rd = getServletContext().getRequestDispatcher(
                     UNKNOWN_COMMAND_URL);
                     rd.forward(request, response);
-        } finally {
-        	if (jndi != null) {
-        		try { jndi.close(); } catch (Exception ex){}
-        	}
         }
     }
 
@@ -147,12 +179,12 @@ public class TellerHandlerServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, 
                           HttpServletResponse response) 
         throws ServletException, IOException {
-        log.debug("doPost() called, calling doGet()");
+        logger.debug("doPost() called, calling doGet()");
         doGet(request, response);
     }
 
     public void destroy() {
-        log.debug("destroy() called");
+        logger.debug("destroy() called");
     }
     
     private abstract class Handler {
@@ -193,7 +225,7 @@ public class TellerHandlerServlet extends HttpServlet {
                 rd.forward(request, response);                
             }
             catch (Exception ex) {
-                log.error("error creating account:" + ex, ex);
+                logger.error("error creating account:" + ex, ex);
                 request.setAttribute(EXCEPTION_PARAM, ex);
                 RequestDispatcher rd = 
                     getServletContext().getRequestDispatcher(DISPLAY_EXCEPTION);
@@ -204,11 +236,11 @@ public class TellerHandlerServlet extends HttpServlet {
 
     private class GetAccount extends Handler {
         public void handle(HttpServletRequest request, 
-                HttpServletResponse response, Teller teller) 
+                HttpServletResponse response, Teller t) 
                 throws ServletException, IOException {
             try {
                 String acctNum = (String)request.getParameter(ACCT_NUM_PARAM);                
-                Account account = teller.getAccount(acctNum);
+                Account account = t.getAccount(acctNum);
                 
                 request.setAttribute(ACCOUNT_PARAM, account);                
                 RequestDispatcher rd = 
@@ -216,7 +248,7 @@ public class TellerHandlerServlet extends HttpServlet {
                 rd.forward(request, response);                
             }
             catch (Exception ex) {
-                log.error("error creating account:" + ex, ex);
+                logger.error("error creating account:" + ex, ex);
                 request.setAttribute(EXCEPTION_PARAM, ex);
                 RequestDispatcher rd = 
                     getServletContext().getRequestDispatcher(DISPLAY_EXCEPTION);
@@ -227,16 +259,16 @@ public class TellerHandlerServlet extends HttpServlet {
 
     private class DepositAccount extends Handler {
         public void handle(HttpServletRequest request, 
-                HttpServletResponse response, Teller teller) 
+                HttpServletResponse response, Teller t) 
                 throws ServletException, IOException {
             try {
                 String acctNum = (String)request.getParameter(ACCT_NUM_PARAM);                
                 String amountStr = (String)request.getParameter(AMOUNT_PARAM);
                 double amount = Double.parseDouble(amountStr);
                 
-                Account account = teller.getAccount(acctNum);
+                Account account = t.getAccount(acctNum);
                 account.deposit(amount);
-                teller.updateAccount(account);
+                t.updateAccount(account);
                 
                 request.setAttribute(ACCOUNT_PARAM, account);                
                 RequestDispatcher rd = 
@@ -244,7 +276,7 @@ public class TellerHandlerServlet extends HttpServlet {
                 rd.forward(request, response);                
             }
             catch (Exception ex) {
-                log.error("error depositing to account:" + ex, ex);
+                logger.error("error depositing to account:" + ex, ex);
                 request.setAttribute(EXCEPTION_PARAM, ex);
                 RequestDispatcher rd = 
                     getServletContext().getRequestDispatcher(DISPLAY_EXCEPTION);
@@ -255,16 +287,16 @@ public class TellerHandlerServlet extends HttpServlet {
 
     private class WithdrawAccount extends Handler {
         public void handle(HttpServletRequest request, 
-                HttpServletResponse response, Teller teller) 
+                HttpServletResponse response, Teller t) 
                 throws ServletException, IOException {
             try {
                 String acctNum = (String)request.getParameter(ACCT_NUM_PARAM);                
                 String amountStr = (String)request.getParameter(AMOUNT_PARAM);
                 double amount = Double.parseDouble(amountStr);
                 
-                Account account = teller.getAccount(acctNum);
+                Account account = t.getAccount(acctNum);
                 account.withdraw(amount);
-                teller.updateAccount(account);
+                t.updateAccount(account);
                 
                 request.setAttribute(ACCOUNT_PARAM, account);                
                 RequestDispatcher rd = 
@@ -272,7 +304,7 @@ public class TellerHandlerServlet extends HttpServlet {
                 rd.forward(request, response);                
             }
             catch (Exception ex) {
-                log.error("error withdrawing from account:" + ex, ex);
+                logger.error("error withdrawing from account:" + ex, ex);
                 request.setAttribute(EXCEPTION_PARAM, ex);
                 RequestDispatcher rd = 
                     getServletContext().getRequestDispatcher(DISPLAY_EXCEPTION);
@@ -283,17 +315,17 @@ public class TellerHandlerServlet extends HttpServlet {
 
     private class CloseAccount extends Handler {
         public void handle(HttpServletRequest request, 
-                HttpServletResponse response, Teller teller) 
+                HttpServletResponse response, Teller t) 
                 throws ServletException, IOException {
             try {
                 String acctNum = (String)request.getParameter(ACCT_NUM_PARAM);                
                 
-                teller.closeAccount(acctNum);
+                t.closeAccount(acctNum);
                 
                 response.sendRedirect(request.getContextPath() + MAIN_PAGE);
             }
             catch (Exception ex) {
-                log.error("error closing account:" + ex, ex);
+                logger.error("error closing account:" + ex, ex);
                 request.setAttribute(EXCEPTION_PARAM, ex);
                 RequestDispatcher rd = 
                     getServletContext().getRequestDispatcher(DISPLAY_EXCEPTION);
@@ -304,7 +336,7 @@ public class TellerHandlerServlet extends HttpServlet {
 
     private class CreateAccounts extends Handler {
         public void handle(HttpServletRequest request, 
-                HttpServletResponse response, Teller teller) 
+                HttpServletResponse response, Teller t) 
                 throws ServletException, IOException {
             try {
                 String countStr = (String)request.getParameter(COUNT_PARAM);
@@ -312,15 +344,15 @@ public class TellerHandlerServlet extends HttpServlet {
                 
                 long seed = System.currentTimeMillis();
                 for(int i=0; i<count; i++) {
-                    Account account = teller.createAccount("" + seed + "-" + i);
+                    Account account = t.createAccount("" + seed + "-" + i);
                     account.deposit(i);
-                    teller.updateAccount(account);                    
+                    t.updateAccount(account);                    
                 }
                 
                 response.sendRedirect(request.getContextPath() + MAIN_PAGE);
             }
             catch (Exception ex) {
-                log.error("error closing account:" + ex, ex);
+                logger.error("error closing account:" + ex, ex);
                 request.setAttribute(EXCEPTION_PARAM, ex);
                 RequestDispatcher rd = 
                     getServletContext().getRequestDispatcher(DISPLAY_EXCEPTION);
@@ -331,7 +363,7 @@ public class TellerHandlerServlet extends HttpServlet {
 
     private class GetAccounts extends Handler {
         public void handle(HttpServletRequest request, 
-                HttpServletResponse response, Teller teller) 
+                HttpServletResponse response, Teller t) 
                 throws ServletException, IOException {
             try {
                 String indexStr = (String)request.getParameter(INDEX_PARAM);
@@ -339,7 +371,7 @@ public class TellerHandlerServlet extends HttpServlet {
                 int index = Integer.parseInt(indexStr);
                 int count = Integer.parseInt(countStr);
                 
-                List<Account> accounts = teller.getAccounts(index, count);
+                List<Account> accounts = t.getAccounts(index, count);
                 
                 int nextIndex = (accounts.size()==0) ? 
                         index : index + accounts.size();
@@ -354,7 +386,7 @@ public class TellerHandlerServlet extends HttpServlet {
                 rd.forward(request, response);                
             }
             catch (Exception ex) {
-                log.error("error getting accounts:" + ex, ex);
+                logger.error("error getting accounts:" + ex, ex);
                 request.setAttribute(EXCEPTION_PARAM, ex);
                 RequestDispatcher rd = 
                     getServletContext().getRequestDispatcher(DISPLAY_EXCEPTION);
@@ -365,10 +397,10 @@ public class TellerHandlerServlet extends HttpServlet {
 
     private class GetLedger extends Handler {
         public void handle(HttpServletRequest request, 
-                HttpServletResponse response, Teller teller) 
+                HttpServletResponse response, Teller t) 
                 throws ServletException, IOException {
             try {
-                Ledger ledger = teller.getLedger();
+                Ledger ledger = t.getLedger();
                 
                 request.setAttribute(LEDGER_PARAM, ledger);
                 
@@ -377,7 +409,7 @@ public class TellerHandlerServlet extends HttpServlet {
                 rd.forward(request, response);                
             }
             catch (Exception ex) {
-                log.error("error getting ledger:" + ex, ex);
+                logger.error("error getting ledger:" + ex, ex);
                 request.setAttribute(EXCEPTION_PARAM, ex);
                 RequestDispatcher rd = 
                     getServletContext().getRequestDispatcher(DISPLAY_EXCEPTION);
@@ -388,30 +420,30 @@ public class TellerHandlerServlet extends HttpServlet {
 
     private class StealAccounts extends Handler {
         public void handle(HttpServletRequest request, 
-                HttpServletResponse response, Teller teller) 
+                HttpServletResponse response, Teller t) 
                 throws ServletException, IOException {
             try {
-                List<Account> accounts = teller.getAccounts(0, 100);
+                List<Account> accounts = t.getAccounts(0, 100);
                 while (accounts.size() > 0) {
-                    log.debug("closing " + accounts.size() + " accounts");
+                    logger.debug("closing " + accounts.size() + " accounts");
                     for (Account account : accounts) {
                         if (account.getBalance() > 0) {
                             account.withdraw(account.getBalance());
-                            teller.updateAccount(account);
+                            t.updateAccount(account);
                         }
                         else if (account.getBalance() < 0) {
                             account.deposit(account.getBalance() * -1);
-                            teller.updateAccount(account);
+                            t.updateAccount(account);
                         }
-                        teller.closeAccount(account.getAccountNumber());
+                        t.closeAccount(account.getAccountNumber());
                     }
-                    accounts = teller.getAccounts(0, 100);
+                    accounts = t.getAccounts(0, 100);
                 }
                 
                 response.sendRedirect(request.getContextPath() + MAIN_PAGE);
             }
             catch (Exception ex) {
-                log.error("error getting ledger:" + ex, ex);
+                logger.error("error getting ledger:" + ex, ex);
                 request.setAttribute(EXCEPTION_PARAM, ex);
                 RequestDispatcher rd = 
                     getServletContext().getRequestDispatcher(DISPLAY_EXCEPTION);

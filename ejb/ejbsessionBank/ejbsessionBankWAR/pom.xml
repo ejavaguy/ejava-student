@@ -67,11 +67,15 @@
                         <idleTimeout>60000</idleTimeout>
                     </httpConnector>
 
+                    <!--
                     <scanIntervalSeconds>10</scanIntervalSeconds>
+                    -->
+                    <reload>manual</reload>
                     <webApp>
-                        <contextPath>/</contextPath>
+                        <contextPath>/ejbsessionBank</contextPath>
                     </webApp>
                     <useTestClasspath>true</useTestClasspath>
+                    <useProvidedScope>true</useProvidedScope>
                     <systemProperties>
                         <systemProperty>
                             <name>slf4j</name>
