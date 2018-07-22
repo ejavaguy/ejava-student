@@ -7,7 +7,7 @@
         <href>${project.url}/index.html</href>
     </bannerLeft>
     <bannerRight>
-        <name>Fall 2015</name>
+        <name>Fall 2018</name>
         <src>${project.url}/coursedocs/content/html/images/semester-white.png</src>
         <href>http://ep.jhu.edu/</href>
     </bannerRight>
