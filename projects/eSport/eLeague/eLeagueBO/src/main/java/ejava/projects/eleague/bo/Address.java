@@ -22,7 +22,8 @@ import javax.persistence.Table;
 public class Address implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@Id @GeneratedValue(strategy=GenerationType.IDENTITY) @Column(name="ID")
+	@Id @GeneratedValue(strategy=GenerationType.IDENTITY) 
+	@Column(name="ID")
 	private long id;
 
 	@Column(name="CITY", length=20)
