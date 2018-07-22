@@ -52,5 +52,13 @@
     </build>
 
     <profiles>
+        <profile>
+            <id>all-modules</id>
+            <modules>
+                <module>eDmvData</module>
+                <module>eDmv</module>
+                <module>eMayberry</module>
+            </modules>
+        </profile>
     </profiles>
 </project>

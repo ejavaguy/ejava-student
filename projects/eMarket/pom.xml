@@ -20,14 +20,14 @@
         <!-- this project is strictly to generate test data. It is provided
             with the project assignment. There is no matching concept to be 
             turned in by the student.
-            -->
         <module>eMarketData</module>
+            -->
 
         <!-- this is an example project that demonstrates a thin thread 
             of what the student implements 
-            -->
         <module>eSales</module>
         <module>eBidbot</module>
+            -->
     </modules>
 
     <repositories>
@@ -57,6 +57,13 @@
     </build>
     
     <profiles>
-
+        <profile>
+            <id>all-modules</id>
+            <modules>
+                <module>eMarketData</module>
+                <module>eSales</module>
+                <module>eBidbot</module>
+            </modules>
+        </profile>
     </profiles>
 </project>

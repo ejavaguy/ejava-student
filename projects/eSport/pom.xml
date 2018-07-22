@@ -56,5 +56,12 @@
     </build>
 
     <profiles>
+        <profile>
+            <id>all-modules</id>
+            <modules>
+                <module>eSportData</module>
+                <module>eLeague</module>
+            </modules>
+        </profile>
     </profiles>
 </project>
