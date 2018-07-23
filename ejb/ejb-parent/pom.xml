@@ -36,7 +36,7 @@
         <maven-ear-plugin.version>2.10.1</maven-ear-plugin.version>
         <maven-ejb-plugin.version>2.5.1</maven-ejb-plugin.version>
         <maven-failsafe-plugin.version>2.18.1</maven-failsafe-plugin.version>
-        <maven-war-plugin.version>2.6</maven-war-plugin.version>
+        <maven-war-plugin.version>3.2.2</maven-war-plugin.version>
 
         <cargo.containerId>wildfly9x</cargo.containerId>
         <jboss.host>localhost</jboss.host>

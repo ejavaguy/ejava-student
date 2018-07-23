@@ -38,7 +38,7 @@
         <maven-ear-plugin.version>2.9.1</maven-ear-plugin.version>
         <maven-ejb-plugin.version>2.4</maven-ejb-plugin.version>
         <maven-failsafe-plugin.version>2.17</maven-failsafe-plugin.version>
-        <maven-war-plugin.version>2.4</maven-war-plugin.version>
+        <maven-war-plugin.version>3.2.2</maven-war-plugin.version>
 
         <cargo.containerId>wildfly8x</cargo.containerId>
         <jboss.host>localhost</jboss.host>
