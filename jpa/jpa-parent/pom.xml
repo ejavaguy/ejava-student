@@ -23,6 +23,10 @@
         </repository>
     </repositories>
 
+    <prerequisites>
+      <maven>3.2.2</maven>
+    </prerequisites>
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.source.version>1.8</java.source.version>

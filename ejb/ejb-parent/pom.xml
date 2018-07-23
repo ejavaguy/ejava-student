@@ -22,6 +22,10 @@
         the jpa-parent module.
     </description>
 
+    <prerequisites>
+      <maven>3.2.2</maven>
+    </prerequisites>
+
     <properties>
         <ejava.version>5.0.0-SNAPSHOT</ejava.version>
         <javax.ejb-api.version>3.2</javax.ejb-api.version>
