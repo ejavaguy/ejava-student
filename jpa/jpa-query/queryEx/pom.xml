@@ -15,6 +15,10 @@
     <name>JPA::Query::Exercise::Solution</name>
     <description>This project provides an example completed solution for the JPA Query Exercise.</description>
 
+    <properties>
+        <maven.deploy.skip>true</maven.deploy.skip> <!-- not part of exercise - for course deploy -->
+    </properties>
+
     <!-- dependency versions are defined within parent-pom -->
     <dependencies>
         <dependency>

@@ -27,6 +27,10 @@
         and constructs here. Rather than defining a separate jpa-parent,
         a dependency on the class exercise jpa-parent was used above.
     </description>
+
+    <properties>
+        <maven.deploy.skip>true</maven.deploy.skip> <!-- not part of exercise - for course deploy -->
+    </properties>
     <build>
         <!-- filtering will replace URLs, credentials, etc in the 
              files copied to the target directory and used during testing.

@@ -53,6 +53,8 @@
         <java.naming.factory.url.pkgs/>
         <jndi.user>known</jndi.user>
         <jndi.password>password1!</jndi.password>
+
+        <maven.deploy.skip>true</maven.deploy.skip> <!-- not part of exercise - for course deploy -->
     </properties>
 
     <repositories>

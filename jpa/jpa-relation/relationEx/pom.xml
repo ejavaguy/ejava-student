@@ -16,6 +16,10 @@
         This project provides a starting point for developing JPA modules.
     </description>
 
+    <properties>
+        <maven.deploy.skip>true</maven.deploy.skip> <!-- not part of exercise - for course deploy -->
+    </properties>
+
     <!-- dependency versions are defined within parent-pom -->
     <dependencies>
         <dependency>
