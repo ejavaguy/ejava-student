@@ -6,7 +6,6 @@ import java.util.Map;
 
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -22,7 +21,7 @@ import ejava.examples.asyncmarket.ejb.UserMgmtLocal;
 
 @SuppressWarnings("serial")
 public class AuctionAdminHandlerServlet extends HttpServlet {
-    private static Logger log = LoggerFactory.getLogger(AuctionAdminHandlerServlet.class);
+    private static Logger logger = LoggerFactory.getLogger(AuctionAdminHandlerServlet.class);
     private Map<String, Handler> handlers = new HashMap<String, Handler>();
     @EJB(beanInterface=AuctionMgmtLocal.class)
     private AuctionMgmt auctionMgmt;
@@ -46,8 +45,7 @@ public class AuctionAdminHandlerServlet extends HttpServlet {
 
     
     public void init() throws ServletException {
-        log.debug("init() called, auctionMgmt=" + auctionMgmt + ", userMgmt=" + userMgmt);
-        JNDIHelper jndi = null;
+        logger.debug("init() called, auctionMgmt=" + auctionMgmt + ", userMgmt=" + userMgmt);
         try {
             //build a list of handlers for individual commands
             handlers.put(MAINMENU_COMMAND, new AdminMenu());
@@ -55,32 +53,19 @@ public class AuctionAdminHandlerServlet extends HttpServlet {
             handlers.put(INITTIMERS_COMMAND, new InitTimers());
             handlers.put(REMOVEACCOUNT_COMMAND, new RemoveAccount());
             handlers.put(LOGOUT_COMMAND, new Logout());
-
-            //verify local references were injected or replace with remote
-            ServletContext ctx = getServletContext();
-            //TODO: jndi = new JNDIHelper(ctx);
-            if (auctionMgmt == null) {
-                auctionMgmt = jndi.getAuctionMgmt();
-            }        
-            if (userMgmt == null) {
-                userMgmt = jndi.getUserMgmt();
-            }        
         }
         catch (Exception ex) {
-            log.error("error initializing handler", ex);
+            logger.error("error initializing handler", ex);
             throw new ServletException("error initializing handler", ex);
-        }
-        finally {
-        	if (jndi != null) { jndi.close(); }
         }
     }
 
     protected void doGet(HttpServletRequest request, 
                          HttpServletResponse response) 
         throws ServletException, IOException {
-        log.debug("doGet() called");
+        logger.debug("doGet() called");
         String command = request.getParameter(COMMAND_PARAM);
-        log.debug("command=" + command);
+        logger.debug("command=" + command);
         try {            
             if (command != null) {
                 Handler handler = handlers.get(command);
@@ -110,12 +95,12 @@ public class AuctionAdminHandlerServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, 
                           HttpServletResponse response) 
         throws ServletException, IOException {
-        log.debug("doPost() called, calling doGet()");
+        logger.debug("doPost() called, calling doGet()");
         doGet(request, response);
     }
 
     public void destroy() {
-        log.debug("destroy() called");
+        logger.debug("destroy() called");
     }
     
     private abstract class Handler {

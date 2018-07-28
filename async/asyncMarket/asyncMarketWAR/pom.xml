@@ -17,13 +17,13 @@
 
     <dependencies>
         <dependency>
-            <groupId>javax</groupId>
-            <artifactId>javaee-api</artifactId>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
+            <groupId>javax</groupId>
+            <artifactId>javaee-api</artifactId>
             <scope>provided</scope>
         </dependency>
 
@@ -49,76 +49,13 @@
         </dependency>
     </dependencies>
 
-    <profiles>
-        <profile>
-            <!--
-            Jetty does not use log4j by default. Use the following command line options to force 
-            Jetty to use log4j and your verbosity settings.
-
-            mvn -Dslf4j=true -Dlog4j.configuration=file:./target/classes/log4j.xml jetty:run -Pjetty
-            -->
-            <id>jetty</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.mortbay.jetty</groupId>
-                        <artifactId>maven-jetty-plugin</artifactId>
-                        <configuration>
-                            <scanIntervalSeconds>10</scanIntervalSeconds>
-                            <connectors>
-                                <connector implementation="org.mortbay.jetty.nio.SelectChannelConnector">
-                                    <port>9080</port>
-                                    <maxIdleTime>60000</maxIdleTime>
-                                </connector>
-                            </connectors>
-                        </configuration>       
-                    </plugin>          
-                </plugins>
-            </build>
-            <dependencies>
-                <dependency>
-                    <groupId>${project.groupId}</groupId>
-                    <artifactId>asyncMarketEJB</artifactId>
-                    <version>${project.version}</version>
-                    <type>ejb-client</type>
-                    <scope>compile</scope>
-                </dependency>        
-                <dependency>
-                    <groupId>${project.groupId}</groupId>
-                    <artifactId>asyncMarketImpl</artifactId>
-                    <version>${project.version}</version>
-                    <type>jar</type>
-                    <scope>compile</scope>
-                </dependency>        
-                <dependency>
-                    <groupId>commons-logging</groupId>
-                    <artifactId>commons-logging</artifactId>
-                    <scope>compile</scope>
-                </dependency>
-                <dependency>
-                    <groupId>info.ejava.examples.common</groupId>
-                    <artifactId>ejava-util</artifactId>
-                    <version>${project.version}</version>
-                    <scope>compile</scope>
-                </dependency>
-                <dependency>
-                    <groupId>org.slf4j</groupId>
-                    <artifactId>slf4j-log4j12</artifactId>
-                    <scope>runtime</scope>
-                </dependency>
-                <dependency>
-                    <groupId>log4j</groupId>
-                    <artifactId>log4j</artifactId>
-                    <scope>runtime</scope>
-                </dependency>    
-                <dependency>
-                    <groupId>info.ejava.examples.common</groupId>
-                    <artifactId>jboss-rmi-client</artifactId>
-                    <version>${project.version}</version>
-                    <type>pom</type>
-                    <scope>runtime</scope>
-                </dependency>    
-            </dependencies>
-        </profile>
-    </profiles>
+    <build>
+        <!-- filter test/resource files for profile-specific valies -->
+        <testResources>
+            <testResource>
+                <directory>src/test/resources</directory>
+                <filtering>true</filtering>
+            </testResource>
+        </testResources>
+      </build>
 </project>

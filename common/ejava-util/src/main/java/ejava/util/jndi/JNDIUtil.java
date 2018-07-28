@@ -23,6 +23,28 @@ public class JNDIUtil {
 		"/" + PROPERTY_FILE, PROPERTY_FILE
 	};
 	
+	public static InitialContext getInitialContext(String propertiesPath) throws IOException, NamingException {
+        InputStream is = null;
+        InitialContext jndi = null;
+        try {
+            //manually load the JNDI properties to make sure we don't get a Jetty JNDI tree in dev
+            if ((is=Thread.currentThread().getContextClassLoader().getResourceAsStream(propertiesPath))==null) {
+                logger.warn("no {} found, check classpath", propertiesPath);
+            } else {
+                Properties jndiProperties = new Properties();
+                jndiProperties.load(is);
+                logger.info("jndiProperties={}", jndiProperties);
+    
+                jndi = new InitialContext(jndiProperties);
+            }
+          } finally {
+            if (is!=null) {
+                try { is.close(); } catch(Exception ex) {}
+            }
+          }
+        return jndi;
+	}
+	
 	/**
 	 * This method will return a jndi.properties object that is based on the
 	 * properties found in ejava-jndi.properties that start with the provided
