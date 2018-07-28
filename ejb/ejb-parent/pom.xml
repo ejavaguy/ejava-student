@@ -28,7 +28,7 @@
 
     <properties>
         <ejava.version>5.0.0-SNAPSHOT</ejava.version>
-        <javax.ejb-api.version>3.2</javax.ejb-api.version>
+        <javax.ejb-api.version>3.2.2</javax.ejb-api.version>
         <wildfly.version>13.0.0.Final</wildfly.version>
         <wildfly-controller-client.version>8.2.1.Final</wildfly-controller-client.version>
 

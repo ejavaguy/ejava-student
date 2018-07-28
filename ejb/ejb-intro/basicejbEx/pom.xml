@@ -27,7 +27,7 @@
         <java.target.version>1.8</java.target.version>
 
         <ejava.version>5.0.0-SNAPSHOT</ejava.version>
-        <javax.ejb-api.version>3.2</javax.ejb-api.version>
+        <javax.ejb-api.version>3.2.2</javax.ejb-api.version>
         <junit.version>4.11</junit.version>
         <log4j.version>1.2.13</log4j.version>
         <slf4j.version>1.7.2</slf4j.version>
