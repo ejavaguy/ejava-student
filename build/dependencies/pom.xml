@@ -90,7 +90,7 @@
         <log4j.version>1.2.17</log4j.version>
         <icu4j.version>53.1</icu4j.version>
         <inject.version>1</inject.version>
-        <interceptor-api.version>1.2</interceptor-api.version>
+        <interceptor-api.version>1.2.2</interceptor-api.version>
         <jandex.version>1.2.2.Final</jandex.version>
         <javaee-api.version>8.0</javaee-api.version>
         <javax.persistence-api.version>2.2</javax.persistence-api.version>
