@@ -38,7 +38,7 @@
         <maven-surefire-plugin.version>2.18.1</maven-surefire-plugin.version>
         <sql-maven-plugin.version>1.5</sql-maven-plugin.version>        
 
-        <h2db.version>1.4.188</h2db.version>
+        <h2db.version>1.4.197</h2db.version>
         <javax.persistence-api.version>2.2</javax.persistence-api.version>
         <hibernate-entitymanager.version>5.3.1.Final</hibernate-entitymanager.version>
         <jpa-schemagen-maven-plugin.version>5.0.0-SNAPSHOT</jpa-schemagen-maven-plugin.version>
