@@ -29,8 +29,8 @@
         <module>servers</module>
         <module>ejb</module>
         <module>async</module>
-        <module>coursedocs</module>
         -->
+        <module>coursedocs</module>
     </modules>
 
     <url>http://webdev.jhuep.com/ejava-javaee</url>
