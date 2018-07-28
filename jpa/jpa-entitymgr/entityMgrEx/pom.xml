@@ -53,7 +53,7 @@
             </dependency>        
             <dependency>
                 <groupId>org.hibernate</groupId>
-                <artifactId>hibernate-entitymanager</artifactId>
+                <artifactId>hibernate-core</artifactId>
                 <version>${hibernate-entitymanager.version}</version>
             </dependency>
             <dependency>
@@ -183,7 +183,7 @@
 
         <dependency>
             <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-entitymanager</artifactId>
+            <artifactId>hibernate-core</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>

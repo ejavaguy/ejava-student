@@ -31,7 +31,7 @@
 
         <dependency>
             <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-entitymanager</artifactId>
+            <artifactId>hibernate-core</artifactId>
             <version>${legacy-hibernate.version}</version>
             <scope>test</scope>
         </dependency>

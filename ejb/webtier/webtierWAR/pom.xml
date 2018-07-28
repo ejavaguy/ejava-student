@@ -37,7 +37,7 @@
              * make it a compile dependency to assure it gets into WAR -->
         <dependency>
             <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-entitymanager</artifactId>
+            <artifactId>hibernate-core</artifactId>
             <scope>provided</scope>
         </dependency>
         

@@ -30,7 +30,7 @@
  <!-- scope needed for hibernate @Cache annotation -->     
     <dependency>
         <groupId>org.hibernate</groupId>
-        <artifactId>hibernate-entitymanager</artifactId>
+        <artifactId>hibernate-core</artifactId>
         <scope>provided</scope>
     </dependency>
     
@@ -38,15 +38,13 @@
     <dependency>
         <groupId>org.hibernate</groupId>
         <artifactId>hibernate-jcache</artifactId>
-        <version>${hibernate-entitymanager.version}</version>
         <scope>provided</scope>
     </dependency>
     
  <!-- EhcacheCachingProvider cache provider-->   
     <dependency>
-      <groupId>org.ehcache.modules</groupId>
-      <artifactId>ehcache-107</artifactId>
-      <version>3.5.2</version>
+        <groupId>org.ehcache.modules</groupId>
+        <artifactId>ehcache-107</artifactId>
         <scope>compile</scope>
     </dependency>
     
@@ -54,7 +52,6 @@
     <dependency>
         <groupId>org.ehcache</groupId>
         <artifactId>ehcache</artifactId>
-        <version>3.5.2</version>
     </dependency>
     
     <!-- core project testing dependencies -->

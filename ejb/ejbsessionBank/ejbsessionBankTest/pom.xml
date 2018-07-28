@@ -84,7 +84,7 @@
         <!-- used for reference to hiberate LazyLoad exception -->
         <dependency>
             <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-entitymanager</artifactId>
+            <artifactId>hibernate-core</artifactId>
             <scope>test</scope>
         </dependency>
         
