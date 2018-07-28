@@ -44,7 +44,7 @@
         <jpa-schemagen-maven-plugin.version>5.0.0-SNAPSHOT</jpa-schemagen-maven-plugin.version>
         <junit.version>4.12</junit.version>
         <log4j.version>1.2.17</log4j.version>
-        <slf4j.version>1.7.12</slf4j.version>
+        <slf4j.version>1.7.25</slf4j.version>
     </properties>
 
     <dependencyManagement>
