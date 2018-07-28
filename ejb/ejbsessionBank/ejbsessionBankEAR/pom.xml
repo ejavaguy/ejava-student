@@ -21,12 +21,6 @@
             <artifactId>ejbsessionBankEJB</artifactId>
             <version>${project.version}</version>
             <type>ejb</type>
-            <exclusions>
-                <exclusion>
-                    <groupId>commons-logging</groupId>
-                    <artifactId>commons-logging</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
 
         <dependency>
@@ -41,10 +35,6 @@
             <artifactId>ejbsessionBankImpl</artifactId>
             <version>${project.version}</version>
             <exclusions>
-                <exclusion>
-                    <groupId>commons-logging</groupId>
-                    <artifactId>commons-logging</artifactId>
-                </exclusion>
             </exclusions>
         </dependency>
 

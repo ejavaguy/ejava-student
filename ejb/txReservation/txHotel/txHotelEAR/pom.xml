@@ -16,12 +16,6 @@
             <artifactId>txHotelEJB</artifactId>
             <version>${project.version}</version>
             <type>ejb</type>
-            <exclusions>
-                <exclusion>
-                    <artifactId>commons-logging</artifactId>
-                    <groupId>commons-logging</groupId>
-                </exclusion>
-            </exclusions>
         </dependency>
     </dependencies>
 
