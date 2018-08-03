@@ -58,11 +58,6 @@
 
         <!-- test dependencies -->
         <dependency>
-            <groupId>io.netty</groupId>
-            <artifactId>netty-all</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>org.hornetq</groupId>
             <artifactId>hornetq-jms-server</artifactId>
             <scope>test</scope>
@@ -165,6 +160,13 @@
             <java.naming.provider.url>${jboss.remoting.java.naming.provider.url}</java.naming.provider.url>
             <java.naming.factory.url.pkgs>${jboss.remoting.java.naming.factory.url.pkgs}</java.naming.factory.url.pkgs>
         </properties>
+        <dependencies>
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-all</artifactId>
+                <scope>test</scope>
+            </dependency>
+        </dependencies>
       </profile>
 
       <profile>
