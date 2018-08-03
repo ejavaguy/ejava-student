@@ -280,10 +280,8 @@ public class DurableSubscriberTest extends JMSTestBase {
         }
         finally {
             if (connection != null) { connection.stop(); }
-            if (asyncConsumer != null) { asyncConsumer.close(); }
-            if (syncConsumer != null) { syncConsumer.close(); }
-            if (session != null) { session.unsubscribe("async1"); }
-            if (session != null) { session.unsubscribe("sync1"); }
+            if (asyncConsumer != null) { asyncConsumer.close(); session.unsubscribe("async1");}
+            if (syncConsumer != null) { syncConsumer.close(); session.unsubscribe("sync1");}
             if (producer != null) { producer.close(); }
             if (session != null)  { session.close(); }
             if (connection != null) { connection.close(); connection=null;; }

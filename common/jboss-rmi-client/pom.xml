@@ -59,14 +59,22 @@
             <type>pom</type>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>org.wildfly.bom</groupId>
+            <artifactId>jms-client-bom</artifactId>
+            <version>${wildfly.version}</version>
+            <type>pom</type>
+            <scope>compile</scope>
+        </dependency>
 
-        <!-- We depend on the EJB remote business interfaces of this application -->
+        <!-- We depend on the EJB remote business interfaces of this application
         <dependency>
             <groupId>org.wildfly.quickstarts</groupId>
             <artifactId>ejb-remote-server-side</artifactId>
             <version>${wildfly.version}</version>
             <type>ejb-client</type>
         </dependency>
+        -->
 
        <!-- Import the transaction spec API, we use runtime scope because we aren't using any direct
         reference to the spec API in our client code

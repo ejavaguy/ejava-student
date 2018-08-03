@@ -18,14 +18,12 @@ import static org.junit.Assert.*;
  * This test case performs the basic steps to send/receive messages to/from
  * a JMS topic. Notice that each of the catchers in this test should each
  * receive the same messages.
- *
- * @author jcstaff
  */
 public class JMSTopicBasicsTest extends JMSTestBase {
-    static Logger log = LoggerFactory.getLogger(JMSTopicBasicsTest.class);
-    protected Destination destination;        
-    protected MessageCatcher catcher1;
-    protected MessageCatcher catcher2;
+    private static Logger logger = LoggerFactory.getLogger(JMSTopicBasicsTest.class);
+    private Destination destination;        
+    private MessageCatcher catcher1;
+    private MessageCatcher catcher2;
     
     @Before
     public void setUp() throws Exception {
@@ -52,7 +50,7 @@ public class JMSTopicBasicsTest extends JMSTestBase {
 
     @Test
     public void testTopicSend() throws Exception {
-        log.info("*** testTopicSend ***");
+        logger.info("*** testTopicSend ***");
         Session session = null;
         MessageProducer producer = null;
         try {
@@ -64,11 +62,11 @@ public class JMSTopicBasicsTest extends JMSTestBase {
             catcher1.clearMessages();
             catcher2.clearMessages();
             producer.send(message);
-            log.info("sent msgId=" + message.getJMSMessageID());
+            logger.info("sent msgId={}", message.getJMSMessageID());
             for(int i=0; i<10 && 
                 (catcher1.getMessages().size() < 1 ||
                 catcher2.getMessages().size() < 1); i++) {
-                log.debug("waiting for messages...");
+                logger.debug("waiting for messages...");
                 Thread.sleep(1000);
             }
             assertEquals(1, catcher1.getMessages().size());
@@ -82,7 +80,7 @@ public class JMSTopicBasicsTest extends JMSTestBase {
     
     @Test
     public void testTopicMultiSend() throws Exception {
-        log.info("*** testTopicMultiSend ***");
+        logger.info("*** testTopicMultiSend ***");
         Session session = null;
         MessageProducer producer = null;
         try {
@@ -95,12 +93,12 @@ public class JMSTopicBasicsTest extends JMSTestBase {
             catcher2.clearMessages();
             for(int i=0; i<msgCount; i++) {
                 producer.send(message);
-                log.info("sent msgId=" + message.getJMSMessageID());
+                logger.info("sent msgId={}", message.getJMSMessageID());
             }
             for(int i=0; i<10 && 
                 (catcher1.getMessages().size() < msgCount ||
                 catcher2.getMessages().size() < msgCount); i++) {
-                log.debug("waiting for messages...");
+                logger.debug("waiting for messages...");
                 Thread.sleep(1000);
             }
             assertEquals(msgCount, catcher1.getMessages().size());

@@ -22,10 +22,8 @@ import org.junit.Test;
  * @author jcstaff
  */
 public class JMSQueueBasicsTest extends JMSTestBase {
-    static Logger log = LoggerFactory.getLogger(JMSQueueBasicsTest.class);
-    String destinationJNDI = System.getProperty("jndi.name.testQueue",
-        "queue/ejava/examples/jmsMechanics/queue1");
-    int msgCount = Integer.parseInt(System.getProperty("multi.message.count", "20"));
+    private static final Logger logger = LoggerFactory.getLogger(JMSQueueBasicsTest.class);
+    private int msgCount = Integer.parseInt(System.getProperty("multi.message.count", "20"));
     
     protected Destination destination;        
     protected MessageCatcher catcher1;
@@ -42,13 +40,13 @@ public class JMSQueueBasicsTest extends JMSTestBase {
     
     @After
     public void tearDown() throws Exception {
-    	shutdownCatcher(catcher1);
-    	shutdownCatcher(catcher2);
+        	shutdownCatcher(catcher1);
+        	shutdownCatcher(catcher2);
     }
 
     @Test
     public void testQueueSend() throws Exception {
-        log.info("*** testQueueSend ***");
+        logger.info("*** testQueueSend ***");
         Session session = null;
         MessageProducer producer = null;
         try {
@@ -59,7 +57,7 @@ public class JMSQueueBasicsTest extends JMSTestBase {
             
             catcher1.clearMessages();
             producer.send(message);
-            log.info("sent msgId=" + message.getJMSMessageID());
+            logger.info("sent msgId=" + message.getJMSMessageID());
 
             //queues will hold messages waiting for delivery. We don't have
             //to have catcher started prior to sending the message to the 
@@ -69,7 +67,7 @@ public class JMSQueueBasicsTest extends JMSTestBase {
             for(int i=0; i<10 && 
                 (catcher1.getMessages().size() + 
                  catcher2.getMessages().size()< 1); i++) {
-                log.debug("waiting for messages...");
+                logger.debug("waiting for messages...");
                 Thread.sleep(1000);
             }
             if (catcher1.getMessages().size() == 0) {
@@ -87,7 +85,7 @@ public class JMSQueueBasicsTest extends JMSTestBase {
     
     @Test
     public void testQueueMultiSend() throws Exception {
-        log.info("*** testQueueMultiSend ***");
+        logger.info("*** testQueueMultiSend ***");
         Session session = null;
         MessageProducer producer = null;
         try {
@@ -99,7 +97,7 @@ public class JMSQueueBasicsTest extends JMSTestBase {
             catcher1.clearMessages();
             for(int i=0; i<msgCount; i++) {
                 producer.send(message);
-                log.info("sent msgId=" + message.getJMSMessageID());
+                logger.info("sent msgId={}", message.getJMSMessageID());
             }
             //queues will hold messages waiting for delivery
             new Thread(catcher1).start();
@@ -107,7 +105,7 @@ public class JMSQueueBasicsTest extends JMSTestBase {
             for(int i=0; i<10 && 
                 (catcher1.getMessages().size() +
                  catcher2.getMessages().size()< msgCount); i++) {
-                log.debug("waiting for messages...");
+                logger.debug("waiting for messages...");
                 Thread.sleep(1000);
             }
             assertEquals(msgCount, 

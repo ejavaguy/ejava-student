@@ -21,14 +21,14 @@ import org.junit.BeforeClass;
 public class JMSTestBase {
 	private static final Logger log = LoggerFactory.getLogger(JMSTestBase.class);
     protected static boolean jmsEmbedded = Boolean.parseBoolean( 
-		System.getProperty("jms.embedded", "true"));
+		System.getProperty("jms.embedded", "false"));
     protected int msgCount = Integer.parseInt(System.getProperty("multi.message.count", "20"));
     private static String connFactoryJNDI = 
-		System.getProperty("jndi.name.connFactory", "/jms/RemoteConnectionFactory");
+		System.getProperty("jndi.name.connFactory", "jms/RemoteConnectionFactory");
     protected static String queueJNDI = System.getProperty("jndi.name.testQueue",
-            "queue/ejava/examples/jmsMechanics/queue1");
+            "jms/queue/ejava/examples/jmsMechanics/queue1");
     protected static String topicJNDI = System.getProperty("jndi.name.testTopic",
-            "topic/ejava/examples/jmsMechanics/topic1");
+            "jms/topic/ejava/examples/jmsMechanics/topic1");
 
     protected static String adminUser = System.getProperty("admin.user", "admin1");
     protected static String adminPassword = System.getProperty("admin.password", "password1!");
@@ -59,8 +59,8 @@ public class JMSTestBase {
 			
 	        log.debug("connection factory name:" + connFactoryJNDI);
 	        connFactory = (ConnectionFactory)jndi.lookup(connFactoryJNDI);
-	        jmsAdmin=new JMSAdminHornetQ(connFactory, adminUser, adminPassword)
-	        	.setJNDIPrefix("/jboss/exported");
+	        jmsAdmin=new JMSAdminArtemis(connFactory, adminUser, adminPassword)
+	                .setJNDIPrefix("/jboss/exported");
 		}		
 		connection = createConnection();
 		connection.start();
@@ -120,17 +120,17 @@ public class JMSTestBase {
 	}
 	
 	protected void shutdownCatcher(MessageCatcher catcher) throws Exception {
-    	if (catcher != null) {
-	        for (int i=0; catcher.isStarted() != true && i< 10; i++) {
-	            log.debug(String.format("waiting for %s to start", catcher.getName()));
-	            Thread.sleep(2000);
-	        }
-	        catcher.stop();
-	        for (int i=0; catcher.isStopped() != true && i<10; i++) {
-	            log.debug(String.format("waiting for %s to stop", catcher.getName()));
-	            Thread.sleep(2000);
-	        }
-    	}		
+        	if (catcher != null) {
+    	        for (int i=0; catcher.isStarted() != true && i< 10; i++) {
+    	            log.debug(String.format("waiting for %s to start", catcher.getName()));
+    	            Thread.sleep(2000);
+    	        }
+    	        catcher.stop();
+    	        for (int i=0; catcher.isStopped() != true && i<10; i++) {
+    	            log.debug(String.format("waiting for %s to stop", catcher.getName()));
+    	            Thread.sleep(2000);
+    	        }
+        	}		
 	}
 	
 }

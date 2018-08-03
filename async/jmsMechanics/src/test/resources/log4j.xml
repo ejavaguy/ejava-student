@@ -40,12 +40,16 @@
       
    </appender>
 
+   <logger name="org.apache.activemq">
+      <level value="INFO"/>
+      <appender-ref ref="logfile"/>  
+   </logger>
    <logger name="ejava">
       <level value="debug"/>
       <appender-ref ref="logfile"/>  
    </logger>
    <root>
-      <priority value="fatal"/>    
+      <priority value="info"/>    
       <appender-ref ref="CONSOLE"/>  
    </root>   
    

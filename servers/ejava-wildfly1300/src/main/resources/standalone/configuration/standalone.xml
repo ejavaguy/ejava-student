@@ -434,6 +434,46 @@
                 <security-setting name="#">
                     <role name="guest" send="true" consume="true" create-non-durable-queue="true" delete-non-durable-queue="true"/>
                 </security-setting>
+                <security-setting name="jms.tempqueue.#">
+                    <role name="worker" send="true"/>
+                    <role name="user" send="true" consume="true" create-non-durable-queue="true"/>
+                    <role name="requestor" send="false" consume="true" create-non-durable-queue="true"/>
+                    <role name="admin" send="true" consume="true" create-non-durable-queue="true" delete-non-durable-queue="true"/>
+                </security-setting>
+                <security-setting name="jms.temptopic.#">
+                    <role name="user" send="true" consume="true" create-non-durable-queue="true"/>
+                    <role name="admin" send="true" consume="true" create-non-durable-queue="true" delete-non-durable-queue="true"/>
+                </security-setting>
+                <security-setting name="jms.topic.mechanicsTopic">
+                    <role name="user" send="true" consume="true" 
+                                      create-durable-queue="true" 
+                                      delete-durable-queue="true" 
+                                      create-non-durable-queue="true" 
+                                      delete-non-durable-queue="true"/>
+                </security-setting>
+                <security-setting name="jms.queue.mechanicsQueue">
+                    <role name="user" send="true" consume="true"/>
+                </security-setting>
+
+                <security-setting name="jms.topic.datashare-dmv">
+                    <role name="dmv-tactical" send="true" consume="true" create-non-durable-queue="true" delete-non-durable-queue="true"/>
+                    <role name="dmv-federated" consume="true" create-non-durable-queue="true" delete-non-durable-queue="true"/>
+                    <role name="mayberry-analytical" consume="true" create-non-durable-queue="true" delete-non-durable-queue="true"/>
+                    <role name="mayberry-tactical" consume="true" create-non-durable-queue="true" delete-non-durable-queue="true"/>
+                </security-setting>
+                <security-setting name="jms.topic.datashare-mayberry-poi">
+                    <role name="mayberry-tactical" send="true" consume="true" create-non-durable-queue="true" delete-non-durable-queue="true"/>
+                    <role name="mayberry-analytical" consume="true" create-non-durable-queue="true" delete-non-durable-queue="true"/>
+                </security-setting>
+                <security-setting name="jms.topic.emarket-esales-auction">
+                    <role name="esales-sys" send="true"/>
+                    <role name="esales-user" consume="true" create-non-durable-queue="true" delete-non-durable-queue="true"/>
+                </security-setting>
+                <security-setting name="jms.topic.esport-eleague-contests">
+                    <role name="eleague-sys" send="true"/>
+                    <role name="eleague-user" consume="true" create-non-durable-queue="true" delete-non-durable-queue="true"/>
+                </security-setting>
+
                 <address-setting name="#" dead-letter-address="jms.queue.DLQ" expiry-address="jms.queue.ExpiryQueue" max-size-bytes="10485760" page-size-bytes="2097152" message-counter-history-day-limit="10"/>
                 <http-connector name="http-connector" socket-binding="http" endpoint="http-acceptor"/>
                 <http-connector name="http-connector-throughput" socket-binding="http" endpoint="http-acceptor-throughput">
@@ -453,9 +493,11 @@
                 <jms-queue name="ExpiryQueue" entries="java:/jms/queue/ExpiryQueue"/>
                 <jms-queue name="DLQ" entries="java:/jms/queue/DLQ"/>
                 <jms-queue name="testQueue" entries="queue/test java:jboss/exported/jms/queue/test"/>
+                <jms-topic name="testTopic" entries="topic/test java:jboss/exported/jms/topic/test"/>
+                <jms-topic name="mechanicsTopic" entries="java:jboss/exported/jms/topic/ejava/examples/jmsMechanics/topic1"/>
+                <jms-topic name="mechanicsQueue" entries="java:jboss/exported/jms/topic/ejava/examples/jmsMechanics/queue1"/>
                 <jms-queue name="jmsScheduler-requestQueue" entries="java:jboss/exported/queue/ejava/examples/jmsScheduler/requestQueue"/>
                 <jms-queue name="jmsScheduler-DLQ" entries="java:jboss/exported/queue/jmsScheduler/DLQ"/>
-                <jms-topic name="testTopic" entries="topic/test java:jboss/exported/jms/topic/test"/>
                 <jms-topic name="jmsNotifier-testTopic1" entries="java:jboss/exported/topic/ejava/examples/jmsNotifier/topic1"/>
                 <jms-topic name="asyncMarket-topic1" entries="java:/topic/ejava/examples/asyncMarket/topic1 java:jboss/exported/topic/ejava/examples/asyncMarket/topic1"/>
                 <jms-topic name="datashare-dmv" entries="java:/topic/ejava/projects/datashare/dmv java:jboss/exported/topic/ejava/projects/datashare/dmv"/>
