@@ -11,8 +11,6 @@ import javax.jms.Session;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.hornetq.api.jms.HornetQJMSClient;
-import org.hornetq.api.jms.management.JMSManagementHelper;
 
 /**
  * This class implements a client to dynamically create JMS resources on the
@@ -27,7 +25,7 @@ public class JMSAdminHornetQ implements JMSAdmin {
 	public JMSAdminHornetQ(ConnectionFactory connFactory, String adminUser, String adminPassword) throws JMSException {
 		connection = connFactory.createConnection(adminUser, adminPassword);
 		connection.start();
-		managementQueue = HornetQJMSClient.createQueue("hornetq.management");   
+		//managementQueue = HornetQJMSClient.createQueue("hornetq.management");   
 	}
 	
 	@Override
@@ -69,12 +67,12 @@ public class JMSAdminHornetQ implements JMSAdmin {
 		   requestor=new QueueRequestor((QueueSession) session, managementQueue);
 		   Message message = session.createMessage();
 		   jndiName = concat(jndiPrefix, jndiName);
-		   JMSManagementHelper.putOperationInvocation(message, "jms.server", method, name, jndiName);
-		   log.debug(String.format("%s: %s, jndi=%s", method, name, jndiName));
-		   Message reply = requestor.request(message);
-		   if (!JMSManagementHelper.hasOperationSucceeded(reply)) {
-			   throw new RuntimeException("failed to create desintation:" + name);
-			   }
+//		   JMSManagementHelper.putOperationInvocation(message, "jms.server", method, name, jndiName);
+//		   log.debug(String.format("%s: %s, jndi=%s", method, name, jndiName));
+//		   Message reply = requestor.request(message);
+//		   if (!JMSManagementHelper.hasOperationSucceeded(reply)) {
+//			   throw new RuntimeException("failed to create desintation:" + name);
+//		   }
 	   } finally {
 		   if (requestor != null) { requestor.close(); }
 		   if (session != null) { session.close(); }
@@ -90,11 +88,11 @@ public class JMSAdminHornetQ implements JMSAdmin {
  		   session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
 		   requestor=new QueueRequestor((QueueSession) session, managementQueue);
 		   Message message = session.createMessage();
-		   JMSManagementHelper.putOperationInvocation(message, "jms.server", method, name);
-		   Message reply = requestor.request(message);
-		   if (!JMSManagementHelper.hasOperationSucceeded(reply)) {
-			   log.info("failed to destroy desintation:" + name);
-		   }
+//		   JMSManagementHelper.putOperationInvocation(message, "jms.server", method, name);
+//		   Message reply = requestor.request(message);
+//		   if (!JMSManagementHelper.hasOperationSucceeded(reply)) {
+//			   log.info("failed to destroy desintation:" + name);
+//		   }
 	    } finally {
 		   if (requestor != null) { requestor.close(); }
 		   if (session != null) { session.close(); }

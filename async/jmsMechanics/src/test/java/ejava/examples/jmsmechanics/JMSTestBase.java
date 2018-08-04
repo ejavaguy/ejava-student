@@ -1,27 +1,30 @@
 package ejava.examples.jmsmechanics;
 
+import static org.junit.Assert.assertNotNull;
+
 import javax.jms.Connection;
 
 import javax.jms.ConnectionFactory;
 import javax.jms.Destination;
 import javax.jms.JMSException;
+import javax.jms.Queue;
+import javax.jms.Topic;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.hornetq.jms.server.embedded.EmbeddedJMS;
-
+import org.apache.activemq.artemis.jms.server.embedded.EmbeddedJMS;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 
 
 public class JMSTestBase {
-	private static final Logger log = LoggerFactory.getLogger(JMSTestBase.class);
+	private static final Logger logger = LoggerFactory.getLogger(JMSTestBase.class);
     protected static boolean jmsEmbedded = Boolean.parseBoolean( 
-		System.getProperty("jms.embedded", "false"));
+		System.getProperty("jms.embedded", "true"));
     protected int msgCount = Integer.parseInt(System.getProperty("multi.message.count", "20"));
     private static String connFactoryJNDI = 
 		System.getProperty("jndi.name.connFactory", "jms/RemoteConnectionFactory");
@@ -44,25 +47,29 @@ public class JMSTestBase {
 
 	@BeforeClass
 	public static final void setUpClass() throws Exception {
-		if (jmsEmbedded) {
-			log.info("using embedded JMS server");
+        logger.info("connFactoryJNDI={}", connFactoryJNDI);
+        logger.info("jndi.name.testQueue={}", queueJNDI);
+        logger.info("jndi.name.testTopic={}", topicJNDI);
+
+        logger.debug("getting jndi initial context");
+        jndi = new InitialContext();    
+        logger.debug("jndi=" + jndi.getEnvironment());
+
+        if (jmsEmbedded) {
+			logger.info("using embedded JMS server");
 			server = new EmbeddedJMS();
 			server.start();
 			
-			connFactory=(ConnectionFactory) server.lookup(connFactoryJNDI);
+		    connFactory=(ConnectionFactory) jndi.lookup(connFactoryJNDI);
+			assertNotNull("connFactory not found:" + connFactoryJNDI, connFactory);
 	        jmsAdmin=new JMSAdminHornetQ(connFactory, adminUser, adminPassword);
 		}
 		else {
-	        log.debug("getting jndi initial context");
-	        jndi = new InitialContext();    
-	        log.debug("jndi=" + jndi.getEnvironment());
-			
-	        log.debug("connection factory name:" + connFactoryJNDI);
-	        connFactory = (ConnectionFactory)jndi.lookup(connFactoryJNDI);
+		    connFactory=(ConnectionFactory) jndi.lookup(connFactoryJNDI);
 	        jmsAdmin=new JMSAdminArtemis(connFactory, adminUser, adminPassword)
 	                .setJNDIPrefix("/jboss/exported");
 		}		
-		connection = createConnection();
+ 		connection = createConnection();
 		connection.start();
 	}
 	
@@ -77,7 +84,9 @@ public class JMSTestBase {
 	
 	@AfterClass
 	public static final void tearDownClass() throws Exception {
-		jmsAdmin.close();
+		if (jmsAdmin!=null) {
+		    jmsAdmin.close();
+		}
 		if (connection != null) {
 			connection.stop();
 			connection.close();
@@ -96,7 +105,7 @@ public class JMSTestBase {
 	}
 	
 	protected Object lookup(String name) throws NamingException {
-		log.debug("lookup:" + name);
+		logger.debug("lookup:" + name);
 		return (server != null) ?
 			server.lookup(name) :
 			jndi.lookup(name);	
@@ -114,7 +123,7 @@ public class JMSTestBase {
 	protected void startCatcher(MessageCatcher catcher) throws Exception {
         new Thread(catcher).start();
         while (catcher.isStarted() != true) {
-            log.debug(String.format("waiting for %s to start", catcher.getName()));
+            logger.debug(String.format("waiting for %s to start", catcher.getName()));
             Thread.sleep(2000);
         }
 	}
@@ -122,12 +131,12 @@ public class JMSTestBase {
 	protected void shutdownCatcher(MessageCatcher catcher) throws Exception {
         	if (catcher != null) {
     	        for (int i=0; catcher.isStarted() != true && i< 10; i++) {
-    	            log.debug(String.format("waiting for %s to start", catcher.getName()));
+    	            logger.debug(String.format("waiting for %s to start", catcher.getName()));
     	            Thread.sleep(2000);
     	        }
     	        catcher.stop();
     	        for (int i=0; catcher.isStopped() != true && i<10; i++) {
-    	            log.debug(String.format("waiting for %s to stop", catcher.getName()));
+    	            logger.debug(String.format("waiting for %s to stop", catcher.getName()));
     	            Thread.sleep(2000);
     	        }
         	}		

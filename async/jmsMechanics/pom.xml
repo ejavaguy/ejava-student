@@ -19,6 +19,7 @@
     <properties>
         <jms.embedded>true</jms.embedded>
         <jmsmechanics.multi.message.count>20</jmsmechanics.multi.message.count>
+        <jndi.name.connFactory>jms/RemoteConnectionFactory</jndi.name.connFactory>
     </properties>
 
     <dependencies>
@@ -58,8 +59,8 @@
 
         <!-- test dependencies -->
         <dependency>
-            <groupId>org.hornetq</groupId>
-            <artifactId>hornetq-jms-server</artifactId>
+            <groupId>org.apache.activemq</groupId>
+            <artifactId>artemis-jms-server</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -106,6 +107,7 @@
                     <systemPropertyVariables>
                         <multi.message.count>${jmsmechanics.multi.message.count}</multi.message.count>
                         <jms.embedded>${jms.embedded}</jms.embedded>
+                        <jndi.name.connFactory>${jndi.name.connFactory}</jndi.name.connFactory>
                     </systemPropertyVariables>
                 </configuration>
             </plugin>
@@ -145,27 +147,33 @@
 
     <profiles>
       <profile>
-        <id>jms.embedded</id>
+        <id>default.embedded</id>
         <activation>
           <property>
             <name>!jms.embedded</name>
           </property>
         </activation>
         <properties>
-            <!--
             <java.naming.factory.initial>org.apache.activemq.artemis.jndi.ActiveMQInitialContextFactory</java.naming.factory.initial>
+            <java.naming.provider.url>vm://0</java.naming.provider.url>
             <java.naming.factory.url.pkgs></java.naming.factory.url.pkgs>
-            -->
-            <java.naming.factory.initial>${jboss.remoting.java.naming.factory.initial}</java.naming.factory.initial>
-            <java.naming.provider.url>${jboss.remoting.java.naming.provider.url}</java.naming.provider.url>
-            <java.naming.factory.url.pkgs>${jboss.remoting.java.naming.factory.url.pkgs}</java.naming.factory.url.pkgs>
+        </properties>
+      </profile>
+
+      <profile>
+        <id>jms.embedded</id>
+        <activation>
+          <property>
+            <name>jms.embedded</name>
+            <value>true</value>
+          </property>
+        </activation>
+        <properties>
+            <java.naming.factory.initial>org.apache.activemq.artemis.jndi.ActiveMQInitialContextFactory</java.naming.factory.initial>
+            <java.naming.provider.url>vm://0</java.naming.provider.url>
+            <java.naming.factory.url.pkgs></java.naming.factory.url.pkgs>
         </properties>
         <dependencies>
-            <dependency>
-                <groupId>io.netty</groupId>
-                <artifactId>netty-all</artifactId>
-                <scope>test</scope>
-            </dependency>
         </dependencies>
       </profile>
 
@@ -177,6 +185,9 @@
             <value>false</value>
           </property>
         </activation>
+        <properties>
+            <jms.embedded>false</jms.embedded>
+        </properties>
         <dependencies>
         </dependencies>
       </profile>
@@ -189,28 +200,8 @@
             </property>
           </activation>
           <properties>
-              <java.naming.factory.initial>org.wildfly.naming.client.WildFlyInitialContextFactory</java.naming.factory.initial>
-              <java.naming.provider.url>http-remoting://${jboss.host}:${jboss.http.port}</java.naming.provider.url>
-              <java.naming.factory.url.pkgs/>
+              <jms.embedded>true</jms.embedded>
           </properties>
-          <dependencies>
-              <dependency>
-                  <groupId>io.netty</groupId>
-                  <artifactId>netty-all</artifactId>
-              </dependency>
-              <dependency>
-                  <groupId>org.apache.activemq</groupId>
-                  <artifactId>artemis-jms-client</artifactId>
-              </dependency>
-              <!-- brings in JBoss RMI dependencies -->
-              <dependency>
-                  <groupId>info.ejava.examples.common</groupId>
-                  <artifactId>jboss-rmi-client</artifactId>
-                  <version>${project.version}</version>
-                  <type>pom</type>
-                  <scope>test</scope>
-              </dependency>    
-          </dependencies>
       </profile>
     </profiles>
 

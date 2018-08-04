@@ -516,6 +516,11 @@
                 <version>${artemis-jms.version}</version>
             </dependency>
             <dependency>
+                <groupId>org.apache.activemq</groupId>
+                <artifactId>artemis-jms-server</artifactId>
+                <version>${artemis-jms.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>io.netty</groupId>
                 <artifactId>netty-all</artifactId>
                 <version>${netty.version}</version>
