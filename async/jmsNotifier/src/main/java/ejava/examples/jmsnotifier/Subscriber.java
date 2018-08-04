@@ -22,14 +22,14 @@ import org.slf4j.LoggerFactory;
  * @author jcstaff
  */
 public class Subscriber implements Runnable {
-    private static final Logger log = LoggerFactory.getLogger(Subscriber.class);
+    private static final Logger logger = LoggerFactory.getLogger(Subscriber.class);
     protected ConnectionFactory connFactory;
     protected Destination destination;
     protected boolean stop = false;
     protected boolean stopped = false;
     protected boolean started = false;
     protected String name;
-    protected int count=0;
+    protected int limitCount=0;
     protected long sleepTime=0;
     protected int maxCount=0;
     protected boolean durable=false;
@@ -47,7 +47,7 @@ public class Subscriber implements Runnable {
         this.destination = destination;
     }    
     public int getCount() {
-        return count;
+        return limitCount;
     }
     public void setSleepTime(long sleepTime) {
         this.sleepTime = sleepTime;
@@ -62,7 +62,7 @@ public class Subscriber implements Runnable {
         this.selector = selector;
     }
     public void clearMessages() {
-        count = 0;
+        limitCount = 0;
     }
     public void stop() {
         this.stop = true;
@@ -102,30 +102,32 @@ public class Subscriber implements Runnable {
             connection.start();
 
             stopped = stop = false;
-            log.info("subscriber " + name + " starting:" +
+            logger.info("subscriber " + name + " starting:" +
                     "durable=" + durable +
                     ", selector=" + selector);
             started = true;
-            while (!stop && (maxCount==0 || count < maxCount)) {
+            while (!stop && (maxCount==0 || limitCount < maxCount)) {
                 Message message = consumer.receive(3000);
                 if (message != null) {
-                    count += 1;
+                    limitCount += 1;
+                    Object countProp = message.getObjectProperty("count");
                     StringBuilder text = new StringBuilder();
-                    text.append(name + " received message #" + count +
-                            ", msgId=" + message.getJMSMessageID());
+                    text.append(name + " received message #" + limitCount +
+                            ", msgId=" + message.getJMSMessageID() +
+                            ", count property=" + countProp);
                     if (message instanceof TextMessage) {
                         text.append(", body=" 
                                 +((TextMessage)message).getText());
                     }
-                    log.debug(text.toString());
+                    logger.debug(text.toString());
                     Thread.yield();
                 }      
                 if (sleepTime > 0) {
-                    log.debug("processing message for " + sleepTime + "msecs");
+                    logger.debug("processing message for " + sleepTime + "msecs");
                     Thread.sleep(sleepTime);
                 }
             }
-            log.info("subscriber " + name + " stopping");
+            logger.info("subscriber " + name + " stopping");
             connection.stop();
         }
         finally {
@@ -142,7 +144,7 @@ public class Subscriber implements Runnable {
             execute();
         }
         catch (Exception ex) {
-            log.error("error running " + name, ex);
+            logger.error("error running " + name, ex);
         }
     }    
 
@@ -221,7 +223,7 @@ public class Subscriber implements Runnable {
             subscriber.execute();
         }
         catch (Exception ex) {
-            log.error("",ex);
+            logger.error("",ex);
             System.exit(-1);            
             if (noExit) {
             	throw new RuntimeException("error in subscriber", ex);

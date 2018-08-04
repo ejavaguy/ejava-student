@@ -494,11 +494,17 @@
                 <jms-queue name="DLQ" entries="java:/jms/queue/DLQ"/>
                 <jms-queue name="testQueue" entries="queue/test java:jboss/exported/jms/queue/test"/>
                 <jms-topic name="testTopic" entries="topic/test java:jboss/exported/jms/topic/test"/>
-                <jms-topic name="mechanicsTopic" entries="java:jboss/exported/jms/topic/ejava/examples/jmsMechanics/topic1"/>
-                <jms-topic name="mechanicsQueue" entries="java:jboss/exported/jms/topic/ejava/examples/jmsMechanics/queue1"/>
-                <jms-queue name="jmsScheduler-requestQueue" entries="java:jboss/exported/queue/ejava/examples/jmsScheduler/requestQueue"/>
-                <jms-queue name="jmsScheduler-DLQ" entries="java:jboss/exported/queue/jmsScheduler/DLQ"/>
-                <jms-topic name="jmsNotifier-testTopic1" entries="java:jboss/exported/topic/ejava/examples/jmsNotifier/topic1"/>
+                <jms-topic name="mechanicsTopic" 
+                           entries="java:jboss/exported/jms/topic/ejava/examples/jmsMechanics/topic1"/>
+                <jms-queue name="mechanicsQueue" 
+                           entries="java:jboss/exported/jms/queue/ejava/examples/jmsMechanics/queue1"/>
+                <jms-topic name="jmsNotifier-testTopic1" 
+                           entries="java:jboss/exported/jms/topic/ejava/examples/jmsNotifier/topic1"/>
+                <jms-queue name="jmsScheduler-requestQueue" 
+                           entries="java:jboss/exported/jms/queue/ejava/examples/jmsScheduler/requestQueue"/>
+                <jms-queue name="jmsScheduler-DLQ" 
+                           entries="java:jboss/exported/jms/queue/jmsScheduler/DLQ"/>
+
                 <jms-topic name="asyncMarket-topic1" entries="java:/topic/ejava/examples/asyncMarket/topic1 java:jboss/exported/topic/ejava/examples/asyncMarket/topic1"/>
                 <jms-topic name="datashare-dmv" entries="java:/topic/ejava/projects/datashare/dmv java:jboss/exported/topic/ejava/projects/datashare/dmv"/>
                 <jms-topic name="datashare-mayberry-poi" entries="java:/topic/ejava/projects/datashare/mayberry-poi java:jboss/exported/topic/ejava/projects/datashare/mayberry-poi"/>

@@ -87,14 +87,14 @@ public class Publisher implements Runnable {
             started = true;
             while (!stop && (maxCount==0 || count < maxCount)) {
                 TextMessage message = session.createTextMessage();
-                message.setIntProperty("count", ++count);
+                message.setIntProperty("count", ++count%4);
                 message.setText("count = " + count);
                 producer.send(message);
                 log.debug("published message(" + count + "):" + 
                         message.getJMSMessageID());
                 Thread.sleep(sleepTime);
             }
-            log.info("publisher " + name + " stopping, count=" + count);
+            log.info("publisher " + name + " stopping, limitCount=" + count);
             connection.stop();
         }
         finally {

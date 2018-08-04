@@ -1,0 +1,46 @@
+<configuration xmlns="urn:activemq" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:activemq /schema/artemis-configuration.xsd">
+
+   <jms xmlns="urn:activemq:jms">
+        <topic name="jmsNotifier-topic1"/>
+   </jms>
+
+   <core xmlns="urn:activemq:core">
+      <persistence-enabled>false</persistence-enabled>
+
+      <journal-directory>target/artemis/journal</journal-directory>
+      <paging-directory>target/artemis/paging</paging-directory>
+      <bindings-directory>target/artemis/bindings</bindings-directory>
+      <large-messages-directory>target/artemis/large-messages</large-messages-directory>
+
+      <!-- Connectors -->
+      <connectors>
+         <connector name="netty-connector">tcp://${artemis.remoting.netty.host}:${artemis.remoting.netty.port}</connector>
+      </connectors>
+
+      <!-- Acceptors -->
+      <acceptors>
+         <acceptor name="netty-acceptor">tcp://${artemis.remoting.netty.host}:${artemis.remoting.netty.port}</acceptor>
+      </acceptors>
+
+
+      <security-settings>
+          <!--security for example queue-->
+          <security-setting match="#">
+              <permission type="consume" roles="admin"/>
+              <permission type="send" roles="admin"/>
+              <permission type="createDurableQueue" roles="admin"/>
+              <permission type="deleteDurableQueue" roles="admin"/>
+              <permission type="createNonDurableQueue" roles="admin"/>
+              <permission type="deleteNonDurableQueue" roles="admin"/>
+          </security-setting>
+
+          <security-setting match="jms.topic.jmsNotifier-topic1">
+              <permission type="consume" roles="subscriber"/>
+              <permission type="send" roles="publisher"/>
+              <permission type="createNonDurableQueue" roles="subscriber"/>
+              <permission type="createDurableQueue" roles="subscriber"/>
+              <permission type="deleteDurableQueue" roles="subscriber"/>
+          </security-setting>
+     </security-settings>
+   </core>
+</configuration>

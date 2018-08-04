@@ -102,10 +102,12 @@
                             <goal>test-jar</goal>
                         </goals>
                         <configuration>
+                            <!-- build/install jar even if tests are not run -->
+                            <skip>false</skip>
                             <!-- include or exclude as appropriate -->
                             <includes>
-                                <include>META-INF/persistence.xml</include>
                                 <include>**/*TestBase.class</include>
+                                <include>**/ArtemisServer.class</include>
                             </includes>
                         </configuration>
                     </execution>

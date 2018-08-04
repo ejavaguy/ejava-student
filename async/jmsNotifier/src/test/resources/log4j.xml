@@ -49,8 +49,8 @@
       <level value="trace"/>
       <appender-ref ref="logfile"/>  
    </logger>
-   <logger name="org.hornetq">
-      <level value="trace"/>
+   <logger name="org.apache.activemq.artemis.core.server">
+      <level value="info"/>
       <appender-ref ref="logfile"/>  
    </logger>
    <root>

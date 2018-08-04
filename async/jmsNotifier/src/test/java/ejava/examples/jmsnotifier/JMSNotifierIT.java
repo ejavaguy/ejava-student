@@ -20,8 +20,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-import ejava.examples.jmsmechanics.JMSAdmin;
-import ejava.examples.jmsmechanics.JMSAdminHornetQ;
 import ejava.util.jndi.JNDIUtil;
 
 /**
@@ -45,6 +43,8 @@ public class JMSNotifierIT {
 	@BeforeClass
 	public static void setUpClass() throws Exception {
 		log.info("*** setUpClass() ***");
+		
+		Thread.sleep(3000);
 
 		//read property file used by the Ant script to use same properties
 		InputStream in = Thread.currentThread()
@@ -68,23 +68,12 @@ public class JMSNotifierIT {
         log.debug(new JNDIUtil().dump(jndi,""));
         
 	}
-	
-	//@Before -- uncomment to dynamically deploy --otherwise pre-configure
-	public void setUp() throws Exception {
-		ConnectionFactory connFactory= 
-				(ConnectionFactory)jndi.lookup(connFactoryJNDI);
-		//jboss-hosted JMS requires extra prefix in JNDI name to expose globally
-        JMSAdmin jmsAdmin=new JMSAdminHornetQ(connFactory, adminUser, adminPassword)
-    		.setJNDIPrefix(jmsEmbedded ? null : "/jboss/exported");
-		jmsAdmin.destroyTopic(topicName)
-		        .deployTopic(topicName, topicJNDI);
-		jmsAdmin.close();
-	}
-	
+		
 	@AfterClass
 	public static void tearDownClass() throws Exception {
 		if (jndi != null) {
 			jndi.close();
+			jndi=null;
 		}
 	}
 	
