@@ -10,8 +10,29 @@
    <core xmlns="urn:activemq:core">
       <persistence-enabled>false</persistence-enabled>
 
+      <journal-directory>target/artemis/journal</journal-directory>
+      <paging-directory>target/artemis/paging</paging-directory>
+      <bindings-directory>target/artemis/bindings</bindings-directory>
+      <large-messages-directory>target/artemis/large-messages</large-messages-directory>
+
       <acceptors>
          <acceptor name="in-vm">vm://0</acceptor>
       </acceptors>
+
+      <security-settings>
+          <!--security for example queue-->
+          <security-setting match="#">
+              <permission type="consume" roles="user"/>
+              <permission type="send" roles="user"/>
+              <permission type="createDurableQueue" roles="user"/>
+              <permission type="deleteDurableQueue" roles="user"/>
+              <permission type="createNonDurableQueue" roles="user"/>
+              <permission type="deleteNonDurableQueue" roles="user"/>
+          </security-setting>
+          
+         <security-setting match="jms.queue.hornetq.management">
+            <permission type="manage" roles="admin" />
+         </security-setting>    
+     </security-settings>
    </core>
 </configuration>

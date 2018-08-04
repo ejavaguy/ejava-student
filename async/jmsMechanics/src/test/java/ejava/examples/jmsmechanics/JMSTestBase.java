@@ -2,6 +2,8 @@ package ejava.examples.jmsmechanics;
 
 import static org.junit.Assert.assertNotNull;
 
+import java.util.Set;
+
 import javax.jms.Connection;
 
 import javax.jms.ConnectionFactory;
@@ -15,7 +17,10 @@ import javax.naming.NamingException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.apache.activemq.artemis.core.security.CheckType;
+import org.apache.activemq.artemis.core.security.Role;
 import org.apache.activemq.artemis.jms.server.embedded.EmbeddedJMS;
+import org.apache.activemq.artemis.spi.core.security.ActiveMQSecurityManager;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -58,6 +63,17 @@ public class JMSTestBase {
         if (jmsEmbedded) {
 			logger.info("using embedded JMS server");
 			server = new EmbeddedJMS();
+			ActiveMQSecurityManager security = new ActiveMQSecurityManager() {
+                @Override
+                public boolean validateUserAndRole(String user, String password, Set<Role> roles, CheckType checkType) {
+                    return true;
+                }                
+                @Override
+                public boolean validateUser(String user, String password) {
+                    return true;
+                }
+            };
+            server.setSecurityManager(security);
 			server.start();
 			
 		    connFactory=(ConnectionFactory) jndi.lookup(connFactoryJNDI);
@@ -106,9 +122,7 @@ public class JMSTestBase {
 	
 	protected Object lookup(String name) throws NamingException {
 		logger.debug("lookup:" + name);
-		return (server != null) ?
-			server.lookup(name) :
-			jndi.lookup(name);	
+		return jndi.lookup(name);	
 	}
 	
 	protected MessageCatcher createCatcher(String name, Destination destination) {
