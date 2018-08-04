@@ -24,6 +24,7 @@
           <security-setting match="#">
               <permission type="consume" roles="user"/>
               <permission type="send" roles="user"/>
+              <permission type="browse" roles="user"/>
               <permission type="createDurableQueue" roles="user"/>
               <permission type="deleteDurableQueue" roles="user"/>
               <permission type="createNonDurableQueue" roles="user"/>

@@ -73,7 +73,7 @@ public class JMSTestBase {
 	        jmsAdmin=new JMSAdminHornetQ(connFactory, adminUser, adminPassword);
 		}
 		else {
-		    connFactory=(ConnectionFactory) jndi.lookup(connFactoryJNDI);
+	        connFactory=(ConnectionFactory) jndi.lookup(connFactoryJNDI);
 	        jmsAdmin=new JMSAdminArtemis(connFactory, adminUser, adminPassword)
 	                .setJNDIPrefix("/jboss/exported");
 		}		
