@@ -14,7 +14,6 @@ import org.apache.activemq.artemis.core.config.impl.SecurityConfiguration;
 import org.apache.activemq.artemis.jms.server.embedded.EmbeddedJMS;
 import org.apache.activemq.artemis.spi.core.security.ActiveMQSecurityManager;
 import org.junit.AfterClass;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,9 +39,7 @@ public class JMSTestBase {
     private static EmbeddedJMS server; //used when JMS server embedded in JVM
     private static Context jndi;     //used when JMS server remote in JBoss
     private static ConnectionFactory connFactory;
-    protected static Connection connection;
-    protected static JMSAdmin jmsAdmin;
-    
+    protected static Connection connection;    
 
 	@SuppressWarnings("deprecation")
     @BeforeClass
@@ -68,33 +65,15 @@ public class JMSTestBase {
 			server.setSecurityManager(security);
 			server.start();
 			
-		    connFactory=(ConnectionFactory) jndi.lookup(connFactoryJNDI);
-			assertNotNull("connFactory not found:" + connFactoryJNDI, connFactory);
-	        jmsAdmin=new JMSAdminHornetQ(connFactory, adminUser, adminPassword);
 		}
-		else {
-	        connFactory=(ConnectionFactory) jndi.lookup(connFactoryJNDI);
-	        jmsAdmin=new JMSAdminArtemis(connFactory, adminUser, adminPassword)
-	                .setJNDIPrefix("/jboss/exported");
-		}		
+        connFactory=(ConnectionFactory) jndi.lookup(connFactoryJNDI);
+        assertNotNull("connFactory not found:" + connFactoryJNDI, connFactory);
  		connection = createConnection();
 		connection.start();
 	}
 	
-	@Before
-	public void commonSetup() throws Exception {
-    	//dynamically create necessary JMS resources
-        jmsAdmin.destroyTopic("topic1")
-            	.destroyQueue("queue1")
-            	.deployTopic("topic1", topicJNDI)
-            	.deployQueue("queue1", queueJNDI);
-	}
-	
 	@AfterClass
 	public static final void tearDownClass() throws Exception {
-		if (jmsAdmin!=null) {
-		    jmsAdmin.close();
-		}
 		if (connection != null) {
 			connection.stop();
 			connection.close();
@@ -102,9 +81,11 @@ public class JMSTestBase {
 		}
 		if (server != null) {
 			server.stop();
+			server=null;
 		}
 		if (jndi != null) {
 			jndi.close();
+			jndi=null;
 		}
 	}
 
@@ -147,5 +128,4 @@ public class JMSTestBase {
     	        }
         	}		
 	}
-	
 }

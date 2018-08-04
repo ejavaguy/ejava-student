@@ -17,9 +17,11 @@
     </description>
 
     <properties>
+        <java.naming.factory.initial>org.apache.activemq.artemis.jndi.ActiveMQInitialContextFactory</java.naming.factory.initial>
+        <java.naming.provider.url>vm://0</java.naming.provider.url>
+        <java.naming.factory.url.pkgs></java.naming.factory.url.pkgs>
         <jms.embedded>true</jms.embedded>
         <jmsmechanics.multi.message.count>20</jmsmechanics.multi.message.count>
-        <jndi.name.connFactory>jms/RemoteConnectionFactory</jndi.name.connFactory>
     </properties>
 
     <dependencies>
@@ -33,28 +35,6 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
             <scope>provided</scope>
-        </dependency>
-
-        <!-- brings in JBoss RMI dependencies -->
-        <dependency>
-            <groupId>info.ejava.examples.common</groupId>
-            <artifactId>jboss-rmi-client</artifactId>
-            <version>${project.version}</version>
-            <type>pom</type>
-            <scope>test</scope>
-        </dependency>    
-        <dependency>
-            <groupId>info.ejava.examples.common</groupId>
-            <artifactId>ejava-util</artifactId>
-            <version>${project.version}</version>
-            <scope>test</scope>
-        </dependency>    
-
-        <!-- brings in JBoss HornetQ dependencies -->
-        <dependency>
-            <groupId>org.hornetq</groupId>
-            <artifactId>hornetq-jms-client</artifactId>
-            <scope>compile</scope>
         </dependency>
 
         <!-- test dependencies -->
@@ -107,7 +87,6 @@
                     <systemPropertyVariables>
                         <multi.message.count>${jmsmechanics.multi.message.count}</multi.message.count>
                         <jms.embedded>${jms.embedded}</jms.embedded>
-                        <jndi.name.connFactory>${jndi.name.connFactory}</jndi.name.connFactory>
                     </systemPropertyVariables>
                 </configuration>
             </plugin>
@@ -147,37 +126,6 @@
 
     <profiles>
       <profile>
-        <id>default.embedded</id>
-        <activation>
-          <property>
-            <name>!jms.embedded</name>
-          </property>
-        </activation>
-        <properties>
-            <java.naming.factory.initial>org.apache.activemq.artemis.jndi.ActiveMQInitialContextFactory</java.naming.factory.initial>
-            <java.naming.provider.url>vm://0</java.naming.provider.url>
-            <java.naming.factory.url.pkgs></java.naming.factory.url.pkgs>
-        </properties>
-      </profile>
-
-      <profile>
-        <id>jms.embedded</id>
-        <activation>
-          <property>
-            <name>jms.embedded</name>
-            <value>true</value>
-          </property>
-        </activation>
-        <properties>
-            <java.naming.factory.initial>org.apache.activemq.artemis.jndi.ActiveMQInitialContextFactory</java.naming.factory.initial>
-            <java.naming.provider.url>vm://0</java.naming.provider.url>
-            <java.naming.factory.url.pkgs></java.naming.factory.url.pkgs>
-        </properties>
-        <dependencies>
-        </dependencies>
-      </profile>
-
-      <profile>
         <id>jms.remote</id>
         <activation>
           <property>
@@ -187,21 +135,20 @@
         </activation>
         <properties>
             <jms.embedded>false</jms.embedded>
+            <java.naming.factory.initial>${jboss.remoting.java.naming.factory.initial}</java.naming.factory.initial>
+            <java.naming.provider.url>${jboss.remoting.java.naming.provider.url}</java.naming.provider.url>
+            <java.naming.factory.url.pkgs>${jboss.remoting.java.naming.factory.url.pkgs}</java.naming.factory.url.pkgs>
         </properties>
         <dependencies>
+          <!-- brings in JBoss RMI dependencies -->
+          <dependency>
+              <groupId>info.ejava.examples.common</groupId>
+              <artifactId>jboss-rmi-client</artifactId>
+              <version>${project.version}</version>
+              <type>pom</type>
+              <scope>test</scope>
+          </dependency>    
         </dependencies>
-      </profile>
-
-      <profile>
-          <id>m2e</id>
-          <activation>
-            <property>
-              <name>m2e.version</name>
-            </property>
-          </activation>
-          <properties>
-              <jms.embedded>true</jms.embedded>
-          </properties>
       </profile>
     </profiles>
 
