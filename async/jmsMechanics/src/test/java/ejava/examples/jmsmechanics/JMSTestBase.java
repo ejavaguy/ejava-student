@@ -10,9 +10,6 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
-import org.apache.activemq.artemis.core.config.impl.SecurityConfiguration;
-import org.apache.activemq.artemis.jms.server.embedded.EmbeddedJMS;
-import org.apache.activemq.artemis.spi.core.security.ActiveMQSecurityManager;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.slf4j.Logger;
@@ -36,12 +33,11 @@ public class JMSTestBase {
     protected static String user = System.getProperty("user", "user1");
     protected static String password = System.getProperty("password", "password1!");
 
-    private static EmbeddedJMS server; //used when JMS server embedded in JVM
+    private static ArtemisServer server; //used when JMS server embedded in JVM
     private static Context jndi;     //used when JMS server remote in JBoss
     private static ConnectionFactory connFactory;
     protected static Connection connection;    
 
-	@SuppressWarnings("deprecation")
     @BeforeClass
 	public static final void setUpClass() throws Exception {
         logger.info("connFactoryJNDI={}", connFactoryJNDI);
@@ -54,17 +50,8 @@ public class JMSTestBase {
 
         if (jmsEmbedded) {
 			logger.info("using embedded JMS server");
-			SecurityConfiguration securityConfig = new SecurityConfiguration();
-            securityConfig.addUser(adminUser, adminPassword);
-            securityConfig.addUser(user, password);
-            securityConfig.addRole(user, "user");
-            securityConfig.addRole(adminUser, "user");
-            securityConfig.addRole(adminUser, "admin");
-			server = new EmbeddedJMS();
-            ActiveMQSecurityManager security = new org.apache.activemq.artemis.spi.core.security.ActiveMQSecurityManagerImpl(securityConfig);
-			server.setSecurityManager(security);
-			server.start();
-			
+			server = new ArtemisServer();
+			server.start();			
 		}
         connFactory=(ConnectionFactory) jndi.lookup(connFactoryJNDI);
         assertNotNull("connFactory not found:" + connFactoryJNDI, connFactory);
