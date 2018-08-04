@@ -23,8 +23,6 @@ import org.junit.Test;
  * Messages will be sent in an ad-hoc priority order and then later received.
  * Although the provider is not actually specified in the actual behavior,
  * you would expect some type of priority ordering in this case.
- *
- * @author jcstaff
  */
 public class MessagePriorityTest extends JMSTestBase {
     static Logger log = LoggerFactory.getLogger(MessagePriorityTest.class);
