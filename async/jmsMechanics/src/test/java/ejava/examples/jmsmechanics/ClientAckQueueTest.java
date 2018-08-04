@@ -38,8 +38,8 @@ public class ClientAckQueueTest extends JMSTestBase {
     
     @After
     public void tearDown() throws Exception {
-    	shutdownCatcher(catcher1);
-    	shutdownCatcher(catcher2);
+        	shutdownCatcher(catcher1);
+        	shutdownCatcher(catcher2);
     }
 
     @Test
