@@ -2,28 +2,22 @@ package ejava.examples.jmsmechanics;
 
 import static org.junit.Assert.assertNotNull;
 
-import java.util.Set;
-
 import javax.jms.Connection;
-
 import javax.jms.ConnectionFactory;
 import javax.jms.Destination;
 import javax.jms.JMSException;
-import javax.jms.Queue;
-import javax.jms.Topic;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.apache.activemq.artemis.core.security.CheckType;
-import org.apache.activemq.artemis.core.security.Role;
+import org.apache.activemq.artemis.core.config.impl.SecurityConfiguration;
 import org.apache.activemq.artemis.jms.server.embedded.EmbeddedJMS;
 import org.apache.activemq.artemis.spi.core.security.ActiveMQSecurityManager;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class JMSTestBase {
@@ -50,7 +44,8 @@ public class JMSTestBase {
     protected static JMSAdmin jmsAdmin;
     
 
-	@BeforeClass
+	@SuppressWarnings("deprecation")
+    @BeforeClass
 	public static final void setUpClass() throws Exception {
         logger.info("connFactoryJNDI={}", connFactoryJNDI);
         logger.info("jndi.name.testQueue={}", queueJNDI);
@@ -62,18 +57,15 @@ public class JMSTestBase {
 
         if (jmsEmbedded) {
 			logger.info("using embedded JMS server");
+			SecurityConfiguration securityConfig = new SecurityConfiguration();
+            securityConfig.addUser(adminUser, adminPassword);
+            securityConfig.addUser(user, password);
+            securityConfig.addRole(user, "user");
+            securityConfig.addRole(adminUser, "user");
+            securityConfig.addRole(adminUser, "admin");
 			server = new EmbeddedJMS();
-			ActiveMQSecurityManager security = new ActiveMQSecurityManager() {
-                @Override
-                public boolean validateUserAndRole(String user, String password, Set<Role> roles, CheckType checkType) {
-                    return true;
-                }                
-                @Override
-                public boolean validateUser(String user, String password) {
-                    return true;
-                }
-            };
-            server.setSecurityManager(security);
+            ActiveMQSecurityManager security = new org.apache.activemq.artemis.spi.core.security.ActiveMQSecurityManagerImpl(securityConfig);
+			server.setSecurityManager(security);
 			server.start();
 			
 		    connFactory=(ConnectionFactory) jndi.lookup(connFactoryJNDI);
