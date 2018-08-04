@@ -33,7 +33,7 @@ import ejava.util.jndi.JNDIUtil;
  * launched separately from mavn during the pre-integration phase.
  */
 public class JMSSchedulerIT {
-    static final Logger log = LoggerFactory.getLogger(JMSSchedulerIT.class);
+    static final Logger logger = LoggerFactory.getLogger(JMSSchedulerIT.class);
     private static String adminUser = System.getProperty("admin.user", "admin1");
     private static String adminPassword = System.getProperty("admin.password", "password1!");
 	private static String requestorUsername;
@@ -54,7 +54,8 @@ public class JMSSchedulerIT {
 
 	@BeforeClass
 	public static void setUpClass() throws Exception {
-		log.info("*** setUpClass() ***");
+		logger.info("*** setUpClass() ***");
+		Thread.sleep(3000);
 		
 		//read property file used by thr Ant script to use same properties
 		InputStream in = Thread.currentThread()
@@ -76,21 +77,21 @@ public class JMSSchedulerIT {
 		workerPassword = props.getProperty("worker.password");
 
         //perform some setup on the topics used for the test
-		log.debug("getting jndi initial context");
+		logger.debug("getting jndi initial context");
         jndi = new InitialContext();    
-        log.debug("jndi=" + jndi.getEnvironment());
+        logger.debug("jndi=" + jndi.getEnvironment());
 
         //wait for JMS server to start
         connFactory = JNDIUtil.lookup(jndi, ConnectionFactory.class, connFactoryJNDI, 10);
-        log.debug(new JNDIUtil().dump(jndi,""));
+        logger.debug(new JNDIUtil().dump(jndi,""));
 	}
 	
 	@Before
 	public void setUp() throws Exception {
 		int count = emptyQueue(requestQueueJNDI, 0);
-		log.info("cleared " + count + " messages from " + requestQueueJNDI);
+		logger.info("cleared " + count + " messages from " + requestQueueJNDI);
 		count = emptyQueue(dlqJNDI, 0);
-		log.info("cleared " + count + " messages from " + dlqJNDI);
+		logger.info("cleared " + count + " messages from " + dlqJNDI);
 	}
 	
 	@AfterClass
@@ -114,6 +115,7 @@ public class JMSSchedulerIT {
 		Session session = null;
 		MessageConsumer consumer = null;
 		try {
+		    logger.debug("emptying queue {}, dlq={}", queueName, dlqJNDI);
 			connection = dlqJNDI.equals(queueName) ?
 					connFactory.createConnection(adminUser, adminPassword) :
 					connFactory.createConnection(workerUsername, workerPassword);
@@ -121,7 +123,7 @@ public class JMSSchedulerIT {
 			consumer = session.createConsumer(queue);
 			connection.start();
 			for (int i=0; i<count || count == 0; i++) {
-				log.debug("cleaning queue of message");
+				logger.debug("cleaning queue of message");
 				Message m = consumer.receive(250);
 				if (m == null) { break; }
 				total += 1;
@@ -143,15 +145,15 @@ public class JMSSchedulerIT {
 	@Test
 	public void verifyResources() throws Exception {
 		InitialContext jndi = new InitialContext();
-		log.info("looking up JNDI factory:" + connFactoryJNDI);
+		logger.info("looking up JNDI factory:" + connFactoryJNDI);
 		
-		log.info("looking up queue:" + requestQueueJNDI);
+		logger.info("looking up queue:" + requestQueueJNDI);
 		Queue queue = (Queue) jndi.lookup(requestQueueJNDI);
-		log.info(String.format("%s=%s", requestQueueJNDI, queue));
+		logger.info(String.format("%s=%s", requestQueueJNDI, queue));
 		
-		log.info("looking up DLQ:" + dlqJNDI);
+		logger.info("looking up DLQ:" + dlqJNDI);
 		Queue dlq = (Queue) jndi.lookup(dlqJNDI);
-		log.info(String.format("%s=%s", dlqJNDI, dlq));
+		logger.info(String.format("%s=%s", dlqJNDI, dlq));
 	}
 	
 	/**
@@ -159,7 +161,7 @@ public class JMSSchedulerIT {
 	 */
 	@Test
 	public void schedulerScenario() {
-		log.info("*** schedulerScenario ***");
+		logger.info("*** schedulerScenario ***");
 		
 		String name = props.getProperty("requestor.name");
 		String sleep = "0";//props.getProperty("requestor.sleep");
@@ -206,7 +208,7 @@ public class JMSSchedulerIT {
 	 */
 	@Test
 	public void failScenario() {
-		log.info("*** failScenario ***");
+		logger.info("*** failScenario ***");
 
 		String name = props.getProperty("requestor.name");
 		String sleep = "0";//props.getProperty("requestor.sleep");

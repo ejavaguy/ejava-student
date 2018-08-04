@@ -1,0 +1,54 @@
+<configuration xmlns="urn:activemq" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:activemq /schema/artemis-configuration.xsd">
+
+   <jms xmlns="urn:activemq:jms">
+        <queue name="jmsScheduler-requestQueue"/>
+        <queue name="jmsScheduler-DLQ"/>
+   </jms>
+
+   <core xmlns="urn:activemq:core">
+      <persistence-enabled>false</persistence-enabled>
+
+      <journal-directory>target/artemis/journal</journal-directory>
+      <paging-directory>target/artemis/paging</paging-directory>
+      <bindings-directory>target/artemis/bindings</bindings-directory>
+      <large-messages-directory>target/artemis/large-messages</large-messages-directory>
+
+      <!-- Connectors -->
+      <connectors>
+         <connector name="netty-connector">tcp://${artemis.remoting.netty.host}:${artemis.remoting.netty.port}</connector>
+      </connectors>
+
+      <!-- Acceptors -->
+      <acceptors>
+         <acceptor name="netty-acceptor">tcp://${artemis.remoting.netty.host}:${artemis.remoting.netty.port}</acceptor>
+      </acceptors>
+
+
+      <security-settings>
+          <!--security for example queue-->
+          <security-setting match="#">
+              <permission type="consume" roles="admin"/>
+              <permission type="send" roles="admin"/>
+              <permission type="createDurableQueue" roles="admin"/>
+              <permission type="deleteDurableQueue" roles="admin"/>
+              <permission type="createNonDurableQueue" roles="admin"/>
+              <permission type="deleteNonDurableQueue" roles="admin"/>
+          </security-setting>
+
+          <security-setting match="jms.queue.jmsScheduler-requestQueue">
+              <permission type="consume" roles="worker"/>
+              <permission type="send" roles="requestor"/>
+              <permission type="createNonDurableQueue" roles="requestor"/>
+          </security-setting>    
+          <security-setting match="jms.queue.jmsScheduler-DLQ">
+              <permission type="consume" roles="admin"/>
+              <permission type="send" roles="worker"/>
+          </security-setting>    
+          <security-setting match="jms.tempqueue.#">
+              <permission type="consume" roles="requestor"/>
+              <permission type="send" roles="worker"/>
+              <permission type="createNonDurableQueue" roles="requestor"/>
+          </security-setting> 
+     </security-settings>
+   </core>
+</configuration>

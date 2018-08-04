@@ -454,6 +454,18 @@
                 <security-setting name="jms.queue.mechanicsQueue">
                     <role name="user" send="true" consume="true"/>
                 </security-setting>
+                <security-setting name="jms.topic.jmsNotifier-testTopic1">
+                    <role name="publisher" send="true"/>
+                    <role name="subscriber" consume="true" create-non-durable-queue="true"/>
+                </security-setting>
+                <security-setting name="jms.queue.jmsScheduler-requestQueue">
+                    <role name="requestor" send="true"/>
+                    <role name="worker" consume="true" create-non-durable-queue="true"/>
+                </security-setting>
+                <security-setting name="jms.queue.jmsScheduler-DLQ">
+                    <role name="worker" send="true"/>
+                    <role name="admin" consume="true" create-non-durable-queue="true"/>
+                </security-setting>
 
                 <security-setting name="jms.topic.datashare-dmv">
                     <role name="dmv-tactical" send="true" consume="true" create-non-durable-queue="true" delete-non-durable-queue="true"/>
@@ -503,7 +515,7 @@
                 <jms-queue name="jmsScheduler-requestQueue" 
                            entries="java:jboss/exported/jms/queue/ejava/examples/jmsScheduler/requestQueue"/>
                 <jms-queue name="jmsScheduler-DLQ" 
-                           entries="java:jboss/exported/jms/queue/jmsScheduler/DLQ"/>
+                           entries="java:jboss/exported/jms/queue/ejava/examples/jmsScheduler/DLQ"/>
 
                 <jms-topic name="asyncMarket-topic1" entries="java:/topic/ejava/examples/asyncMarket/topic1 java:jboss/exported/topic/ejava/examples/asyncMarket/topic1"/>
                 <jms-topic name="datashare-dmv" entries="java:/topic/ejava/projects/datashare/dmv java:jboss/exported/topic/ejava/projects/datashare/dmv"/>

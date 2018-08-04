@@ -20,7 +20,7 @@
     <properties>
         <jms.host>localhost</jms.host>
         <jndi.host>${jms.host}</jndi.host>
-        <hornetq.remoting.netty.host>${jms.host}</hornetq.remoting.netty.host>
+        <artemis.remoting.netty.host>${jms.host}</artemis.remoting.netty.host>
         <!-- set -Djms.spawn=false to run server in foreground. Requires 2 windows. -->
         <jms.spawn>true</jms.spawn>
 
@@ -31,6 +31,9 @@
              Switch between them by using -Djms.classpath=(goal)
              -->
         <jms.classpath>build-classpath</jms.classpath>
+        <java.naming.factory.initial>org.apache.activemq.artemis.jndi.ActiveMQInitialContextFactory</java.naming.factory.initial>
+        <java.naming.provider.url>tcp://${artemis.remoting.netty.host}:${artemis.remoting.netty.port}</java.naming.provider.url>
+        <java.naming.factory.url.pkgs></java.naming.factory.url.pkgs>
     </properties>
 
     <dependencies>
@@ -46,14 +49,6 @@
             <scope>compile</scope>
         </dependency>
 
-        <!-- brings in JBoss RMI dependencies -->
-        <dependency>
-            <groupId>info.ejava.examples.common</groupId>
-            <artifactId>jboss-rmi-client</artifactId>
-            <version>${project.version}</version>
-            <type>pom</type>
-            <scope>test</scope>
-        </dependency>    
         <dependency>
             <groupId>info.ejava.examples.common</groupId>
             <artifactId>ejava-util</artifactId>
@@ -61,10 +56,9 @@
             <scope>test</scope>
         </dependency>    
 
-        <!-- brings in JBoss HornetQ driver (also needed in server) -->
         <dependency>
-            <groupId>org.hornetq</groupId>
-            <artifactId>hornetq-jms-client</artifactId>
+            <groupId>org.apache.activemq</groupId>
+            <artifactId>artemis-jms-client</artifactId>
             <scope>runtime</scope>
         </dependency>
 
@@ -100,28 +94,8 @@
 
         <!-- runtime dependencies required to run JMS server instance -->
         <dependency>
-            <groupId>org.jboss.microcontainer</groupId>
-            <artifactId>jboss-kernel</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.hornetq</groupId>
-            <artifactId>hornetq-bootstrap</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.hornetq</groupId>
-            <artifactId>hornetq-jms-server</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.jboss.naming</groupId>
-            <artifactId>jnpserver</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.jboss.netty</groupId>
-            <artifactId>netty</artifactId>
+            <groupId>org.apache.activemq</groupId>
+            <artifactId>artemis-jms-server</artifactId>
             <scope>runtime</scope>
         </dependency>
     </dependencies>
@@ -133,7 +107,7 @@
                 <directory>src/test/resources</directory>
                 <filtering>true</filtering>
                 <includes>
-                    <include>**/hornetq*.xml</include>
+                    <include>**/broker.xml</include>
                     <include>**/*.properties</include>
                 </includes>
             </testResource>
@@ -141,7 +115,7 @@
                 <directory>src/test/resources</directory>
                 <filtering>false</filtering>
                 <excludes>
-                    <exclude>**/hornetq*.xml</exclude>
+                    <exclude>**/broker.xml</exclude>
                     <exclude>**/*.properties</exclude>
                 </excludes>
             </testResource>
@@ -197,9 +171,7 @@
                             <outputFile>${project.build.directory}/test-classes/ports.properties</outputFile>
                             -->
                             <portNames>
-                                <portName>hornetq.remoting.netty.port</portName>
-                                <portName>jndi.port</portName>
-                                <portName>jndi.rmiport</portName>
+                                <portName>artemis.remoting.netty.port</portName>
                             </portNames>
                         </configuration>
                     </execution>
@@ -243,17 +215,17 @@
                                 </goals>
                                 <configuration>
                                     <target>
-                                        <java classname="org.hornetq.integration.bootstrap.HornetQBootstrapServer" fork="true" spawn="${jms.spawn}">
+                                        <java classname="ejava.examples.jmsmechanics.ArtemisServer" fork="true" spawn="${jms.spawn}">
                                              <classpath>
-                                                 <path location="${project.build.directory}/test-classes/hornetq" />
+                                                 <path refid="maven.test.classpath" />
                                                  <path refid="maven.runtime.classpath" />
                                              </classpath>
                                              <!--
+                                                 <path location="${project.build.directory}/test-classes/hornetq" />
                                              <jvmarg value="-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=8000 -Xnoagent" />
                                              <sysproperty key="java.compiler" value="NONE" />
                                              -->
-                                             <sysproperty key="hornetq.config.dir" value="${project.build.directory}/test-classes/hornetq" />
-                                             <arg value="${project.build.directory}/test-classes/hornetq/hornetq-beans.xml" />
+                                             <sysproperty key="baseDir" value="${project.build.directory}/test-classes" />
                                         </java>
                                         <echo>started JMS Server</echo>
                                     </target>
@@ -268,7 +240,7 @@
                                 <configuration>
                                     <target>
                                         <echo>stopping JMS Server</echo>
-                                        <echo file="${project.build.directory}/test-classes/hornetq/STOP_ME" />
+                                        <echo file="${project.build.directory}/test-classes/STOP_ME" />
                                     </target>
                                 </configuration>
                             </execution>
@@ -276,6 +248,31 @@
                     </plugin>
                 </plugins>
             </build>
+        </profile>
+
+        <profile>
+          <id>jms.remote</id>
+          <activation>
+            <property>
+	      <name>m2e.version</name>
+            </property>
+          </activation>
+          <properties>
+              <jms.embedded>false</jms.embedded>
+              <java.naming.factory.initial>${jboss.remoting.java.naming.factory.initial}</java.naming.factory.initial>
+              <java.naming.provider.url>${jboss.remoting.java.naming.provider.url}</java.naming.provider.url>
+              <java.naming.factory.url.pkgs>${jboss.remoting.java.naming.factory.url.pkgs}</java.naming.factory.url.pkgs>
+          </properties>
+          <dependencies>
+            <!-- brings in JBoss RMI dependencies -->
+            <dependency>
+                <groupId>info.ejava.examples.common</groupId>
+                <artifactId>jboss-rmi-client</artifactId>
+                <version>${project.version}</version>
+                <type>pom</type>
+                <scope>test</scope>
+            </dependency>    
+          </dependencies>
         </profile>
     </profiles>
 </project>
