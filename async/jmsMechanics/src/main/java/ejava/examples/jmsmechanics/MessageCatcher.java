@@ -101,9 +101,9 @@ public class MessageCatcher implements Runnable {
             stopped = stop = false;
             log.info("catcher " + name + " starting (ackMode=" + ackMode + ")");
             started = true;
-            while (!stop) {
-                log.debug("catcher looking for message");
-                Message message = consumer.receive(3000);
+            for (int i=0;!stop; i++) {
+                if (i%30==0) { log.debug("catcher looking for message"); }
+                Message message = consumer.receive(100);
                 if (message != null) {
                     messages.add(message);
                     log.debug(name + " received message #" + messages.size() +

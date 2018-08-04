@@ -87,22 +87,27 @@ public class MessageReplyToTest extends JMSTestBase {
     @Test
     public void testReplyTo() throws Exception {
         log.info("*** testReplyTo ***");
+        Session replySession = null;
         Session session = null;
         MessageProducer producer = null;
         MessageConsumer consumer = null;
         List<MessageConsumer> replyConsumers = new ArrayList<MessageConsumer>();
         try {
             connection.stop();
+
             session = connection.createSession(
                     false, Session.CLIENT_ACKNOWLEDGE);
-
             consumer = session.createConsumer(destination);
             Replier client = new Replier();
             //set the JMS session so they can reply
-            client.setSession(session);
+            replySession = connection.createSession(
+                    false, Session.CLIENT_ACKNOWLEDGE);
+            client.setSession(replySession);
             consumer.setMessageListener(client);
             
             
+            session = connection.createSession(
+                    false, Session.CLIENT_ACKNOWLEDGE);
             producer = session.createProducer(destination);            
             Destination replyDestinations[] = {
                     session.createTemporaryQueue(),
@@ -162,6 +167,7 @@ public class MessageReplyToTest extends JMSTestBase {
             if (connection != null) { connection.stop(); }
             if (consumer != null) { consumer.close(); }
             if (producer != null) { producer.close(); }
+            if (replySession != null)  { replySession.close(); }
             if (session != null)  { session.close(); }
         }
     }
@@ -170,18 +176,21 @@ public class MessageReplyToTest extends JMSTestBase {
     public void testReplyToMulti() throws Exception {
         log.info("*** testReplyToMulti ***");
         Session session = null;
+        Session replySession = null;
         MessageProducer producer = null;
         MessageConsumer consumer = null;
         List<MessageConsumer> replyConsumers = new ArrayList<MessageConsumer>();
         try {
             connection.stop();
+
             session = connection.createSession(
                     false, Session.CLIENT_ACKNOWLEDGE);
-
             consumer = session.createConsumer(destination);
             Replier client = new Replier();
             //set the JMS session so they can reply
-            client.setSession(session);
+            replySession = connection.createSession(
+                    false, Session.CLIENT_ACKNOWLEDGE);
+            client.setSession(replySession);
             consumer.setMessageListener(client);
             
             
@@ -210,7 +219,7 @@ public class MessageReplyToTest extends JMSTestBase {
                 }
             }
             
-            //verify that response table is rempty
+            //verify that response table is empty
             assertEquals(sendCount, responses.size());
             for(String id : responses.keySet()) {
                 assertNull(responses.get(id));
@@ -250,6 +259,7 @@ public class MessageReplyToTest extends JMSTestBase {
             if (connection != null) { connection.stop(); }
             if (consumer != null) { consumer.close(); }
             if (producer != null) { producer.close(); }
+            if (replySession != null)  { replySession.close(); }
             if (session != null)  { session.close(); }
         }
     }    

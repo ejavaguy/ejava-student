@@ -104,12 +104,12 @@ public class JMSTestBase {
 	
 	protected void shutdownCatcher(MessageCatcher catcher) throws Exception {
         	if (catcher != null) {
-    	        for (int i=0; catcher.isStarted() != true && i< 10; i++) {
+    	        for (int i=0; !catcher.isStarted() && i< 10; i++) {
     	            logger.debug(String.format("waiting for %s to start", catcher.getName()));
     	            Thread.sleep(2000);
     	        }
     	        catcher.stop();
-    	        for (int i=0; catcher.isStopped() != true && i<10; i++) {
+    	        for (int i=0; !catcher.isStopped() && i<10; i++) {
     	            logger.debug(String.format("waiting for %s to stop", catcher.getName()));
     	            Thread.sleep(2000);
     	        }

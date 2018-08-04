@@ -10,6 +10,7 @@ import javax.jms.Topic;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -42,9 +43,10 @@ public class TransactedTopicSessionTest extends JMSTestBase {
         startCatcher(catcher2);
     }
     
-    protected void tearDown() throws Exception {
-    	shutdownCatcher(catcher1);
-    	shutdownCatcher(catcher2);
+    @After
+    public void tearDown() throws Exception {
+        shutdownCatcher(catcher1);
+    	    shutdownCatcher(catcher2);
     }
 
     @Test
