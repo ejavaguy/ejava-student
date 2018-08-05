@@ -54,7 +54,7 @@
 
         <!-- tools plugins -->
         <maven-ant-plugin.version>2.4</maven-ant-plugin.version>
-        <maven-antrun-plugin.version>1.7</maven-antrun-plugin.version>
+        <maven-antrun-plugin.version>1.8</maven-antrun-plugin.version>
         <maven-archetype-plugin.version>2.4</maven-archetype-plugin.version>
         <maven-assembly-plugin.version>2.5.5</maven-assembly-plugin.version>
         <maven-dependency-plugin.version>2.10</maven-dependency-plugin.version>        
