@@ -30,10 +30,6 @@
               <permission type="createNonDurableQueue" roles="user"/>
               <permission type="deleteNonDurableQueue" roles="user"/>
           </security-setting>
-          
-         <security-setting match="jms.queue.hornetq.management">
-            <permission type="manage" roles="admin" />
-         </security-setting>    
      </security-settings>
    </core>
 </configuration>
