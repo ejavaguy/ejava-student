@@ -33,8 +33,8 @@
         <wildfly-controller-client.version>8.2.1.Final</wildfly-controller-client.version>
 
         <cargo-maven2-plugin.version>1.4.15</cargo-maven2-plugin.version>
-        <maven-ear-plugin.version>2.10.1</maven-ear-plugin.version>
-        <maven-ejb-plugin.version>2.5.1</maven-ejb-plugin.version>
+        <maven-ear-plugin.version>3.0.1</maven-ear-plugin.version>
+        <maven-ejb-plugin.version>3.0.1</maven-ejb-plugin.version>
         <maven-failsafe-plugin.version>2.18.1</maven-failsafe-plugin.version>
         <maven-war-plugin.version>3.2.2</maven-war-plugin.version>
 
