@@ -96,7 +96,7 @@
         <javax.persistence-api.version>2.2</javax.persistence-api.version>
         <javax.ejb-api.version>3.2.2</javax.ejb-api.version>
         <javax.el.version>3.0.1-b06</javax.el.version>        
-        <jaxb-api.version>2.1</jaxb-api.version>
+        <jaxb-api.version>2.2</jaxb-api.version>
         <jaxb-impl.version>2.1.9-brew</jaxb-impl.version>
         <jms.version>1.1</jms.version>
         <jnpserver.version>5.0.3.GA</jnpserver.version>
