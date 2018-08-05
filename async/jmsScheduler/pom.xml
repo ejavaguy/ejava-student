@@ -19,7 +19,6 @@
 
     <properties>
         <jms.host>localhost</jms.host>
-        <jndi.host>${jms.host}</jndi.host>
         <artemis.remoting.netty.host>${jms.host}</artemis.remoting.netty.host>
         <!-- set -Djms.spawn=false to run server in foreground. Requires 2 windows. -->
         <jms.spawn>true</jms.spawn>
@@ -132,7 +131,6 @@
                 </configuration>
             </plugin>
 
-            <!-- needed to run IT tests -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
@@ -250,6 +248,7 @@
             </build>
         </profile>
 
+        <!-- run IT tests against remote JBoss versus standing up local server -->
         <profile>
           <id>jms.remote</id>
           <activation>

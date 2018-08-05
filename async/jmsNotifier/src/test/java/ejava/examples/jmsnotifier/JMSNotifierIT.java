@@ -20,6 +20,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
+import ejava.util.jms.JMSUtil;
 import ejava.util.jndi.JNDIUtil;
 
 /**
@@ -43,8 +44,6 @@ public class JMSNotifierIT {
 	@BeforeClass
 	public static void setUpClass() throws Exception {
 		log.info("*** setUpClass() ***");
-		
-		Thread.sleep(3000);
 
 		//read property file used by the Ant script to use same properties
 		InputStream in = Thread.currentThread()
@@ -64,9 +63,11 @@ public class JMSNotifierIT {
         log.debug("jndi=" + jndi.getEnvironment());
         
         //wait for JMS server to start
-        JNDIUtil.lookup(jndi, ConnectionFactory.class, connFactoryJNDI, 10);
+        ConnectionFactory connFactory = JNDIUtil.lookup(jndi, ConnectionFactory.class, connFactoryJNDI, 10);
         log.debug(new JNDIUtil().dump(jndi,""));
         
+        //wait extra for connection to be sure server is running
+        JMSUtil.createConnection(connFactory, adminUser, adminPassword, 10).close();
 	}
 		
 	@AfterClass

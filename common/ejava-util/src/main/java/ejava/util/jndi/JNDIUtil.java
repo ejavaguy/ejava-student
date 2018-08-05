@@ -58,11 +58,11 @@ public class JNDIUtil {
     public static Properties getJNDIProperties(String prefix) throws IOException {
     	InputStream is = null;
     	for (int i=0; is==null && i<PATHS.length; i++) {
-    		logger.debug("trying: " + PATHS[i]);
+    		logger.debug("trying: {}", PATHS[i]);
     		is = JNDIUtil.class.getResourceAsStream(PATHS[i]);
     	}
     	for (int i=0; is==null && i<PATHS.length; i++) {
-    		logger.debug("trying loader for thread: " + PATHS[i]);
+    		logger.debug("trying loader for thread: {}", PATHS[i]);
     		is = Thread.currentThread().getContextClassLoader().getResourceAsStream(PATHS[i]);
     	}
     	
@@ -98,7 +98,7 @@ public class JNDIUtil {
     @SuppressWarnings("unchecked")
 	public static <T> T lookup(Context ctx, Class<T> type, String name, int waitSecs) 
 			throws NamingException {
-    	logger.debug(String.format("looking up %s, wait=%d", name, waitSecs));
+    	logger.debug("looking up {}, wait={}", name, waitSecs);
     	
     	T object=null;
     	//wait increments should be at least 1sec
@@ -108,7 +108,7 @@ public class JNDIUtil {
 	    		try {
 					object = (T) ctx.lookup(name);
 				} catch (Throwable ex) {
-					logger.debug(String.format("error in jndi.lookup(%s)=%s", name, ex));
+					logger.debug("error in jndi.lookup({})={}", name, ex);
 					try { Thread.sleep(interval); } catch (Exception ex2) {}
 				}
     		} else {

@@ -127,6 +127,7 @@
     </build>
 
     <profiles>
+        <!-- run tests against remote JBoss versus standing up embedded server -->
       <profile>
         <id>jms.remote</id>
         <activation>

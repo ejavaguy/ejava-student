@@ -57,10 +57,10 @@
     <target name="init">
         <!-- replace the integration test jndi.properties with the demo
             copy referencing the live JBoss instance 
+            -->
         <copy tofile="test-classes/jndi.properties"
               file="test-classes/jboss-jndi.properties"
               overwrite="true"/>
-            -->
     </target>
 
     <target name="requestor" depends="init">

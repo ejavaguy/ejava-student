@@ -246,6 +246,7 @@
             </build>
         </profile>
 
+        <!-- run IT tests against remote JBoss versus standing up local server -->
         <profile>
           <id>jms.remote</id>
           <activation>

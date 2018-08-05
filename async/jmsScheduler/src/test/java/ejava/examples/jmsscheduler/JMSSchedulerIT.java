@@ -1,7 +1,6 @@
 package ejava.examples.jmsscheduler;
 
-import static org.junit.Assert.*;
-
+import static org.junit.Assert.assertNotNull;
 
 import java.io.InputStream;
 import java.util.Properties;
@@ -16,15 +15,14 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import ejava.examples.jmsscheduler.Requestor;
-import ejava.examples.jmsscheduler.Worker;
+import ejava.util.jms.JMSUtil;
 import ejava.util.jndi.JNDIUtil;
 
 /**
@@ -55,7 +53,6 @@ public class JMSSchedulerIT {
 	@BeforeClass
 	public static void setUpClass() throws Exception {
 		logger.info("*** setUpClass() ***");
-		Thread.sleep(3000);
 		
 		//read property file used by thr Ant script to use same properties
 		InputStream in = Thread.currentThread()
@@ -82,8 +79,10 @@ public class JMSSchedulerIT {
         logger.debug("jndi=" + jndi.getEnvironment());
 
         //wait for JMS server to start
-        connFactory = JNDIUtil.lookup(jndi, ConnectionFactory.class, connFactoryJNDI, 10);
+        connFactory = JNDIUtil.lookup(jndi, ConnectionFactory.class, connFactoryJNDI, 10);        
         logger.debug(new JNDIUtil().dump(jndi,""));
+        //wait extra for connection to be sure server is running
+        JMSUtil.createConnection(connFactory, workerUsername, workerPassword, 10).close();
 	}
 	
 	@Before
