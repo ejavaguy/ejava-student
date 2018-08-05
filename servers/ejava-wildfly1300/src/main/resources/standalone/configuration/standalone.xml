@@ -516,8 +516,9 @@
                            entries="java:jboss/exported/jms/queue/ejava/examples/jmsScheduler/requestQueue"/>
                 <jms-queue name="jmsScheduler-DLQ" 
                            entries="java:jboss/exported/jms/queue/ejava/examples/jmsScheduler/DLQ"/>
+                <jms-topic name="asyncMarket-topic1" 
+                           entries="java:/jms/topic/ejava/examples/asyncMarket/topic1 java:jboss/exported/jms/topic/ejava/examples/asyncMarket/topic1"/>
 
-                <jms-topic name="asyncMarket-topic1" entries="java:/topic/ejava/examples/asyncMarket/topic1 java:jboss/exported/topic/ejava/examples/asyncMarket/topic1"/>
                 <jms-topic name="datashare-dmv" entries="java:/topic/ejava/projects/datashare/dmv java:jboss/exported/topic/ejava/projects/datashare/dmv"/>
                 <jms-topic name="datashare-mayberry-poi" entries="java:/topic/ejava/projects/datashare/mayberry-poi java:jboss/exported/topic/ejava/projects/datashare/mayberry-poi"/>
                 <jms-topic name="emarket-esales-auction" entries="java:/topic/ejava/projects/emarket/esales-auction java:jboss/exported/topic/ejava/projects/emarket/esales-auction"/>

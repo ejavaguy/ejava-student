@@ -67,7 +67,7 @@ public class AuctionMgmtEJB implements AuctionMgmtRemote, AuctionMgmtLocal {
     @Resource(lookup="java:/JmsXA")
     //@Resource(name="jms/ConnectionFactory")
     private ConnectionFactory connFactory;
-    @Resource(lookup="java:/topic/ejava/examples/asyncMarket/topic1", type=Topic.class)
+    @Resource(lookup="java:/jms/topic/ejava/examples/asyncMarket/topic1", type=Topic.class)
     private Destination sellTopic;
     
     @PostConstruct

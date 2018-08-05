@@ -45,7 +45,7 @@ public class SellerEJB
     
     @Resource(lookup="java:/JmsXA")
     private ConnectionFactory connFactory;
-    @Resource(lookup="java:/topic/ejava/examples/asyncMarket/topic1", type=Topic.class)
+    @Resource(lookup="java:/jms/topic/ejava/examples/asyncMarket/topic1", type=Topic.class)
     private Destination sellTopic;
     
     @Resource
