@@ -21,11 +21,9 @@ import org.slf4j.LoggerFactory;
 /**
  * This is used to simulate work being tasked to a scheduling queue. Each 
  * request will be tracked for a result.
- *
- * @author jcstaff
  */
 public class Requestor implements Runnable, MessageListener {
-    private static final Logger log = LoggerFactory.getLogger(Requestor.class);
+    private static final Logger logger = LoggerFactory.getLogger(Requestor.class);
     protected ConnectionFactory connFactory;
     protected Destination requestQueue;
     protected boolean stop = false;
@@ -100,9 +98,7 @@ public class Requestor implements Runnable, MessageListener {
             connection.start();
             stopped = stop = false;
 
-            log.info("requester " + name + " starting: " +
-                    "maxCount=" + maxCount +
-                    ", sleepTime" + sleepTime);
+            logger.info("requester {} starting: maxCount={}, sleepTime {}", name, maxCount, sleepTime);
             started = true;
             startTime=System.currentTimeMillis();
             while (!stop && (maxCount==0 || count < maxCount)) {
@@ -115,17 +111,16 @@ public class Requestor implements Runnable, MessageListener {
                     requests.put(message.getJMSMessageID(), message);
                 }
                 if (sleepTime>=1000 || (count % 100==0)) {
-                    log.debug("published message(" + count + "):" + 
+                    logger.debug("published message(" + count + "):" + 
                             message.getJMSMessageID());
-                    log.debug("outstanding requests=" + requests.size());
+                    logger.debug("outstanding requests=" + requests.size());
                 }
                 Thread.sleep(sleepTime);
             }
-            log.info("requester " + name + " stopping, count=" + count);
+            logger.info("requester {} stopping, count={}", name, count);
             while (requests.size() > 0) {
-                log.debug("waiting for " + requests.size() +  
-                          " outstanding responses");
-                log.trace("requests=" + requests);
+                logger.debug("waiting for {} outstanding responses", requests.size());
+                logger.trace("requests={}", requests);
                 Thread.sleep(3000);
             }
             connection.stop();
@@ -144,7 +139,7 @@ public class Requestor implements Runnable, MessageListener {
             execute();
         }
         catch (Exception ex) {
-            log.error("error running " + name, ex);
+            logger.error("error running {}", name, ex);
         }
     }    
 
@@ -165,17 +160,15 @@ public class Requestor implements Runnable, MessageListener {
                 String worker = message.getStringProperty("worker");
 
                 if (sleepTime>=1000 || (responseCount % 100==0)) {
-                    log.debug("recieved response for:" + 
-                            request.getIntProperty("count") +
-                            ", from " + worker + 
-                            ", outstanding=" + requests.size());
+                    logger.debug("recieved response for:{}, from {}, outstanding={}", 
+                            request.getIntProperty("count"), worker, requests.size());
                 }
             }
             else {
-                log.warn("received unexpected response:" + correlationID);
+                logger.warn("received unexpected response:{}" + correlationID);
             }
         } catch (Exception ex) {
-            log.info("error processing message", ex);
+            logger.info("error processing message", ex);
         }
     }
 
@@ -242,9 +235,9 @@ public class Requestor implements Runnable, MessageListener {
             requestor.execute();
         }
         catch (Exception ex) {
-            log.error("",ex);
+            logger.error("",ex);
             if (noExit) {
-            	throw new RuntimeException("requestor error", ex);
+                throw new RuntimeException("requestor error", ex);
             }
             System.exit(-1);            
         }

@@ -21,11 +21,9 @@ import org.slf4j.LoggerFactory;
  * each message will vary per message based on a difficulty index. The worker
  * will quite when it hits its max value; always failing to repond to the last
  * request processed (on purpose).
- *
- * @author jcstaff
  */
 public class Worker implements Runnable {
-    private static final Logger log = LoggerFactory.getLogger(Worker.class);
+    private static final Logger logger = LoggerFactory.getLogger(Worker.class);
     protected ConnectionFactory connFactory;
     protected Destination requestQueue;
     protected Destination dlq;
@@ -101,7 +99,7 @@ public class Worker implements Runnable {
             connection.start();
 
             stopped = stop = false;
-            log.info("worker " + name + " starting");
+            logger.info("worker " + name + " starting");
             started = true;
             while (!stop && (maxCount==0 || count < maxCount)) {
                 Message message = consumer.receive(3000);
@@ -112,13 +110,9 @@ public class Worker implements Runnable {
                         int difficulty = request.getInt("difficulty");
                         long sleepTime = delay[difficulty];
                         int requestCounter = request.getIntProperty("count");
-                        StringBuilder text = new StringBuilder();
                         Destination replyTo = request.getJMSReplyTo();
-                        text.append(name + " received message #" + count +
-                            ", req=" + requestCounter +
-                            ", replyTo=" + replyTo +
-                            ", delay=" + sleepTime);
-                        log.debug(text.toString());
+                        logger.debug(name + " received message #{}, req={}, replyTo={}, delay={}", 
+                                count, requestCounter, replyTo, sleepTime);
                         Thread.sleep(sleepTime);
                         if (count < maxCount || maxCount==0 || noFail){//fail on last one
                             Message response = session.createMessage();
@@ -129,25 +123,25 @@ public class Worker implements Runnable {
                                 producer.send(replyTo, response);
                             }
                             catch (JMSException ex) {
-                                log.error("error sending reply:" + ex);                                
+                                logger.error("error sending reply:" + ex);                                
                                 dlqProducer.send(request);
                             }
                             finally {
-                                log.debug("committing session for: " + request.getJMSMessageID());
+                                logger.debug("committing session for: {}", request.getJMSMessageID());
                                 session.commit();
                             }
                         }
                     }
                     catch (Exception ex) {
-                        log.error("error processing request:" + ex);
+                        logger.error("error processing request:" + ex);
                         dlqProducer.send(message);
-                        log.debug("committing session");
+                        logger.debug("committing session");
                         session.commit();
                     }
                     Thread.yield();
                 }      
             }
-            log.info("worker " + name + " stopping");
+            logger.info("worker {} stopping", name);
             connection.stop();
         }
         finally {
@@ -164,7 +158,7 @@ public class Worker implements Runnable {
             execute();
         }
         catch (Exception ex) {
-            log.error("error running " + name, ex);
+            logger.error("error running " + name, ex);
         }
     }    
 
@@ -237,7 +231,7 @@ public class Worker implements Runnable {
             worker.execute();
         }
         catch (Exception ex) {
-            log.error("",ex);
+            logger.error("",ex);
             if (noExit) {
             	throw new RuntimeException("worker error", ex);
             }
