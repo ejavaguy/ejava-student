@@ -39,16 +39,16 @@
         <maven-ejb-plugin.version>3.0.1</maven-ejb-plugin.version>
         <maven-jar-plugin.version>3.1.0</maven-jar-plugin.version>
         <maven-rar-plugin.version>2.4</maven-rar-plugin.version>
-        <maven-source-plugin.version>2.4</maven-source-plugin.version>
+        <maven-source-plugin.version>3.0.1</maven-source-plugin.version>
         <maven-war-plugin.version>3.2.2</maven-war-plugin.version>
 
         <!-- reporting plugins -->
         <maven-checkstyle-plugin.version>3.0.0</maven-checkstyle-plugin.version>
-        <maven-javadoc-plugin.version>2.10.3</maven-javadoc-plugin.version>
+        <maven-javadoc-plugin.version>3.0.1</maven-javadoc-plugin.version>
         <maven-jxr-plugin.version>2.5</maven-jxr-plugin.version>
-        <maven-pmd-plugin.version>3.5</maven-pmd-plugin.version>
+        <maven-pmd-plugin.version>3.10.0</maven-pmd-plugin.version>
         <maven-project-info-reports-plugin.version>2.8</maven-project-info-reports-plugin.version>
-        <maven-surefire-report-plugin.version>2.17</maven-surefire-report-plugin.version>
+        <maven-surefire-report-plugin.version>2.22.0</maven-surefire-report-plugin.version>
         <javancss-maven-plugin.version>2.1</javancss-maven-plugin.version>
         <taglist-maven-plugin.version>2.4</taglist-maven-plugin.version>
 
