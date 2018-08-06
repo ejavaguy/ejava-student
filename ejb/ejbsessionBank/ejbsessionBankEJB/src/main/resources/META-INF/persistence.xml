@@ -6,7 +6,7 @@
     <persistence-unit name="ejbsessionbank">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         <jta-data-source>java:jboss/datasources/ExampleDS</jta-data-source>
-        <jar-file>lib/ejbsessionBankImpl-${project.version}.jar</jar-file>
+        <jar-file>lib/info.ejava.examples.ejb-ejbsessionBankImpl-${project.version}.jar</jar-file>
         <properties>
             <property name="hibernate.dialect" 
                 value="${hibernate.dialect}"/>

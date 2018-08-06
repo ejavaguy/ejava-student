@@ -5,7 +5,7 @@
 
     <persistence-unit name="asyncMarket">
         <jta-data-source>java:jboss/datasources/ExampleDS</jta-data-source>
-        <jar-file>lib/asyncMarketImpl-${pom.version}.jar</jar-file>
+        <jar-file>lib/info.ejava.examples.async-asyncMarketImpl-${pom.version}.jar</jar-file>
         <properties>
             <!-- auto-create schema to make demonstration setup/cleanup easier -->
             <property name="hibernate.hbm2ddl.auto" value="create"/>
