@@ -83,10 +83,12 @@
                         <groupId>org.apache.maven.plugins</groupId>
                     </plugin>
 
+                    <!-- this plugin is dead - no support for java8 syntax
                     <plugin>
                         <groupId>org.codehaus.mojo</groupId>
                         <artifactId>javancss-maven-plugin</artifactId>
                     </plugin>
+                    -->
 
 
                     <plugin> 
