@@ -11,6 +11,9 @@
   <packaging>maven-plugin</packaging>
 
   <name>JPA::Utils::JPA Schema Generation Maven Plugin</name>
+  <properties>
+    <maven.version>3.3.9</maven.version>
+  </properties>
   
   <dependencies>
     <dependency>

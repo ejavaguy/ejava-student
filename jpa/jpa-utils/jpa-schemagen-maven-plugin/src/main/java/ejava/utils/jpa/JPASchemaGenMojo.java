@@ -1,10 +1,22 @@
 package ejava.utils.jpa;
 
 
+import java.io.File;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.persistence.Persistence;
+
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoFailureException;
-import org.apache.maven.plugin.descriptor.PluginDescriptor;
 import org.apache.maven.plugins.annotations.Execute;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
@@ -14,18 +26,6 @@ import org.apache.maven.project.MavenProject;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.jpa.boot.internal.ParsedPersistenceXmlDescriptor;
 import org.hibernate.jpa.boot.internal.PersistenceXmlParser;
-
-import java.io.File;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLClassLoader;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.persistence.Persistence;
 
 /**
  * This plugin will generate SQL schema for a specified persistence unit. It is targeted/tuned to 
@@ -120,6 +120,16 @@ public class JPASchemaGenMojo extends AbstractMojo {
 			
 			Map<String, Object> properties = configure();
 			properties.forEach((k,v) -> getLog().debug(k + "=" + v));
+
+			//hibernate has been appending to existing files
+			for (String prop: Arrays.asList(AvailableSettings.HBM2DDL_SCRIPTS_DROP_TARGET, AvailableSettings.HBM2DDL_SCRIPTS_CREATE_TARGET)) {
+			    String path = (String)properties.get(prop);
+			    if (path!=null && path.toLowerCase().contains("target")) {
+			        File f = new File(path);
+			        getLog().info("removing existing target file:" + f.getPath());
+			        f.delete();
+			    }
+			}
 			
 			Persistence.generateSchema(persistenceUnit, properties);
 			loadBeforeClosing();			
