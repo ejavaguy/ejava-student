@@ -76,9 +76,9 @@ public class WarehouseEJBIT  {
         assertEquals("unexpected quantity for product", 6, product.getQuantity());
         Product p2 = warehouse.getProduct(product.getId());
         for (int i=0; i<10 && p2.getQuantity() == 6; i++) {
-        	try { Thread.sleep(1000); } catch (Exception ex){}
-        	logger.info("waiting for async update");
-        	p2 = warehouse.getProduct(product.getId());
+            	try { Thread.sleep(1000); } catch (Exception ex){}
+            	logger.info("waiting for async update");
+            	p2 = warehouse.getProduct(product.getId());
         }
         assertEquals("product not updated async", 9, p2.getQuantity());
     }

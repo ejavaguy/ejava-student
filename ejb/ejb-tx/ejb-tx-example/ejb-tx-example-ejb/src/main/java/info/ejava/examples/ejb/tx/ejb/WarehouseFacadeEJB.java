@@ -165,7 +165,7 @@ public class WarehouseFacadeEJB implements WarehouseRemote {
         
         
         //return an instance of the bean from this thread/transaction
-        beanC.getProduct(p.getId());
+        p = beanC.getProduct(p.getId());
         
         //update product quantity in separate thread
         beanB.addQuantity(p.getId(), quantity);
