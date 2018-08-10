@@ -24,8 +24,6 @@ import static org.junit.Assert.*;
 /**
  * This test case performs a demonstration of using a message delivery mode.
  * Timings will be taken using both PERSISTENT and NON_PERSISTENT modes.
- *
- * @author jcstaff
  */
 public class MessageDeliveryModeTest extends JMSTestBase {
     static Logger log = LoggerFactory.getLogger(MessageDeliveryModeTest.class);
