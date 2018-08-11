@@ -7,6 +7,6 @@
           <!-- this file is required to exist to turn on CDI features -->
     <weld:scan>
         <!-- this client class, when deployed as part of the WAR gives CDI fits -->
-        <weld:exclude name="ejava.examples.ejbwar.inventory.client.InventoryClientImpl"/>
+        <weld:exclude name="ejava.examples.ejbwar.inventory.client.InventoryHttpClientImpl"/>
     </weld:scan>
 </beans>

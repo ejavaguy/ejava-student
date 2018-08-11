@@ -1,7 +1,6 @@
 package ejava.examples.ejbwar.inventory.client;
 
 import java.net.URI;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,8 +9,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
@@ -23,22 +20,24 @@ import org.apache.http.client.methods.HttpPut;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import ejava.examples.ejbwar.inventory.bo.Categories;
 import ejava.examples.ejbwar.inventory.bo.Category;
-import ejava.examples.ejbwar.inventory.bo.InventoryRepresentation;
 import ejava.examples.ejbwar.inventory.bo.Product;
 import ejava.examples.ejbwar.inventory.bo.Products;
 import ejava.examples.ejbwar.inventory.rs.CategoriesResource;
 import ejava.examples.ejbwar.inventory.rs.ProductsResource;
+import ejava.examples.ejbwar.jaxrs.JAXBUtils;
 
 /**
  * This class implements an HTTP Client interface to the inventory 
  * web application. All commands are through HTTP POST, GET, PUT, and DELETE
  * methods to specific resource URIs for products and categories.
  */
-public class InventoryClientImpl implements InventoryClient {
-	private static final Logger log = LoggerFactory.getLogger(InventoryClientImpl.class);
+public class InventoryHttpClientImpl implements InventoryClient {
+	private static final Logger logger = LoggerFactory.getLogger(InventoryHttpClientImpl.class);
 	private HttpClient client;
 	/**
 	 * Defines the HTTP URL for the WAR that hosts the JAX-RS resources.
@@ -91,10 +90,9 @@ public class InventoryClientImpl implements InventoryClient {
 		
 		//issue request and look for an OK response with entity
 		HttpResponse response = client.execute(get);
-		log.info(String.format("%s %s", get.getURI(), response));
+		logger.info("{} {}", get.getURI(), response);
 		if (Response.Status.OK.getStatusCode() == response.getStatusLine().getStatusCode()) {
-			return InventoryRepresentation.unmarshall(Categories.class,
-					response.getEntity().getContent());
+			return JAXBUtils.unmarshall(response.getEntity().getContent(), Categories.class);
 		}
 		return null;
 	}
@@ -111,10 +109,9 @@ public class InventoryClientImpl implements InventoryClient {
 		
 		//execute request and look for an OK response with entity
 		HttpResponse response = client.execute(get);
-		log.info(String.format("%s %s", get.getURI(), response));
+		logger.info("{} {}", get.getURI(), response);
 		if (Response.Status.OK.getStatusCode() == response.getStatusLine().getStatusCode()) {
-			return InventoryRepresentation.unmarshall(Category.class,
-					response.getEntity().getContent());
+			return JAXBUtils.unmarshall(response.getEntity().getContent(), Category.class);
 		}
 		return null;
 	}
@@ -130,7 +127,7 @@ public class InventoryClientImpl implements InventoryClient {
 
 		//execute request and look for an OK response without an entity
 		HttpResponse response = client.execute(delete);
-		log.info(String.format("%s %s", delete.getURI(), response));
+		logger.info("{} {}", delete.getURI(), response);
 		if (Response.Status.OK.getStatusCode() == response.getStatusLine().getStatusCode()) {
 			return true;
 		}
@@ -168,9 +165,9 @@ public class InventoryClientImpl implements InventoryClient {
 			
 		//issue the request and check the response
 		HttpResponse response = client.execute(post);
-		log.info(String.format("%s %s", post.getURI(), response));
+		logger.info("{} {}", post.getURI(), response);
 		if (Response.Status.CREATED.getStatusCode() == response.getStatusLine().getStatusCode()) {
-			return InventoryRepresentation.unmarshall(Product.class,response.getEntity().getContent());
+			return JAXBUtils.unmarshall(response.getEntity().getContent(), Product.class);
 		}
 		return null;
 	}
@@ -190,10 +187,9 @@ public class InventoryClientImpl implements InventoryClient {
 		
 		//issue request and look for OK response with entity
 		HttpResponse response = client.execute(get);
-		log.info(String.format("%s %s", get.getURI(), response));
+		logger.info("{} {}", get.getURI(), response);
 		if (Response.Status.OK.getStatusCode() == response.getStatusLine().getStatusCode()) {
-			return InventoryRepresentation.unmarshall(Products.class,
-					response.getEntity().getContent());
+			return JAXBUtils.unmarshall(response.getEntity().getContent(), Products.class);
 		}
 		return null;
 	}
@@ -210,10 +206,9 @@ public class InventoryClientImpl implements InventoryClient {
 		
 		//issue request and look for OK response with entity
 		HttpResponse response = client.execute(get);
-		log.info(String.format("%s %s", get.getURI(), response));
+		logger.info("{} {}", get.getURI(), response);
 		if (Response.Status.OK.getStatusCode() == response.getStatusLine().getStatusCode()) {
-			return InventoryRepresentation.unmarshall(Product.class,
-					response.getEntity().getContent());
+			return JAXBUtils.unmarshall(response.getEntity().getContent(), Product.class);
 		}
 		return null;
 	}
@@ -227,14 +222,14 @@ public class InventoryClientImpl implements InventoryClient {
 		//build overall request
 		HttpPut put = new HttpPut(uri);
 		put.addHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_XML);
-		put.setEntity(new StringEntity(product.toString(), "UTF-8"));
+		String payload = JAXBUtils.marshall(product);
+		put.setEntity(new StringEntity(payload, "UTF-8"));
 		
 		//issue request and look for OK with entity
 		HttpResponse response = client.execute(put);
-		log.info(String.format("%s %s", put.getURI(), response));
+		logger.info("{} {}", put.getURI(), response);
 		if (Response.Status.OK.getStatusCode() == response.getStatusLine().getStatusCode()) {
-			return InventoryRepresentation.unmarshall(Product.class,
-					response.getEntity().getContent());
+			return JAXBUtils.unmarshall(response.getEntity().getContent(), Product.class);
 		}
 		return null;
 	}
@@ -250,7 +245,7 @@ public class InventoryClientImpl implements InventoryClient {
 		
 		//issue request and look for OK respose without and entity
 		HttpResponse response = client.execute(delete);
-		log.info(String.format("%s %s", delete.getURI(), response));
+		logger.info("{} {}", delete.getURI(), response);
 		if (Response.Status.OK.getStatusCode() == response.getStatusLine().getStatusCode()) {
 			return true;
 		}

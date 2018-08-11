@@ -15,7 +15,8 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import ejava.examples.ejbwar.customer.client.CustomerClient;
 import ejava.examples.ejbwar.customer.client.CustomerClientImpl;
 import ejava.examples.ejbwar.inventory.client.InventoryClient;
-import ejava.examples.ejbwar.inventory.client.InventoryClientImpl;
+import ejava.examples.ejbwar.inventory.client.InventoryHttpClientImpl;
+import ejava.examples.ejbwar.inventory.client.InventoryJaxRSClientImpl;
 
 /**
  * This class implements the details of the test configuration and 
@@ -85,9 +86,11 @@ public class InventoryTestConfig {
 	 */
 	public InventoryClient inventoryClient() {
 		if (inventoryClient==null) {
-			InventoryClient client = new InventoryClientImpl();
-			((InventoryClientImpl)client).setHttpClient(httpClient());
-			((InventoryClientImpl)client).setAppURI(appURI());
+//			InventoryClient client = new InventoryHttpClientImpl();
+//			((InventoryHttpClientImpl)client).setHttpClient(httpClient());
+//			((InventoryHttpClientImpl)client).setAppURI(appURI());
+		    InventoryClient client = new InventoryJaxRSClientImpl();
+		    ((InventoryJaxRSClientImpl)client).setAppURI(appURI());
 			inventoryClient = client;
 		}
 		return inventoryClient;
