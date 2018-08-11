@@ -4,17 +4,12 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.StringWriter;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.core.MediaType;
 import javax.ws.rs.ext.ContextResolver;
-import javax.ws.rs.ext.Provider;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
-@Provider
-@Consumes(MediaType.APPLICATION_XML)
 public class JAXBUtils implements ContextResolver<JAXBContext> {
     private static JAXBUtils instance;
     
@@ -35,7 +30,7 @@ public class JAXBUtils implements ContextResolver<JAXBContext> {
         return instance;
     }
 
-    public static <T> String marshall(Object object) throws JAXBException {
+    public static <T> String marshal(T object) throws JAXBException {
         if (object==null) {
             return "";
         }
@@ -48,7 +43,7 @@ public class JAXBUtils implements ContextResolver<JAXBContext> {
         return writer.toString();
     }
     
-    public static <T> T unmarshall(String string, Class<T> type) throws JAXBException {
+    public static <T> T unmarshal(String string, Class<T> type) throws JAXBException {
         if (string==null || string.isEmpty()) {
             return null;
         }

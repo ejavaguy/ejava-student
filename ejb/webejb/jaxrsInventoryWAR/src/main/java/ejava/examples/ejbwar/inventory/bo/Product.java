@@ -1,5 +1,6 @@
 package ejava.examples.ejbwar.inventory.bo;
 
+import javax.json.bind.annotation.JsonbPropertyOrder;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -26,6 +27,7 @@ import javax.xml.bind.annotation.XmlType;
 		"price"
 })
 @XmlAccessorType(XmlAccessType.PROPERTY)
+@JsonbPropertyOrder({"id","name", "quantity", "price"})
 
 @Entity
 @Table(name="JAXRSINV_PRODUCT")

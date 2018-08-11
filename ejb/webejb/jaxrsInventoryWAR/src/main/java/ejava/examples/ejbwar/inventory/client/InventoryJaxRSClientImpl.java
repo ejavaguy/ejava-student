@@ -2,23 +2,14 @@ package ejava.examples.ejbwar.inventory.client;
 
 import java.net.URI;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import javax.management.j2ee.statistics.StatefulSessionBeanStats;
-import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.Invocation;
-import javax.ws.rs.client.ResponseProcessingException;
 import javax.ws.rs.client.Invocation.Builder;
+import javax.ws.rs.client.ResponseProcessingException;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Form;
-import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Request;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status.Family;
 import javax.ws.rs.core.UriBuilder;
@@ -30,9 +21,6 @@ import ejava.examples.ejbwar.inventory.bo.Categories;
 import ejava.examples.ejbwar.inventory.bo.Category;
 import ejava.examples.ejbwar.inventory.bo.Product;
 import ejava.examples.ejbwar.inventory.bo.Products;
-import ejava.examples.ejbwar.inventory.rs.CategoriesResource;
-import ejava.examples.ejbwar.inventory.rs.ProductsResource;
-import ejava.examples.ejbwar.jaxrs.JAXBUtils;
 
 /**
  * This class implements a JAX-RS Client interface to the inventory 
