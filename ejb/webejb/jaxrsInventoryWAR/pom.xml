@@ -32,13 +32,6 @@
             <scope>provided</scope>
         </dependency>
 
-        <!-- HTTP web client is implemented in HttpClient -->
-        <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpclient</artifactId>
-            <scope>provided</scope>
-        </dependency>        
-
         <!-- JPA provider for annotations -->
         <dependency>
             <groupId>javax.persistence</groupId>
@@ -53,9 +46,16 @@
         </dependency>
         <dependency>
             <groupId>org.jboss.resteasy</groupId>
+            <artifactId>resteasy-jaxb-provider</artifactId>
+            <scope>test</scope>
+        </dependency>
+<!-- 
+        <dependency>
+            <groupId>org.jboss.resteasy</groupId>
             <artifactId>resteasy-jackson2-provider</artifactId>
             <scope>test</scope>
         </dependency>        
+ -->
         
         <dependency>
             <groupId>org.slf4j</groupId>

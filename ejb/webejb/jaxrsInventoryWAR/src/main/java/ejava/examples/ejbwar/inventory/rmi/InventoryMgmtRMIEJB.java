@@ -68,7 +68,7 @@ public class InventoryMgmtRMIEJB implements InventoryMgmtRemote {
 		log.debug(String.format("getCategory(%d)", id));
 		Category category = ejb.getCategory(id);
 		//hydrate the object before returning
-		category.toString();
+		category.getProducts().size();
 		return category;
 	}
 

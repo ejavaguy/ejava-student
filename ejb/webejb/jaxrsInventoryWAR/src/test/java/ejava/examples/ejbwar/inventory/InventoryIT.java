@@ -54,11 +54,7 @@ public class InventoryIT {
 	 */
 	public void cleanup() throws Exception {
 	    Categories categories = null;
-	    try {
-	        categories = inventoryClient.findCategoryByName("", 0, 0);
-	    } catch (ResponseProcessingException ex) {
-	        logger.info("{}", ex.getMessage());
-	    }
+        categories = inventoryClient.findCategoryByName("", 0, 0);
 		assertNotNull("error getting categories", categories);
 		logger.info("deleting {} categories", categories.getCategories().size());
 		for (Category c: categories.getCategories()) {

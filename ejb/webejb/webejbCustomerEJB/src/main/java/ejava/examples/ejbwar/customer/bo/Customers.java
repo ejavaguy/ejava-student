@@ -62,6 +62,4 @@ public class Customers extends CustomerRepresentation {
 	public void setCategories(List<Customer> customers) {
 		this.customers = customers;
 	}
-	
-	
 }

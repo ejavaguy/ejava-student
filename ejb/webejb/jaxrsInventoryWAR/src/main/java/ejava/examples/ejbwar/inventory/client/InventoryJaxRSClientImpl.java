@@ -42,11 +42,15 @@ import ejava.examples.ejbwar.jaxrs.JAXBUtils;
  */
 public class InventoryJaxRSClientImpl implements InventoryClient {
 	private static final Logger logger = LoggerFactory.getLogger(InventoryJaxRSClientImpl.class);
-	private Client client = ClientBuilder.newClient();
+	private Client client;
 	/**
 	 * Defines the HTTP URL for the WAR that hosts the JAX-RS resources.
 	 */
 	private URI appURI;
+	
+	public void setClient(Client client) {
+        this.client = client;
+    }
 
 	public void setAppURI(URI appURI) {
 		this.appURI = appURI;
@@ -87,7 +91,6 @@ public class InventoryJaxRSClientImpl implements InventoryClient {
 		
         //build the overall request 
 		WebTarget target = client.target(uri);
-		target = target.register(Categories.class);
 		Builder request = target.request(MediaType.APPLICATION_XML_TYPE);
 		Invocation get = request.buildGet();
 
@@ -127,7 +130,7 @@ public class InventoryJaxRSClientImpl implements InventoryClient {
 	
 	@Override
 	public boolean deleteCategory(int id) {
-		URI uri = buildURI("category/{id}")
+		URI uri = buildURI("categories/{id}")
 				//marshall @PathParm into the URI
 				.build(id);
 		

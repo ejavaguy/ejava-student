@@ -1,7 +1,6 @@
 package ejava.examples.ejbwar.inventory;
 
 import java.io.IOException;
-
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -9,13 +8,12 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Properties;
 
-import org.apache.http.client.HttpClient;
-import org.apache.http.impl.client.DefaultHttpClient;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
 
 import ejava.examples.ejbwar.customer.client.CustomerClient;
-import ejava.examples.ejbwar.customer.client.CustomerClientImpl;
+import ejava.examples.ejbwar.customer.client.CustomerJaxRSClientImpl;
 import ejava.examples.ejbwar.inventory.client.InventoryClient;
-import ejava.examples.ejbwar.inventory.client.InventoryHttpClientImpl;
 import ejava.examples.ejbwar.inventory.client.InventoryJaxRSClientImpl;
 
 /**
@@ -23,7 +21,7 @@ import ejava.examples.ejbwar.inventory.client.InventoryJaxRSClientImpl;
  * objects required to operate the test.
  */
 public class InventoryTestConfig {
-	private HttpClient httpClient;
+	private Client jaxrsClient;
 	private URI appURI;
 	private InventoryClient inventoryClient;
 	private CustomerClient customerClient;
@@ -47,15 +45,14 @@ public class InventoryTestConfig {
 	}
 	
 	/**
-	 * Returns a singleton connection manager for use with HttpClient
-	 * HTTP client library.
-	 * @return
+	 * Returns a singleton JAX-RS client to use with JAX-RS Client API
+	 * @return the JAX-RS client
 	 */
-	public HttpClient httpClient() {
-		if (httpClient==null) {
-			httpClient = new DefaultHttpClient();
-		}
-		return httpClient;
+	public Client jaxrsClient() {
+	    if (jaxrsClient==null) {
+	        jaxrsClient = ClientBuilder.newClient();
+	    }
+	    return jaxrsClient;
 	}
 
 	/**
@@ -86,11 +83,9 @@ public class InventoryTestConfig {
 	 */
 	public InventoryClient inventoryClient() {
 		if (inventoryClient==null) {
-//			InventoryClient client = new InventoryHttpClientImpl();
-//			((InventoryHttpClientImpl)client).setHttpClient(httpClient());
-//			((InventoryHttpClientImpl)client).setAppURI(appURI());
 		    InventoryClient client = new InventoryJaxRSClientImpl();
 		    ((InventoryJaxRSClientImpl)client).setAppURI(appURI());
+		    ((InventoryJaxRSClientImpl)client).setClient(jaxrsClient());
 			inventoryClient = client;
 		}
 		return inventoryClient;
@@ -103,9 +98,9 @@ public class InventoryTestConfig {
 	 */
 	public CustomerClient customerClient() {
 		if (customerClient == null) {
-			CustomerClient client = new CustomerClientImpl();
-			((CustomerClientImpl)client).setHttpClient(httpClient());
-			((CustomerClientImpl)client).setAppURI(appURI());
+			CustomerClient client = new CustomerJaxRSClientImpl();
+			((CustomerJaxRSClientImpl)client).setClient(jaxrsClient());
+			((CustomerJaxRSClientImpl)client).setAppURI(appURI());
 			customerClient = client;
 		}
 		return customerClient;

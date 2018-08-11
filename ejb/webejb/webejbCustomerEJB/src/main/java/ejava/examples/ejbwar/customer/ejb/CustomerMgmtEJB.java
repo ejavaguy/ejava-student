@@ -21,7 +21,7 @@ public class CustomerMgmtEJB implements CustomerMgmtLocal, CustomerMgmtRemote {
 	
 	@Override
 	public Customer addCustomer(Customer customer) {
-		log.debug(String.format("addCustomer(%s)", customer));
+		log.debug("addCustomer({})", customer);
 		dao.createCustomer(customer);
 		return customer;
 	}
@@ -29,8 +29,8 @@ public class CustomerMgmtEJB implements CustomerMgmtLocal, CustomerMgmtRemote {
 	@Override
 	public Customers findCustomersByName(String firstName, String lastName,
 			int offset, int limit) {
-		log.debug(String.format("findCustomerByName(%s, %s, %d, %d)", 
-				firstName, lastName, offset, limit));
+		log.debug("findCustomerByName({}, {}, {}, {})", 
+				firstName, lastName, offset, limit);
 		List<Customer> customers = dao.findCustomerByName(firstName, lastName, offset, limit);
 		for (Customer c: customers) {
 			//hydrate each instance
@@ -41,13 +41,13 @@ public class CustomerMgmtEJB implements CustomerMgmtLocal, CustomerMgmtRemote {
 	
 	@Override
 	public Customer getCustomer(int id) {
-		log.debug(String.format("getCustomer(%d)", id));
+		log.debug("getCustomer({})", id);
 		return dao.getCustomer(id);
 	}
 
 	@Override
 	public void deleteCustomer(int id) {
-		log.debug(String.format("deleteCustomer(%d)", id));
+		log.debug("deleteCustomer({})", id);
 		Customer customer = dao.getCustomer(id);
 		if (customer != null) {
 			dao.deleteCustomer(customer);
