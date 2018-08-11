@@ -1,6 +1,7 @@
 package ejava.examples.ejbwar.inventory.ejb;
 
 import java.util.List;
+import java.util.UUID;
 
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -70,6 +71,7 @@ public class InventoryMgmtEJB {
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public Product addProduct(Product product, String categoryName) {
+	    product.setProtectedValue(UUID.randomUUID().toString());
 		dao.addProduct(product);
 		Category category = createOrGetCategory(categoryName);
 		category.getProducts().add(product);

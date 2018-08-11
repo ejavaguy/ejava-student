@@ -19,6 +19,7 @@ public class JSONUtils implements ContextResolver<Jsonb>{
             JsonbConfig config=new JsonbConfig();
             //config.setProperty(JsonbConfig.FORMATTING, true);
             config.setProperty(JsonbConfig.PROPERTY_NAMING_STRATEGY, PropertyNamingStrategy.LOWER_CASE_WITH_UNDERSCORES);
+            //config.setProperty(JsonbConfig.NULL_VALUES, true); //helps us spot fields we don't want
             jsb=JsonbBuilder.create(config);
         }
         return jsb;

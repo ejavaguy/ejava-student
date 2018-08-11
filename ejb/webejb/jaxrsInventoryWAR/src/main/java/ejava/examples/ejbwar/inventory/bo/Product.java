@@ -1,6 +1,8 @@
 package ejava.examples.ejbwar.inventory.bo;
 
+import javax.json.bind.annotation.JsonbProperty;
 import javax.json.bind.annotation.JsonbPropertyOrder;
+import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,6 +16,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 /**
@@ -52,7 +55,10 @@ public class Product extends InventoryRepresentation {
 	@Column(name="PRICE", nullable=true)
 	private Double price;
 
-	public Product() {}
+    @Column(name="PROTECTED_VALUE", length=36, nullable=false)
+    private String protectedValue;
+
+    public Product() {}
 	public Product(String name, Integer quantity, Double price) {
 		this.name=name;
 		this.quantity=quantity;
@@ -68,8 +74,10 @@ public class Product extends InventoryRepresentation {
 		this.id = id;
 	}
 
-	@XmlAttribute(required=true)
+	@XmlAttribute(required=true, name="xmlName") //used both during marshal and unmarshal
+	@JsonbProperty("jsonName") //used during toJson()
 	public String getName() { return name; }
+    @JsonbProperty("jsonName") //used during fromJson()
 	public void setName(String name) {
 		this.name = name;
 	}
@@ -85,4 +93,30 @@ public class Product extends InventoryRepresentation {
 	public void setPrice(Double price) {
 		this.price = price;
 	}
+	
+	@XmlTransient
+    @JsonbTransient
+	public String getProtectedValue() { return protectedValue; }
+    @JsonbTransient
+	public void setProtectedValue(String protectedValue) {
+        this.protectedValue = protectedValue;
+    }
+    public Product withProtectedValue(String string) {
+        setProtectedValue(string);
+        return this;
+    }
+    
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("Product [id=").append(id)
+                .append(", name=").append(name)
+                .append(", quantity=").append(quantity)
+                .append(", price=").append(price)
+                .append(", protectedValue=")
+                .append(protectedValue).append("]");
+        return builder.toString();
+    }
+    
+    
 }
