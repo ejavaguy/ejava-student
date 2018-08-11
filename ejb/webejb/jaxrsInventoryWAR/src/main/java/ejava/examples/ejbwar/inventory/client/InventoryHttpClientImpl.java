@@ -1,13 +1,16 @@
 package ejava.examples.ejbwar.inventory.client;
 
+import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
+import javax.xml.bind.JAXBException;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -75,7 +78,7 @@ public class InventoryHttpClientImpl implements InventoryClient {
 	}
 	
 	@Override
-	public Categories findCategoryByName(String name, int offset, int limit) throws Exception {
+	public Categories findCategoryByName(String name, int offset, int limit) {
 		//build a URI to the specific method that is hosted within the app
 		URI uri = buildURI(CategoriesResource.class,"findCategoriesByName")
 				//marshall @QueryParams into URI
@@ -89,16 +92,21 @@ public class InventoryHttpClientImpl implements InventoryClient {
 		get.addHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_XML);
 		
 		//issue request and look for an OK response with entity
-		HttpResponse response = client.execute(get);
-		logger.info("{} {}", get.getURI(), response);
-		if (Response.Status.OK.getStatusCode() == response.getStatusLine().getStatusCode()) {
-			return JAXBUtils.unmarshall(response.getEntity().getContent(), Categories.class);
+		try {
+        		HttpResponse response = client.execute(get);
+        		logger.info("{} {}", get.getURI(), response);
+        		if (Response.Status.OK.getStatusCode() == response.getStatusLine().getStatusCode()) {
+                return JAXBUtils.unmarshall(response.getEntity().getContent(), Categories.class);
+        		}
+        		return null;
 		}
-		return null;
+        	catch (Exception ex) {
+        	    throw new WebApplicationException(ex);
+        	}
 	}
 	
 	@Override
-	public Category getCategory(int id) throws Exception {
+	public Category getCategory(int id) {
 		URI uri = buildURI(CategoriesResource.class,"getCategory")
 				//marshall @PathParm into the URI
 				.build(id);
@@ -108,16 +116,21 @@ public class InventoryHttpClientImpl implements InventoryClient {
 		get.addHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_XML);
 		
 		//execute request and look for an OK response with entity
-		HttpResponse response = client.execute(get);
-		logger.info("{} {}", get.getURI(), response);
-		if (Response.Status.OK.getStatusCode() == response.getStatusLine().getStatusCode()) {
-			return JAXBUtils.unmarshall(response.getEntity().getContent(), Category.class);
-		}
-		return null;
+		try {
+        		HttpResponse response = client.execute(get);
+        		logger.info("{} {}", get.getURI(), response);
+        		if (Response.Status.OK.getStatusCode() == response.getStatusLine().getStatusCode()) {
+        			return JAXBUtils.unmarshall(response.getEntity().getContent(), Category.class);
+        		}
+        		return null;
+        }
+        catch (Exception ex) {
+            throw new WebApplicationException(ex);
+        }
 	}
 	
 	@Override
-	public boolean deleteCategory(int id) throws Exception {
+	public boolean deleteCategory(int id) {
 		URI uri = buildURI(CategoriesResource.class,"deleteCategory")
 				//marshall @PathParm into the URI
 				.build(id);
@@ -126,13 +139,18 @@ public class InventoryHttpClientImpl implements InventoryClient {
 		HttpDelete delete = new HttpDelete(uri);
 
 		//execute request and look for an OK response without an entity
-		HttpResponse response = client.execute(delete);
-		logger.info("{} {}", delete.getURI(), response);
-		if (Response.Status.OK.getStatusCode() == response.getStatusLine().getStatusCode()) {
-			return true;
-		}
-		EntityUtils.consume(response.getEntity()); //must read returned data to release conn
-		return false;
+		try {
+        		HttpResponse response = client.execute(delete);
+        		logger.info("{} {}", delete.getURI(), response);
+        		if (Response.Status.OK.getStatusCode() == response.getStatusLine().getStatusCode()) {
+        			return true;
+        		}
+        		EntityUtils.consume(response.getEntity()); //must read returned data to release conn
+        		return false;
+        }
+        catch (Exception ex) {
+            throw new WebApplicationException(ex);
+        }
 	}
 	
 	/**
@@ -140,8 +158,7 @@ public class InventoryHttpClientImpl implements InventoryClient {
 	 * inventory. 
 	 */
 	@Override
-	public Product createProduct(Product product, String categoryName) 
-		throws Exception {
+	public Product createProduct(Product product, String categoryName) {
 		URI uri = buildURI(ProductsResource.class,"createProduct")
 				//no @PathParams here
 				.build();
@@ -158,22 +175,27 @@ public class InventoryHttpClientImpl implements InventoryClient {
 		}
 
 		//create the request
-		HttpPost post = new HttpPost(uri);
-		post.addHeader(HttpHeaders.CONTENT_ENCODING, MediaType.APPLICATION_FORM_URLENCODED);
-		post.addHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_XML);
-		post.setEntity(new UrlEncodedFormEntity(params));
-			
-		//issue the request and check the response
-		HttpResponse response = client.execute(post);
-		logger.info("{} {}", post.getURI(), response);
-		if (Response.Status.CREATED.getStatusCode() == response.getStatusLine().getStatusCode()) {
-			return JAXBUtils.unmarshall(response.getEntity().getContent(), Product.class);
-		}
-		return null;
+		try {
+        		HttpPost post = new HttpPost(uri);
+        		post.addHeader(HttpHeaders.CONTENT_ENCODING, MediaType.APPLICATION_FORM_URLENCODED);
+        		post.addHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_XML);
+        		post.setEntity(new UrlEncodedFormEntity(params));
+        			
+        		//issue the request and check the response
+        		HttpResponse response = client.execute(post);
+        		logger.info("{} {}", post.getURI(), response);
+        		if (Response.Status.CREATED.getStatusCode() == response.getStatusLine().getStatusCode()) {
+        			return JAXBUtils.unmarshall(response.getEntity().getContent(), Product.class);
+        		}
+        		return null;
+        }
+        catch (Exception ex) {
+            throw new WebApplicationException(ex);
+        }
 	}
 	
 	@Override
-	public Products findProductsByName(String name, int offset, int limit) throws Exception {
+	public Products findProductsByName(String name, int offset, int limit) {
 		URI uri = buildURI(ProductsResource.class,"findProductsByName")
 				//marshall @QueryParams into URI
 				.queryParam("name", name)
@@ -186,16 +208,21 @@ public class InventoryHttpClientImpl implements InventoryClient {
 		get.addHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_XML);
 		
 		//issue request and look for OK response with entity
-		HttpResponse response = client.execute(get);
-		logger.info("{} {}", get.getURI(), response);
-		if (Response.Status.OK.getStatusCode() == response.getStatusLine().getStatusCode()) {
-			return JAXBUtils.unmarshall(response.getEntity().getContent(), Products.class);
-		}
-		return null;
+		try {
+        		HttpResponse response = client.execute(get);
+        		logger.info("{} {}", get.getURI(), response);
+        		if (Response.Status.OK.getStatusCode() == response.getStatusLine().getStatusCode()) {
+        			return JAXBUtils.unmarshall(response.getEntity().getContent(), Products.class);
+        		}
+        		return null;
+        }
+        catch (Exception ex) {
+            throw new WebApplicationException(ex);
+        }
 	}
 	
 	@Override
-	public Product getProduct(int id) throws Exception {
+	public Product getProduct(int id) {
 		URI uri = buildURI(ProductsResource.class,"getProduct")
 				//marshall @PathParm into the URI
 				.build(id);
@@ -205,16 +232,21 @@ public class InventoryHttpClientImpl implements InventoryClient {
 		get.addHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_XML);
 		
 		//issue request and look for OK response with entity
-		HttpResponse response = client.execute(get);
-		logger.info("{} {}", get.getURI(), response);
-		if (Response.Status.OK.getStatusCode() == response.getStatusLine().getStatusCode()) {
-			return JAXBUtils.unmarshall(response.getEntity().getContent(), Product.class);
-		}
-		return null;
+		try {
+        		HttpResponse response = client.execute(get);
+        		logger.info("{} {}", get.getURI(), response);
+        		if (Response.Status.OK.getStatusCode() == response.getStatusLine().getStatusCode()) {
+        			return JAXBUtils.unmarshall(response.getEntity().getContent(), Product.class);
+        		}
+        		return null;
+        }
+        catch (Exception ex) {
+            throw new WebApplicationException(ex);
+        }
 	}
 	
 	@Override
-	public Product updateProduct(Product product) throws Exception {
+	public Product updateProduct(Product product) {
 		URI uri = buildURI(ProductsResource.class,"updateProduct")
 				//marshall @PathParm into the URI
 				.build(product.getId());
@@ -222,20 +254,26 @@ public class InventoryHttpClientImpl implements InventoryClient {
 		//build overall request
 		HttpPut put = new HttpPut(uri);
 		put.addHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_XML);
-		String payload = JAXBUtils.marshall(product);
-		put.setEntity(new StringEntity(payload, "UTF-8"));
-		
-		//issue request and look for OK with entity
-		HttpResponse response = client.execute(put);
-		logger.info("{} {}", put.getURI(), response);
-		if (Response.Status.OK.getStatusCode() == response.getStatusLine().getStatusCode()) {
-			return JAXBUtils.unmarshall(response.getEntity().getContent(), Product.class);
-		}
-		return null;
+
+		try {
+        		String payload = JAXBUtils.marshall(product);
+        		put.setEntity(new StringEntity(payload, "UTF-8"));
+        		
+        		//issue request and look for OK with entity
+        		HttpResponse response = client.execute(put);
+        		logger.info("{} {}", put.getURI(), response);
+        		if (Response.Status.OK.getStatusCode() == response.getStatusLine().getStatusCode()) {
+        			return JAXBUtils.unmarshall(response.getEntity().getContent(), Product.class);
+        		}
+        		return null;
+        }
+        catch (Exception ex) {
+            throw new WebApplicationException(ex);
+        }
 	}
 
 	@Override
-	public boolean deleteProduct(int id) throws Exception {
+	public boolean deleteProduct(int id) {
 		URI uri = buildURI(ProductsResource.class,"deleteProduct")
 				//marshall @PathParm into the URI
 				.build(id);
@@ -244,12 +282,17 @@ public class InventoryHttpClientImpl implements InventoryClient {
 		HttpDelete delete = new HttpDelete(uri);
 		
 		//issue request and look for OK respose without and entity
-		HttpResponse response = client.execute(delete);
-		logger.info("{} {}", delete.getURI(), response);
-		if (Response.Status.OK.getStatusCode() == response.getStatusLine().getStatusCode()) {
-			return true;
-		}
-		EntityUtils.consume(response.getEntity()); //must read returned data to release conn
-		return false;
+		try {
+        		HttpResponse response = client.execute(delete);
+        		logger.info("{} {}", delete.getURI(), response);
+        		if (Response.Status.OK.getStatusCode() == response.getStatusLine().getStatusCode()) {
+        			return true;
+        		}
+        		EntityUtils.consume(response.getEntity()); //must read returned data to release conn
+        		return false;
+        }
+        catch (Exception ex) {
+            throw new WebApplicationException(ex);
+        }
 	}
 }

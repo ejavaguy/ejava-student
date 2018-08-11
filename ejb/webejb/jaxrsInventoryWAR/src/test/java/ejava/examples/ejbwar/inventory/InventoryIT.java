@@ -2,6 +2,10 @@ package ejava.examples.ejbwar.inventory;
 
 import static org.junit.Assert.*;
 
+import javax.ws.rs.ProcessingException;
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.client.ResponseProcessingException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.junit.Before;
@@ -22,7 +26,7 @@ import ejava.examples.ejbwar.inventory.client.InventoryClient;
  * inventory application deployed to the server.
  */
 public class InventoryIT {
-	private static final Logger log = LoggerFactory.getLogger(InventoryIT.class);
+	private static final Logger logger = LoggerFactory.getLogger(InventoryIT.class);
 	private InventoryClient inventoryClient;
 	private CustomerClient customerClient;
 	
@@ -31,7 +35,7 @@ public class InventoryIT {
 		//give application time to fully deploy
 		if (Boolean.parseBoolean(System.getProperty("cargo.startstop", "false"))) {
 			long waitTime=15000;
-	    	log.info(String.format("pausing %d secs for server deployment to complete", waitTime/1000));
+	    	logger.info("pausing {} secs for server deployment to complete", waitTime/1000);
 	    	Thread.sleep(waitTime);
 		}
 	}
@@ -39,7 +43,7 @@ public class InventoryIT {
 	@Before
 	public void setUp() throws Exception {
 		InventoryTestConfig config = new InventoryTestConfig("/it.properties");
-		log.info("uri=" + config.appURI());
+		logger.info("uri=" + config.appURI());
 		inventoryClient = config.inventoryClient();
 		customerClient = config.customerClient();
 		cleanup();
@@ -49,9 +53,14 @@ public class InventoryIT {
 	 * Remove data from previous tests
 	 */
 	public void cleanup() throws Exception {
-		Categories categories = inventoryClient.findCategoryByName("", 0, 0);
+	    Categories categories = null;
+	    try {
+	        categories = inventoryClient.findCategoryByName("", 0, 0);
+	    } catch (ResponseProcessingException ex) {
+	        logger.info("{}", ex.getMessage());
+	    }
 		assertNotNull("error getting categories", categories);
-		log.info(String.format("deleting %d categories", categories.getCategories().size()));
+		logger.info("deleting {} categories", categories.getCategories().size());
 		for (Category c: categories.getCategories()) {
 			inventoryClient.deleteCategory(c.getId());
 		}
@@ -61,7 +70,7 @@ public class InventoryIT {
 		
 		Products products = inventoryClient.findProductsByName("", 0, 0);
 		assertNotNull("error getting products", categories);
-		log.info(String.format("deleting %d products", products.getProducts().size()));
+		logger.info("deleting {} products", products.getProducts().size());
 		for (Product p: products.getProducts()) {
 			inventoryClient.deleteProduct(p.getId());
 		}
@@ -71,7 +80,7 @@ public class InventoryIT {
 		
 		Customers customers = customerClient.findCustomersByName("", "", 0, 0);
 		assertNotNull("error getting customers", customers);
-		log.info(String.format("deleting %d customers", customers.getCustomers().size()));
+		logger.info("deleting {} customers", customers.getCustomers().size());
 		for (Customer c: customers.getCustomers()) {
 			customerClient.deleteCustomer(c.getId());
 		}
@@ -82,13 +91,13 @@ public class InventoryIT {
 
 	@Test
 	public void testAddInventory() throws Exception {
-		log.info("*** testAddInventory() ***");
+		logger.info("*** testAddInventory() ***");
 		
 		//create a new product
 		Product product = new Product("chips");		
 		product = inventoryClient.createProduct(product, "snacks");
 		assertNotNull("product not created", product);
-		log.info("created product:" + product);
+		logger.info("created product:" + product);
 		assertTrue("product primary ket not assigned", product.getId()>0);
 		
 		//get that product by ID
@@ -103,7 +112,7 @@ public class InventoryIT {
 		//get the full category
 		Category category = inventoryClient.getCategory(categories.getCategories().get(0).getId());
 		assertNotNull("unable to find category", category);
-		log.info("{}", category);
+		logger.info("{}", category);
 		
 		//verify category has product
 		assertEquals("unexpected product count", 1, category.getProductCount());
@@ -114,13 +123,13 @@ public class InventoryIT {
 	
 	@Test
 	public void testUpdateProduct() throws Exception {
-		log.info("*** testUpdateProduct ***");
+		logger.info("*** testUpdateProduct ***");
 		
 		//create a new product
 		Product product = new Product("mp3");		
 		product = inventoryClient.createProduct(product, "radios");
 		assertNotNull("product not created", product);
-		log.info("created product:" + product);
+		logger.info("created product:" + product);
 		assertTrue("product primary ket not assigned", product.getId()>0);
 		
 		//update product
@@ -134,7 +143,7 @@ public class InventoryIT {
 	
 	@Test
 	public void testManageCustomer() throws Exception {
-		log.info("*** testManageCustomer ***");
+		logger.info("*** testManageCustomer ***");
 	
 		//create customer
 		Customer customer = new Customer("cat", "inhat");
