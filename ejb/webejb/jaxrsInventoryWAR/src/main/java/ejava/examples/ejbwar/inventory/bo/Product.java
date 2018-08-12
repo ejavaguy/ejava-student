@@ -42,7 +42,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * 
  * The use of JAXB annotations for Json does confuse the marshaling decision 
  * logic. So we have to make sure we have JSON-B annotations on the class,
- * and passed to the marshaling methods.
+ * and passed to the marshaling methods. Of course -- if your marshaled class
+ * is a true DTO, then there is much less need for overrides.
  */
 @XmlRootElement(name="product", namespace=InventoryRepresentation.NAMESPACE)
 @XmlType(name="product", namespace=InventoryRepresentation.NAMESPACE, propOrder={
