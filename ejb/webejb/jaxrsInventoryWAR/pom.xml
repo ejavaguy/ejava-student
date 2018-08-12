@@ -67,16 +67,17 @@
             <artifactId>javax.ws.rs-api</artifactId>
             <scope>provided</scope>
         </dependency>
+        
         <!-- defines JSON-B entry point e.g., Jsonb and @Annotations -->
         <dependency>
             <groupId>javax.json.bind</groupId>
             <artifactId>javax.json.bind-api</artifactId>
             <scope>provided</scope>
         </dependency>
+        <!-- needed to define Json for non-jee8 environments -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>
-            <version>2.9.5</version>
         </dependency>
               
         <!-- test/JAX-RS provider dependencies -->    
@@ -91,7 +92,7 @@
         <dependency>
             <groupId>org.jboss.resteasy</groupId>
             <artifactId>resteasy-jaxb-provider</artifactId>
-            <scope>provided</scope> <!-- added to main scope for resteasy annotations -->
+            <scope>test</scope>
         </dependency>
         <!-- JSON wiring for RESTEasy JAX-RS provider (javaee7)-->
         <dependency>
@@ -99,8 +100,7 @@
           <artifactId>resteasy-jackson2-provider</artifactId>
             <scope>test</scope>
        </dependency>
-       <!-- JSON-B JSON wiring for RESTEasy JAX-RS provider (javaee8; highest JSON priority) 
-       -->
+       <!-- JSON-B JSON wiring for RESTEasy JAX-RS provider (javaee8; highest JSON priority) -->
        <dependency>
           <groupId>org.jboss.resteasy</groupId>
           <artifactId>resteasy-json-binding-provider</artifactId>
