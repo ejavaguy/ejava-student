@@ -26,9 +26,20 @@
             <scope>compile</scope>
         </dependency>
 
+        <!-- APIs used but provided by server -->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.inject</groupId>
+            <artifactId>javax.inject</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.enterprise</groupId>
+            <artifactId>cdi-api</artifactId>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -56,45 +67,62 @@
             <artifactId>javax.ws.rs-api</artifactId>
             <scope>provided</scope>
         </dependency>
+        <!-- defines JSON-B entry point e.g., Jsonb and @Annotations -->
         <dependency>
-            <groupId>javax.json</groupId>
-            <artifactId>javax.json-api</artifactId>
+            <groupId>javax.json.bind</groupId>
+            <artifactId>javax.json.bind-api</artifactId>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <version>2.9.5</version>
+        </dependency>
+              
+        <!-- test/JAX-RS provider dependencies -->    
             
         <!-- JAX-RS provider -->
         <dependency>
             <groupId>org.jboss.resteasy</groupId>
             <artifactId>resteasy-client</artifactId>
             <scope>test</scope>
-        </dependency>
-
-        <!-- JAXB support -->
+        </dependency>    
+        <!-- XML impl for RESTEasy JAX-RS provider -->
         <dependency>
             <groupId>org.jboss.resteasy</groupId>
             <artifactId>resteasy-jaxb-provider</artifactId>
-            <scope>test</scope>
+            <scope>provided</scope> <!-- added to main scope for resteasy annotations -->
         </dependency>
-
-        <!-- JSON support -->
-        <!-- pure API -->
+        <!-- JSON wiring for RESTEasy JAX-RS provider (javaee7)-->
         <dependency>
-            <groupId>javax.json</groupId>
-            <artifactId>javax.json-api</artifactId>
-            <scope>provided</scope>
-        </dependency>
-        <!-- reference implementation for JSON-B -->
+          <groupId>org.jboss.resteasy</groupId>
+          <artifactId>resteasy-jackson2-provider</artifactId>
+            <scope>test</scope>
+       </dependency>
+       <!-- JSON-B JSON wiring for RESTEasy JAX-RS provider (javaee8; highest JSON priority) 
+       -->
+       <dependency>
+          <groupId>org.jboss.resteasy</groupId>
+          <artifactId>resteasy-json-binding-provider</artifactId>
+            <scope>test</scope>
+       </dependency>
+
+        <!-- brought in by resteasy-json-binding-provider -->
+        <!-- JSON-B - reference implementation for JSON-B (e.g., JsonBindingProvider) 
         <dependency>
             <groupId>org.eclipse</groupId>
             <artifactId>yasson</artifactId>
-            <scope>provided</scope>
+            <scope>test</scope>
         </dependency>              
-        <!-- JSON provider for JSON-B reference implementation -->
+         -->
+        <!-- JSON provider for JSON-B reference implementation - needed by yasson
         <dependency>
             <groupId>org.glassfish</groupId>
             <artifactId>javax.json</artifactId>
+            <scope>test</scope>
         </dependency>
-        
+        -->
+      
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-log4j12</artifactId>
@@ -106,7 +134,8 @@
             <scope>test</scope>
         </dependency>
         
-        <!-- Needs to go last in classpath so provider versions used first 
+        <!-- Could use this to define the many 
+             javax classes individually enumerated above 
         <dependency>
             <groupId>javax</groupId>
             <artifactId>javaee-api</artifactId>
@@ -167,6 +196,7 @@
                                 <include>**/rs/*Resource.class</include>
                                 <include>**/client/**/*</include>
                                 <include>**/rmi/*Remote.class</include>
+                                <include>**/jaxrs/*Utils.class</include>
                             </includes>
                         </configuration>
                     </execution>

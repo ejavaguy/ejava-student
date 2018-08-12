@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import java.util.List;
 
+import javax.json.bind.annotation.JsonbAnnotation;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -21,6 +22,7 @@ import ejava.examples.ejbwar.inventory.bo.InventoryRepresentation;
 @XmlType(name="Products", namespace=InventoryRepresentation.NAMESPACE)
 @XmlAccessorType(XmlAccessType.PROPERTY)
 
+@JsonbAnnotation //used to combat JAXB annotations from picking Jackson2 provider
 public class Products extends InventoryRepresentation {
 	private static final long serialVersionUID = 8409120005599383060L;
 	private int offset;

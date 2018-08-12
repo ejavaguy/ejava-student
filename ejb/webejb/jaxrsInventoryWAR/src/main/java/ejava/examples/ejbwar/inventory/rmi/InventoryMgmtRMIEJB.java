@@ -17,33 +17,33 @@ import ejava.examples.ejbwar.inventory.ejb.InventoryMgmtEJB;
  */
 @Stateless
 public class InventoryMgmtRMIEJB implements InventoryMgmtRemote {
-	private static final Logger log = LoggerFactory.getLogger(InventoryMgmtRMIEJB.class);
+	private static final Logger logger = LoggerFactory.getLogger(InventoryMgmtRMIEJB.class);
 	
 	@Inject
 	private InventoryMgmtEJB ejb;
 
 	@Override
 	public Categories findCategoryByName(String name, int offset, int limit) {
-		log.debug(String.format("findCategoryByName(%s)", name));
+		logger.debug("findCategoryByName({})", name);
 		return ejb.findCategoryByName(name, offset, limit);
 	}
 
 	@Override
 	public boolean deleteCategory(int id) {
-		log.debug(String.format("deleteCategory(%d)", id));
+		logger.debug("deleteCategory({})", id);
 		ejb.deleteCategory(id);
 		return true;
 	}
 
 	@Override
 	public Products findProductsByName(String name, int offset, int limit) {
-		log.debug(String.format("findProductByName(%s)", name));
+		logger.debug("findProductByName({})", name);
 		return ejb.findProductByName(name, offset, limit);
 	}
 
 	@Override
 	public boolean deleteProduct(int id) {
-		log.debug(String.format("deleteProduct(%d)", id));
+		logger.debug("deleteProduct({})", id);
 		Product p = ejb.getProduct(id);
 		if (p!=null) {
 			ejb.deleteProduct(p);
@@ -53,19 +53,19 @@ public class InventoryMgmtRMIEJB implements InventoryMgmtRemote {
 
 	@Override
 	public Product createProduct(Product product, String category) {
-		log.debug(String.format("createProduct(%s)", product));
+		logger.debug("createProduct({})", product);
 		return ejb.addProduct(product, category);
 	}
 
 	@Override
 	public Product getProduct(int id) {
-		log.debug(String.format("getProduct(%d)", id));
+		logger.debug(String.format("getProduct(%d)", id));
 		return ejb.getProduct(id);
 	}
 
 	@Override
 	public Category getCategory(int id) {
-		log.debug(String.format("getCategory(%d)", id));
+		logger.debug("getCategory({})", id);
 		Category category = ejb.getCategory(id);
 		//hydrate the object before returning
 		category.getProducts().size();
@@ -74,7 +74,7 @@ public class InventoryMgmtRMIEJB implements InventoryMgmtRemote {
 
 	@Override
 	public Product updateProduct(Product product) {
-		log.debug(String.format("updateProduct(%s)", product));
+		logger.debug("updateProduct({})", product);
 		return ejb.updateProduct(product);
 	}
 }

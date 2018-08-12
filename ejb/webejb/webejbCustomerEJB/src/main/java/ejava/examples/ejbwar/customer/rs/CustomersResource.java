@@ -33,7 +33,7 @@ import ejava.examples.ejbwar.customer.ejb.CustomerMgmtLocal;
  */
 @Path("customers")
 public class CustomersResource {
-	private static final Logger log = LoggerFactory.getLogger(CustomersResource.class);
+	private static final Logger logger = LoggerFactory.getLogger(CustomersResource.class);
 	@Inject
 	private CustomerMgmtLocal ejb;
 	@Context
@@ -42,10 +42,10 @@ public class CustomersResource {
 	private UriInfo uriInfo;
 	
 	@POST @Path("")
-	@Consumes(MediaType.APPLICATION_XML)
-	@Produces(MediaType.APPLICATION_XML)
+    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	public Response addCustomer(Customer customer) {
-		log.debug(String.format("%s %s", request.getMethod(), uriInfo.getAbsolutePath()));
+		logger.debug("{} {}", request.getMethod(), uriInfo.getAbsolutePath());
 		try {
 			Customer c = ejb.addCustomer(customer);
 			URI uri = UriBuilder.fromUri(uriInfo.getAbsolutePath())
@@ -55,31 +55,31 @@ public class CustomersResource {
 					.entity(c)
 					.build();
 		} catch (Exception ex) {
-			return serverError(log, "creating person", ex).build();
+			return serverError(logger, "creating person", ex).build();
 		}
 	}
 	
 	@GET @Path("")
-	@Produces(MediaType.APPLICATION_XML)
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	public Response findCustomersByName(
 			@QueryParam("firstName") String firstName,
 			@QueryParam("lastName") String lastName,
 			@QueryParam("offset") @DefaultValue("0") int offset,
 			@QueryParam("limit") @DefaultValue("0") int limit) {
-		log.debug(String.format("%s %s", request.getMethod(), uriInfo.getAbsolutePath()));
+		logger.debug("{} {}", request.getMethod(), uriInfo.getAbsolutePath());
 		try {
 			Customers customers = ejb.findCustomersByName(firstName, lastName, offset, limit);
 			return Response.ok(customers)
 					.build();
 		} catch (Exception ex) {
-			return serverError(log, "finding person", ex).build();
+			return serverError(logger, "finding person", ex).build();
 		}
 	}
 	
 	@GET @Path("{id}")
-	@Produces(MediaType.APPLICATION_XML)
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	public Response getCustomer(@PathParam("id") int id) {
-		log.debug(String.format("%s %s", request.getMethod(), uriInfo.getAbsolutePath()));
+		logger.debug("{} {}", request.getMethod(), uriInfo.getAbsolutePath());
 		try {
 			Customer customer = ejb.getCustomer(id);
 			if (customer!=null) {
@@ -92,20 +92,20 @@ public class CustomersResource {
 						.build();
 			}
 		} catch (Exception ex) {
-			return serverError(log, "getting person", ex).build();
+			return serverError(logger, "getting person", ex).build();
 		}
 	}
 
 	@DELETE @Path("{id}")
-	@Produces(MediaType.APPLICATION_XML)
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	public Response deleteCustomer(@PathParam("id") int id) {
-		log.debug(String.format("%s %s", request.getMethod(), uriInfo.getAbsolutePath()));
+		logger.debug("{} {}", request.getMethod(), uriInfo.getAbsolutePath());
 		try {
 			ejb.deleteCustomer(id);
 			return Response.ok()
 					.build();
 		} catch (Exception ex) {
-			return serverError(log, "deleting person", ex).build();
+			return serverError(logger, "deleting person", ex).build();
 		}
 	}
 	

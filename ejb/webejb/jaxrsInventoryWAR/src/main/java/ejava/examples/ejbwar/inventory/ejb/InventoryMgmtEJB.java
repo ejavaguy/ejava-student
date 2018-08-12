@@ -7,11 +7,16 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
+import javax.persistence.EntityManager;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import ejava.examples.ejbwar.inventory.bo.Categories;
 import ejava.examples.ejbwar.inventory.bo.Category;
 import ejava.examples.ejbwar.inventory.bo.Product;
 import ejava.examples.ejbwar.inventory.bo.Products;
+import ejava.examples.ejbwar.inventory.cdi.Inventory;
 import ejava.examples.ejbwar.inventory.dao.InventoryDAO;
 
 /**
@@ -22,8 +27,12 @@ import ejava.examples.ejbwar.inventory.dao.InventoryDAO;
  */
 @Stateless
 public class InventoryMgmtEJB {
+    private static final Logger logger = LoggerFactory.getLogger(InventoryMgmtEJB.class);
+    
 	@Inject
 	private InventoryDAO dao;
+    @Inject @Inventory
+    private EntityManager em; //used for demo
 	
 	/**
 	 * Returns a list of categories that match the name provided
@@ -75,12 +84,20 @@ public class InventoryMgmtEJB {
 		dao.addProduct(product);
 		Category category = createOrGetCategory(categoryName);
 		category.getProducts().add(product);
+		product = dao.getProduct(product.getId());
 		return product;
 	}
 	
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public Product updateProduct(Product product) {
-		return dao.updateProduct(product);
+	    logger.info("updating existing product: {}", dao.getProduct(product.getId()));
+        logger.info("to these values: {}", product);
+		dao.updateProduct(product);
+		em.flush();
+		em.clear();
+		Product dbResult = dao.getProduct(product.getId());
+		logger.info("resulting product: {}", dbResult);
+		return dbResult;
 	}
 	
 	@TransactionAttribute(TransactionAttributeType.SUPPORTS)

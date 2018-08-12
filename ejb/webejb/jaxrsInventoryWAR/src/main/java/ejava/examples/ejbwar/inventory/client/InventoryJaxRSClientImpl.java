@@ -1,7 +1,9 @@
 package ejava.examples.ejbwar.inventory.client;
 
+import java.lang.annotation.Annotation;
 import java.net.URI;
 
+import javax.json.bind.annotation.JsonbAnnotation;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.Invocation;
@@ -21,6 +23,7 @@ import ejava.examples.ejbwar.inventory.bo.Categories;
 import ejava.examples.ejbwar.inventory.bo.Category;
 import ejava.examples.ejbwar.inventory.bo.Product;
 import ejava.examples.ejbwar.inventory.bo.Products;
+import ejava.examples.ejbwar.jaxrs.JSONUtils;
 
 /**
  * This class implements a JAX-RS Client interface to the inventory 
@@ -36,6 +39,11 @@ public class InventoryJaxRSClientImpl implements InventoryClient {
 	 */
 	private URI appURI;
 	
+	/**
+	 * Defines the protocol between the client and server.
+	 */
+	private MediaType mediaType = MediaType.APPLICATION_XML_TYPE;
+	
 	public void setClient(Client client) {
         this.client = client;
     }
@@ -44,7 +52,11 @@ public class InventoryJaxRSClientImpl implements InventoryClient {
 		this.appURI = appURI;
 	}
 	
-	private boolean isSuccessful(Response response) {
+    public void setMediaType(String mediaType) {
+        this.mediaType = MediaType.valueOf(mediaType);
+    }
+
+    private boolean isSuccessful(Response response) {
 	    return response.getStatusInfo().getFamily() == Family.SUCCESSFUL;
 	}
 	
@@ -79,16 +91,17 @@ public class InventoryJaxRSClientImpl implements InventoryClient {
 		
         //build the overall request 
 		WebTarget target = client.target(uri);
-		Builder request = target.request(MediaType.APPLICATION_XML_TYPE);
+		Builder request = target.request(mediaType);
 		Invocation get = request.buildGet();
 
         //issue request and look for an OK response with entity
 		try (Response response = get.invoke(Response.class)) {
-	        logger.debug("GET {} returned {}", uri, response.getStatusInfo());
+	        logger.debug("GET {}, {} returned {}", uri, mediaType, response.getStatusInfo());
 	        if (response.getStatusInfo().getFamily() == Family.SUCCESSFUL) {
 	            return response.readEntity(Categories.class);
 		    } else {
-		        String payload = (response.hasEntity()) ? response.readEntity(String.class) : "";
+		        String payload = (response.hasEntity()) ? response.readEntity(String.class) 
+		                : response.getStatusInfo().toString();
 	            throw new ResponseProcessingException(response, payload);		        
 		    }
 		}	
@@ -102,15 +115,16 @@ public class InventoryJaxRSClientImpl implements InventoryClient {
 		
 		//build the overall request
 		Builder request = client.target(uri)
-		                        .request(MediaType.APPLICATION_XML_TYPE);
+		                        .request(mediaType);
 		
 		//issue request and look for an OK response with entity
 		try (Response response = request.get()) {
-            logger.debug("GET {} returned {}", uri, response.getStatusInfo());
+            logger.debug("GET {}, {} returned {}", uri, mediaType, response.getStatusInfo());
         		if (isSuccessful(response)) {
         			return response.readEntity(Category.class);
         		} else {
-                String payload = (response.hasEntity()) ? response.readEntity(String.class) : "";
+                String payload = (response.hasEntity()) ? response.readEntity(String.class) 
+                        : response.getStatusInfo().toString();
                 throw new ResponseProcessingException(response, payload);               
         		}
 		}
@@ -119,7 +133,7 @@ public class InventoryJaxRSClientImpl implements InventoryClient {
 	@Override
 	public boolean deleteCategory(int id) {
 		URI uri = buildURI("categories/{id}")
-				//marshall @PathParm into the URI
+				//marshal @PathParm into the URI
 				.build(id);
 		
 		//build and execute the overall request
@@ -132,7 +146,8 @@ public class InventoryJaxRSClientImpl implements InventoryClient {
             if (isSuccessful(response)) {
     			    return true;
             } else {
-                String payload = (response.hasEntity()) ? response.readEntity(String.class) : "";
+                String payload = (response.hasEntity()) ? response.readEntity(String.class) 
+                        : response.getStatusInfo().toString();
                 throw new ResponseProcessingException(response, payload);               
             }
 		}
@@ -161,16 +176,17 @@ public class InventoryJaxRSClientImpl implements InventoryClient {
 
 		//create the request
 		Invocation request = client.target(uri)
-		        .request(MediaType.APPLICATION_XML)
+		        .request(mediaType)
 		        .buildPost(Entity.entity(form, MediaType.APPLICATION_FORM_URLENCODED_TYPE));
 			
 		//issue the request and check the response
 		try (Response response=request.invoke()) {
             logger.debug("POST {} returned {}", uri, response.getStatusInfo());
             if (isSuccessful(response)) {
-    			    return response.readEntity(Product.class);
+    			    return response.readEntity(Product.class, Product.class.getAnnotations());
             } else {
-                String payload = (response.hasEntity()) ? response.readEntity(String.class) : "";
+                String payload = (response.hasEntity()) ? response.readEntity(String.class)
+                        : response.getStatusInfo().toString();
                 throw new ResponseProcessingException(response, payload);               
             }
 		}
@@ -187,16 +203,17 @@ public class InventoryJaxRSClientImpl implements InventoryClient {
 			
 		//build the overall request
 		Invocation request = client.target(uri)
-		        .request(MediaType.APPLICATION_XML_TYPE)
+		        .request(mediaType)
 		        .buildGet();
 		
 		//issue request and look for OK response with entity
 		try (Response response=request.invoke()) {
             logger.debug("GET {} returned {}", uri, response.getStatusInfo());
             if (isSuccessful(response)) {
-    			    return response.readEntity(Products.class);
+    			    return response.readEntity(Products.class, Products.class.getAnnotations());
             } else {
-                String payload = (response.hasEntity()) ? response.readEntity(String.class) : "";
+                String payload = (response.hasEntity()) ? response.readEntity(String.class)
+                        : response.getStatusInfo().toString();
                 throw new ResponseProcessingException(response, payload);               
             }
 		}
@@ -210,16 +227,17 @@ public class InventoryJaxRSClientImpl implements InventoryClient {
 			
 		//build and execute overall request
 		Invocation request = client.target(uri)
-		        .request(MediaType.APPLICATION_XML_TYPE)
+		        .request(mediaType)
 		        .buildGet();
 		
 		//issue request look for OK response with entity
 		try (Response response=request.invoke()) {
-            logger.debug("GET {} returned {}", uri, response.getStatusInfo());
+            logger.debug("GET {}, {} returned {}", uri, mediaType, response.getStatusInfo());
             if (isSuccessful(response)) {
     			    return response.readEntity(Product.class);
             } else {
-                String payload = (response.hasEntity()) ? response.readEntity(String.class) : "";
+                String payload = (response.hasEntity()) ? response.readEntity(String.class)
+                        : response.getStatusInfo().toString();
                 throw new ResponseProcessingException(response, payload);               
             }
 		}
@@ -231,18 +249,23 @@ public class InventoryJaxRSClientImpl implements InventoryClient {
 				//marshal @PathParm into the URI
 				.build(product.getId());
 			
-		//build overall request
+        //build overall request
 		Invocation request = client.target(uri)
-		        .request(MediaType.APPLICATION_XML_TYPE)
-		        .buildPut(Entity.entity(product, MediaType.APPLICATION_XML_TYPE));
+		        .request(mediaType)
+		        .buildPut(Entity.entity(product, mediaType, Product.class.getAnnotations()));
 		
 		//issue request and look for OK with entity
 		try (Response response=request.invoke()) {
-            logger.debug("PUT {} returned {}", uri, response.getStatusInfo());
+            logger.debug("PUT {}, {} returned {}", uri, mediaType, response.getStatusInfo());
+            logger.debug("sent=\n{}", JSONUtils.marshal(product));
             if (isSuccessful(response)) {
-    			    return response.readEntity(Product.class);
+                String payload = response.readEntity(String.class);
+                logger.debug("rcvd=\n{}", payload);
+                return JSONUtils.unmarshal(payload, Product.class);
+    			    //return response.readEntity(Product.class);
             } else {
-                String payload = (response.hasEntity()) ? response.readEntity(String.class) : "";
+                String payload = (response.hasEntity()) ? response.readEntity(String.class)
+                        : response.getStatusInfo().toString();
                 throw new ResponseProcessingException(response, payload);               
             }
 		}
@@ -265,7 +288,8 @@ public class InventoryJaxRSClientImpl implements InventoryClient {
             if (isSuccessful(response)) {
     			    return true;
             } else {
-                String payload = (response.hasEntity()) ? response.readEntity(String.class) : "";
+                String payload = (response.hasEntity()) ? response.readEntity(String.class)
+                        : response.getStatusInfo().toString();
                 throw new ResponseProcessingException(response, payload);               
             }
 		}

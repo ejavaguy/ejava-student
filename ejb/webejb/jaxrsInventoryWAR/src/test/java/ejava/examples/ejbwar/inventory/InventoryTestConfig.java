@@ -25,6 +25,7 @@ public class InventoryTestConfig {
 	private URI appURI;
 	private InventoryClient inventoryClient;
 	private CustomerClient customerClient;
+	private String mediaType;
 	private Properties props = new Properties();
 	
 	/**
@@ -42,6 +43,7 @@ public class InventoryTestConfig {
 				is.close();
 			}
 		}
+		mediaType=props.getProperty("mediaType");
 	}
 	
 	/**
@@ -86,6 +88,7 @@ public class InventoryTestConfig {
 		    InventoryClient client = new InventoryJaxRSClientImpl();
 		    ((InventoryJaxRSClientImpl)client).setAppURI(appURI());
 		    ((InventoryJaxRSClientImpl)client).setClient(jaxrsClient());
+		    ((InventoryJaxRSClientImpl)client).setMediaType(mediaType);
 			inventoryClient = client;
 		}
 		return inventoryClient;
@@ -101,6 +104,7 @@ public class InventoryTestConfig {
 			CustomerClient client = new CustomerJaxRSClientImpl();
 			((CustomerJaxRSClientImpl)client).setClient(jaxrsClient());
 			((CustomerJaxRSClientImpl)client).setAppURI(appURI());
+            ((CustomerJaxRSClientImpl)client).setMediaType(mediaType);
 			customerClient = client;
 		}
 		return customerClient;

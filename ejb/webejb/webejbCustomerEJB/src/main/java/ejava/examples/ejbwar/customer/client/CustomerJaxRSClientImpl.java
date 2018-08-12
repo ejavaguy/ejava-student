@@ -23,12 +23,17 @@ import ejava.examples.ejbwar.customer.bo.Customers;
  * methods to specific resource URIs for customers.
  */
 public class CustomerJaxRSClientImpl implements CustomerClient {
-	private static final Logger log = LoggerFactory.getLogger(CustomerJaxRSClientImpl.class);
+	private static final Logger logger = LoggerFactory.getLogger(CustomerJaxRSClientImpl.class);
 	private Client client;
 	/**
 	 * Defines the HTTP URL for the WAR that hosts the JAX-RS resources.
 	 */
 	private URI appURI;
+    
+    /**
+     * Defines the protocol between the client and server.
+     */
+    private MediaType mediaType=MediaType.APPLICATION_XML_TYPE;
 
 	public void setClient(Client client) {
 		this.client = client;
@@ -36,6 +41,10 @@ public class CustomerJaxRSClientImpl implements CustomerClient {
 	public void setAppURI(URI appURI) {
 		this.appURI = appURI;
 	}	
+    
+    public void setMediaType(String mediaType) {
+        this.mediaType = MediaType.valueOf(mediaType);
+    }
 	
 	/**
 	 * Helper method that returns a URIBuilder fully initialized to point
@@ -63,17 +72,18 @@ public class CustomerJaxRSClientImpl implements CustomerClient {
 			
 		//build overall request
 		Invocation request = client.target(uri)
-		        .request(MediaType.APPLICATION_XML_TYPE)
-		        .buildPost(Entity.entity(customer, MediaType.APPLICATION_XML_TYPE));
+		        .request(mediaType)
+		        .buildPost(Entity.entity(customer, mediaType, customer.getClass().getAnnotations()));
 		
 		//issue request and look for OK with entity
 		try (Response response=request.invoke()) {
-	        log.info("POST {} returned {}", uri, response.getStatusInfo());
+            logger.debug("POST {}, {} returned {}", uri, mediaType, response.getStatusInfo());
 	        if (Status.Family.SUCCESSFUL==response.getStatusInfo().getFamily()) {
 	            return response.readEntity(Customer.class);
 	        } else {
-	            String payload = response.hasEntity() ? response.readEntity(String.class) : "";
-	            log.warn(payload);
+	            String payload = response.hasEntity() ? response.readEntity(String.class) 
+	                    : response.getStatusInfo().toString();
+	            logger.warn(payload);
 	            throw new ResponseProcessingException(response, payload);
 	        }
 		}
@@ -92,17 +102,18 @@ public class CustomerJaxRSClientImpl implements CustomerClient {
 		
 		//build the overall request 
 		Invocation request = client.target(uri)
-		        .request(MediaType.APPLICATION_XML)
+		        .request(mediaType)
 		        .buildGet();
 		
 		//issue request and look for an OK response with entity
 		try (Response response = request.invoke()) {
-            log.info("GET {} returned {}", uri, response.getStatusInfo());
+            logger.debug("GET {}, {} returned {}", uri, mediaType, response.getStatusInfo());
             if (Status.Family.SUCCESSFUL==response.getStatusInfo().getFamily()) {
                 return response.readEntity(Customers.class);
             } else {
-                String payload = response.hasEntity() ? response.readEntity(String.class) : "";
-                log.warn(payload);
+                String payload = response.hasEntity() ? response.readEntity(String.class) 
+                        : response.getStatusInfo().toString();
+                logger.warn(payload);
                 throw new ResponseProcessingException(response, payload);
             }		    
 		}
@@ -116,17 +127,18 @@ public class CustomerJaxRSClientImpl implements CustomerClient {
 		
 		//build the overall request
 		Invocation request = client.target(uri)
-		        .request(MediaType.APPLICATION_XML_TYPE)
+		        .request(mediaType)
 		        .buildGet();
 
 		//execute request and look for an OK response without an entity
 		try (Response response = request.invoke()) {
-		    log.info("GET {} returned {}", uri, response.getStatusInfo());
+            logger.debug("GET {}, {} returned {}", uri, mediaType, response.getStatusInfo());
             if (Status.Family.SUCCESSFUL==response.getStatusInfo().getFamily()) {
                 return response.readEntity(Customer.class);
             } else {
-                String payload = response.hasEntity() ? response.readEntity(String.class) : "";
-                log.warn(payload);
+                String payload = response.hasEntity() ? response.readEntity(String.class) 
+                        : response.getStatusInfo().toString();
+                logger.warn(payload);
                 throw new ResponseProcessingException(response, payload);
             }           
 		}
@@ -145,12 +157,13 @@ public class CustomerJaxRSClientImpl implements CustomerClient {
 
 		//execute request and look for an OK response without an entity
 		try (Response response=request.invoke()) {
-            log.info("GET {} returned {}", uri, response.getStatusInfo());
+            logger.debug("GET {}, {} returned {}", uri, mediaType, response.getStatusInfo());
             if (Status.Family.SUCCESSFUL==response.getStatusInfo().getFamily()) {
                 return true;
             } else {
-                String payload = response.hasEntity() ? response.readEntity(String.class) : "";
-                log.warn(payload);
+                String payload = response.hasEntity() ? response.readEntity(String.class) 
+                        : response.getStatusInfo().toString();
+                logger.warn(payload);
                 throw new ResponseProcessingException(response, payload);
             }           		    
 		}

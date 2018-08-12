@@ -26,6 +26,9 @@
    <logger name="ejava">
       <level value="debug"/>
    </logger>
+   <logger name="org.jboss.resteasy.client">
+      <level value="trace"/>
+   </logger>
    <logger name="org.jboss.ejb.client">
       <level value="trace"/>
    </logger>

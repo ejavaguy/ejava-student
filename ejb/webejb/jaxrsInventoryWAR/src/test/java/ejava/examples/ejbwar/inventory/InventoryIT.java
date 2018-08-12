@@ -1,16 +1,15 @@
 package ejava.examples.ejbwar.inventory;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
-import javax.ws.rs.ProcessingException;
-import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.client.ResponseProcessingException;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import ejava.examples.ejbwar.customer.bo.Customer;
 import ejava.examples.ejbwar.customer.bo.Customers;
@@ -125,16 +124,21 @@ public class InventoryIT {
 		Product product = new Product("mp3");		
 		product = inventoryClient.createProduct(product, "radios");
 		assertNotNull("product not created", product);
-		logger.info("created product:" + product);
+		logger.info("created product:{}", product);
 		assertTrue("product primary ket not assigned", product.getId()>0);
 		
 		//update product
 		product.setPrice(3.00);
 		product.setQuantity(987);
+		product.setProtectedValue("this should go nowhere");
+        logger.info("update source product state:{}", product);
 		Product p2 = inventoryClient.updateProduct(product);
+        logger.info("resulting product state:{}", p2);
 		assertNotNull("update failed", p2);
 		assertEquals("unexpected price", product.getQuantity(), p2.getQuantity());
 		assertEquals("unexpected price", product.getPrice(), p2.getPrice(), .01);
+		assertEquals("unexpected returned name", product.getName(), p2.getName());
+		assertNull("transient value unmarshaled", p2.getProtectedValue());
 	}
 	
 	@Test

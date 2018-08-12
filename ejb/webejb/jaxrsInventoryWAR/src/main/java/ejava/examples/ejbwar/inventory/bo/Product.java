@@ -19,6 +19,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+//import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * This class represents a specific product. It has been mapped to both
  * the DB and XML.
@@ -55,7 +60,7 @@ public class Product extends InventoryRepresentation {
 	@Column(name="PRICE", nullable=true)
 	private Double price;
 
-    @Column(name="PROTECTED_VALUE", length=36, nullable=false)
+    @Column(name="PROTECTED_VALUE", length=36, nullable=false, updatable=false)
     private String protectedValue;
 
     public Product() {}
@@ -75,7 +80,8 @@ public class Product extends InventoryRepresentation {
 	}
 
 	@XmlAttribute(required=true, name="xmlName") //used both during marshal and unmarshal
-	@JsonbProperty("jsonName") //used during toJson()
+	@JsonbProperty("jsonName") //for json-b -- used during toJson()
+	@JsonProperty("jsonName")  //for jackson json -- needed when server not >=jee8 mode
 	public String getName() { return name; }
     @JsonbProperty("jsonName") //used during fromJson()
 	public void setName(String name) {
@@ -98,6 +104,7 @@ public class Product extends InventoryRepresentation {
     @JsonbTransient
 	public String getProtectedValue() { return protectedValue; }
     @JsonbTransient
+    @JsonIgnore //for jackson json -- when < jee8 or overriding JAXB annotation 
 	public void setProtectedValue(String protectedValue) {
         this.protectedValue = protectedValue;
     }

@@ -46,7 +46,7 @@ public class CategoriesResource {
 	 * @return
 	 */
 	@GET @Path("")
-	@Produces(MediaType.APPLICATION_XML)
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	public Response findCategoriesByName(
 			@QueryParam("name") @DefaultValue("") String name,
 			@QueryParam("offset") @DefaultValue("0") int offset,
@@ -71,7 +71,7 @@ public class CategoriesResource {
 	 * @return
 	 */
 	@GET @Path("{id}")
-	@Produces(MediaType.APPLICATION_XML)
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	public Response getCategory(@PathParam("id")int id) {
 		log.debug(String.format("%s %s", request.getMethod(), uriInfo.getAbsolutePath()));
 

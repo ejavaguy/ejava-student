@@ -9,7 +9,7 @@ import javax.json.bind.config.PropertyNamingStrategy;
 import javax.ws.rs.ext.ContextResolver;
 import javax.xml.bind.JAXBException;
 
-public class JSONUtils implements ContextResolver<Jsonb>{
+public class JSONUtils implements ContextResolver<Jsonb> {
     private static JSONUtils instance;
     private Jsonb jsb;
         
@@ -42,7 +42,7 @@ public class JSONUtils implements ContextResolver<Jsonb>{
         return jsonString;        
     }
     
-    public static <T> T unmarshal(String string, Class<T> type) throws JAXBException {
+    public static <T> T unmarshal(String string, Class<T> type) {
         if (string==null || string.isEmpty()) {
             return null;
         }
@@ -52,7 +52,7 @@ public class JSONUtils implements ContextResolver<Jsonb>{
         return object;
     }
     
-    public static <T> T unmarshall(InputStream is, Class<T> type) throws JAXBException {
+    public static <T> T unmarshall(InputStream is, Class<T> type) {
         if (is==null) {
             return null;
         }

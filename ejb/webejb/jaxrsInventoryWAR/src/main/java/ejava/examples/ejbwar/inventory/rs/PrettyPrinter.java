@@ -40,9 +40,11 @@ public class PrettyPrinter implements MessageBodyWriter<Object> {
      */
     public boolean isWriteable(Class<?> type, Type genericType, 
             Annotation[] methodAnnotations, MediaType mediaType) {
-        for(Class<?> clazz = type;clazz != null; clazz=clazz.getSuperclass()) {
-            if (clazz.isAnnotationPresent(XmlRootElement.class)) {
-                return true;
+        if (MediaType.APPLICATION_XML_TYPE == mediaType) {
+            for(Class<?> clazz = type;clazz != null; clazz=clazz.getSuperclass()) {
+                if (clazz.isAnnotationPresent(XmlRootElement.class)) {
+                    return true;
+                }
             }
         }
         return false;

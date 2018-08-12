@@ -93,11 +93,13 @@
         <inject.version>1</inject.version>
         <interceptor-api.version>1.2.2</interceptor-api.version>
         <jandex.version>1.2.2.Final</jandex.version>
+        <jackson-annotations.version>2.9.5</jackson-annotations.version>
         <javaee-api.version>8.0</javaee-api.version>
         <javax.persistence-api.version>2.2</javax.persistence-api.version>
         <javax.ejb-api.version>3.2.2</javax.ejb-api.version>
         <javax.el.version>3.0.1-b06</javax.el.version>  
         <javax.json-api.version>1.1.2</javax.json-api.version>    
+        <javax.json.bind-api.version>1.0</javax.json.bind-api.version>
         <javax.transaction-api.version>1.3</javax.transaction-api.version>  
         <javax.ws.rs-api.version>2.1</javax.ws.rs-api.version>
         <jaxb-api.version>2.2</jaxb-api.version>
@@ -110,8 +112,8 @@
         <maven-jaxb2-plugin.version>0.14.0</maven-jaxb2-plugin.version>
         <mysql-connector-java.version>5.0.5</mysql-connector-java.version>
         <netty.version>4.1.9.Final</netty.version>
-        <ojdbc6.version>11.2.0.3</ojdbc6.version>
-        <resteasy.version>3.6.1.Final</resteasy.version>
+        <ojdbc6.version>11.2.0.3</ojdbc6.version>        
+        <resteasy.version>3.5.1.Final</resteasy.version>
         <servlet-api.version>4.0.1</servlet-api.version>
         <slf4j.version>1.7.25</slf4j.version>
         <sql-maven-plugin.version>1.5</sql-maven-plugin.version>
@@ -530,6 +532,11 @@
                 <artifactId>resteasy-jackson2-provider</artifactId>
                 <version>${resteasy.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-annotations</artifactId>
+                <version>${jackson-annotations.version}</version>
+            </dependency>
             
             <!-- JAX-B provider -->
             <dependency>
@@ -537,8 +544,18 @@
                 <artifactId>resteasy-jaxb-provider</artifactId>
                 <version>${resteasy.version}</version>
             </dependency>            
+            <dependency>
+                <groupId>org.jboss.resteasy</groupId>
+                <artifactId>resteasy-json-binding-provider</artifactId>
+                <version>${resteasy.version}</version>
+            </dependency>
               
             <!-- JSON-B provider -->  
+            <dependency>
+                <groupId>javax.json.bind</groupId>
+                <artifactId>javax.json.bind-api</artifactId>
+                <version>${javax.json.bind-api.version}</version>
+            </dependency>            
             <dependency>
                 <groupId>javax.json</groupId>
                 <artifactId>javax.json-api</artifactId>

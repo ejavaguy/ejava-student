@@ -1,5 +1,6 @@
 package ejava.examples.ejbwar.customer.bo;
 
+import javax.json.bind.annotation.JsonbAnnotation;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -21,6 +22,9 @@ import javax.xml.bind.annotation.XmlType;
 		"lastName"
 })
 @XmlAccessorType(XmlAccessType.PROPERTY)
+
+//need at least one Jsonb annotation to tell provider this is JSON-B
+@JsonbAnnotation
 
 @Entity
 @Table(name="WEBEJB_CUSTOMER")
