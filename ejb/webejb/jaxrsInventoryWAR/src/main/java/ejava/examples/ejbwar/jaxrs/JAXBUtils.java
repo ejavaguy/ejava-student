@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.StringWriter;
 
+import javax.ws.rs.ProcessingException;
 import javax.ws.rs.ext.ContextResolver;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -30,35 +31,43 @@ public class JAXBUtils implements ContextResolver<JAXBContext> {
         return instance;
     }
 
-    public static <T> String marshal(T object) throws JAXBException {
+    public static <T> String marshal(T object) {
         if (object==null) {
             return "";
         }
         
-        JAXBContext jbx = getInstance().getContext(object.getClass());
-        Marshaller marshaller = jbx.createMarshaller();
-        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-        StringWriter writer = new StringWriter();
-        marshaller.marshal(object, writer);
-        return writer.toString();
+        try {
+            JAXBContext jbx = getInstance().getContext(object.getClass());
+            Marshaller marshaller = jbx.createMarshaller();
+            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+            StringWriter writer = new StringWriter();
+            marshaller.marshal(object, writer);
+            return writer.toString();
+        } catch (JAXBException ex) {
+            throw new ProcessingException(ex);
+        }
     }
     
-    public static <T> T unmarshal(String string, Class<T> type) throws JAXBException {
+    public static <T> T unmarshal(String string, Class<T> type) {
         if (string==null || string.isEmpty()) {
             return null;
         }
         return unmarshall(new ByteArrayInputStream(string.getBytes()), type);
     }
     
-    public static <T> T unmarshall(InputStream is, Class<T> type) throws JAXBException {
+    public static <T> T unmarshall(InputStream is, Class<T> type) {
         if (is==null) {
             return null;
         }
-        
-        JAXBContext jbx = getInstance().getContext(type);
-        Unmarshaller unmarshaller = jbx.createUnmarshaller();
-        @SuppressWarnings("unchecked")
-        T object = (T) unmarshaller.unmarshal(is);
-        return object;
+
+        try {
+            JAXBContext jbx = getInstance().getContext(type);
+            Unmarshaller unmarshaller = jbx.createUnmarshaller();
+            @SuppressWarnings("unchecked")
+            T object = (T) unmarshaller.unmarshal(is);
+            return object;
+        } catch (JAXBException ex) {
+            throw new ProcessingException(ex);
+        }
     }
 }

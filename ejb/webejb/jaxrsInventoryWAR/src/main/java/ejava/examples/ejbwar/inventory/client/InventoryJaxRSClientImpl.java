@@ -1,9 +1,7 @@
 package ejava.examples.ejbwar.inventory.client;
 
-import java.lang.annotation.Annotation;
 import java.net.URI;
 
-import javax.json.bind.annotation.JsonbAnnotation;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.Invocation;
@@ -23,6 +21,7 @@ import ejava.examples.ejbwar.inventory.bo.Categories;
 import ejava.examples.ejbwar.inventory.bo.Category;
 import ejava.examples.ejbwar.inventory.bo.Product;
 import ejava.examples.ejbwar.inventory.bo.Products;
+import ejava.examples.ejbwar.jaxrs.JAXBUtils;
 import ejava.examples.ejbwar.jaxrs.JSONUtils;
 
 /**
@@ -257,11 +256,16 @@ public class InventoryJaxRSClientImpl implements InventoryClient {
 		//issue request and look for OK with entity
 		try (Response response=request.invoke()) {
             logger.debug("PUT {}, {} returned {}", uri, mediaType, response.getStatusInfo());
-            logger.debug("sent=\n{}", JSONUtils.marshal(product));
+            String requestPayload = MediaType.APPLICATION_JSON_TYPE.equals(mediaType) ? 
+                    JSONUtils.marshal(product) : 
+                    JAXBUtils.marshal(product);  
+            logger.debug("sent=\n{}", requestPayload);
             if (isSuccessful(response)) {
                 String payload = response.readEntity(String.class);
                 logger.debug("rcvd=\n{}", payload);
-                return JSONUtils.unmarshal(payload, Product.class);
+                return MediaType.APPLICATION_JSON_TYPE.equals(mediaType) ? 
+                        JSONUtils.unmarshal(payload, Product.class) : 
+                        JAXBUtils.unmarshal(payload, Product.class);
     			    //return response.readEntity(Product.class);
             } else {
                 String payload = (response.hasEntity()) ? response.readEntity(String.class)

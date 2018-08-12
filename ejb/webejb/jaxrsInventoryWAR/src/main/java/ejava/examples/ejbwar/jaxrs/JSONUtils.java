@@ -7,7 +7,6 @@ import javax.json.bind.JsonbBuilder;
 import javax.json.bind.JsonbConfig;
 import javax.json.bind.config.PropertyNamingStrategy;
 import javax.ws.rs.ext.ContextResolver;
-import javax.xml.bind.JAXBException;
 
 public class JSONUtils implements ContextResolver<Jsonb> {
     private static JSONUtils instance;

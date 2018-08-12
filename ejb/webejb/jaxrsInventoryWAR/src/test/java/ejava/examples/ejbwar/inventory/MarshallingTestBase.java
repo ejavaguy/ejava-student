@@ -7,8 +7,6 @@ import static org.junit.Assert.assertNull;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import javax.xml.bind.JAXBException;
-
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

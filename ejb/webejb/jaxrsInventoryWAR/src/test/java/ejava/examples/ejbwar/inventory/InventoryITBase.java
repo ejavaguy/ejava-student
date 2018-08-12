@@ -24,8 +24,9 @@ import ejava.examples.ejbwar.inventory.client.InventoryClient;
  * This class implements a JAX-RS based integration test with the 
  * inventory application deployed to the server.
  */
-public class InventoryIT {
-	private static final Logger logger = LoggerFactory.getLogger(InventoryIT.class);
+public abstract class InventoryITBase {
+    private static final Logger myLogger = LoggerFactory.getLogger(InventoryITBase.class);
+	private final Logger logger = LoggerFactory.getLogger(getClass());
 	private InventoryClient inventoryClient;
 	private CustomerClient customerClient;
 	
@@ -34,7 +35,7 @@ public class InventoryIT {
 		//give application time to fully deploy
 		if (Boolean.parseBoolean(System.getProperty("cargo.startstop", "false"))) {
 			long waitTime=15000;
-	    	logger.info("pausing {} secs for server deployment to complete", waitTime/1000);
+	    	myLogger.info("pausing {} secs for server deployment to complete", waitTime/1000);
 	    	Thread.sleep(waitTime);
 		}
 	}
@@ -42,13 +43,16 @@ public class InventoryIT {
 	@Before
 	public void setUp() throws Exception {
 		InventoryTestConfig config = new InventoryTestConfig("/it.properties");
+		setOptions(config);
 		logger.info("uri=" + config.appURI());
 		inventoryClient = config.inventoryClient();
 		customerClient = config.customerClient();
 		cleanup();
 	}
 	
-	/**
+	protected abstract void setOptions(InventoryTestConfig config);
+
+    /**
 	 * Remove data from previous tests
 	 */
 	public void cleanup() throws Exception {

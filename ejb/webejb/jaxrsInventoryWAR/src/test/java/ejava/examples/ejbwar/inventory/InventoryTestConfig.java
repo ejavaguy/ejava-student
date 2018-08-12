@@ -28,7 +28,12 @@ public class InventoryTestConfig {
 	private String mediaType;
 	private Properties props = new Properties();
 	
-	/**
+    public void setMediaType(String mediaType) {
+        this.mediaType = mediaType;
+    }
+
+    
+    /**
 	 * Accept an optional property file resource from the classpath
 	 * so that we can override hard-coded defaults with a property file.
 	 * @param resource

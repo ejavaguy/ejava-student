@@ -22,11 +22,27 @@ import javax.xml.bind.annotation.XmlType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-//import com.fasterxml.jackson.annotation.JsonProperty;
-
 /**
  * This class represents a specific product. It has been mapped to both
- * the DB and XML.
+ * the DB, XML, and JSON -- which is not that common to do and causes 
+ * some conflict.
+ * 
+ * JAX-RS originally only had to support JAXB (i.e., @Xml annotations) and
+ * each vendor added optional extensions to support alternate formats like
+ * JSON. One common approach was to apply the Xml-centric JAXB bindings to 
+ * JSON marshaling. That is what was done by the Jackson JSON marshaler.
+ * Jackson also had annotations (@Json) that could override JAXB (@Xml) 
+ * annotations. That is how things sat for < jee8.
+ * 
+ * With jee8 and jax-rs 2.1, JSON-B was created and support mandated. This 
+ * example was written before full jee8 compliance. Thus it has been annotated 
+ * with JSOB-B annotations (@Jsonb) and Jackson (@Json) annotations so that 
+ * it will work with both jee7 and jee8 deployments. The client will always
+ * be using JSON-B.
+ * 
+ * The use of JAXB annotations for Json does confuse the marshaling decision 
+ * logic. So we have to make sure we have JSON-B annotations on the class,
+ * and passed to the marshaling methods.
  */
 @XmlRootElement(name="product", namespace=InventoryRepresentation.NAMESPACE)
 @XmlType(name="product", namespace=InventoryRepresentation.NAMESPACE, propOrder={
