@@ -7,7 +7,7 @@
         <version>5.0.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>ejava-wildfly901</artifactId>
+    <artifactId>ejava-wildfly1300</artifactId>
     <packaging>pom</packaging>
 
     <name>Ejava Wildfly 13.0.0.Final Server</name>
