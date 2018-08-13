@@ -14,7 +14,8 @@
         <echo>src.dir=${src.dir}</echo>
         <echo>build.dir=${build.dir}</echo>
         <echo>junit.classpath=${junit.classpath}</echo>
-        <echo>commons-logging.classpath=${commons-logging.classpath}</echo>
+        <echo>slf-api.classpath=${slf-api.classpath}</echo>
+        <echo>slf-log4j.classpath=${slf-log4j.classpath}</echo>
         <echo>log4j.classpath=${log4j.classpath}</echo>
     </target>
 
@@ -23,11 +24,11 @@
         <javac srcdir="${src.dir}/main/java"
                destdir="${build.dir}/classes"
                debug="true"
-               source="1.7"
-               target="1.7"
+               source="1.8"
+               target="1.8"
                includeantruntime="false">
                <classpath>
-                   <pathelement path="${commons-logging.classpath}"/>
+                   <pathelement path="${slf-api.classpath}"/>
                </classpath>
         </javac>
 
@@ -41,13 +42,15 @@
         <javac srcdir="${src.dir}/test/java"
                destdir="${build.dir}/test-classes"
                debug="true"
-               source="1.7"
-               target="1.7"
+               source="1.8"
+               target="1.8"
                includeantruntime="false">
                <classpath>
                    <pathelement location="${build.dir}/${artifactId}.jar"/>
                    <pathelement path="${junit.classpath}"/>
-                   <pathelement path="${commons-logging.classpath}"/>
+                   <pathelement path="${slf-api.classpath}"/>
+                   <pathelement path="${slf-log4j.classpath}"/>
+                   <pathelement path="${log4j.classpath}"/>
                </classpath>
         </javac>
 
@@ -61,7 +64,8 @@
                    <pathelement path="${junit.classpath}"/>
                    <pathelement location="${build.dir}/${artifactId}.jar"/>
                    <pathelement location="${build.dir}/test-classes"/>
-                   <pathelement path="${commons-logging.classpath}"/>
+                   <pathelement path="${slf-api.classpath}"/>
+                   <pathelement path="${slf-log4j.classpath}"/>
                    <pathelement path="${log4j.classpath}"/>
                </classpath>
 
