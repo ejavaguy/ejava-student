@@ -1,41 +1,43 @@
 package ejava.examples.daoex.jpa;
 
-import static org.junit.Assert.*;
-
-
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
 
 import java.util.Date;
-import javax.persistence.Query;
+
+import javax.persistence.TypedQuery;
+
+import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.junit.Test;
 
 import ejava.examples.daoex.bo.Author;
 
 /**
- * This class provides a scalled down version of JPAAuthorDAOTest, in that
+ * This class provides a scaled down version of JPAAuthorDAOTest, in that
  * it only employs an Extended Persistence Context and eliminates the
  * DAO in order to simplify the presentation of the code.
  */
 public class JPAExtendedOnlyTest extends JPATestBase{
-    private static final Logger log_ = LoggerFactory.getLogger(JPAExtendedOnlyTest.class);
+    private static final Logger logger = LoggerFactory.getLogger(JPAExtendedOnlyTest.class);
     /**
      * This test verifies we can persist an entity.
      */
     @Test
     public void testCreate() throws Exception {
-        log_.info("testCreate()");
+        logger.info("testCreate()");
         Author author = new Author();
         author.setFirstName("dr");
         author.setLastName("seuss");
         author.setSubject("children");
         author.setPublishDate(new Date());
-        log_.info("creating author:" + author);
+        logger.info("creating author: {}", author);
 
         //entity managers with extended persistence contexts can be called
         //outside of a transaction
         em.persist(author);
-        log_.info("created author:" + author);        
+        logger.info("created author: {}", author);        
     }
     
 
@@ -46,20 +48,20 @@ public class JPAExtendedOnlyTest extends JPATestBase{
      */
     @Test
     public void testGet() throws Exception {
-        log_.info("testGet()");
+        logger.info("testGet()");
         Author author = new Author();
         author.setFirstName("thing");
         author.setLastName("one");
         author.setSubject("children");
         author.setPublishDate(new Date());
         
-        log_.info("creating author:" + author);
+        logger.info("creating author: {}", author);
         em.persist(author);
-        log_.info("created author:" + author);        
+        logger.info("created author: {}", author);        
 
         Author author2=null;
         author2 = em.find(Author.class, author.getId());
-        log_.info("got author author:" + author2);
+        logger.info("got author author: {}", author2);
 
         assertEquals(author.getFirstName(), author2.getFirstName());
         assertEquals(author.getLastName(), author2.getLastName());
@@ -73,7 +75,7 @@ public class JPAExtendedOnlyTest extends JPATestBase{
      */
     @Test
     public void testQuery() throws Exception {
-        log_.info("testQuery()");
+        logger.info("testQuery()");
         
         Author author = new Author();
         author.setFirstName("test");
@@ -81,7 +83,7 @@ public class JPAExtendedOnlyTest extends JPATestBase{
         author.setSubject("testing");
         author.setPublishDate(new Date());
         
-        log_.info("creating author:" + author);
+        logger.info("creating author: {}", author);
         em.persist(author);
         
         //need to associate em with Tx to allow query to see entity in DB
@@ -91,7 +93,7 @@ public class JPAExtendedOnlyTest extends JPATestBase{
             em.getTransaction().commit();
         }
         catch (Exception ex) {
-            log_.error("",ex);
+            logger.error("",ex);
             em.getTransaction().rollback();
             fail("" + ex);
         }
@@ -99,13 +101,14 @@ public class JPAExtendedOnlyTest extends JPATestBase{
       
         Author author2 = null;
         try {
-            Query query = em.createQuery(
-                    "from jpaAuthor where id=" + author.getId());
-            author2 = (Author)query.getSingleResult();
-            log_.info("got author:" + author2);
+            TypedQuery<Author> query = em.createQuery(
+                    "from jpaAuthor where id=" + author.getId(),
+                    Author.class);
+            author2 = query.getSingleResult();
+            logger.info("got author: {}", author2);
         }
         catch (Exception ex) {
-            log_.error("",ex);
+            logger.error("",ex);
             fail("" + ex);
         }
         
@@ -122,7 +125,7 @@ public class JPAExtendedOnlyTest extends JPATestBase{
      */
     @Test
     public void testUpdate() throws Exception {
-        log_.info("testUpdate");
+        logger.info("testUpdate");
         
         String firstName="test";
         String lastName="Update";
@@ -152,10 +155,10 @@ public class JPAExtendedOnlyTest extends JPATestBase{
             
             em.getTransaction().begin();
             em.getTransaction().commit();
-            log_.info("updated author:" + author);
+            logger.info("updated author: {}", author);
         }
         catch (Exception ex) {
-            log_.error("",ex);
+            logger.error("",ex);
             if (em.getTransaction().isActive()) {
                 em.getTransaction().rollback();
             }
@@ -165,10 +168,10 @@ public class JPAExtendedOnlyTest extends JPATestBase{
         Author author2 = null;
         try {
             author2 = em.find(Author.class, author.getId());
-            log_.info("got author:" + author2);
+            logger.info("got author: {}", author2);
         }
         catch (Exception ex) {
-            log_.error("",ex);
+            logger.error("",ex);
             fail("" + ex);
         }
         
@@ -184,7 +187,7 @@ public class JPAExtendedOnlyTest extends JPATestBase{
      */
     @Test
     public void testMerge() throws Exception {
-        log_.info("testMerge");
+        logger.info("testMerge");
         
         String firstName="test";
         String lastName="Merge";
@@ -202,10 +205,10 @@ public class JPAExtendedOnlyTest extends JPATestBase{
             em.flush();
             em.clear();
             em.getTransaction().commit();
-            log_.info("created author:" + author);
+            logger.info("created author: {}", author);
         }
         catch (Exception ex) {
-            log_.error("",ex);
+            logger.error("",ex);
             em.getTransaction().rollback();
             fail("" + ex);
         }
@@ -216,14 +219,14 @@ public class JPAExtendedOnlyTest extends JPATestBase{
         author2.setSubject("updated " + author.getSubject());
         author2.setPublishDate(new Date(published.getTime()+ 1000));
         try {
-            log_.info("merging with author:" + author2);
+            logger.info("merging with author: {}", author2);
             Author tmp = em.merge(author2);
             em.getTransaction().begin();
             em.getTransaction().commit();
-            log_.info("merged author:" + tmp);
+            logger.info("merged author:" + tmp);
         }
         catch (Exception ex) {
-            log_.error("",ex);
+            logger.error("",ex);
             em.getTransaction().rollback();
             fail("" + ex);
         }
@@ -231,10 +234,10 @@ public class JPAExtendedOnlyTest extends JPATestBase{
         Author author3 = null;
         try {
             author3 = em.find(Author.class, author.getId());
-            log_.info("got author:" + author3);
+            logger.info("got author: {}", author3);
         }
         catch (Exception ex) {
-            log_.error("",ex);
+            logger.error("",ex);
             fail("" + ex);
         }
         
@@ -247,7 +250,7 @@ public class JPAExtendedOnlyTest extends JPATestBase{
     
     @Test
     public void testRemove() throws Exception {
-        log_.info("testRemove()");
+        logger.info("testRemove()");
 
         Author author = new Author();
         author.setFirstName("test");
@@ -258,10 +261,10 @@ public class JPAExtendedOnlyTest extends JPATestBase{
             em.getTransaction().begin();
             em.persist(author);
             em.getTransaction().commit();
-            log_.info("created author:" + author);
+            logger.info("created author: {}", author);
         }
         catch (Exception ex) {
-            log_.error("",ex);
+            logger.error("",ex);
             em.getTransaction().rollback();
             fail("" + ex);
         }
@@ -270,10 +273,10 @@ public class JPAExtendedOnlyTest extends JPATestBase{
             em.remove(author); //remove doesn't happen until tx
             em.getTransaction().begin();
             em.getTransaction().commit();
-            log_.info("removed author:" + author);
+            logger.info("removed author: {}", author);
         }
         catch (Exception ex) {
-            log_.error("",ex);
+            logger.error("",ex);
             em.getTransaction().rollback();
             fail("" + ex);
         }
@@ -281,10 +284,10 @@ public class JPAExtendedOnlyTest extends JPATestBase{
         Author author2=null;
         try {
             author2 = em.find(Author.class, author.getId());
-            log_.info("removed author:" + author);
+            logger.info("removed author: {}", author);
         }
         catch (Exception ex) {
-            log_.error("",ex);
+            logger.error("",ex);
             fail("" + ex);
         }
         if (author2 != null) {

@@ -1,4 +1,4 @@
-package ejava.examples.daoex;
+package ejava.examples.daoex.dao;
 
 import ejava.examples.daoex.bo.Author;
 

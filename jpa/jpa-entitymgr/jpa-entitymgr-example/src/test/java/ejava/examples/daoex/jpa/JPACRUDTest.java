@@ -21,28 +21,31 @@ import ejava.examples.daoex.bo.Author;
  * that should surround the use of the API.
  */
 public class JPACRUDTest extends JPATestBase {
-    static final Logger log = LoggerFactory.getLogger(JPACRUDTest.class);
+    static final Logger logger = LoggerFactory.getLogger(JPACRUDTest.class);
     /**
      * This test verifies we can persist an entity.
      */
     @Test
     public void testCreate() {
-        log.info("*** testCreate() ***");
+        logger.info("*** testCreate() ***");
         Author author = new Author();
         author.setFirstName("dr");
         author.setLastName("seuss");
         author.setSubject("children");
         author.setPublishDate(new Date());
-        log.debug("creating author:" + author);
-        assertFalse("unexpected initialized id", author.getId() > 0);
+        logger.debug("creating author: {}", author);
+        assertEquals("unexpected initialized id", 0, author.getId());
 
-        log.debug("em.contains(author)=" + em.contains(author));
+        logger.debug("em.contains(author)={}", em.contains(author));
+        assertFalse("author managed", em.contains(author));
+        
         //entity managers with extended persistence contexts can be called
         //outside of a transaction
         em.persist(author);
-        log.debug("created author:" + author);        
-        log.debug("em.contains(author)=" + em.contains(author));
-        assertTrue("missing id", author.getId() > 0);
+        logger.debug("created author: {}", author);        
+        logger.debug("em.contains(author)={}", em.contains(author));
+        assertTrue("author not managed", em.contains(author));
+        assertNotEquals("missing id", 0, author.getId());
     }
     
     /**
@@ -51,19 +54,19 @@ public class JPACRUDTest extends JPATestBase {
      */
     @Test
     public void testCreateExisting() {
-    	log.info("*** testCreateExisting ***");
+    	logger.info("*** testCreateExisting ***");
     	
         Author author = new Author();
         author.setFirstName("dr");
         author.setLastName("seuss");
         author.setSubject("children");
         author.setPublishDate(new Date());
-        log.debug("creating author first time:" + author);
+        logger.debug("creating author first time: {}", author);
 
-        log.debug("em.contains(author)=" + em.contains(author));
+        logger.debug("em.contains(author)={}", em.contains(author));
         em.persist(author);
-        log.debug("created author:" + author);        
-        log.debug("em.contains(author)=" + em.contains(author));
+        logger.debug("created author: {}", author);        
+        logger.debug("em.contains(author)={}", em.contains(author));
 
         //entity managers will ignore persists for existing entity
         em.persist(author);
@@ -76,23 +79,23 @@ public class JPACRUDTest extends JPATestBase {
      */
     @Test
     public void testCreateDetached() throws Exception {
-        log.info("*** testCreateDetached() ***");
+        logger.info("*** testCreateDetached() ***");
         Author author = new Author(1);
         author.setFirstName("dr");
         author.setLastName("seuss");
         author.setSubject("children");
         author.setPublishDate(new Date());
-        log.debug("creating author:" + author);
+        logger.debug("creating author: {}", author);
 
-        log.debug("em.contains(author)=" + em.contains(author));
+        logger.debug("em.contains(author)={}", em.contains(author));
         //entity managers will reject a detached entity
         try {
         	em.persist(author);
         	fail("did not detect detached entity");
         } catch (PersistenceException ex) {
-        	log.debug("caught expected exception:" + ex);
+        	logger.debug("caught expected exception:" + ex);
         }
-        log.debug("em.contains(author)=" + em.contains(author));
+        logger.debug("em.contains(author)={}", em.contains(author));
     }
 
     /**
@@ -102,20 +105,20 @@ public class JPACRUDTest extends JPATestBase {
      */
     @Test
     public void testGet() throws Exception {
-        log.info("*** testGet() ***");
+        logger.info("*** testGet() ***");
         Author author = new Author();
         author.setFirstName("thing");
         author.setLastName("one");
         author.setSubject("children");
         author.setPublishDate(new Date());
         
-        log.debug("creating author:" + author);
+        logger.debug("creating author: {}", author);
         em.persist(author);
-        log.debug("created author:" + author);        
+        logger.debug("created author: {}", author);        
 
         Author author2=null;
         author2 = em.find(Author.class, author.getId());
-        log.debug("got author author:" + author2);
+        logger.debug("got author author: {}", author2);
 
         assertEquals(author.getFirstName(), author2.getFirstName());
         assertEquals(author.getLastName(), author2.getLastName());
@@ -129,7 +132,7 @@ public class JPACRUDTest extends JPATestBase {
      */
     @Test
     public void testQuery() throws Exception {
-        log.info("*** testQuery() ***");
+        logger.info("*** testQuery() ***");
         
         Author author = new Author();
         author.setFirstName("test");
@@ -137,7 +140,7 @@ public class JPACRUDTest extends JPATestBase {
         author.setSubject("testing");
         author.setPublishDate(new Date());
         
-        log.debug("creating author:" + author);
+        logger.debug("creating author: {}", author);
         em.persist(author);
         
         //need to associate em with Tx to allow query to see entity in DB
@@ -147,7 +150,7 @@ public class JPACRUDTest extends JPATestBase {
             em.getTransaction().commit();
         }
         catch (Exception ex) {
-            log.error("",ex);
+            logger.error("",ex);
             em.getTransaction().rollback();
             fail("" + ex);
         }
@@ -158,10 +161,10 @@ public class JPACRUDTest extends JPATestBase {
             Query query = em.createQuery(
                     "from jpaAuthor where id=" + author.getId());
             author2 = (Author)query.getSingleResult();
-            log.debug("got author:" + author2);
+            logger.debug("got author: {}", author2);
         }
         catch (Exception ex) {
-            log.error("", ex);
+            logger.error("", ex);
             fail("" + ex);
         }
         
@@ -178,7 +181,7 @@ public class JPACRUDTest extends JPATestBase {
      */
     @Test
     public void testUpdate() throws Exception {
-        log.info("*** testUpdate");
+        logger.info("*** testUpdate");
         
         String firstName="test";
         String lastName="Update";
@@ -228,10 +231,10 @@ public class JPACRUDTest extends JPATestBase {
             
             em.getTransaction().begin();
             em.getTransaction().commit();
-            log.debug("updated author:" + author);
+            logger.debug("updated author: {}", author);
         }
         catch (Exception ex) {
-            log.error("",ex);
+            logger.error("",ex);
             if (em.getTransaction().isActive()) {
                 em.getTransaction().rollback();
             }
@@ -242,10 +245,10 @@ public class JPACRUDTest extends JPATestBase {
         Author author2 = null;
         try {
             author2 = em.find(Author.class, author.getId());
-            log.debug("got author:" + author2);
+            logger.debug("got author: {}", author2);
         }
         catch (Exception ex) {
-            log.error("",ex);
+            logger.error("",ex);
             fail("" + ex);
         }
         
@@ -261,7 +264,7 @@ public class JPACRUDTest extends JPATestBase {
      */
     @Test
     public void testMerge() throws Exception {
-        log.info("*** testMerge");
+        logger.info("*** testMerge");
         
         String firstName="test";
         String lastName="Merge";
@@ -277,7 +280,7 @@ public class JPACRUDTest extends JPATestBase {
             em.getTransaction().begin();
             em.persist(author);
             em.getTransaction().commit();
-            log.debug("created author:" + author);
+            logger.debug("created author: {}", author);
         }
         catch (Exception ex) {
             fail("unexpected error during persist" + ex);
@@ -290,11 +293,11 @@ public class JPACRUDTest extends JPATestBase {
         author2.setSubject("updated " + author.getSubject());
         author2.setPublishDate(new Date(published.getTime()+ 1000));
         try {
-            log.debug("merging with author:" + author2);
+            logger.debug("merging with author: {}", author2);
             Author tmp = em.merge(author2);
             em.getTransaction().begin();
             em.getTransaction().commit();
-            log.debug("merged author:" + tmp);
+            logger.debug("merged author:" + tmp);
             assertFalse("author2 is managed", em.contains(author2));
             assertTrue("tmp Author is not managed", em.contains(tmp));
             assertSame("merged result not existing managed", author, tmp);
@@ -305,7 +308,7 @@ public class JPACRUDTest extends JPATestBase {
         
         //verify our changes were made to the DB
         Author author3 = em.find(Author.class, author.getId());
-        log.debug("got author:" + author3);
+        logger.debug("got author: {}", author3);
         
         assertNotNull(author3);
         assertEquals("updated " + firstName, author3.getFirstName());
@@ -316,7 +319,7 @@ public class JPACRUDTest extends JPATestBase {
     
     @Test
     public void testRemove() throws Exception {
-        log.info("*** testRemove() ***");
+        logger.info("*** testRemove() ***");
 
         Author author = new Author();
         author.setFirstName("test");
@@ -327,10 +330,10 @@ public class JPACRUDTest extends JPATestBase {
             em.getTransaction().begin();
             em.persist(author);
             em.getTransaction().commit();
-            log.debug("created author:" + author);
+            logger.debug("created author: {}", author);
         }
         catch (Exception ex) {
-            log.error("",ex);
+            logger.error("",ex);
             em.getTransaction().rollback();
             fail("" + ex);
         }
@@ -339,10 +342,10 @@ public class JPACRUDTest extends JPATestBase {
             em.remove(author); //remove doesn't happen until tx
             em.getTransaction().begin();
             em.getTransaction().commit();
-            log.debug("removed author:" + author);
+            logger.debug("removed author: {}", author);
         }
         catch (Exception ex) {
-            log.error("",ex);
+            logger.error("",ex);
             em.getTransaction().rollback();
             fail("" + ex);
         }
@@ -350,10 +353,10 @@ public class JPACRUDTest extends JPATestBase {
         Author author2=null;
         try {
             author2 = em.find(Author.class, author.getId());
-            log.debug("removed author:" + author);
+            logger.debug("removed author: {}", author);
         }
         catch (Exception ex) {
-            log.error("",ex);
+            logger.error("",ex);
             fail("" + ex);
         }
         if (author2 != null) {
@@ -368,7 +371,7 @@ public class JPACRUDTest extends JPATestBase {
      */
     @Test
     public void testRemoveNew() throws Exception {
-        log.info("*** testRemoveNew() ***");
+        logger.info("*** testRemoveNew() ***");
 
         Author author = new Author();
         author.setFirstName("test");
@@ -377,9 +380,9 @@ public class JPACRUDTest extends JPATestBase {
         author.setPublishDate(new Date());
 
         //entity managers will ignore removal of new entity
-        log.debug("em.contains(author)=" + em.contains(author));
+        logger.debug("em.contains(author)={}", em.contains(author));
         em.remove(author);
-        log.debug("em.contains(author)=" + em.contains(author));
+        logger.debug("em.contains(author)={}", em.contains(author));
     }
 
     /**
@@ -388,7 +391,7 @@ public class JPACRUDTest extends JPATestBase {
      */
     @Test
     public void testRemoveDetached() throws Exception {
-        log.info("*** testRemoveDetached() ***");
+        logger.info("*** testRemoveDetached() ***");
 
         Author author = new Author(1);
         author.setFirstName("test");
@@ -401,7 +404,7 @@ public class JPACRUDTest extends JPATestBase {
         	em.remove(author);
         	fail("did not reject removal of detached object");
         } catch (IllegalArgumentException ex) {
-        	log.debug("caught expected exception:" + ex);
+        	logger.debug("caught expected exception:" + ex);
         }
     }
     
@@ -411,7 +414,7 @@ public class JPACRUDTest extends JPATestBase {
      */
     @Test
     public void testRemoveRemoved() throws Exception {
-        log.info("*** testRemoveRemoved() ***");
+        logger.info("*** testRemoveRemoved() ***");
 
         Author author = new Author();
         author.setFirstName("test");
@@ -419,15 +422,15 @@ public class JPACRUDTest extends JPATestBase {
         author.setSubject("testing");
         author.setPublishDate(new Date());
         em.persist(author);
-        log.debug("peristed:" + author);
+        logger.debug("peristed: {}", author);
         
-        log.debug("em.contains(author)=" + em.contains(author));
+        logger.debug("em.contains(author)={}", em.contains(author));
         em.remove(author);
-        log.debug("em.contains(author)=" + em.contains(author));
+        logger.debug("em.contains(author)={}", em.contains(author));
         
         //entity managers will ignore the removal of a removed entity
         em.remove(author);
-        log.debug("em.contains(author)=" + em.contains(author));
+        logger.debug("em.contains(author)={}", em.contains(author));
     }
 
 }

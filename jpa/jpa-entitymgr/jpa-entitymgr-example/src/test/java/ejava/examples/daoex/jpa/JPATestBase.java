@@ -2,6 +2,7 @@ package ejava.examples.daoex.jpa;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 
 import org.slf4j.Logger;
@@ -16,7 +17,7 @@ import org.junit.BeforeClass;
  * with the child JPA test cases.
  */
 public class JPATestBase {
-	private static final Logger log = LoggerFactory.getLogger(JPATestBase.class);
+	private static final Logger logger = LoggerFactory.getLogger(JPATestBase.class);
 	private static String PU_NAME="jpaDemo";
 	
 	private static EntityManagerFactory emf;
@@ -24,41 +25,43 @@ public class JPATestBase {
 
 	@BeforeClass
 	public static void setUpClass() {
-	    log.debug("setUpClass() getting emf=" + PU_NAME);
+	    logger.debug("setUpClass() getting emf={}", PU_NAME);
 	    emf = Persistence.createEntityManagerFactory(PU_NAME);
-	    log.debug("emf.getProperties()=" + emf.getProperties());
+	    logger.debug("emf.getProperties()={}", emf.getProperties());
 	}
 	
 	@Before
 	public void setUp() throws Exception {
-	    log.debug("setUp() getting em");
+	    logger.debug("setUp() getting em");
 	    em = emf.createEntityManager();
-	    log.debug("em.getProperties()=" + em.getProperties());
+	    logger.debug("em.getProperties()={}", em.getProperties());
 	}
 
 	@After
 	public void tearDown() throws Exception {
-	    try {
-	    	if (em != null) {
-	    		if (!em.getTransaction().isActive()) {
-		            em.getTransaction().begin();
-		            em.getTransaction().commit();
-	    		}
-	    		else if (!em.getTransaction().getRollbackOnly()) {
-		            em.getTransaction().commit();
-	    		}
-	    		else {
-		            em.getTransaction().rollback();
-	    		}
-	    	}
-	    }
-	    catch (Exception ex) {
-	        log.error("tearDown failed", ex);
-	        throw ex;
-	    }
-	    finally {
-	    	if (em != null) { em.close(); em=null;}
-	    }
+        if (em != null) {
+            EntityTransaction tx = em.getTransaction();
+            try {
+                if (!tx.isActive()) {
+                    tx.begin();
+                    tx.commit();
+                }
+                else if (!tx.getRollbackOnly()) {
+                    tx.commit();
+                }
+                else {
+                    tx.rollback();
+                }
+            }
+            catch (Exception ex) {
+                logger.error("tearDown failed", ex);
+                throw ex;
+            }
+            finally {
+                em.close(); 
+                em=null;
+            }
+        }
 	}
 	
 	@AfterClass

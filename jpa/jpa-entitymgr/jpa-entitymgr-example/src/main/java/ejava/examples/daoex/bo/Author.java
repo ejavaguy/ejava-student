@@ -79,12 +79,12 @@ public class Author {
     public String toString() {
         StringBuilder text = new StringBuilder();
         text.append(super.toString());
-        text.append(", id=" + id);
-        text.append(", fn=" + firstName);
-        text.append(", ln=" + lastName);
-        text.append(", subject=" + subject);
-        text.append(", pdate=" + publishDate);
-        text.append(", version=" + version);
+        text.append(", id=").append(id);
+        text.append(", fn=").append(firstName);
+        text.append(", ln=").append(lastName);
+        text.append(", subject=").append(subject);
+        text.append(", pdate=").append(publishDate);
+        text.append(", version=").append(version);
         return text.toString();
     }
 }

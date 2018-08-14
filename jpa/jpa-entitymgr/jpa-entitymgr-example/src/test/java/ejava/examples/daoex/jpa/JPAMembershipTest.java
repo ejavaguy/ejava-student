@@ -14,7 +14,7 @@ import ejava.examples.daoex.bo.Author;
  * membership.
  */
 public class JPAMembershipTest extends JPATestBase {
-    static final Logger log = LoggerFactory.getLogger(JPAMembershipTest.class);
+    static final Logger logger = LoggerFactory.getLogger(JPAMembershipTest.class);
 
     /**
      * Demonstrates how to detach an object from the persistence context
@@ -22,7 +22,7 @@ public class JPAMembershipTest extends JPATestBase {
      */
     @Test
     public void testDetach() {
-        log.info("*** testDetach() ***");
+        logger.info("*** testDetach() ***");
         Author author = new Author();
         author.setFirstName("dr");
         author.setLastName("seuss");
@@ -31,12 +31,12 @@ public class JPAMembershipTest extends JPATestBase {
         em.persist(author);
 
         //callers can detach entity from persistence context
-        log.debug("em.contains(author)="+em.contains(author));
-        log.debug("detaching author");
+        logger.debug("em.contains(author)={}", em.contains(author));
+        logger.debug("detaching author");
         em.getTransaction().begin();
         em.flush();
         em.detach(author);
-        log.debug("em.contains(author)="+em.contains(author));
+        logger.debug("em.contains(author)={}", em.contains(author));
         em.getTransaction().commit();
         
         //changes to detached entities do not change database
@@ -44,10 +44,9 @@ public class JPAMembershipTest extends JPATestBase {
         em.getTransaction().begin();
         em.getTransaction().commit();
         Author author2 = em.find(Author.class, author.getId());
-        log.debug("author.firstName=" + author.getFirstName());
-        log.debug("author2.firstName=" + author2.getFirstName());
-        assertFalse("unexpected name change", 
-        		author.getFirstName().equals(author2.getFirstName()));
+        logger.debug("author.firstName={}", author.getFirstName());
+        logger.debug("author2.firstName={}", author2.getFirstName());
+        assertNotEquals("unexpected name change", author.getFirstName(), author2.getFirstName());
     }
     
     /** 
@@ -55,15 +54,15 @@ public class JPAMembershipTest extends JPATestBase {
      */
     @Test
     public void testDetachNew() {
-    	log.info("*** testDetachNew ***");
+    	logger.info("*** testDetachNew ***");
         Author author = new Author();
         author.setFirstName("test");
         author.setLastName("new");
         
-        log.debug("em.contains(author)="+em.contains(author));
-        log.debug("detaching author");
+        logger.debug("em.contains(author)={}", em.contains(author));
+        logger.debug("detaching author");
         em.detach(author);
-        log.debug("em.contains(author)="+em.contains(author));
+        logger.debug("em.contains(author)={}", em.contains(author));
      }
 
     /** 
@@ -71,7 +70,7 @@ public class JPAMembershipTest extends JPATestBase {
      */
     @Test
     public void testDetachDetached() {
-    	log.info("*** testDetachDetached ***");
+    	logger.info("*** testDetachDetached ***");
         Author author = new Author();
         author.setFirstName("dr");
         author.setLastName("seuss");
@@ -83,10 +82,10 @@ public class JPAMembershipTest extends JPATestBase {
 
         //detaching detached entity will be ignored
         Author detached = new Author(author.getId());
-        log.debug("em.contains(author)="+em.contains(detached));
-        log.debug("detaching detached author");
+        logger.debug("em.contains(author)={}", em.contains(detached));
+        logger.debug("detaching detached author");
     	em.detach(detached);
-        log.debug("em.contains(author)="+em.contains(detached));
+        logger.debug("em.contains(author)={}", em.contains(detached));
      }
     
 }

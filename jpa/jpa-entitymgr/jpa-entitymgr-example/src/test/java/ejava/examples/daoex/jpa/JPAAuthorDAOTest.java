@@ -1,24 +1,25 @@
 package ejava.examples.daoex.jpa;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.Date;
 
+import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.junit.Test;
 
-import ejava.examples.daoex.AuthorDAO;
 import ejava.examples.daoex.bo.Author;
-import ejava.examples.daoex.jpa.JPAAuthorDAO;
+import ejava.examples.daoex.dao.AuthorDAO;
 
 /**
  * This class provides demo of using a DAO implemented with JPA
- * 
- * @author jcstaff
  */
 public class JPAAuthorDAOTest extends JPATestBase {
-    private static final Logger log = LoggerFactory.getLogger(JPAAuthorDAOTest.class);
+    private static final Logger logger = LoggerFactory.getLogger(JPAAuthorDAOTest.class);
     private AuthorDAO dao;
         
     @Override
@@ -33,18 +34,18 @@ public class JPAAuthorDAOTest extends JPATestBase {
      */
     @Test
     public void testCreate() throws Exception {
-        log.info("testCreate()");
+        logger.info("testCreate()");
         Author author = new Author();
         author.setFirstName("dr");
         author.setLastName("seuss");
         author.setSubject("children");
         author.setPublishDate(new Date());
-        log.info("creating author:" + author);
+        logger.info("creating author: {}", author);
 
         //entity managers with extended persistence contexts can be called
         //outside of a transaction
         dao.create(author);
-        log.info("created author:" + author);        
+        logger.info("created author: {}", author);        
     }
     
 
@@ -55,20 +56,20 @@ public class JPAAuthorDAOTest extends JPATestBase {
      */
     @Test
     public void testGet() throws Exception {
-        log.info("testGet()");
+        logger.info("testGet()");
         Author author = new Author();
         author.setFirstName("thing");
         author.setLastName("one");
         author.setSubject("children");
         author.setPublishDate(new Date());
         
-        log.info("creating author:" + author);
+        logger.info("creating author: {}", author);
         dao.create(author);
-        log.info("created author:" + author);        
+        logger.info("created author: {}", author);        
 
         Author author2=null;
         author2 = dao.get(author.getId());
-        log.info("got author author:" + author2);
+        logger.info("got author author: {}", author2);
 
         assertEquals(author.getFirstName(), author2.getFirstName());
         assertEquals(author.getLastName(), author2.getLastName());
@@ -82,7 +83,7 @@ public class JPAAuthorDAOTest extends JPATestBase {
      */
     @Test
     public void testQuery() throws Exception {
-        log.info("testQuery()");
+        logger.info("testQuery()");
         
         Author author = new Author();
         author.setFirstName("test");
@@ -90,7 +91,7 @@ public class JPAAuthorDAOTest extends JPATestBase {
         author.setSubject("testing");
         author.setPublishDate(new Date());
         
-        log.info("creating author:" + author);
+        logger.info("creating author: {}", author);
         dao.create(author);
         
         //need to associate em with Tx to allow query to see entity in DB
@@ -100,7 +101,7 @@ public class JPAAuthorDAOTest extends JPATestBase {
             em.getTransaction().commit();
         }
         catch (Exception ex) {
-            log.error("",ex);
+            logger.error("",ex);
             em.getTransaction().rollback();
             fail("" + ex);
         }
@@ -109,10 +110,10 @@ public class JPAAuthorDAOTest extends JPATestBase {
         Author author2 = null;
         try {
             author2 = dao.getByQuery(author.getId());
-            log.info("got author:" + author2);
+            logger.info("got author: {}", author2);
         }
         catch (Exception ex) {
-            log.error("",ex);
+            logger.error("",ex);
             fail("" + ex);
         }
         
@@ -129,7 +130,7 @@ public class JPAAuthorDAOTest extends JPATestBase {
      */
     @Test
     public void testUpdate() throws Exception {
-        log.info("testUpdate");
+        logger.info("testUpdate");
         
         String firstName="test";
         String lastName="Update";
@@ -174,10 +175,10 @@ public class JPAAuthorDAOTest extends JPATestBase {
             em.getTransaction().begin();
             em.getTransaction().commit();
 
-            log.info("updated author:" + author);
+            logger.info("updated author: {}", author);
         }
         catch (Exception ex) {
-            log.error("",ex);
+            logger.error("",ex);
             if (em.getTransaction().isActive()) {
                 em.getTransaction().rollback();
             }
@@ -188,10 +189,10 @@ public class JPAAuthorDAOTest extends JPATestBase {
         Author author2 = null;
         try {
             author2 = dao.get(author.getId());
-            log.info("got author:" + author2);
+            logger.info("got author: {}", author2);
         }
         catch (Exception ex) {
-            log.error("",ex);
+            logger.error("",ex);
             fail("" + ex);
         }
         
@@ -207,7 +208,7 @@ public class JPAAuthorDAOTest extends JPATestBase {
      */
     @Test
     public void testMerge() throws Exception {
-        log.info("testMerge");
+        logger.info("testMerge");
         
         String firstName="test";
         String lastName="Merge";
@@ -225,10 +226,10 @@ public class JPAAuthorDAOTest extends JPATestBase {
             em.flush();
             em.getTransaction().commit();
             em.clear();
-            log.info("created author:" + author);
+            logger.info("created author: {}", author);
         }
         catch (Exception ex) {
-            log.error("",ex);
+            logger.error("",ex);
             em.getTransaction().rollback();
             fail("" + ex);
         }
@@ -240,17 +241,17 @@ public class JPAAuthorDAOTest extends JPATestBase {
         author2.setSubject("updated " + author.getSubject());
         author2.setPublishDate(new Date(published.getTime()+ 1000));
         try {
-            log.info("merging with author:" + author2);
+            logger.info("merging with author: {}", author2);
             Author tmp = dao.updateByMerge(author2);
             em.getTransaction().begin();
             em.getTransaction().commit();
-            log.info("merged author:" + tmp);
+            logger.info("merged author: {}", tmp);
             
             assertFalse("author2 is managed", em.contains(author2));
             assertTrue("tmp Author is not managed", em.contains(tmp));
         }
         catch (Exception ex) {
-            log.error("",ex);
+            logger.error("",ex);
             em.getTransaction().rollback();
             fail("" + ex);
         }
@@ -259,10 +260,10 @@ public class JPAAuthorDAOTest extends JPATestBase {
         Author author3 = null;
         try {
             author3 = dao.get(author.getId());
-            log.info("got author:" + author3);
+            logger.info("got author: {}", author3);
         }
         catch (Exception ex) {
-            log.error("",ex);
+            logger.error("",ex);
             fail("" + ex);
         }
         
@@ -275,7 +276,7 @@ public class JPAAuthorDAOTest extends JPATestBase {
     
     @Test
     public void testRemove() throws Exception {
-        log.info("testRemove()");
+        logger.info("testRemove()");
 
         Author author = new Author();
         author.setFirstName("test");
@@ -286,10 +287,10 @@ public class JPAAuthorDAOTest extends JPATestBase {
             em.getTransaction().begin();
             dao.create(author);
             em.getTransaction().commit();
-            log.info("created author:" + author);
+            logger.info("created author: {}", author);
         }
         catch (Exception ex) {
-            log.error("",ex);
+            logger.error("",ex);
             em.getTransaction().rollback();
             fail("" + ex);
         }
@@ -298,10 +299,10 @@ public class JPAAuthorDAOTest extends JPATestBase {
             dao.remove(author); //remove doesn't happen until tx
             em.getTransaction().begin();
             em.getTransaction().commit();
-            log.info("removed author:" + author);
+            logger.info("removed author: {}", author);
         }
         catch (Exception ex) {
-            log.error("",ex);
+            logger.error("",ex);
             em.getTransaction().rollback();
             fail("" + ex);
         }
@@ -309,10 +310,10 @@ public class JPAAuthorDAOTest extends JPATestBase {
         Author author2=null;
         try {
             author2 = dao.get(author.getId());
-            log.info("removed author:" + author);
+            logger.info("removed author: {}", author);
         }
         catch (Exception ex) {
-            log.error("",ex);
+            logger.error("",ex);
             fail("" + ex);
         }
         if (author2 != null) {
