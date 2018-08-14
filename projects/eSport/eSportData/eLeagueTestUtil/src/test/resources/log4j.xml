@@ -29,7 +29,7 @@
    </appender>
 
    <appender name="logfile" class="org.apache.log4j.RollingFileAppender">
-      <param name="File" value="/tmp/log4j-out.txt"/>
+      <param name="File" value="target/log4j-out.txt"/>
       <param name="Append" value="false"/>
       <param name="MaxFileSize" value="100KB"/>
       <param name="MaxBackupIndex" value="1"/>
