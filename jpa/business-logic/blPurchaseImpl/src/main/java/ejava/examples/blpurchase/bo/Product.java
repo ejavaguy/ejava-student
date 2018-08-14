@@ -4,11 +4,14 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @Entity
 @Table(name="BLPURCHASE_PRODUCT")
+@NamedQuery(name="blPurchasing.getProducts", query="select p from Product p")
 public class Product {
+    public static final String GET_PRODUCTS_QUERY ="blPurchasing.getProducts"; 
 	@Id @GeneratedValue
 	private int id;	
 	@Column(nullable=false)

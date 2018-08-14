@@ -3,7 +3,7 @@ package ejava.examples.blpurchase.blimpl;
 import java.util.List;
 
 import javax.persistence.EntityManager;
-import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,17 +14,16 @@ import ejava.examples.blpurchase.bo.Cart;
 import ejava.examples.blpurchase.bo.Product;
 
 public class CatalogImpl implements Catalog {
-	private static final Logger log = LoggerFactory.getLogger(CatalogImpl.class);
+	private static final Logger logger = LoggerFactory.getLogger(CatalogImpl.class);
 	private EntityManager em;
 
 	public void setEntityManager(EntityManager entityManager) {
 		em = entityManager;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public List<Product> getProducts(int offset, int limit) {
-		Query query = em.createQuery("select p from Product p");
+		TypedQuery<Product> query = em.createNamedQuery(Product.GET_PRODUCTS_QUERY, Product.class);
 		if (offset > 0) {
 			query.setFirstResult(offset);
 		}
@@ -38,11 +37,11 @@ public class CatalogImpl implements Catalog {
 	public int addToCart(int id, String email) {
 		Product product = em.find(Product.class, id);
 		if (product == null) {
-			log.warn("product not found:" + id);
+			logger.warn("product not found: {}", id);
 			return 0;
 		}
 		if (product.getCount()-1 < 0) {
-			log.warn("no product left");
+			logger.warn("no product left");
 			return 0;
 		}
 		product.setCount(product.getCount()-1);
@@ -50,11 +49,11 @@ public class CatalogImpl implements Catalog {
 		Cart cart = em.find(Cart.class, email);
 		if (cart == null) {
 			List<Account> accounts = em.createNamedQuery(
-					Account.FIND_BY_EMAIL, Account.class)
+					Account.FIND_BY_EMAIL_QUERY, Account.class)
 					.setParameter("email", email)
 					.getResultList();
 			if (accounts.size() == 0) {
-				log.warn("no account found for:" + email);
+				logger.warn("no account found for: {}", email);
 				return 0;
 			}
 			cart = new Cart(accounts.get(0));

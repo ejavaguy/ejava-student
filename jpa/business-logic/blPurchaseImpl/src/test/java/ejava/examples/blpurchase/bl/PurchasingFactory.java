@@ -77,7 +77,7 @@ public class PurchasingFactory {
 
 			//got a null back -- account must exist -- get it
 		if (account == null) {
-			account = em.createNamedQuery(Account.FIND_BY_EMAIL, Account.class)
+			account = em.createNamedQuery(Account.FIND_BY_EMAIL_QUERY, Account.class)
 						.setParameter("email", email)
 						.getSingleResult();
 		}

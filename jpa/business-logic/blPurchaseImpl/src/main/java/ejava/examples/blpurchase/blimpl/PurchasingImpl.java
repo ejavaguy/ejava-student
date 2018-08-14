@@ -17,7 +17,7 @@ import ejava.examples.blpurchase.bo.Product;
  * aspects of the application.
  */
 public class PurchasingImpl implements Purchasing {
-	private static final Logger log = LoggerFactory.getLogger(PurchasingImpl.class);
+	private static final Logger logger = LoggerFactory.getLogger(PurchasingImpl.class);
 	private EntityManager em;
 	private Random random=new Random();
 	
@@ -27,14 +27,16 @@ public class PurchasingImpl implements Purchasing {
 
 	@Override
 	public Account createAccount(String email, String firstName, String lastName) {
-		int count=em.createNamedQuery(Account.FIND_BY_EMAIL)
+		int count=em.createNamedQuery(Account.FIND_BY_EMAIL_QUERY)
 				.setParameter("email", email)
-				.getResultList().size();
+				.setMaxResults(1)
+				.getResultList()
+				.size();
 		if (count==0) {
 			Account account = new Account(email, firstName, lastName);
 			account.setPassword(generatePassword());
 			em.persist(account);
-			log.debug("created account:" + account);
+			logger.debug("created account: {}", account);
 			return account;
 		}
 
@@ -45,13 +47,13 @@ public class PurchasingImpl implements Purchasing {
 	public double checkout(String email, String password) {
 		Cart cart = em.find(Cart.class, email);
 		if (cart == null) {
-			log.warn("cart not found");
+			logger.warn("cart not found");
 			return 0;
 		}
 		
 		Account account = cart.getAccount();
 		if (!account.getPassword().equals(password)) {
-			log.warn("wrong password");
+			logger.warn("wrong password");
 			return 0;
 		}
 		
@@ -59,7 +61,9 @@ public class PurchasingImpl implements Purchasing {
 		for (Product product : cart.getProducts()) {
 			total += product.getPrice();
 		}
-		log.debug(String.format("checked out %d products for %s",cart.getProducts().size(), email));
+		if (logger.isDebugEnabled()) {
+		    logger.debug("checked out {} products for {}", cart.getProducts().size(), email);
+		}
 		cart.getProducts().clear();
 		
 		return total;

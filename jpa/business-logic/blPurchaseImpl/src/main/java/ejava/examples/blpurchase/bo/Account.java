@@ -18,7 +18,7 @@ import javax.persistence.Table;
 			    query="select a from Account a where a.email=:email")
 })
 public class Account {
-	public static final String FIND_BY_EMAIL="blPurchasing.findAccountByEmail";
+	public static final String FIND_BY_EMAIL_QUERY="blPurchasing.findAccountByEmail";
 	
 	@Id @GeneratedValue
 	private int id;
