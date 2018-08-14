@@ -49,8 +49,6 @@
                    <pathelement location="${build.dir}/${artifactId}.jar"/>
                    <pathelement path="${junit.classpath}"/>
                    <pathelement path="${slf-api.classpath}"/>
-                   <pathelement path="${slf-log4j.classpath}"/>
-                   <pathelement path="${log4j.classpath}"/>
                </classpath>
         </javac>
 
