@@ -16,7 +16,7 @@ public class DAOException extends RuntimeException {
     
     //be wary of the exceptions that carry along infrastructure 
     //exceptions. Care should be taken higher up in the architecture
-    //to fully process these exceptions locally and not propogate
+    //to fully process these exceptions locally and not propagate
     //the lower level exceptions to RMI clients. Classpath issues
     //can occur at that point.
     

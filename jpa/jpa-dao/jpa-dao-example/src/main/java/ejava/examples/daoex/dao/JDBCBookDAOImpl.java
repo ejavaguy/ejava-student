@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
 
 import javax.persistence.PersistenceException;
@@ -20,41 +21,43 @@ public class JDBCBookDAOImpl implements BookDAO {
 
 	@Override
 	public Book create(Book book) throws PersistenceException {
-		PreparedStatement statement=null;
-		ResultSet rs = null;
-		try {
-			statement=connection.prepareStatement(
-				"insert into JPADAO_BOOK (ID, DESCRIPTION, PAGES, TITLE) " +
-				"values (null, ?, ?, ?)");
-			statement.setString(1, book.getDescription());
-			statement.setInt(2, book.getPages());
-			statement.setString(3, book.getTitle());
-			statement.execute();
-			statement.close();
+		try (PreparedStatement insertStatement=getInsertPreparedStatement(connection, book);
+		     PreparedStatement idStatement=getIdentityStatement(connection)){
+			insertStatement.execute();
 			
-            Field id = Book.class.getDeclaredField("id");
-            id.setAccessible(true);
-            statement = connection.prepareStatement("call identity()");
-            rs = statement.executeQuery();
-            if (rs.next()) {
-                id.set(book, rs.getLong(1));
+            try (ResultSet rs = idStatement.executeQuery()) {
+                if (rs.next()) {
+                    Field id = Book.class.getDeclaredField("id");
+                    id.setAccessible(true);
+                    id.set(book, rs.getLong(1));
+                } else {
+                    throw new PersistenceException("no identity returned from database");
+                }                
+            } catch (NoSuchFieldException ex) {
+                throw new PersistenceException("Error locating id field", ex);
+            } catch (IllegalAccessException ex) {
+                throw new PersistenceException("Access error setting id", ex);
             }
 			
 			return book;
 		} catch (SQLException ex) { 
 			throw new PersistenceException("SQL error creating book", ex);
-		} catch (NoSuchFieldException ex) {
-			throw new RuntimeException("Error locating id field", ex);
-		} catch (SecurityException ex) {
-			throw new RuntimeException("Security error setting id", ex);
-		} catch (IllegalArgumentException ex) {
-			throw new RuntimeException("Error setting id", ex);
-		} catch (IllegalAccessException ex) {
-			throw new RuntimeException("Access error setting id", ex);
-		} finally {
-			try { rs.close(); } catch (Exception ex){}
-			try { statement.close(); } catch (Exception ex){}
 		}
+	}
+	
+	private PreparedStatement getInsertPreparedStatement(Connection c, Book book) throws SQLException {
+        PreparedStatement statement=connection.prepareStatement(
+                "insert into JPADAO_BOOK (ID, DESCRIPTION, PAGES, TITLE) " +
+                "values (null, ?, ?, ?)");
+        statement.setString(1, book.getDescription());
+        statement.setInt(2, book.getPages());
+        statement.setString(3, book.getTitle());
+        return statement;
+	}
+	
+	private PreparedStatement getIdentityStatement(Connection c) throws SQLException {
+        PreparedStatement statement = connection.prepareStatement("call identity()");
+        return statement;
 	}
 
 	@Override

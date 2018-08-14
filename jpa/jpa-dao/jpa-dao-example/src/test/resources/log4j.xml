@@ -43,6 +43,10 @@
    <logger name="ejava">
       <level value="debug"/>
    </logger>
+   <logger name="org.hibernate.type">
+      <level value="INFO"/>
+      <appender-ref ref="logfile"/>  
+   </logger>
    <logger name="org.hibernate.SQL">
       <level value="DEBUG"/>
       <appender-ref ref="logfile"/>  
@@ -50,11 +54,6 @@
    <logger name="org.hibernate.tool.hbm2ddl">
         <level value="trace"/> 
     </logger>
-    <!-- 
-    <logger name="org.hibernate" additivity="false">
-        <level value="warn"/><appender-ref ref="console" /> 
-    </logger>   
-     -->
 
    <root>
       <priority value="info"/>    

@@ -33,7 +33,7 @@ public class Book  {
 
     public String toString() {
         StringBuilder text = new StringBuilder();
-        text.append("id=" + id);
+        text.append("id=").append(id);
         text.append(", title=").append(title);
         text.append(", pages=").append(pages);
         return text.toString();
