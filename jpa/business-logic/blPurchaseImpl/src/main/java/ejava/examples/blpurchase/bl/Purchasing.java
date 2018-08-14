@@ -11,6 +11,7 @@ public interface Purchasing {
 	 * @param email
 	 * @param firstName
 	 * @param lastName
+     * @return the Account created with primary key assigned
 	 */
 	Account createAccount(String email, String firstName, String lastName);
 
@@ -21,6 +22,7 @@ public interface Purchasing {
 	 * Note that this capability is not yet fully defined.
 	 * @param email
 	 * @param password
+     * @return amount charged as part of this checkout
 	 */
 	double checkout(String email, String password);
 }
