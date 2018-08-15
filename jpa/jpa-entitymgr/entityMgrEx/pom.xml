@@ -92,7 +92,6 @@
 
         <pluginManagement>
             <plugins>
-                  <!-- make sure we are building java6 -->
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
@@ -102,13 +101,13 @@
                             <target>${java.target.version}</target>
                     </configuration>	                
                 </plugin>      
-
+          
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-jar-plugin</artifactId>
                     <version>${maven-jar-plugin.version}</version>
                 </plugin>
-          
+
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
@@ -154,6 +153,7 @@
                         <url>${jdbc.url}</url>          
                     </configuration>
                 </plugin>
+                      
             </plugins>    
         </pluginManagement>
 
@@ -172,7 +172,7 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <scope>test</scope>
+            <scope>provided</scope>
         </dependency>
     
         <dependency>
@@ -209,7 +209,7 @@
             <id>h2srv</id>
             <properties>
                   <jdbc.driver>org.h2.Driver</jdbc.driver>
-                  <jdbc.url>jdbc:h2:tcp://${db.host}:9092/h2db/ejava</jdbc.url>
+                  <jdbc.url>jdbc:h2:tcp://${db.host}:9092/./h2db/ejava</jdbc.url>
                   <jdbc.user>sa</jdbc.user>
                   <jdbc.password/>
                   <hibernate.dialect>org.hibernate.dialect.H2Dialect</hibernate.dialect>
@@ -378,6 +378,20 @@
                               </pluginExecutionFilter>
                               <action>
                                 <ignore />
+                              </action>
+                            </pluginExecution>
+
+                            <pluginExecution>
+                              <pluginExecutionFilter>
+                                <groupId>info.ejava.utils.jpa</groupId>
+                                <artifactId>jpa-schemagen-maven-plugin</artifactId>
+                                <versionRange>[5.0.0-SNAPSHOT,)</versionRange>
+                                <goals>
+                                  <goal>generate</goal>
+                                </goals>
+                              </pluginExecutionFilter>
+                              <action>
+                                <ignore/>
                               </action>
                             </pluginExecution>
 
