@@ -12,8 +12,8 @@
             <property name="javax.persistence.schema-generation.scripts.drop-target" value="${project.build.outputDirectory}/ddl/${project.artifactId}-drop.ddl"/>
 
             <!-- otherwise we would get 1 line per statement without standard delimiter character -->
-            <property name="hibernate.hbm2ddl.delimiter" value=";"/>
             <property name="hibernate.format_sql" value="true"/>
+            <property name="hibernate.hbm2ddl.delimiter" value=";"/>
         </properties>
     </persistence-unit>        
 </persistence>
