@@ -2,6 +2,8 @@ package ejava.examples.orm.core.products;
 
 import static org.junit.Assert.*;
 
+import java.math.BigDecimal;
+
 import javax.persistence.PersistenceException;
 
 import org.slf4j.Logger;
@@ -43,7 +45,7 @@ public class TableColumnMappingTest extends TestBase {
             car.setMake("chevy");
             car.setModel("tahoe");
             car.setYear(2002);
-            car.setCost(10000.00);
+            car.setCost(new BigDecimal("10000.00"));
             
             //insert a row in the database
             em.persist(car);

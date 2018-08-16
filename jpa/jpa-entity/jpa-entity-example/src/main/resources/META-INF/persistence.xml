@@ -55,7 +55,7 @@
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
 
         <properties>
-            <property name="javax.persistence.schema-generation.database.action" value="create"/>
+            <property name="javax.persistence.schema-generation.database.action" value="create-drop"/>
             <property name="javax.persistence.schema-generation.create-source" value="metadata-then-script"/>
             <property name="javax.persistence.schema-generation.create-script-source" value="target/classes/META-INF/fix-precision.ddl"/>
             

@@ -92,7 +92,6 @@ public class TableColumnAnnotationTest extends TestBase {
      * Demonstrates the use of precision and scale
      */
     @Test
-    @Ignore //FIXME: figure out what happen to H2 precision 
     public void testPrecision() {
         ejava.examples.orm.core.annotated.Car car = new Car(1);
         car.setMake("chevy");

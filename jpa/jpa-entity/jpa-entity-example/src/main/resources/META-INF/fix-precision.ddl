@@ -1,1 +1,2 @@
-alter table ORMCORE_CAR modify (car_cost double precision(2));
+--not needed, found source of error in mapped version of class
+--alter table ORMCORE_CAR modify (car_cost decimal(7,2));

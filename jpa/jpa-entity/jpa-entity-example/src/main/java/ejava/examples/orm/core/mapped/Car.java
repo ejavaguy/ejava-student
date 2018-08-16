@@ -1,5 +1,7 @@
 package ejava.examples.orm.core.mapped;
 
+import java.math.BigDecimal;
+
 /**
  * This class provides an example of providing more explicit mappings between
  * the entity class and the database using orm.xml.
@@ -10,7 +12,7 @@ public class Car  {
     private String make;
     private String model;
     private int year;
-    private double cost;
+    private BigDecimal cost;
     
     public Car() {}
     public Car(long id) { this.id = id; }
@@ -32,8 +34,8 @@ public class Car  {
         this.year = year;
     }    
     
-    public double getCost() { return cost; }
-    public void setCost(double cost) {
+    public BigDecimal getCost() { return cost; }
+    public void setCost(BigDecimal cost) {
         this.cost = cost;
     }    
     
