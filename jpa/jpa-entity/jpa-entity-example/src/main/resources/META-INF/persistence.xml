@@ -55,18 +55,14 @@
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
 
         <properties>
-        <!-- properties moved to hibernate.properties file
+            <property name="javax.persistence.schema-generation.database.action" value="create"/>
+            <property name="javax.persistence.schema-generation.create-source" value="metadata-then-script"/>
+            <property name="javax.persistence.schema-generation.create-script-source" value="target/classes/META-INF/fix-precision.ddl"/>
+            
             <property name="javax.persistence.jdbc.url" value="${jdbc.url}"/>
             <property name="javax.persistence.jdbc.driver" value="${jdbc.driver}"/>
             <property name="javax.persistence.jdbc.user" value="${jdbc.user}"/>
             <property name="javax.persistence.jdbc.password" value="${jdbc.password}"/>
-
-            <property name="hibernate.dialect" 
-                value="${hibernate.dialect}"/>
-            <property name="hibernate.hbm2ddl.auto" value="create"/>
-            <property name="hibernate.show_sql" value="true"/>            
-            <property name="hibernate.format_sql" value="true"/>            
-            -->
          </properties>
     </persistence-unit>        
     

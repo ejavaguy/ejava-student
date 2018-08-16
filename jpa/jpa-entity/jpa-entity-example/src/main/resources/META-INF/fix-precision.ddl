@@ -1,0 +1,1 @@
+alter table ORMCORE_CAR modify (car_cost double precision(2));
