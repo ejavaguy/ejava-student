@@ -16,12 +16,12 @@
             <property name="hibernate.hbm2ddl.delimiter" value=";"/>
 
             <!-- standard database properties 
+            -->
             <property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>
             <property name="javax.persistence.jdbc.url" value="${jdbc.url}"/>
             <property name="javax.persistence.jdbc.driver" value="${jdbc.driver}"/>
             <property name="javax.persistence.jdbc.user" value="${jdbc.user}"/>
             <property name="javax.persistence.jdbc.password" value="${jdbc.password}"/>
-            -->
         </properties>
     </persistence-unit>        
 </persistence>
