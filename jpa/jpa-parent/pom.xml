@@ -28,6 +28,7 @@
     </prerequisites>
 
     <properties>
+        <ejava.version>5.0.0-SNAPSHOT</ejava.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.source.version>1.8</java.source.version>
         <java.target.version>1.8</java.target.version>
@@ -137,7 +138,7 @@
                 <plugin>
                     <groupId>info.ejava.utils.jpa</groupId>
                     <artifactId>jpa-schemagen-maven-plugin</artifactId>
-                    <version>${project.version}</version>
+                    <version>${ejava.version}</version>
                     <dependencies>
                         <dependency>
                             <groupId>com.h2database</groupId>
