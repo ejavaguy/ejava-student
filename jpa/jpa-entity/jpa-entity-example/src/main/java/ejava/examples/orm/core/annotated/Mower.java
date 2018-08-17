@@ -35,7 +35,7 @@ public class Mower {
     
     public String toString() {
         return new StringBuilder()
-           .append(super.toString())
+           .append(super.hashCode())
            .append(", make=").append(make)
            .append(", model=").append(model)
            .append(", size=").append(size)

@@ -27,7 +27,7 @@ public class Gadget {
     @Override
     public String toString() {
         return new StringBuilder()
-              .append(super.toString())	       
+              .append(super.hashCode())	       
               .append(", id=").append(id)
               .append(", make=").append(make)
               .toString();

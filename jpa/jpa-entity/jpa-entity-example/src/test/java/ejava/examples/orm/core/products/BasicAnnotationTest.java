@@ -15,7 +15,7 @@ import ejava.examples.orm.core.annotated.Bike;
  * 
  */
 public class BasicAnnotationTest extends TestBase {
-    private static final Logger log = LoggerFactory.getLogger(BasicAnnotationTest.class);
+    private static final Logger logger = LoggerFactory.getLogger(BasicAnnotationTest.class);
     
     /**
      * This test demonstrates the ability to map a simple object to the 
@@ -29,7 +29,7 @@ public class BasicAnnotationTest extends TestBase {
      */
     @Test
     public void testDefaultMapping() {
-        log.info("testDefaultMapping");
+        logger.info("testDefaultMapping");
         ejava.examples.orm.core.annotated.Bike bike = new Bike(1);
         bike.setMake("trek");
         bike.setModel("2200");
@@ -37,14 +37,14 @@ public class BasicAnnotationTest extends TestBase {
         
         //insert a row in the database
         em.persist(bike);
-        log.info("created bike:" + bike);
+        logger.info("created bike: {}", bike);
         
         //find the inserted object
         Bike bike2 = em.find(Bike.class, 1L); 
         //note that the literal value needed to be explicitly expressed as
         //a long so that the Java5 autoboxing didn't incorrectly pass it as
         //an Integer; the data type for the PK is long.
-        log.info("found bike:" + bike2);
+        logger.info("found bike: {}", bike2);
         assertNotNull(bike2);
         assertEquals(bike2.getSize(), bike2.getSize());
         
@@ -54,15 +54,15 @@ public class BasicAnnotationTest extends TestBase {
         //since the persistence context is still active, bike and bike2
         //are actually the same object 
         assertEquals(bike.getSize(), bike2.getSize());
-        log.info("updated bike:" + bike2);
+        logger.info("updated bike: {}", bike2);
         
         //lets delete the object
         em.remove(bike);
         em.flush();
-        log.info("removed bike:" + bike);
+        logger.info("removed bike: {}", bike);
         
         //lets put a bike back in at end of test so we can see it in database 
         em.persist(bike2);
-        log.info("created leftover bike:" + bike2);
+        logger.info("created leftover bike: {}", bike2);
     }        
 }

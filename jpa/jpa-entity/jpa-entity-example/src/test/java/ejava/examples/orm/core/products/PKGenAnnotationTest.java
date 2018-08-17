@@ -1,15 +1,17 @@
 package ejava.examples.orm.core.products;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.List;
 
 import javax.persistence.PersistenceException;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.junit.Assume;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import ejava.examples.orm.core.annotated.Drill;
 import ejava.examples.orm.core.annotated.EggBeater;
@@ -21,7 +23,7 @@ import ejava.examples.orm.core.annotated.Gadget;
  * keys setup using class annotations.
  */
 public class PKGenAnnotationTest extends TestBase {
-    private static final Logger log = LoggerFactory.getLogger(BasicAnnotationTest.class);
+    private static final Logger logger = LoggerFactory.getLogger(BasicAnnotationTest.class);
     
     static String getText(Throwable ex) {
         StringBuilder text = new StringBuilder(ex.getMessage());
@@ -39,19 +41,20 @@ public class PKGenAnnotationTest extends TestBase {
      */
     @Test
     public void testAUTOGood() {
-        log.info("testAUTOGood");
-        //note that since PKs are generated, we must pass in an object that
+        logger.info("testAUTOGood");
+        //since PKs are generated, we must pass in an object that
         //has not yet been assigned a PK value.
         ejava.examples.orm.core.annotated.Drill drill = new Drill(0);
         drill.setMake("acme");
         
         //insert a row in the database
+        logger.info("just before persist(tx={}): {}", txActive(), drill);
         em.persist(drill);
-        log.info("created drill (before flush):" + drill);
+        logger.info("created drill (after persist and before flush, tx={}): {}", txActive(), drill);
         em.flush(); 
-        log.info("created drill (after flush):" + drill);
+        logger.info("created drill (after flush, tx={}): {}", txActive(), drill);
         
-        assertFalse(drill.getId() == 0L);        
+        assertNotEquals(0, drill.getId());        
     }
     
     /**
@@ -60,20 +63,21 @@ public class PKGenAnnotationTest extends TestBase {
      */
     @Test
     public void testAUTOBad() {
-        log.info("testAUTOBad");
-        //he's not going to like they non-zero PK value here
+        logger.info("testAUTOBad");
+        //provider will not like the non-zero PK value here
+        //because we told it to generate the PK
         ejava.examples.orm.core.annotated.Drill drill = new Drill(25L);
         drill.setMake("BD");
         
         //insert a row in the database
         boolean exceptionThrown = false;
         try { 
-            assertFalse(drill.getId() == 0L);        
-            log.info("trying to create drill with pre-exist pk:" + drill);
+            assertNotEquals(0, drill.getId());        
+            logger.info("trying to create drill with pre-exist pk: {}", drill);
             em.persist(drill);
         }
         catch (PersistenceException ex) {
-            log.info("got expected exception: " + ex);
+            logger.info("got expected exception: " + ex);
             exceptionThrown = true;
         }        
         assertTrue(exceptionThrown);
@@ -81,27 +85,57 @@ public class PKGenAnnotationTest extends TestBase {
 
     @Test
     public void testTABLE() {
-        log.info("testTABLE");
-        log.debug("table id before=" + getTableId());
+        logger.info("testTABLE");
+        logger.debug("table id before(tx={})={}", txActive(), getTableId());
         //note that since PKs are generated, we must pass in an object that
         //has not yet been assigned a PK value.
         ejava.examples.orm.core.annotated.EggBeater eggbeater = new EggBeater(0);
-        eggbeater.setMake("done right");
+        eggbeater.setMake("done right 1");
         
         //insert a row in the database
+        logger.info("persisting eggbeater (tx={}): {}", txActive(), eggbeater);
         em.persist(eggbeater);
-        log.info("created eggbeater (before flush):" + eggbeater);
+        logger.info("created eggbeater (before flush; tx={}): {}", txActive(), eggbeater);
         em.flush(); 
-        log.info("created eggbeater (after flush):" + eggbeater);
+        logger.info("created eggbeater (after flush; tx={}): {}", txActive(), eggbeater);
         
-        assertFalse(eggbeater.getId() == 0L);   
-        log.debug("table id after=" + getTableId());
-        for (int i=2; i<20; i++) {
-        	EggBeater eb = new EggBeater();
-        	em.persist(eb);
-            log.info("created ehhbeater:" + eb);
-            log.debug("table id after[" + i + "]=" + getTableId());        	
+        assertNotEquals(0, eggbeater.getId());   
+        logger.debug("table id after(tx={})={}", txActive(), getTableId());
+        
+        int counter=2;
+        for (int i=0; i<20; i++) {
+            	EggBeater eb = new EggBeater();
+            	eb.setMake("done right " + counter);
+            	em.persist(eb);
+            logger.info("created ehhbeater(tx={}): {}", txActive(), eb);
+            logger.debug("table id after[" + counter++ + "](tx={})={}", txActive(), getTableId());
+            if (i==0) {
+                eggbeater=eb;
+            }
         }
+        logger.info("committing (tx={}): {}", txActive(), eggbeater);
+        em.getTransaction().commit();
+        logger.info("tx committed (tx={}): {}", txActive(), eggbeater);
+        
+        logger.info("tx(tx={})", txActive());
+        for (int i=0; i<20; i++) {
+            EggBeater eb = new EggBeater();
+            eb.setMake("done right " + counter);
+            em.persist(eb);
+            logger.info("created ehhbeater(tx={}): {}", txActive(), eb);
+            logger.debug("table id after[" + counter++ + "](tx={})={}", txActive(), getTableId());
+            if (i==0) {
+                eggbeater=eb;
+            }
+        }
+        
+        logger.info("starting tx(tx={}): {}", txActive(), eggbeater);
+        em.getTransaction().begin();
+        logger.info("tx started, flushing (tx={}): {}", txActive(), eggbeater);
+        em.flush();
+        logger.info("cache flushed (tx={}): {}", txActive(), eggbeater);
+        em.getTransaction().commit();
+        logger.info("tx committed (tx={}): {}", txActive(), eggbeater);
     }
     
     protected Integer getTableId() {
@@ -115,61 +149,109 @@ public class PKGenAnnotationTest extends TestBase {
 
     @Test
     public void testSEQUENCE() {
-        log.info("testSEQUENCE");
+        logger.info("testSEQUENCE");
         Assume.assumeTrue(Boolean.parseBoolean(System.getProperty("sql.sequences", "true")));
         try {
-            //note that since PKs are generated, we must pass in an object that
-            //has not yet been assigned a PK value.
             ejava.examples.orm.core.annotated.Fan fan = new Fan(0);
             fan.setMake("cool runner 1");
             
             //insert a row in the database
+            logger.info("persisting fan(tx={}): {}", txActive(), fan);
             em.persist(fan);
-            log.info("created fan (before flush):" + fan);
+            logger.info("created fan (before flush, tx={}): {}", txActive(), fan);
             em.flush(); 
-            log.info("created fan (after flush):" + fan);
+            logger.info("created fan (after flush; tx={}): {}", txActive(), fan);            
+            assertNotEquals(0, fan.getId());
             
-            assertFalse(fan.getId() == 0L);
-            
-            for (int i=2; i<20; i++) {
-            	Fan f = new Fan();
-            	f.setMake("cool runner " + i);
-            	em.persist(f);
-                log.info("created fan:" + f);
+            int counter=2;
+            for (int i=0; i<20; i++) {               
+                Fan f = new Fan();
+            	    f.setMake("cool runner " + counter++);
+            	    em.persist(f);
+                logger.info("created fan(tx={}): {}", txActive(), f);
+                if (i==0) {
+                    fan=f;
+                }
             }
+            logger.info("committing (tx={}): {}", txActive(), fan);
+            em.getTransaction().commit();
+            logger.info("tx committed (tx={}): {}", txActive(), fan);
+            
+            logger.info("tx(tx={})", txActive());
+            for (int i=0; i<20; i++) {
+                Fan f = new Fan();
+                f.setMake("cool runner " + counter++);
+                em.persist(f);
+                logger.info("created fan(tx={}): {}", txActive(), f);
+                if (i==0) {
+                    fan=f;
+                }
+            }
+            
+            logger.info("starting tx(tx={}): {}", txActive(), fan);
+            em.getTransaction().begin();
+            logger.info("tx started, flushing (tx={}): {}", txActive(), fan);
+            em.flush();
+            logger.info("cache flushed (tx={}): {}", txActive(), fan);
+            em.getTransaction().commit();
+            logger.info("tx committed (tx={}): {}", txActive(), fan);
+            
         } catch (PersistenceException ex) {
             String text = getText(ex);
-            log.error("error in testSEQUENCE:" + text, ex);
+            logger.error("error in testSEQUENCE:" + text, ex);
             fail("error in testSEQUENCE:" + text);
         }
     }
 
     @Test
     public void testIDENTITY() {
-        log.info("testIDENTITY");
+        logger.info("testIDENTITY");
         try {
             ejava.examples.orm.core.annotated.Gadget gadget = new Gadget(0);
             gadget.setMake("gizmo 1");
             
             //insert a row in the database
+            //start with a tx already active
+            logger.info("gadget (before persist; tx={}): {}", txActive(), gadget);
             em.persist(gadget);
-            log.info("created gadget (before flush):" + gadget);
+            logger.info("created gadget (after persist, before flush; tx={}): {}", txActive(), gadget);
             em.flush(); 
-            log.info("created gadget (after flush):" + gadget);
-            
-            assertFalse(gadget.getId() == 0L);                
-            
-            for (int i=2; i<20; i++) {
-            	Gadget g = new Gadget();
-            	g.setMake("gizmo " + i);
-            	em.persist(g);
-                log.info("created gadget:" + g);
+            logger.info("created gadget (after flush; tx={}): {}", txActive(), gadget);            
+            assertNotEquals(0, gadget.getId());     
+
+            int counter=2;
+            for (int i=0; i<3; i++) {
+                Gadget g = new Gadget();
+                g.setMake("gizmo " + counter++);
+                em.persist(g);
+                logger.info("created gadget(tx={}): {}", txActive(), g);
             }
+            
+            em.getTransaction().rollback();
+            logger.info("rolled back tx(tx={})", txActive());
+            for (int i=0; i<3; i++) {
+                Gadget g = new Gadget();
+                g.setMake("gizmo " + counter++);
+                em.persist(g);
+                logger.info("created gadget(tx={}): {}", txActive(), g);
+                if (i==0) {
+                    gadget=g;
+                }
+            }
+            
+            logger.info("starting tx(tx={}): {}", txActive(), gadget);
+            em.getTransaction().begin();
+            logger.info("tx started, flushing (tx={}): {}", txActive(), gadget);
+            em.flush();
+            logger.info("cache flushed (tx={}): {}", txActive(), gadget);
+            em.getTransaction().commit();
+            logger.info("tx committed (tx={}): {}", txActive(), gadget);            
         } catch (PersistenceException ex) {
             String text = getText(ex);
-            log.error("error in testIDENTITY:" + text, ex);
+            logger.error("error in testIDENTITY:" + text, ex);
             fail("error in testIDENTITY:" + text);
         }
+        
     }
     
 }

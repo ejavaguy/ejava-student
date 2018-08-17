@@ -18,7 +18,7 @@ import ejava.examples.orm.core.mapped.Car;
  * to the database with with specific table and column elements in orm.xml. 
  */
 public class TableColumnMappingTest extends TestBase {
-    private static final Logger log = LoggerFactory.getLogger(TableColumnMappingTest.class);
+    private static final Logger logger = LoggerFactory.getLogger(TableColumnMappingTest.class);
     
     @Before
     public void cleanup() {
@@ -38,7 +38,7 @@ public class TableColumnMappingTest extends TestBase {
      */
     @Test
     public void testTableColumnMapping() {
-        log.info("testTableColumnMapping");
+        logger.info("testTableColumnMapping");
         
         try {
             ejava.examples.orm.core.mapped.Car car = new Car(2);
@@ -49,12 +49,12 @@ public class TableColumnMappingTest extends TestBase {
             
             //insert a row in the database
             em.persist(car);
-            log.info("created car:" + car);
+            logger.info("created car: {}", car);
             
             //find the inserted object
             Car car2 = em.find(Car.class, 2L); 
     
-            log.info("found car:" + car2);
+            logger.info("found car: {}", car2);
             assertNotNull(car2);
             assertEquals(car.getYear(), car2.getYear());
             
@@ -64,16 +64,16 @@ public class TableColumnMappingTest extends TestBase {
             //since the persistence context is still active, cars
             //are actually the same object 
             assertEquals(car.getYear(), car2.getYear());
-            log.info("updated car:" + car2);
+            logger.info("updated car: {}", car2);
             
             //lets delete the object
             em.remove(car);
             em.flush();
-            log.info("removed car:" + car);
+            logger.info("removed car: {}", car);
             
             //lets put a car back in at end of test so we can see it in database 
             em.persist(car2);
-            log.info("created leftover car:" + car2);
+            logger.info("created leftover car: {}", car2);
         } catch (PersistenceException ex) {
             StringBuilder text = new StringBuilder(ex.getMessage());
             Throwable cause = ex.getCause();
@@ -81,7 +81,7 @@ public class TableColumnMappingTest extends TestBase {
                 text.append("\nCaused By:" + cause);
                 cause = cause.getCause();
             }
-            log.error("error in testTableColumnMapping:" + text, ex);
+            logger.error("error in testTableColumnMapping:" + text, ex);
             fail("error in testTableColumnMapping:" + text);
         }
 

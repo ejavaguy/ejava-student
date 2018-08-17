@@ -39,7 +39,7 @@ public class MowerPK implements Serializable {
     
     @Override
     public String toString() {
-        return super.toString() +
+        return super.hashCode() +
             ", make=" + make +
             ", model=" + model;
     }

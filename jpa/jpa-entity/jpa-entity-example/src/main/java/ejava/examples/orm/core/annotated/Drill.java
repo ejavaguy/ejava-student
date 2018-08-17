@@ -11,8 +11,8 @@ import javax.persistence.*;
 @Table(name="ORMCORE_DRILL")
 public class Drill  {
     @Id
-    @GeneratedValue( //AUTO is the default and could be left off here
-            strategy=GenerationType.AUTO) 
+    @GeneratedValue//AUTO is the default and could be left off here
+                   //(strategy=GenerationType.AUTO) 
     private long id; //unassigned PK value must be zero
     private String make;
     
@@ -29,7 +29,7 @@ public class Drill  {
     @Override
     public String toString() {
         return new StringBuilder()
-              .append(super.toString())
+              .append(super.hashCode())
               .append(", id=").append(id)
               .append(", make=").append(make)
               .toString();

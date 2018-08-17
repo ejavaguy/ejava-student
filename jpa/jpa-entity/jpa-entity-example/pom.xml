@@ -79,10 +79,12 @@
                 </configuration>
             </plugin>
 
+             <!-- cannot have this enabled when persistence context configured to create database 
             <plugin>
                 <groupId>info.ejava.utils.jpa</groupId>
                 <artifactId>jpa-schemagen-maven-plugin</artifactId>
             </plugin>
+             -->
 
                <!-- generates schema files with DDL commands to create/drop schema within DB
             <plugin>

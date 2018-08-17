@@ -16,13 +16,13 @@ import ejava.examples.orm.core.annotated.Vase;
  * certain types, like dates and enums.
  */
 public class TypesAnnotationTest extends TestBase {
-    private static final Logger log = LoggerFactory.getLogger(TypesAnnotationTest.class);
+    private static final Logger logger = LoggerFactory.getLogger(TypesAnnotationTest.class);
     
     /**
      */
     @Test
     public void testValues() {
-        log.info("testValues");
+        logger.info("testValues");
         ejava.examples.orm.core.annotated.Vase vase = new Vase(1);
         Date date = new Date();
         vase.setADate(date);
@@ -33,14 +33,14 @@ public class TypesAnnotationTest extends TestBase {
         
         //insert a row in the database
         em.persist(vase);
-        log.info("created case:" + vase);
+        logger.info("created case: {}", vase);
         
         //find the inserted object
         em.flush();
         em.clear();
         Vase vase2 = em.find(Vase.class, 1L); 
 
-        log.info("found vase:" + vase2);
+        logger.info("found vase: {}", vase2);
         assertNotNull(vase2);
         assertEquals(vase2.getADate(), vase2.getADate());
         assertEquals(vase2.getATime(), vase2.getATime());

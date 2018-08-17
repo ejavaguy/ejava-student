@@ -11,7 +11,7 @@ import ejava.examples.orm.core.mapped.Tank;
  * annotations.
  */
 public class TransientMappingTest extends TestBase {
-    private static final Logger log = LoggerFactory.getLogger(BasicAnnotationTest.class);
+    private static final Logger logger = LoggerFactory.getLogger(BasicAnnotationTest.class);
     
     /**
      * This test provides a demo of persisting a class that has mapped
@@ -20,14 +20,14 @@ public class TransientMappingTest extends TestBase {
      */
     @Test
     public void testTransient() {
-        log.info("testTransient");
+        logger.info("testTransient");
         ejava.examples.orm.core.mapped.Tank tank = new Tank(2);
         tank.setMake("acme");
         tank.setModel("great guns");
 
         //insert a row in the database
         em.persist(tank);
-        log.info("created tank:" + tank);        
+        logger.info("created tank: {}", tank);        
     }
     
 }

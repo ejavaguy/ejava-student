@@ -41,9 +41,12 @@ public class TestBase {
     
     @AfterClass
     public static void tearDownBaseClass() {
-    	if (emf!=null) {
-    		emf.close();
-    	}
+        	if (emf!=null) {
+        		emf.close();
+        	}
     }
     
+    protected boolean txActive() {
+        return em.getTransaction().isActive();
+    }
 }

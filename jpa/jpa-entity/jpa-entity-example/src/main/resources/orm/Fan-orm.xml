@@ -14,7 +14,7 @@
         <table name="ORMCORE_FAN"/>
         <sequence-generator name="fanSequence"
             sequence-name="FAN_SEQ"
-            initial-value="4"
+            initial-value="5"
             allocation-size="3"/>
         <attributes>
             <id name="id">

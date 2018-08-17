@@ -16,7 +16,7 @@ import ejava.examples.orm.core.annotated.Umbrella;
  * before inspecting the object.
  */
 public class LazyFetchAnnotationTest extends TestBase {
-    private static final Logger log = LoggerFactory.getLogger(BasicAnnotationTest.class);
+    private static final Logger logger = LoggerFactory.getLogger(BasicAnnotationTest.class);
     
     /**
      * This test provides a demo of persisting and getting a class that
@@ -25,23 +25,23 @@ public class LazyFetchAnnotationTest extends TestBase {
      */
     @Test
     public void testLazyFetch() {
-        log.info("testLazyFetch");
+        logger.info("testLazyFetch");
         ejava.examples.orm.core.annotated.Umbrella umbrella = new Umbrella(1);
         umbrella.setMake("acme".toCharArray());
         umbrella.setModel("protector");
 
         //insert a row in the database
         em.persist(umbrella);
-        log.info("created umbrella:" + umbrella);
+        logger.info("created umbrella: {}", umbrella);
         
         em.flush();
         em.clear();        
         Umbrella umbrella2 = em.find(Umbrella.class, 1L);
         assertTrue("didn't get a new object", umbrella != umbrella2);
         
-        log.info("here's model:" + umbrella2.getModel());
-        log.info("here's make:" + new String(umbrella2.getMake()));
-        log.info("check setters in log");        
+        logger.info("here's model: {}", umbrella2.getModel());
+        logger.info("here's make: {}", new String(umbrella2.getMake()));
+        logger.info("check setters in logger");        
     }
     
 }

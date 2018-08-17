@@ -11,7 +11,7 @@ import javax.persistence.*;
 @SequenceGenerator(
     name="fanSequence",     //required logical name
     sequenceName="FAN_SEQ", //name in database
-    initialValue=4,         //start with something odd to be noticeable
+    initialValue=5,         //start with something odd to be noticeable
     allocationSize=3)       //number of IDs to internally assign per-sequence value
 public class Fan {
     @Id
@@ -33,7 +33,7 @@ public class Fan {
     @Override
     public String toString() {
         return new StringBuilder()
-              .append(super.toString())
+              .append(super.hashCode())
               .append(", id=").append(id)
               .append(", make=").append(make)
               .toString();
