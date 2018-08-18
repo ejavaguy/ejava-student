@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 /**
  * This class provides an example base class in a join inheritance strategy.
- * In thise mode, the base and all derived classes declare their own table
+ * In this mode, the base and all derived classes declare their own table
  * and all are joined using a common primary key.
  */
 
