@@ -56,10 +56,10 @@ public class OneManyMapTest extends DemoBase {
             List<OneManyOwningParent> owningParents = em.createQuery(
                     "select owningParent from OneManyOwningParent owningParent")
                     .getResultList();
-            log.debug("removing " + owningParents.size() + " owningParents");
+            logger.debug("removing " + owningParents.size() + " owningParents");
             for (OneManyOwningParent parent : owningParents) {
                 parent.getOwnedChildren().clear();
-                log.debug("removing:" + parent);
+                logger.debug("removing:" + parent);
                 em.remove(parent);
             }
             //em.getTransaction().begin();
@@ -69,10 +69,10 @@ public class OneManyMapTest extends DemoBase {
             List<OneManyOwningChild> owningChildren = em.createQuery(
                     "select owningChild from OneManyOwningChild owningChild")
                     .getResultList();
-            log.debug("removing " + owningChildren.size() + " owningChildren");
+            logger.debug("removing " + owningChildren.size() + " owningChildren");
             for (OneManyOwningChild child : owningChildren) {
                 child.setOneInverseParent(null);
-                log.debug("removing:" + child);
+                logger.debug("removing:" + child);
                 em.remove(child);
             }
             //em.getTransaction().begin();
@@ -82,9 +82,9 @@ public class OneManyMapTest extends DemoBase {
             List<OneManyInverseParent> inverseParents = em.createQuery(
                     "select inverseParent from OneManyInverseParent inverseParent")
                     .getResultList();
-            log.debug("removing " + inverseParents.size() + " inverseParents");
+            logger.debug("removing " + inverseParents.size() + " inverseParents");
             for (OneManyInverseParent parent : inverseParents) {
-                log.debug("removing:" + parent);
+                logger.debug("removing:" + parent);
                 em.remove(parent);
             }
             //em.getTransaction().begin();
@@ -94,16 +94,16 @@ public class OneManyMapTest extends DemoBase {
             List<OneManyChild> children = em.createQuery(
                     "select child from OneManyChild child")
                     .getResultList();
-            log.debug("removing " + children.size() + " children");
+            logger.debug("removing " + children.size() + " children");
             for (OneManyChild child : children) {
-                log.debug("removing:" + child);
+                logger.debug("removing:" + child);
                 em.remove(child);
             }
             //em.getTransaction().begin();
             //em.getTransaction().commit();
         }
         catch (Exception ex) {
-            log.error("error removing objects", ex);
+            logger.error("error removing objects", ex);
             throw ex;
         }
     }
@@ -158,7 +158,7 @@ public class OneManyMapTest extends DemoBase {
 	 */
 	@Test
 	public void testOneToManyInverseParentMap() {
-		log.info("*** testOneToManyInverseParentMap ***");
+		logger.info("*** testOneToManyInverseParentMap ***");
 		
 		OneManyInverseParent oneManyInverseParent = 
 			new OneManyInverseParent("ozzie");
@@ -179,9 +179,9 @@ public class OneManyMapTest extends DemoBase {
 		
 		em.flush();
 		em.getTransaction().commit();
-		log.info("persisted oneManyInverseParent=" + oneManyInverseParent);
-		log.info("persisted oneManyOwnChild1=" + oneManyOwnChild1);
-		log.info("persisted oneManyOwnChild2=" + oneManyOwnChild2);
+		logger.info("persisted oneManyInverseParent=" + oneManyInverseParent);
+		logger.info("persisted oneManyOwnChild1=" + oneManyOwnChild1);
+		logger.info("persisted oneManyOwnChild2=" + oneManyOwnChild2);
 		
 		em.clear();
 
@@ -192,9 +192,9 @@ public class OneManyMapTest extends DemoBase {
 		OneManyOwningChild oneManyOwnChild2a = 
 			em.find(OneManyOwningChild.class, oneManyOwnChild2.getName());
 		
-		log.info("found oneManyInverseParentA=" + oneManyInverseParentA);
-		log.info("found oneManyOwnChild1a=" + oneManyOwnChild1a);
-		log.info("found oneManyOwnChild2a=" + oneManyOwnChild2a);
+		logger.info("found oneManyInverseParentA=" + oneManyInverseParentA);
+		logger.info("found oneManyOwnChild1a=" + oneManyOwnChild1a);
+		logger.info("found oneManyOwnChild2a=" + oneManyOwnChild2a);
 	}
 	
     /**
@@ -280,7 +280,7 @@ fred                        ernie
      */
     @Test
     public void testOneToManyOwningParentMap() {
-            log.info("*** testOneToManyOwningParentMap ***");
+            logger.info("*** testOneToManyOwningParentMap ***");
             
             OneManyOwningParent oneManyOwningParent = 
                     new OneManyOwningParent("fred");
@@ -299,9 +299,9 @@ fred                        ernie
 		
             em.flush();
             em.getTransaction().commit();
-            log.info("persisted neManyOwningParent=" + oneManyOwningParent);
-            log.info("persisted oneManyChild1=" + oneManyChild1);
-            log.info("persisted oneManyChild2=" + oneManyChild2);
+            logger.info("persisted neManyOwningParent=" + oneManyOwningParent);
+            logger.info("persisted oneManyChild1=" + oneManyChild1);
+            logger.info("persisted oneManyChild2=" + oneManyChild2);
             
             em.clear();
 
@@ -312,8 +312,8 @@ fred                        ernie
             OneManyChild oneManyChild2a = 
                     em.find(OneManyChild.class, oneManyChild2.getName());
             
-            log.info("found oneManyOwningParentA=" + oneManyOwningParentA);
-            log.info("found oneManyChild1a=" + oneManyChild1a);
-            log.info("found oneManyChild2a=" + oneManyChild2a);
+            logger.info("found oneManyOwningParentA=" + oneManyOwningParentA);
+            logger.info("found oneManyChild1a=" + oneManyChild1a);
+            logger.info("found oneManyChild2a=" + oneManyChild2a);
 	}
 }

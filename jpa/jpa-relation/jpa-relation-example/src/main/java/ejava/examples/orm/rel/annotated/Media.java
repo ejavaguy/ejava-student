@@ -30,7 +30,7 @@ import javax.persistence.*;
  */
 @Entity @Table(name="ORMREL_MEDIA")
 public class Media  {
-    //private static Log log = LogFactory.getLog(Media.class);
+    //private static Log logger = LogFactory.getLog(Media.class);
 
     @Id @GeneratedValue @Column(name="MEDIA_ID")
     private long id;
@@ -39,7 +39,7 @@ public class Media  {
     private Collection<Author> authors = new ArrayList<Author>();
     
     public Media() { 
-        //log.debug(super.toString() + ": ctor()"); 
+        //logger.debug(super.toString() + ": ctor()"); 
     }
 
     public long getId() { return id; }
@@ -54,8 +54,14 @@ public class Media  {
         this.authors = authors;
     }
     
+    private String myInstance() {
+        String s=super.toString();
+        s = s.substring(s.lastIndexOf('.')+1);
+        return s;
+    }
+
     public String toString() {
-        StringBuilder text = new StringBuilder(super.toString());
+        StringBuilder text = new StringBuilder(myInstance());
         text.append(", id=" + id);
         text.append(", title=" + title);
         text.append(", authors(" + authors.size() + ")={");

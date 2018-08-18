@@ -14,11 +14,12 @@ import ejava.examples.orm.rel.annotated.Media;
  * (or Link) table. In this relationship, the foreign keys are in a table
  * separate from the two related items.
  */
+//TODO: resolve some confusion -- Media and Inventory are being used without a link table in the notes???
 public class OneToManyJoinTableTest extends DemoBase {
     
     @Test
     public void testOneToManyJoinCreate() {
-        log.info("testLinkCreate");
+        logger.info("testLinkCreate");
         ejava.examples.orm.rel.annotated.Inventory inventory
             = new Inventory();
         inventory.setName("testLinkCreate");
@@ -28,15 +29,16 @@ public class OneToManyJoinTableTest extends DemoBase {
         for(int i=0; i<5; i++) {
             ejava.examples.orm.rel.annotated.Media media = new Media();
             em.persist(media);
-            log.info("created media:" + media);
+            logger.info("created media:" + media);
             inventory.getMedia().add(media);
         }
-        log.info("created inventory:" + inventory);
+        em.flush();
+        logger.info("created inventory:{}", inventory);
     }
     
     @Test
     public void testOneToManyJoinFind() {
-        log.info("testOneToManyJoinFind()");
+        logger.info("testOneToManyJoinFind()");
         
         ejava.examples.orm.rel.annotated.Inventory inventory1
             = new Inventory();
@@ -47,10 +49,10 @@ public class OneToManyJoinTableTest extends DemoBase {
         for(int i=0; i<5; i++) {
             ejava.examples.orm.rel.annotated.Media media = new Media();
             //em.persist(media);
-            log.info("created media:" + media);
+            logger.info("created media:" + media);
             inventory1.getMedia().add(media);
         }
-        log.info("creating inventory:" + inventory1);
+        logger.info("creating inventory:{}", inventory1);
 
         em.flush();        
         em.clear();
@@ -60,7 +62,7 @@ public class OneToManyJoinTableTest extends DemoBase {
         assertFalse("inventory still managed", em.contains(inventory1));
         
         Inventory inventory2 = em.find(Inventory.class, inventory1.getId());
-        log.info("found inventory:" + inventory2);
+        logger.info("found inventory:{}", inventory2);
         
         assertNotNull("inventory not found", inventory2);
         assertNotSame(inventory1, inventory2);
@@ -74,7 +76,7 @@ public class OneToManyJoinTableTest extends DemoBase {
 
     @Test
     public void testOneToManyJoinRemove() {
-        log.info("testOneToManyJoinRemove");
+        logger.info("testOneToManyJoinRemove");
         ejava.examples.orm.rel.annotated.Inventory inventory1
             = new Inventory();
         inventory1.setName("testRemove");
@@ -84,10 +86,10 @@ public class OneToManyJoinTableTest extends DemoBase {
         for(int i=0; i<5; i++) {
             ejava.examples.orm.rel.annotated.Media media = new Media();
             em.persist(media);
-            log.info("created media:" + media);
+            logger.info("created media:{}", media);
             inventory1.getMedia().add(media);
         }
-        log.info("creating inventory:" + inventory1);
+        logger.info("creating inventory:{}", inventory1);
     
         em.flush();        
         em.clear();
@@ -99,7 +101,7 @@ public class OneToManyJoinTableTest extends DemoBase {
         assertNotNull("inventory not found", inventory2);
         findMedia(inventory2.getMedia(), true);
         em.remove(inventory2);
-        log.info("removed inventory:" + inventory2);
+        logger.info("removed inventory:{}", inventory2);
         assertTrue("inventory not removed",
             em.createQuery("select object(i) from Inventory as i where i.id=" + 
                     inventory2.getId()).getResultList().size() == 0);
@@ -109,17 +111,17 @@ public class OneToManyJoinTableTest extends DemoBase {
    }
     
     private void findMedia(Collection<Media> media, boolean exist) {
-        log.info("looking for media objects:" + media.size());
+        logger.info("looking for media objects:{}", media.size());
         for(Media m : media) {
             if (exist) {
                 assertTrue("media not found:" + m.getId(), 
                     em.find(Media.class, m.getId()) != null);
-                log.info("found media:" + m.getId());
+                logger.info("found media:{}", m.getId());
             }
             else {
                 assertFalse("media not found:" + m.getId(), 
                         em.find(Media.class, m.getId()) != null);
-                    log.info("media not found:" + m.getId());            
+                    logger.info("media not found:{}", m.getId());            
             }
         }
     }

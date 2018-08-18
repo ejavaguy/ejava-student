@@ -15,7 +15,7 @@ public class OneToManyMapTest extends DemoBase {
     
     @Test
     public void testMapCreate() {
-        log.info("testMapCreate");
+        logger.info("testMapCreate");
         ejava.examples.orm.rel.annotated.Library library
             = new Library();
         
@@ -29,10 +29,10 @@ public class OneToManyMapTest extends DemoBase {
             em.persist(person); //persist now because borrower copies id
             ejava.examples.orm.rel.annotated.Borrower borrower = 
                 new Borrower(person);
-            log.info("created borrower:" + borrower);
+            logger.info("created borrower:" + borrower);
             library.getBorrowers().put(borrower.getId(), borrower);
-            log.info("added borrower to library:" + library);
+            logger.info("added borrower to library:" + library);
         }
-        log.info("creating inventory:" + library);
+        logger.info("creating inventory:" + library);
     }    
 }

@@ -70,8 +70,14 @@ public class MediaCopy {
     public Media getMedia()               { return media; }    
     private void setMedia(Media media)    { this.media = media; }
 
+    private String myInstance() {
+        String s=super.toString();
+        s = s.substring(s.lastIndexOf('.')+1);
+        return s;
+    }
+
     public String toString() {
-        return super.toString() +
+        return myInstance() +
             ", mediaId=" + mediaId +
             ", copyNo=" + copyNo +
             ", media=" + media;

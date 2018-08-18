@@ -19,8 +19,8 @@ public class Inventory {
     private String name;
 
     @OneToMany(cascade={CascadeType.ALL})
-    @JoinTable(name="ORMREL_INVENTORY_MEDIA")
-    //@JoinColumn(name="INVENTORY_ID")
+    //@JoinTable(name="ORMREL_INVENTORY_MEDIA")  //places FK to this and Media in link table
+    @JoinColumn(name="INVENTORY_ID")             //places FK to this in Media 
     private Collection<Media> media = new ArrayList<Media>();
     
     public Inventory()        {}
@@ -37,9 +37,15 @@ public class Inventory {
     public void setName(String name) {
         this.name = name;
     }
-    
+
+    private String myInstance() {
+        String s=super.toString();
+        s = s.substring(s.lastIndexOf('.')+1);
+        return s;
+    }
+
     public String toString() {
-        StringBuilder text = new StringBuilder(super.toString());
+        StringBuilder text = new StringBuilder(myInstance());
         text.append(", id=" + id);
         text.append(", name=" + name);
         text.append(", media(" + media.size() + ")={");

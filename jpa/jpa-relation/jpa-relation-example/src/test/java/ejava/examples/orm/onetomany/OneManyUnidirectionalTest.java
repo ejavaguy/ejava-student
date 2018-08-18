@@ -33,10 +33,10 @@ public class OneManyUnidirectionalTest extends DemoBase {
             List<OneManyOwningParent> owningParents = em.createQuery(
                     "select owningParent from O2MOwningParent owningParent")
                     .getResultList();
-            log.debug("removing " + owningParents.size() + " owningParents");
+            logger.debug("removing " + owningParents.size() + " owningParents");
             for (OneManyOwningParent parent : owningParents) {
                 parent.getChildren().clear();
-                log.debug("removing:" + parent);
+                logger.debug("removing:" + parent);
                 em.remove(parent);
             }
                 
@@ -44,16 +44,16 @@ public class OneManyUnidirectionalTest extends DemoBase {
             List<OneManyChild> children = em.createQuery(
                     "select child from O2MChild child")
                     .getResultList();
-            log.debug("removing " + children.size() + " children");
+            logger.debug("removing " + children.size() + " children");
             for (OneManyChild child : children) {
-                log.debug("removing:" + child);
+                logger.debug("removing:" + child);
                 em.remove(child);
             }
             em.getTransaction().begin();
             em.getTransaction().commit();
         }
         catch (Exception ex) {
-            log.error("error removing objects", ex);
+            logger.error("error removing objects", ex);
             throw ex;
         }
     }
@@ -69,7 +69,7 @@ public class OneManyUnidirectionalTest extends DemoBase {
      */
     @Test
     public void testOneToManyOwningParent() {
-        log.info("*** testOneToManyOwningParent ***");
+        logger.info("*** testOneToManyOwningParent ***");
         
         OneManyOwningParent oneManyOwningParent = 
                 new OneManyOwningParent("tom");
@@ -86,9 +86,9 @@ public class OneManyUnidirectionalTest extends DemoBase {
             
         em.flush();
         em.getTransaction().commit();
-        log.info("persisted oneManyOwningParent=" + oneManyOwningParent);
-        log.info("persisted oneManyChild1=" + oneManyChild1);
-        log.info("persisted oneManyChild2=" + oneManyChild2);
+        logger.info("persisted oneManyOwningParent=" + oneManyOwningParent);
+        logger.info("persisted oneManyChild1=" + oneManyChild1);
+        logger.info("persisted oneManyChild2=" + oneManyChild2);
         
         em.clear();
 
@@ -99,8 +99,8 @@ public class OneManyUnidirectionalTest extends DemoBase {
         OneManyChild oneManyChild2a = 
                 em.find(OneManyChild.class, oneManyChild2.getId());
         
-        log.info("found oneManyOwningParentA=" + oneManyOwningParentA);
-        log.info("found oneManyChild1a=" + oneManyChild1a);
-        log.info("found oneManyChild2a=" + oneManyChild2a);
+        logger.info("found oneManyOwningParentA=" + oneManyOwningParentA);
+        logger.info("found oneManyChild1a=" + oneManyChild1a);
+        logger.info("found oneManyChild2a=" + oneManyChild2a);
     }
 }

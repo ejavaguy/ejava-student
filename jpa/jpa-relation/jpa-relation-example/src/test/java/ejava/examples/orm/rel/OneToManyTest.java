@@ -26,7 +26,7 @@ public class OneToManyTest extends DemoBase {
      */
     @Before
     public void setUp() throws Exception {
-        log.info("creating base Borrower for tests");
+        logger.info("creating base Borrower for tests");
         ejava.examples.orm.rel.annotated.Person person = new Person();
         person.setFirstName("john");
         person.setLastName("smith");
@@ -53,23 +53,26 @@ public class OneToManyTest extends DemoBase {
      */
     @Test
     public void testManyOneBiDirectional() {
-        log.info("testManyOneBiDirectional");
+        logger.info("testManyOneBiDirectional");
+        em.flush();
         //get a borrower
-        log.info("getting borrower id=" + borrowerId);
+        logger.info("getting borrower id={}", borrowerId);
         ejava.examples.orm.rel.annotated.Borrower borrower = 
             em.find(Borrower.class, borrowerId);
         assertNotNull(borrower);
-        assertTrue(borrower.getCheckouts().size() == 0);
+        assertEquals(0, borrower.getCheckouts().size());
         
         //create 1st checkout
         ejava.examples.orm.rel.annotated.Checkout checkout = 
             new Checkout(new Date());
         checkout.setBorrower(borrower); //set owning side of the relation
+            //wrapper around - borrower.getCheckouts().add(checkout)
         borrower.addCheckout(checkout); //set inverse side of relation
         em.persist(checkout);   //persist owning side of the relation
-        log.info("added checkout to borrower:" + borrower);
-        assertTrue(borrower.getCheckouts().size() == 1);
-        log.info("here's checkout:" + checkout);
+        em.flush();
+        logger.info("added checkout to borrower:{}", borrower);
+        assertEquals(1, borrower.getCheckouts().size());
+        logger.info("here's checkout:{}", checkout);
         
         //create a couple more
         for(int i=0; i<5; i++) {
@@ -78,14 +81,14 @@ public class OneToManyTest extends DemoBase {
             borrower.addCheckout(co);   //set inverse side of relation
             em.persist(co);  //persist owning side of the relation
         }
-        log.info("done populating borrower");
+        logger.info("done populating borrower");
         
-        //see what we have - watch log to see when the ctor() of the LAZY
-        // instantiated Checkouts occur. If after log.info, LAZY worked
+        //see what we have - watch logger to see when the ctor() of the LAZY
+        // instantiated Checkouts occur. If after logger.info, LAZY worked
         em.flush();
         em.clear();
         Borrower borrower2 = em.find(Borrower.class, borrower.getId());
-        log.info("found borrower: " + borrower.getName());
+        logger.info("found borrower: {}", borrower.getName());
         assertEquals(6, borrower2.getCheckouts().size());               
     }
 
@@ -96,13 +99,13 @@ public class OneToManyTest extends DemoBase {
      */
     @Test
     public void testRemove() {
-        log.info("testRemove");
+        logger.info("testRemove");
         //get a borrower
-        log.info("getting borrower id=" + borrowerId);
+        logger.info("getting borrower id={}", borrowerId);
         ejava.examples.orm.rel.annotated.Borrower borrower = 
             em.find(Borrower.class, borrowerId);
         assertNotNull(borrower);
-        assertTrue(borrower.getCheckouts().size() == 0);
+        assertEquals(0, borrower.getCheckouts().size());
         
         //create a few checkouts
         for(int i=0; i<5; i++) {
@@ -111,7 +114,7 @@ public class OneToManyTest extends DemoBase {
             em.persist(co);             //update the database
             borrower.addCheckout(co);   //update the inverse side in memory
         }
-        log.info("populated borrower:" + borrower);
+        logger.info("populated borrower:{}", borrower);
         assertEquals(5,borrower.getCheckouts().size());
         
         //start with borrower from DB and remove checkouts
@@ -119,7 +122,7 @@ public class OneToManyTest extends DemoBase {
         em.clear();
         Borrower borrower2 = em.find(Borrower.class, borrowerId);
         assertNotNull(borrower2);
-        log.info("found borrower:" + borrower2);
+        logger.info("found borrower:{}", borrower2);
         assertEquals(5,borrower.getCheckouts().size());
         
         //remove checkouts
@@ -130,7 +133,7 @@ public class OneToManyTest extends DemoBase {
             borrower2.removeCheckout(co);  
             em.remove(co);                //remove from table
         }
-        log.info("done removing checkouts from borrower:" + borrower2);
+        logger.info("done removing checkouts from borrower:{}", borrower2);
         assertEquals(0, borrower2.getCheckouts().size());
 
         //verify what is in database
@@ -138,7 +141,7 @@ public class OneToManyTest extends DemoBase {
         em.clear();
         Borrower borrower3 = em.find(Borrower.class, borrowerId);
         assertNotNull(borrower3);
-        log.info("found borrower:" + borrower3.getName());
+        logger.info("found borrower:{}", borrower3.getName());
         assertEquals(0,borrower3.getCheckouts().size());        
     }    
 }

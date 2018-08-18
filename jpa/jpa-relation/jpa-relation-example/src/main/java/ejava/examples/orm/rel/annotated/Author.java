@@ -39,8 +39,14 @@ public class Author {
         this.name = name;
     }
     
+    private String myInstance() {
+        String s=super.toString();
+        s = s.substring(s.lastIndexOf('.')+1);
+        return s;
+    }
+    
     public String toString() {
-        StringBuilder text = new StringBuilder(super.toString());
+        StringBuilder text = new StringBuilder(myInstance());
         text.append(", id=" + id);
         text.append(", name=" + name);
         text.append(", media(" + media.size() + ")={");

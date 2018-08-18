@@ -27,7 +27,7 @@ public class Applicant  {
     private Borrower borrower;
     
     public Applicant() {
-        log.info(super.toString() + ", ctor()");     }
+        log.info("{}, ctor()", myInstance());     }
     
     public long getId() { return id; }
 
@@ -41,8 +41,14 @@ public class Applicant  {
         this.identity = identity;
     }
 
+    private String myInstance() {
+        String s=super.toString();
+        s = s.substring(s.lastIndexOf('.')+1);
+        return s;
+    }
+    
     public String toString() {
-        return super.toString() +
+        return myInstance() +
             "id=" + id + 
             ", identity=" + ((identity==null) ? "null" : identity.getId()) +
             ", borrower=" + ((borrower==null) ? "null" : borrower.getId());

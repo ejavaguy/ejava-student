@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory;
 @Entity
 @Table(name="ORMREL_PERSON")
 public class Person  {
-    private static Logger log = LoggerFactory.getLogger(Person.class);
+    private static Logger logger = LoggerFactory.getLogger(Person.class);
     @Id @GeneratedValue @Column(name="PERSON_ID")
     private long id;
     private String firstName;
@@ -27,7 +27,7 @@ public class Person  {
     @JoinColumn(name="PERSON_PHOTO")    //define local foreign key column
     private Photo photo;
 
-    public Person() { log.info(super.toString() + ", ctor()");}
+    public Person() { if (logger.isDebugEnabled()) { logger.debug("{}, ctor()", myInstance()); } }
 
     public long getId() {
         return id;
@@ -52,9 +52,15 @@ public class Person  {
     public void setPhoto(Photo photo) {
         this.photo = photo;
     }
+    
+    private String myInstance() {
+        String s=super.toString();
+        s = s.substring(s.lastIndexOf('.')+1);
+        return s;
+    }
 
     public String toString() {
-        return super.toString() +
+        return myInstance() +
             ", id=" + id +
             ", name=" + firstName + " " + lastName +
             ", phone=" + phone +

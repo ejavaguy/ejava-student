@@ -27,14 +27,14 @@ public class ManyToOneUnidirectionalTest extends DemoBase {
      */
     @Test
     public void testCreateManyToOne() {
-        log.info("testCreateManyToOne");
+        logger.info("testCreateManyToOne");
         ejava.examples.orm.rel.annotated.Media media = new Media();
         media.setTitle("EJB3");
         
         //add media to DB
         assertTrue(media.getId() == 0);
         em.persist(media);
-        log.info("created media:" + media);
+        logger.info("created media:" + media);
         assertTrue(media.getId() != 0);
         
         //create some copies 
@@ -44,7 +44,7 @@ public class ManyToOneUnidirectionalTest extends DemoBase {
             assertNotNull(mc.getMedia());
             assertEquals(i, mc.getCopyNo());
             em.persist(mc);
-            log.info("created copy:" + mc);
+            logger.info("created copy:" + mc);
         }
         
         em.flush();
@@ -54,7 +54,7 @@ public class ManyToOneUnidirectionalTest extends DemoBase {
             ejava.examples.orm.rel.MediaCopyPK pk =
                 new MediaCopyPK(media.getId(), i);
             MediaCopy mc = em.find(MediaCopy.class, pk);
-            log.info("found media copy:" + mc);
+            logger.info("found media copy:" + mc);
             assertNotNull("media copy not found:" + pk, mc);
             assertEquals("unexpected mediaId:" + mc.getMediaId(),
                     mc.getMediaId(), media.getId());
@@ -70,14 +70,14 @@ public class ManyToOneUnidirectionalTest extends DemoBase {
      */
     @Test
     public void testCreateManyToOneMapsId() {
-        log.info("testCreateManyToOneMapsId");
+        logger.info("testCreateManyToOneMapsId");
         ejava.examples.orm.rel.annotated.Media media = new Media();
         media.setTitle("EJB31");
         
         //add media to DB
         assertTrue(media.getId() == 0);
         em.persist(media);
-        log.info("created media:" + media);
+        logger.info("created media:" + media);
         assertTrue(media.getId() != 0);
         
         //create some copies 
@@ -87,7 +87,7 @@ public class ManyToOneUnidirectionalTest extends DemoBase {
             assertNotNull(mc.getMedia());
             assertEquals(i, mc.getCopyNo());
             em.persist(mc);
-            log.info("created copy:" + mc);
+            logger.info("created copy:" + mc);
         }
         
         em.flush();
@@ -97,7 +97,7 @@ public class ManyToOneUnidirectionalTest extends DemoBase {
             ejava.examples.orm.rel.MediaCopyPK2 pk =
                 new MediaCopyPK2(media.getId(), i);
             MediaCopy2 mc = em.find(MediaCopy2.class, pk);
-            log.info("found media copy:" + mc);
+            logger.info("found media copy:" + mc);
             assertNotNull("media copy not found:" + pk, mc);
             assertEquals("unexpected mediaId:" + mc.getMediaId(),
                     mc.getMediaId(), media.getId());

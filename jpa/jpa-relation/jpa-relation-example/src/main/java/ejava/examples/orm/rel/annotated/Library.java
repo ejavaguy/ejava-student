@@ -27,8 +27,14 @@ public class Library {
         this.borrowers = borrowers;
     }
 
+    private String myInstance() {
+        String s=super.toString();
+        s = s.substring(s.lastIndexOf('.')+1);
+        return s;
+    }
+
     public String toString() {
-        StringBuilder text = new StringBuilder(super.toString());
+        StringBuilder text = new StringBuilder(myInstance());
         text.append(", id=" + id);
         text.append(", borrowers(" + borrowers.size() + ")={");
         for(long bid: borrowers.keySet()) {

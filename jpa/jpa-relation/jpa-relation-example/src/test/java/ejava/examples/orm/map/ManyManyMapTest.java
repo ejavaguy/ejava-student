@@ -46,42 +46,42 @@ public class ManyManyMapTest extends DemoBase {
             List<ManyManyOwningEntity> owningEntities =
                 em.createQuery("select entity from ManyManyOwningEntity entity")
                   .getResultList();
-            log.debug("removing " + owningEntities.size() + " owningEntities");
+            logger.debug("removing " + owningEntities.size() + " owningEntities");
             for (ManyManyOwningEntity owningEntity : owningEntities) {
                 for (String key : 
                     owningEntity.getOwnedInverseEntities().keySet()) {
                     ManyManyInverseEntity inverseEntity =
                         owningEntity.getOwnedInverseEntities().get(key);
-                    log.debug("removing inverse relationship:" + 
+                    logger.debug("removing inverse relationship:" + 
                             inverseEntity.getName() + " to " +
                             owningEntity.getName());
                     inverseEntity.getOwnedByEntities()
                                  .remove(owningEntity);
-                    log.debug("removing owning relationship:" + 
+                    logger.debug("removing owning relationship:" + 
                             owningEntity.getName() + " to " +
                             inverseEntity.getName());
                     owningEntity.getOwnedInverseEntities()
                                 .remove(inverseEntity);
                 }
-                log.debug("removing:" + owningEntity);
+                logger.debug("removing:" + owningEntity);
                 em.remove(owningEntity);
             }
             
             List<ManyManyInverseEntity> inverseEntities =
                 em.createQuery("select entity from ManyManyInverseEntity entity")
                   .getResultList();
-            log.debug("removing " + owningEntities.size() + " inverseEntities");
+            logger.debug("removing " + owningEntities.size() + " inverseEntities");
             for (ManyManyInverseEntity entity : inverseEntities) {
-                log.debug("removing:" + entity);
+                logger.debug("removing:" + entity);
                 em.remove(entity);
             }
 
             List<ManyManyEntity> entities =
                 em.createQuery("select entity from ManyManyEntity entity")
                   .getResultList();
-            log.debug("removing " + entities.size() + " entities");
+            logger.debug("removing " + entities.size() + " entities");
             for (ManyManyEntity entity : entities) {
-                log.debug("removing:" + entity);
+                logger.debug("removing:" + entity);
                 em.remove(entity);
             }
         }
@@ -176,7 +176,7 @@ public class ManyManyMapTest extends DemoBase {
 	 */
     @Test
     public void testManyToManyInverseMap() {
-        log.info("*** testManyToManyInverseMap ***");
+        logger.info("*** testManyToManyInverseMap ***");
         
         ManyManyInverseEntity manyManyInverseEntity1 = 
                 new ManyManyInverseEntity("chandler");
@@ -216,10 +216,10 @@ public class ManyManyMapTest extends DemoBase {
 		em.flush();
         
         em.getTransaction().commit();
-        log.info("persisted manyManyInverseEntity1=" + manyManyInverseEntity1);
-        log.info("persisted manyManyInverseEntity2=" + manyManyInverseEntity2);
-        log.info("persisted manyManyOwningEntity1=" + manyManyOwningEntity1);
-        log.info("persisted manyManyOwningEntity2=" + manyManyOwningEntity2);
+        logger.info("persisted manyManyInverseEntity1=" + manyManyInverseEntity1);
+        logger.info("persisted manyManyInverseEntity2=" + manyManyInverseEntity2);
+        logger.info("persisted manyManyOwningEntity1=" + manyManyOwningEntity1);
+        logger.info("persisted manyManyOwningEntity2=" + manyManyOwningEntity2);
 
         em.clear();
 
@@ -236,10 +236,10 @@ public class ManyManyMapTest extends DemoBase {
             em.find(ManyManyOwningEntity.class,
                     manyManyOwningEntity2.getName());
 		
-        log.info("found manyManyInverseEntity1=" + manyManyInverseEntity1a);
-        log.info("found manyManyInverseEntity2=" + manyManyInverseEntity2a);
-        log.info("found manyManyOwningEntity1=" + manyManyOwningEntity1a);
-        log.info("found manyManyOwningEntity2=" + manyManyOwningEntity2a);
+        logger.info("found manyManyInverseEntity1=" + manyManyInverseEntity1a);
+        logger.info("found manyManyInverseEntity2=" + manyManyInverseEntity2a);
+        logger.info("found manyManyOwningEntity1=" + manyManyOwningEntity1a);
+        logger.info("found manyManyOwningEntity2=" + manyManyOwningEntity2a);
     }
     
     /**
@@ -266,7 +266,7 @@ public class ManyManyMapTest extends DemoBase {
      */
 	@Test
 	public void XtestManyToManyMap() {
-        log.info("*** testManyToManyMap ***");
+        logger.info("*** testManyToManyMap ***");
         
         ManyManyEntity manyManyEntity1 = 
             new ManyManyEntity("wojo");
@@ -297,10 +297,10 @@ public class ManyManyMapTest extends DemoBase {
         em.flush();
         
         em.getTransaction().commit();
-        log.info("persisted manyManyInverseEntity1=" + manyManyEntity1);
-        log.info("persisted manyManyInverseEntity2=" + manyManyEntity2);
-        log.info("persisted manyManyOwningEntity1=" + manyManyOwningEntity1);
-        log.info("persisted manyManyOwningEntity2=" + manyManyOwningEntity2);
+        logger.info("persisted manyManyInverseEntity1=" + manyManyEntity1);
+        logger.info("persisted manyManyInverseEntity2=" + manyManyEntity2);
+        logger.info("persisted manyManyOwningEntity1=" + manyManyOwningEntity1);
+        logger.info("persisted manyManyOwningEntity2=" + manyManyOwningEntity2);
 
         em.clear();
 
@@ -317,9 +317,9 @@ public class ManyManyMapTest extends DemoBase {
             em.find(ManyManyOwningEntity.class,
                     manyManyOwningEntity2.getName());
         
-        log.info("found manyManyEntity1=" + manyManyEntity1a);
-        log.info("found manyManyEntity2=" + manyManyEntity2a);
-        log.info("found manyManyOwningEntity1=" + manyManyOwningEntity1a);
-        log.info("found manyManyOwningEntity2=" + manyManyOwningEntity2a);
+        logger.info("found manyManyEntity1=" + manyManyEntity1a);
+        logger.info("found manyManyEntity2=" + manyManyEntity2a);
+        logger.info("found manyManyOwningEntity1=" + manyManyOwningEntity1a);
+        logger.info("found manyManyOwningEntity2=" + manyManyOwningEntity2a);
     }
 }

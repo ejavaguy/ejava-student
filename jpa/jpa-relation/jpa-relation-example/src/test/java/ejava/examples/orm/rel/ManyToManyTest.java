@@ -20,7 +20,7 @@ public class ManyToManyTest extends DemoBase {
     
     @Test
     public void testManyToManyUniCreate() {
-        log.info("testManyToManyUniCreate");
+        logger.info("testManyToManyUniCreate");
         Collection<WantList> wantLists = new ArrayList<WantList>(); 
         Collection<Media> media = new ArrayList<Media>(); 
 
@@ -29,7 +29,7 @@ public class ManyToManyTest extends DemoBase {
                 = new WantList();
             em.persist(wanted);
             wantLists.add(wanted);
-            log.info("created wantList:" + wanted);
+            logger.info("created wantList:" + wanted);
         }
         for (int i=0; i<2; i++) {
             ejava.examples.orm.rel.annotated.Media mediaItem
@@ -37,14 +37,14 @@ public class ManyToManyTest extends DemoBase {
             mediaItem.setTitle("title " + i);
             em.persist(mediaItem);
             media.add(mediaItem);
-            log.info("created media:" + media);
+            logger.info("created media:" + media);
         }
 
         for(WantList w: wantLists) {
             for(Media m: media) {
                 //we can only navigate this in one direction
                 w.getMedia().add(m);
-                log.info("added media(" + m.getId() + 
+                logger.info("added media(" + m.getId() + 
                         ") to want list (" + w.getId() +")");
             }
         }
@@ -64,7 +64,7 @@ public class ManyToManyTest extends DemoBase {
         for (WantList w: wantLists) {
             WantList wanted = em.find(WantList.class, w.getId());
             assertNotNull("want list not found:" + w.getId(), wanted);
-            log.info("found want list:" + wanted);
+            logger.info("found want list:" + wanted);
             assertEquals(
                     "unepxected number of media:" + wanted.getMedia().size(), 
                     wanted.getMedia().size(), media.size());
@@ -74,7 +74,7 @@ public class ManyToManyTest extends DemoBase {
     
     @Test
     public void testManyToManyBiCreate() {
-        log.info("testManyToManyBiCreate");
+        logger.info("testManyToManyBiCreate");
         Collection<Author> authors = new ArrayList<Author>(); 
         Collection<Media> media = new ArrayList<Media>(); 
         
@@ -84,7 +84,7 @@ public class ManyToManyTest extends DemoBase {
             author.setName("author" + i);        
             em.persist(author);
             authors.add(author);
-            log.info("created author:" + author);
+            logger.info("created author:" + author);
         }
         for (int i=0; i<3; i++) {
             ejava.examples.orm.rel.annotated.Media mediaItem
@@ -92,16 +92,16 @@ public class ManyToManyTest extends DemoBase {
             mediaItem.setTitle("title " + i);
             em.persist(mediaItem);
             media.add(mediaItem);
-            log.info("created media:" + media);
+            logger.info("created media:" + media);
         }
         
         for(Author a: authors) {
             for(Media m: media) {
                 a.getMedia().add(m);
-                log.info("added media(" + m.getId() + 
+                logger.info("added media(" + m.getId() + 
                         ") to author (" + a.getId() +")");
                 m.getAuthors().add(a);
-                log.info("added author(" + a.getId() + 
+                logger.info("added author(" + a.getId() + 
                         ") to media (" + m.getId() +")");
             }
         }
@@ -121,7 +121,7 @@ public class ManyToManyTest extends DemoBase {
         for (Author a: authors) {
             Author author = em.find(Author.class, a.getId());
             assertNotNull("author not found:" + a.getId(), author);
-            log.info("found author:" + author);
+            logger.info("found author:" + author);
             assertEquals(
                     "unepxected number of media:" + author.getMedia().size(), 
                     author.getMedia().size(), media.size());
@@ -130,7 +130,7 @@ public class ManyToManyTest extends DemoBase {
         for (Media m: media) {
             Media mediaItem = em.find(Media.class, m.getId());
             assertNotNull("media not found:" + mediaItem.getId(), mediaItem);
-            log.info("found media:" + mediaItem);
+            logger.info("found media:" + mediaItem);
             assertEquals(
                 "unexpected number of authors:" + mediaItem.getAuthors().size(),
                 mediaItem.getAuthors().size(), authors.size());

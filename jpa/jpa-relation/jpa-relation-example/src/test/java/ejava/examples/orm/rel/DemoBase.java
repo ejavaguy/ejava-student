@@ -25,7 +25,7 @@ import org.junit.BeforeClass;
  */
 public abstract class DemoBase {
     protected static Logger logBase = LoggerFactory.getLogger(DemoBase.class);
-    protected Logger log = LoggerFactory.getLogger(getClass());
+    protected Logger logger = LoggerFactory.getLogger(getClass());
     private static final String PERSISTENCE_UNIT = "ormRelations";
     
     protected static EntityManagerFactory emf;

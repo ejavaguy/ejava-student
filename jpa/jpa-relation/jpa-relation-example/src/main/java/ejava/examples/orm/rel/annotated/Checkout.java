@@ -48,9 +48,15 @@ public class Checkout {
     public void setReturnDate(Date returnDate) {
         this.returnDate = returnDate;
     }
+
+    private String myInstance() {
+        String s=super.toString();
+        s = s.substring(s.lastIndexOf('.')+1);
+        return s;
+    }
     
     public String toString() {
-        return super.toString() +
+        return myInstance() +
             ", id=" + id +
             ", outDate=" + outDate +
             ", returnDate=" + returnDate +

@@ -20,8 +20,7 @@ import ejava.examples.orm.rel.annotated.Photo;
  * be determined by the Java Persistence provider.
  */
 public class OneToOneTest extends DemoBase {
-    private static final String PHOTO_FILE = 
-        System.getProperty("photo.file", "images/photo.jpg");
+    private static final String PHOTO_FILE = System.getProperty("photo.file", "images/photo.jpg");
     private byte[] image;
     
     @Before
@@ -49,7 +48,7 @@ public class OneToOneTest extends DemoBase {
      */
     @Test
     public void testUni() {
-        log.info("testUni");
+        logger.info("testUni");
         
         //create the owning side 
         ejava.examples.orm.rel.annotated.Person person = new Person();
@@ -62,24 +61,24 @@ public class OneToOneTest extends DemoBase {
         photo.setImage(image);        
         
         //create the person and photo detached
-        assertTrue(person.getId() == 0);
-        assertTrue(photo.getId() == 0);
+        assertEquals(0, person.getId());
+        assertEquals(0, photo.getId());
 
         //add photo to person and persist object tree
         person.setPhoto(photo); //this sets the FK in person
-        log.info("added photo to person:" + person);
+        logger.info("added photo to person:{}", person);
         em.persist(person);        
-        assertTrue("personId not set", person.getId() != 0);
-        assertTrue("photoId not set", photo.getId() != 0);
-        log.info("created person:" + person);
-        log.info("     and photo:" + photo);
+        assertNotEquals("personId not set", 0, person.getId());
+        assertNotEquals("photoId not set", 0, photo.getId());
+        logger.info("created person:{}", person);
+        logger.info("     and photo:{}", photo);
         
         //verify what we can get from DB
         em.flush(); em.clear();
         Person person2 = em.find(Person.class, person.getId());
         assertNotNull(person2);
         assertNotNull(person2.getPhoto());
-        log.info("found person:" + person2);
+        logger.info("found person:{}", person2);
     }        
 
     /**
@@ -89,7 +88,7 @@ public class OneToOneTest extends DemoBase {
      */
     @Test
     public void testCacadePersist() {
-        log.info("testCascadePersist");
+        logger.info("testCascadePersist");
         
         //create the owning side 
         ejava.examples.orm.rel.annotated.Person person = new Person();
@@ -111,7 +110,7 @@ public class OneToOneTest extends DemoBase {
         em.persist(person);        
         assertTrue(person.getId() != 0);
         assertTrue(photo.getId() != 0);
-        log.info("created person with photo:" + person);
+        logger.info("created person with photo:{}", person);
 
         //verify what we can get from DB
         em.flush();
@@ -119,7 +118,7 @@ public class OneToOneTest extends DemoBase {
         Person person2 = em.find(Person.class, person.getId());
         assertNotNull(person2);
         assertNotNull(person2.getPhoto());
-        log.info("found person:" + person2);
+        logger.info("found person:{}", person2);
     }        
 
     /**
@@ -132,7 +131,7 @@ public class OneToOneTest extends DemoBase {
      */
     @Test
     public void testPersistOnSetter() {
-        log.info("testSetPersistedWithNew");
+        logger.info("testSetPersistedWithNew");
         
         //create the owning side 
         ejava.examples.orm.rel.annotated.Person person = new Person();
@@ -144,7 +143,7 @@ public class OneToOneTest extends DemoBase {
         assertTrue(person.getId() == 0);
         em.persist(person);        
         assertTrue(person.getId() != 0);
-        log.info("created person without photo:" + person);        
+        logger.info("created person without photo:{}", person);        
         
         //create the inverse side 
         ejava.examples.orm.rel.annotated.Photo photo = new Photo();        
@@ -153,7 +152,7 @@ public class OneToOneTest extends DemoBase {
         //add photo to the managed person
         assertTrue(photo.getId() == 0);        
         person.setPhoto(photo);
-        log.info("added photo to person:" + person);
+        logger.info("added photo to person:{}", person);
         em.flush();  //flush to make sure photo object gets PK from DB
         assertTrue("hey! primary key wasn't being set during setter", 
                    photo.getId() != 0); //note that although the photo is in 
@@ -166,7 +165,7 @@ public class OneToOneTest extends DemoBase {
         Person person2 = em.find(Person.class, person.getId());
         assertNotNull(person2);
         assertNotNull(person2.getPhoto());
-        log.info("found person:" + person2);
+        logger.info("found person:{}", person2);
     }        
     
     /**
@@ -177,7 +176,7 @@ public class OneToOneTest extends DemoBase {
      */
     @Test
     public void testPrimaryKeyJoin() {
-        log.info("testPrimaryKeyJoin");
+        logger.info("testPrimaryKeyJoin");
         
         //create the person we'll use in the relationship
         ejava.examples.orm.rel.annotated.Person person = new Person();
@@ -185,7 +184,7 @@ public class OneToOneTest extends DemoBase {
         person.setLastName("doe");
         person.setPhone("410-555-1212");
         em.persist(person);
-        log.info("created person:" + person);
+        logger.info("created person:{}", person);
         
         //create the Borrower, who requires a Person for its identity
         ejava.examples.orm.rel.annotated.Borrower borrower = 
@@ -194,19 +193,19 @@ public class OneToOneTest extends DemoBase {
         
         //persist the borrower, creating the relationship to person
         em.persist(borrower);
-        log.info("created borrower:" + borrower);
+        logger.info("created borrower:{}", borrower);
         assertEquals(person.getId(), borrower.getId()); //ctor copies PK         
         
         //lets add a photo to make the finder more interesting
         person.setPhoto(new Photo(image));
-        log.info("added photo to borrower's person:" + borrower);
+        logger.info("added photo to borrower's person:{}", borrower);
 
         //verify what we can get from DB
         em.flush();
         em.clear();
         Borrower borrower2 = em.find(Borrower.class, borrower.getId());
         assertNotNull(borrower2);
-        log.info("found person:" + borrower2);
+        logger.info("found person:{}", borrower2);
         assertTrue("jerome doe".equals(borrower2.getName()));
     }
     
@@ -219,7 +218,7 @@ public class OneToOneTest extends DemoBase {
      */
     @Test
     public void testOneToOneBiDirectional() {
-        log.info("testOneToOneBiDirectional");
+        logger.info("testOneToOneBiDirectional");
         
         //create our person (the person must exist)
         ejava.examples.orm.rel.annotated.Person person = new Person();
@@ -227,23 +226,23 @@ public class OneToOneTest extends DemoBase {
         person.setLastName("doe");
         person.setPhone("410-555-1212");
         em.persist(person);
-        log.info("created person:" + person);
+        logger.info("created person:{}", person);
                 
         //instantiate our two objects
         ejava.examples.orm.rel.annotated.Applicant applicant = new Applicant();
         applicant.setIdentity(person);
-        log.info("instantiated applicant:" + applicant);
+        logger.info("instantiated applicant:{}", applicant);
         
         ejava.examples.orm.rel.annotated.Borrower borrower = 
             new Borrower(person);
         borrower.setStartDate(new Date());
-        log.info("instantiated borrower:" + borrower);
+        logger.info("instantiated borrower:{}", borrower);
         
         //place in DB
         em.persist(applicant);
         em.persist(borrower);
-        log.info("created applicant in DB:" + applicant);
-        log.info("    and borrower:" + borrower);
+        logger.info("created applicant in DB:{}", applicant);
+        logger.info("    and borrower:{}", borrower);
         em.flush(); em.clear();
         
         //locate them from DB
@@ -251,30 +250,31 @@ public class OneToOneTest extends DemoBase {
         Borrower borrower2 = em.find(Borrower.class, borrower.getId());
         assertNotNull(applicant2);
         assertNotNull(borrower2);
-        log.info("found unrelated applicant in DB:" + applicant2);
-        log.info("    and borrower:" + borrower2);
+        logger.info("found unrelated applicant in DB:{}", applicant2);
+        logger.info("    and borrower:{}", borrower2);
         
         //form relationship
         borrower2.setApplication(applicant2); //set inverse side
         applicant2.setBorrower(borrower2);    //set owning side
-        log.info("related applicant in DB:" + applicant2);
-        log.info("    and borrower:" + borrower2);
-        em.flush(); em.clear();
+        logger.info("related applicant in DB:{}", applicant2);
+        logger.info("    and borrower:{}", borrower2);
+        em.flush();
         
         //locate them from DB
+        em.flush(); em.clear();
         Applicant applicant3 = em.find(Applicant.class, applicant.getId());
         Borrower borrower3 = em.find(Borrower.class, borrower.getId());
         assertNotNull(applicant3);
         assertNotNull(borrower3);
-        log.info("found related applicant in DB:" + applicant3);
-        log.info("    and borrower:" + borrower3);
+        logger.info("found related applicant in DB:{}", applicant3);
+        logger.info("    and borrower:{}", borrower3);
         assertEquals(applicant.getId(), borrower3.getApplication().getId());
         assertEquals(borrower.getId(), applicant3.getBorrower().getId());
         
         //remove borrower from DB
         applicant3.setBorrower(null);
         em.remove(borrower3);
-        log.info("removed borrower from applicant and DB");        
+        logger.info("removed borrower from applicant and DB");        
 
         //verify borrower not associated with applicant
         em.flush(); em.clear();
@@ -282,8 +282,8 @@ public class OneToOneTest extends DemoBase {
         Borrower borrower4 = em.find(Borrower.class, borrower.getId());
         assertNotNull(applicant4);
         assertNull(borrower4);
-        log.info("found related applicant in DB:" + applicant4);
-        log.info("    but didn't find borrower:" + borrower4);
+        logger.info("found related applicant in DB:{}", applicant4);
+        logger.info("    but didn't find borrower:{}", borrower4);
         assertNull(applicant4.getBorrower());
     }
 }

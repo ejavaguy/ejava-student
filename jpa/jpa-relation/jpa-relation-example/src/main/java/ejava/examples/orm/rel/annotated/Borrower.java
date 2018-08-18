@@ -47,9 +47,9 @@ public class Borrower  {
             fetch=FetchType.LAZY)   //try to limit what we get back
     private Collection<Checkout> checkouts = new ArrayList<Checkout>();
     
-    protected Borrower() { log.info(super.toString() + ", ctor()"); }
+    protected Borrower() { log.info("{}, ctor()", myInstance()); }
     public Borrower(Person identity) {
-        log.info(super.toString() + ", ctor():" + identity);
+        log.info("{}, ctor():", myInstance(), identity);
         this.id = identity.getId();
         this.identity = identity;
     }
@@ -91,10 +91,16 @@ public class Borrower  {
     public void removeCheckout(Checkout checkout) {
         this.checkouts.remove(checkout);
     }
+
+    private String myInstance() {
+        String s=super.toString();
+        s = s.substring(s.lastIndexOf('.')+1);
+        return s;
+    }
     
     public String toString() {
         StringBuilder text = new StringBuilder(
-            getClass().getName() +
+            getClass().getSimpleName() +
             ", id=" + id +
             ", startDate=" + startDate +
             ", endDate=" + endDate +

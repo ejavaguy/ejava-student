@@ -71,7 +71,7 @@ public class RelationshipOwnershipTest extends DemoBase {
      */
     @Test
     public void testOnetoOneInverse() {
-        log.info("testOneToOneInverse");
+        logger.info("testOneToOneInverse");
         
         Borrower borrower = em.find(Borrower.class, borrowerId);
         Applicant applicant = em.find(Applicant.class, applicantId);
@@ -91,8 +91,8 @@ public class RelationshipOwnershipTest extends DemoBase {
                 applicant.getBorrower(), 
                 applicant.getBorrower());  
         
-        log.info("writing rel owner (application) to DB:" + applicant);
-        log.info("writing rel inverse (borrower) to DB:" + borrower);
+        logger.info("writing rel owner (application) to DB:{}", applicant);
+        logger.info("writing rel inverse (borrower) to DB:{}", borrower);
 
         //commit changes to the DB, but since only inserse side of relationship
         //was set, no FK data gets written
@@ -104,8 +104,8 @@ public class RelationshipOwnershipTest extends DemoBase {
         
         borrower = em.find(Borrower.class, borrowerId);
         applicant = em.find(Applicant.class, applicantId);
-        log.info("read rel owner (application) from DB:" + applicant);
-        log.info("read rel inverse (borrower) from DB:" + borrower);
+        logger.info("read rel owner (application) from DB:{}", applicant);
+        logger.info("read rel inverse (borrower) from DB:{}", borrower);
 
         //verify that relationship from cache never written to DB
         assertNull("borrower has unexpected applicant:" + 
@@ -127,8 +127,8 @@ public class RelationshipOwnershipTest extends DemoBase {
         
         borrower = em.find(Borrower.class, borrowerId);
         applicant = em.find(Applicant.class, applicantId);
-        log.info("read rel owner (application) from DB:" + applicant);
-        log.info("read rel inverse (borrower) from DB:" + borrower);
+        logger.info("read rel owner (application) from DB:{}", applicant);
+        logger.info("read rel inverse (borrower) from DB:{}", borrower);
 
         //verify that relationship written to DB
         assertNotNull("borrower doesn't have applicant", 
@@ -144,8 +144,8 @@ public class RelationshipOwnershipTest extends DemoBase {
         assertNotNull("applicant does not have borrower", 
                 applicant.getBorrower());
         
-        log.info("writing rel owner (application) to DB:" + applicant);
-        log.info("writing rel inverse (borrower) to DB:" + borrower);
+        logger.info("writing rel owner (application) to DB:{}", applicant);
+        logger.info("writing rel inverse (borrower) to DB:{}", borrower);
 
         //commit changes to the DB, but since only inserse side of relationship
         //was null, the FK won't get reset
@@ -159,8 +159,8 @@ public class RelationshipOwnershipTest extends DemoBase {
         
         borrower = em.find(Borrower.class, borrowerId);
         applicant = em.find(Applicant.class, applicantId);
-        log.info("read rel owner (application) from DB:" + applicant);
-        log.info("read rel inverse (borrower) from DB:" + borrower);
+        logger.info("read rel owner (application) from DB:{}", applicant);
+        logger.info("read rel inverse (borrower) from DB:{}", borrower);
 
         //verify that relationship from cache never written to DB
         assertNotNull("borrower does not have applicant", 
@@ -179,7 +179,7 @@ public class RelationshipOwnershipTest extends DemoBase {
      */
     @Test
     public void testOnetoOneOwnership() {
-        log.info("testOneToOneOwnership");
+        logger.info("testOneToOneOwnership");
         
         Borrower borrower = em.find(Borrower.class, borrowerId);
         Applicant applicant = em.find(Applicant.class, applicantId);
@@ -215,15 +215,15 @@ public class RelationshipOwnershipTest extends DemoBase {
 
         //remove relationship from borrower (aka owning side)
         applicant.setBorrower(null);
-        log.info("writing rel owner (application) to DB:" + applicant);
-        log.info("writing rel inverse (borrower) to DB:" + borrower);
+        logger.info("writing rel owner (application) to DB:{}", applicant);
+        logger.info("writing rel inverse (borrower) to DB:{}", borrower);
         
         em.getTransaction().begin();
         em.getTransaction().commit();
 
-        log.info("refreshing stale borrower:" + borrower);
+        logger.info("refreshing stale borrower:{}", borrower);
         em.refresh(borrower);
-        log.info("stale borrower refreshed:" + borrower);
+        logger.info("stale borrower refreshed:{}", borrower);
 
         assertNull("borrower has unexpected applicant:" +
                 borrower.getApplication(), 

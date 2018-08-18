@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
 @Entity
 @Table(name="ORMREL_PHOTO")
 public class Photo {
-    private static Logger log = LoggerFactory.getLogger(Photo.class);
+    private static Logger logger = LoggerFactory.getLogger(Photo.class);
 
     @Id @GeneratedValue @Column(name="PHOTO_ID")
     private long id;
@@ -21,27 +21,35 @@ public class Photo {
     private byte[] image;
     
     
-    public Photo() { log.debug(super.toString() + ": ctor()"); }
+    public Photo() { logger.debug("{}: ctor()", myInstance()); }
     public Photo(byte[] image) { 
-        log.debug(super.toString() + ": ctor() image=" + image); 
+        logger.debug(super.toString() + ": ctor() image=" + image); 
         this.image = image;
     }
     
     public long getId() {
-        log.debug(super.toString() + ": getId()=" + id);
+        logger.debug("{}: getId()={}", myInstance(), id);
         return id;
     }
     
     public byte[] getImage() { return image; }
     public void setImage(byte[] image) {
         this.image = image;
-    }          
+    }
 
+    private String myInstance() {
+        String s=super.toString();
+        s = s.substring(s.lastIndexOf('.')+1);
+        return s;
+    }
+    
     public String toString() {
         long size = (image == null) ? 0 : image.length;
         String sizeText = 
             (image == null) ? "null" : new Long(size).toString() + " bytes";
-        return super.toString() +
+        String s=super.toString();
+        s = s.substring(s.lastIndexOf('.')+1);
+        return myInstance() +
             ", id=" + id +
             ". image=" + sizeText;
     }
