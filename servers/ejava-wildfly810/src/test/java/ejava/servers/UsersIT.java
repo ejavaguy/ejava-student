@@ -12,15 +12,15 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.junit.Test;
 
 /**
  * This test verifies the password of the users.properties file is set correctly.
  */
 public class UsersIT {
-	private static final Log log = LogFactory.getLog(UsersIT.class);
+	private static final Logger log = LoggerFactory.getLogger(UsersIT.class);
 	private String usersPath = "src/main/resources/standalone/configuration/application-users.properties";
 	private static String password=System.getProperty("jndi.password", "password1!");
 	
