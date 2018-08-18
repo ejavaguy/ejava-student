@@ -7,7 +7,7 @@
    
     <appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
         <param name="Target" value="System.out"/>
-        <param name="Threshold" value="INFO"/>
+        <param name="Threshold" value="DEBUG"/>
 
         <layout class="org.apache.log4j.PatternLayout">
         <!--
@@ -35,6 +35,10 @@
    </logger>
    <logger name="org.hibernate.SQL">
       <level value="DEBUG"/>
+      <appender-ref ref="logfile"/>  
+   </logger>
+   <logger name="org.hibernate.type">
+      <level value="INFO"/>
       <appender-ref ref="logfile"/>  
    </logger>
 
