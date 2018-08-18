@@ -9,6 +9,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Tuple;
@@ -70,6 +73,29 @@ public class JPAQLTest extends QueryBase {
         int rows = results.size();
         assertTrue("unexpected number of customers", rows > 0);
     }
+    
+    /**
+     * This test demonstrates getting results as a stream
+     */
+    @Test
+    public void testResultStream() {
+        log.info("*** testStream() ***");
+        TypedQuery<Customer> query = em.createQuery(
+                "select c from Customer as c", 
+                Customer.class);
+        
+        Stream<Customer> s = query.getResultStream();
+        Map<String, Customer> resultMap = s.collect(
+                Collectors.toMap(c->c.getFirstName()+c.getLastName(), c->c ));
+        
+        for (Entry<String, Customer> result : resultMap.entrySet()) {
+            log.info("found=" + result);
+        }
+        int rows = resultMap.size();
+        assertTrue("unexpected number of customers", rows > 0);
+        
+    }
+    
     
     /**
      * This test demonstrates querying for a non-entity. The property queried
