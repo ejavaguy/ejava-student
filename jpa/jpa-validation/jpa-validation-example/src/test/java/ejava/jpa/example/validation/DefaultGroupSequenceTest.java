@@ -18,7 +18,7 @@ import org.junit.Test;
  * by a group sequence.
  */
 public class DefaultGroupSequenceTest {
-	private static final Logger log = LoggerFactory.getLogger(DefaultGroupSequenceTest.class);
+	private static final Logger logger = LoggerFactory.getLogger(DefaultGroupSequenceTest.class);
 	private static final ValidatorFactory vf = Validation.buildDefaultValidatorFactory();
 	private static final Validator val = vf.getValidator();
 
@@ -28,12 +28,12 @@ public class DefaultGroupSequenceTest {
 	 */
 	@Test
 	public void testDefaultError() {
-		log.debug("*** testDefaultError ***");
+		logger.debug("*** testDefaultError ***");
 		
 		Address2 a = new Address2();
 		Set<ConstraintViolation<Address2>> violations = val.validate(a);
 		for (ConstraintViolation<Address2> v: violations) {
-			log.info(v.getPropertyPath() + ":" + v.getInvalidValue() + " " + v.getMessage());
+			logger.info("{}:{} {}", v.getPropertyPath(), v.getInvalidValue(), v.getMessage());
 		}
 		
 		//we should only get violations from the Default group
@@ -46,14 +46,14 @@ public class DefaultGroupSequenceTest {
 	 */
 	@Test
 	public void testDefaultSomeError() {
-		log.debug("*** testDefaultSomeError ***");
+		logger.debug("*** testDefaultSomeError ***");
 		
 		Address2 a = new Address2()
 		    .setStreet("$$%%^&#$$$$$$$$$$$$$$$$")
 		    .setState("BIIIIIIIIIIIIIIIIIIIIG");
 		Set<ConstraintViolation<Address2>> violations = val.validate(a);
 		for (ConstraintViolation<Address2> v: violations) {
-			log.info(v.getPropertyPath() + ":" + v.getInvalidValue() + " " + v.getMessage());
+            logger.info("{}:{} {}", v.getPropertyPath(), v.getInvalidValue(), v.getMessage());
 		}
 		
 		//we should only get violations from the Default group
@@ -66,7 +66,7 @@ public class DefaultGroupSequenceTest {
 	 */
 	@Test
 	public void testOneDBError() {
-		log.debug("*** testOneDBError ***");
+		logger.debug("*** testOneDBError ***");
 		
 		Address2 a = new Address2()
 		    .setStreet("1600$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$")
@@ -75,7 +75,7 @@ public class DefaultGroupSequenceTest {
 		    .setZip("20500");
 		Set<ConstraintViolation<Address2>> violations = val.validate(a);
 		for (ConstraintViolation<Address2> v: violations) {
-			log.info(v.getPropertyPath() + ":" + v.getInvalidValue() + " " + v.getMessage());
+            logger.info("{}:{} {}", v.getPropertyPath(), v.getInvalidValue(), v.getMessage());
 		}
 		
 		//we should only get violations from the DB group
@@ -88,7 +88,7 @@ public class DefaultGroupSequenceTest {
 	 */
 	@Test
 	public void testDataError() {
-		log.debug("*** testDataError ***");
+		logger.debug("*** testDataError ***");
 		
 		Address2 a = new Address2()
 		    .setStreet("1600$")
@@ -97,7 +97,7 @@ public class DefaultGroupSequenceTest {
 		    .setZip("20500");
 		Set<ConstraintViolation<Address2>> violations = val.validate(a);
 		for (ConstraintViolation<Address2> v: violations) {
-			log.info(v.getPropertyPath() + ":" + v.getInvalidValue() + " " + v.getMessage());
+            logger.info("{}:{} {}", v.getPropertyPath(), v.getInvalidValue(), v.getMessage());
 		}
 		
 		//we should only get violations from the Data Content group
@@ -106,7 +106,7 @@ public class DefaultGroupSequenceTest {
 
 	@Test
 	public void testSuccess() {
-		log.debug("*** testSuccess ***");
+		logger.debug("*** testSuccess ***");
 		
 		Address2 a = new Address2()
 		    .setStreet("1600")
@@ -115,7 +115,7 @@ public class DefaultGroupSequenceTest {
 		    .setZip("20500");
 		Set<ConstraintViolation<Address2>> violations = val.validate(a);
 		for (ConstraintViolation<Address2> v: violations) {
-			log.info(v.getPropertyPath() + ":" + v.getInvalidValue() + " " + v.getMessage());
+            logger.info("{}:{} {}", v.getPropertyPath(), v.getInvalidValue(), v.getMessage());
 		}
 		
 		//we should get no violations

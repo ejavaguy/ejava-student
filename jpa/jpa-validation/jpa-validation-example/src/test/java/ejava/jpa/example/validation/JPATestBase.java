@@ -33,24 +33,21 @@ public class JPATestBase {
 
     @After
     public void tearDown() throws Exception {
-        try {
-            log.debug("tearDown() started, em=" + em);
+        if (em!=null) {
             EntityTransaction tx = em.getTransaction();
-            if (!tx.isActive()) {
-                tx.begin();
-                tx.commit();            
-            } else if (tx.getRollbackOnly()) {
-                tx.rollback();                        	
+            if (tx.isActive()) {
+                if (tx.getRollbackOnly()) {
+                    tx.rollback();
+                } else {
+                    tx.commit();
+                }
             } else {
-            	    tx.commit();
+                tx.begin();
+                tx.commit();
             }
             em.close();
-            log.debug("tearDown() complete, em=" + em);
         }
-        catch (Exception ex) {
-            log.error("tearDown failed", ex);
-            throw ex;
-        }
+        log.debug("tearDown() complete, em=" + em);
      }
     
     @AfterClass

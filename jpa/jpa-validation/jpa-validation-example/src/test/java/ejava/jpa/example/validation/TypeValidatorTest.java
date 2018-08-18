@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.junit.Test;
 
 public class TypeValidatorTest {
-	private static final Logger log = LoggerFactory.getLogger(TypeValidatorTest.class);
+	private static final Logger logger = LoggerFactory.getLogger(TypeValidatorTest.class);
 	ValidatorFactory cf = Validation.buildDefaultValidatorFactory();
 	Validator val = cf.getValidator();
 	
@@ -24,7 +24,7 @@ public class TypeValidatorTest {
 	 */
 	@Test
 	public void testCityStateOrZip() {
-		log.info("*** testCityStateOrZip ***");
+		logger.info("*** testCityStateOrZip ***");
 		
 		Address1 a1 = new Address1()
 		    .setStreet("1600")
@@ -37,7 +37,7 @@ public class TypeValidatorTest {
 
 	@Test
 	public void testCityState() {
-		log.info("*** testCityState ***");
+		logger.info("*** testCityState ***");
 		
 		Address1 a1 = new Address1()
 		    .setStreet("1600")
@@ -49,35 +49,35 @@ public class TypeValidatorTest {
 	
 	@Test
 	public void testCity() {
-		log.info("*** testCity ***");
+		logger.info("*** testCity ***");
 		
 		Address1 a1 = new Address1()
 		    .setStreet("1600")
 		    .setCity("Washington");
 		Set<ConstraintViolation<Address1>> violations = val.validate(a1,PreCheck.class);
 		for (ConstraintViolation<Address1> v : violations) {
-			log.debug(v.getPropertyPath() + ":" + v.getInvalidValue() + ", " + v.getMessage());
+			logger.debug("{}:{} {}", v.getPropertyPath(), v.getInvalidValue(), v.getMessage());
 		}
 		assertEquals("unexpected violation", 1, violations.size());
 	}
 	
 	@Test
 	public void testState() {
-		log.info("*** testState ***");
+		logger.info("*** testState ***");
 		
 		Address1 a1 = new Address1()
 		    .setStreet("1600")
 		    .setState("DC");
 		Set<ConstraintViolation<Address1>> violations = val.validate(a1,PreCheck.class);
 		for (ConstraintViolation<Address1> v : violations) {
-			log.debug(v.getPropertyPath() + ":" + v.getInvalidValue() + ", " + v.getMessage());
+            logger.debug("{}:{} {}", v.getPropertyPath(), v.getInvalidValue(), v.getMessage());
 		}
 		assertEquals("unexpected violation", 1, violations.size());
 	}
 
 	@Test
 	public void testZip() {
-		log.info("*** testCityStateOrZip ***");
+		logger.info("*** testCityStateOrZip ***");
 		
 		Address1 a1 = new Address1()
 		    .setStreet("1600")

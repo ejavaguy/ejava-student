@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.junit.Test;
 
 public class CustomValidatorTest {
-	private static final Logger log = LoggerFactory.getLogger(CustomValidatorTest.class);
+	private static final Logger logger = LoggerFactory.getLogger(CustomValidatorTest.class);
 
 	private ValidatorFactory vf = Validation.buildDefaultValidatorFactory();
 	private Validator val = vf.getValidator();
@@ -27,7 +27,7 @@ public class CustomValidatorTest {
 	 */
 	@Test
 	public void testMinAgeValid() {
-		log.info("*** testMinAgeValid ***");
+		logger.info("*** testMinAgeValid ***");
 		
 		Calendar sixteen = new GregorianCalendar();
 		sixteen.add(Calendar.YEAR, -16);
@@ -38,13 +38,13 @@ public class CustomValidatorTest {
 			.setBirthDate(sixteen.getTime());
 	
 		Set<ConstraintViolation<Person>> violations = val.validate(p, Drivers.class);
-		log.debug(p + ", violations=" + violations);
+		logger.debug(p + ", violations=" + violations);
 		assertTrue("not valid driver", violations.isEmpty());
 	}
 
 	@Test
 	public void testMinAgeInValid() {
-		log.info("*** testMinAgeInvalid ***");
+		logger.info("*** testMinAgeInvalid ***");
 		
 		Calendar fifteen = new GregorianCalendar();
 		fifteen.add(Calendar.YEAR, -16);
@@ -57,16 +57,16 @@ public class CustomValidatorTest {
 	
 		Set<ConstraintViolation<Person>> violations = val.validate(p, Drivers.class);
 		for (ConstraintViolation<Person> v : violations) {
-			log.debug(v.getPropertyPath() + ":" + v.getInvalidValue() + ", " + v.getMessage());
+			logger.info("{}:{} {}", v.getPropertyPath(), v.getInvalidValue(), v.getMessage());
 		}
 
-		log.debug(p + ", violations=" + violations);
+		logger.debug(p + ", violations=" + violations);
 		assertFalse("valid driver", violations.isEmpty());
 	}
 
 	@Test
 	public void testComposite() {
-		log.info("*** testComposite ***");
+		logger.info("*** testComposite ***");
 		
 		Person p = new Person()
 			.setFirstName("Bob")
@@ -74,10 +74,10 @@ public class CustomValidatorTest {
 	
 		Set<ConstraintViolation<Person>> violations = val.validate(p);
 		for (ConstraintViolation<Person> v : violations) {
-			log.debug(v.getPropertyPath() + ":" + v.getInvalidValue() + " " + v.getMessage());
+			logger.info("{}:{} {}", v.getPropertyPath(), v.getInvalidValue(), v.getMessage());
 		}
 
-		log.debug(p + ", violations=" + violations);
+		logger.debug(p + ", violations=" + violations);
 		assertFalse("valid driver", violations.isEmpty());
 	}
 }

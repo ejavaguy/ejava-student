@@ -18,7 +18,7 @@ import org.junit.Test;
  * validation for beans.
  */
 public class XMLTest {
-	private static final Logger log = LoggerFactory.getLogger(XMLTest.class);
+	private static final Logger logger = LoggerFactory.getLogger(XMLTest.class);
 	
 	ValidatorFactory vf = Validation.buildDefaultValidatorFactory();
 	Validator val = vf.getValidator();
@@ -29,12 +29,12 @@ public class XMLTest {
 	 */
 	@Test
 	public void testValidationDescriptorBad() {
-		log.info("*** testValidationDescriptorBad");
+		logger.info("*** testValidationDescriptorBad");
 		
 		Book b = new Book();
 		Set<ConstraintViolation<Book>> violations = val.validate(b);
 		for (ConstraintViolation<Book> v : violations) {
-			log.info(v.getPropertyPath() + ":" + v.getInvalidValue() + " " + v.getMessage());
+            logger.debug("{}:{} {}", v.getPropertyPath(), v.getInvalidValue(), v.getMessage());
 		}
 		assertEquals("unexpected number of violations", 2, violations.size());
 	}
@@ -45,7 +45,7 @@ public class XMLTest {
 	 */
 	@Test
 	public void testValidationDescriptorGood() {
-		log.info("*** testValidationDescriptorGood");
+		logger.info("*** testValidationDescriptorGood");
 		
 		Book b = new Book().setTitle("Validation Rocks!").setPages(30);
 		Set<ConstraintViolation<Book>> violations = val.validate(b);

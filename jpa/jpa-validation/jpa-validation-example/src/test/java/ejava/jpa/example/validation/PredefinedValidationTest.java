@@ -23,7 +23,7 @@ import org.junit.Test;
  * Validation API before we get to application-specific extensions.
  */
 public class PredefinedValidationTest {
-	private static Logger log = LoggerFactory.getLogger(PredefinedValidationTest.class);
+	private static Logger logger = LoggerFactory.getLogger(PredefinedValidationTest.class);
 
 	private ValidatorFactory vf = Validation.buildDefaultValidatorFactory();
 	private Validator val = vf.getValidator();
@@ -33,7 +33,7 @@ public class PredefinedValidationTest {
 	 */
 	@Test
 	public void testValid() {
-		log.info("*** testValid ***");
+		logger.info("*** testValid ***");
 
 		Person p = new Person()
 			.setFirstName("Billy Bob")
@@ -43,7 +43,7 @@ public class PredefinedValidationTest {
 		
 		Set<ConstraintViolation<Person>> violations = val.validate(p);
 		
-		log.debug("valid person=" + p);
+		logger.debug("valid person={}", p);
 		assertEquals("unexpected number of violations:" + violations, 0, violations.size());
 	}
 
@@ -52,16 +52,16 @@ public class PredefinedValidationTest {
 	 */
 	@Test
 	public void testNotNull() {
-		log.info("*** testNotNull ***");
+		logger.info("*** testNotNull ***");
 
 		Person p = new Person();
 		
 		Set<ConstraintViolation<Person>> violations = val.validate(p, POCs.class);
 		for (ConstraintViolation<Person> v : violations) {
-			log.info(v.getRootBeanClass() + ", " + v.getPropertyPath() + " " + v.getMessage());
+            logger.info("{}, {} {}", v.getRootBeanClass(), v.getPropertyPath(),  v.getMessage());          
 		}
 		
-		log.debug("invalid null-named person=" + p);
+		logger.debug("invalid null-named person=" + p);
 		assertEquals("unexpected number of violations", 4, violations.size());
 	}
 	
@@ -70,7 +70,7 @@ public class PredefinedValidationTest {
 	 */
 	@Test
 	public void testSize() {
-		log.info("*** testSize ***");
+		logger.info("*** testSize ***");
 		
 		Person p = new Person()
 			.setFirstName("Bobbbbbbbbbbbbbbbbbbbbbbbbbbb")
@@ -78,10 +78,10 @@ public class PredefinedValidationTest {
 		
 		Set<ConstraintViolation<Person>> violations = val.validate(p);
 		for (ConstraintViolation<Person> v : violations) {
-			log.info(v.getPropertyPath() + ":" + v.getInvalidValue() + " " + v.getMessage());
+            logger.info("{}:{} {}", v.getPropertyPath(), v.getInvalidValue(),  v.getMessage());          
 		}
 		
-		log.debug("invalid named-sized person=" + p);
+		logger.debug("invalid named-sized person=" + p);
 		assertEquals("unexpected number of violations", 2, violations.size());
 	}
 
@@ -90,7 +90,7 @@ public class PredefinedValidationTest {
 	 */
 	@Test
 	public void testPattern() {
-		log.info("*** testPattern ***");
+		logger.info("*** testPattern ***");
 		
 		Person p = new Person()
 			.setFirstName("Bob2")
@@ -99,10 +99,10 @@ public class PredefinedValidationTest {
 		
 		Set<ConstraintViolation<Person>> violations = val.validate(p);
 		for (ConstraintViolation<Person> v : violations) {
-			log.info(v.getPropertyPath() + ":" + v.getInvalidValue() + " " + v.getMessage());
+            logger.info("{}:{} {}", v.getPropertyPath(), v.getInvalidValue(),  v.getMessage());          
 		}
 		
-		log.debug("invalid named-sized person=" + p);
+		logger.debug("invalid named-sized person={}", p);
 		assertEquals("unexpected number of violations", 3, violations.size());
 	}
 	
@@ -111,7 +111,7 @@ public class PredefinedValidationTest {
 	 */
 	@Test
 	public void testPast() {
-		log.info("*** testPast ***");
+		logger.info("*** testPast ***");
 		
 		Person p = new Person()
 			.setFirstName("Bob")
@@ -123,10 +123,10 @@ public class PredefinedValidationTest {
 			String value = (v.getInvalidValue() instanceof Date) ? 
 					new SimpleDateFormat("YYYY").format((Date)v.getInvalidValue()) : 
 					v.getInvalidValue().toString(); 
-			log.info(v.getPropertyPath() + ":" + value + " " + v.getMessage());			
+			logger.info("{}:{} {}", v.getPropertyPath(), value,  v.getMessage());			
 		}
 		
-		log.debug("invalid named-sized person=" + p);
+		logger.debug("invalid named-sized person={}", p);
 		assertEquals("unexpected number of violations", 3, violations.size());
 	}
 	
@@ -135,7 +135,7 @@ public class PredefinedValidationTest {
 	 */
 	@Test
 	public void testGroups() {
-		log.info("*** testGroups ***");
+		logger.info("*** testGroups ***");
 		
 		Calendar seventeen = new GregorianCalendar();
 		seventeen.add(Calendar.YEAR, -17);
@@ -150,13 +150,15 @@ public class PredefinedValidationTest {
 		Set<ConstraintViolation<Person>> validDriver = val.validate(p, Drivers.class);
 		Set<ConstraintViolation<Person>> validPOC = val.validate(p, POCs.class);
 		
-		log.debug(p.toString() + ", validPerson=" + validPerson.isEmpty() +
-				                 ", validDriver=" + validDriver.isEmpty() +
-				                 ", validPOC=" + validPOC.isEmpty());
+        logger.debug("{}, validPerson={}, validDriver={}, validPOC={}", 
+                p,
+                validPerson.isEmpty(),
+                validDriver.isEmpty(),
+                validPOC.isEmpty());
 		
-		log.debug("validPerson=" + validPerson);
-		log.debug("validDriver=" + validDriver);
-		log.debug("validPOC=" + validPOC);
+		logger.debug("validPerson={}", validPerson);
+		logger.debug("validDriver={}", validDriver);
+		logger.debug("validPOC={}", validPOC);
 		
 		assertTrue("not validPerson", validPerson.isEmpty());
 		assertTrue("validDriver", validDriver.isEmpty());

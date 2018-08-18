@@ -16,7 +16,7 @@ import org.junit.Test;
  * JPA
  */
 public class JPAValidation extends JPATestBase {
-	private static final Logger log = LoggerFactory.getLogger(JPAValidation.class);
+	private static final Logger logger = LoggerFactory.getLogger(JPAValidation.class);
 
 	/**
 	 * This test demonstrates we can persist and update an entity with 
@@ -24,7 +24,7 @@ public class JPAValidation extends JPATestBase {
 	 */
 	@Test
 	public void testPersistValidPerson() {
-		log.info("*** testPersistValidPerson ***");
+		logger.info("*** testPersistValidPerson ***");
 		
 		Person p = new Person()
 		    .setFirstName("Bob")
@@ -42,7 +42,7 @@ public class JPAValidation extends JPATestBase {
 	 */
 	@Test
 	public void testPersistInValidPerson() {
-		log.info("*** testPersistInValidPerson ***");
+		logger.info("*** testPersistInValidPerson ***");
 		
 		Person p = new Person()
 		    .setFirstName("Bob")
@@ -52,7 +52,7 @@ public class JPAValidation extends JPATestBase {
 			em.persist(p);
 			em.flush(); //trigger the validation
 		} catch (ConstraintViolationException ex) {
-			log.info("caught expected exception:" + ex);
+			logger.info("caught expected exception:" + ex);
 		}
 	}
 	
@@ -61,7 +61,7 @@ public class JPAValidation extends JPATestBase {
 	 */
 	@Test
 	public void testUpdatetInValidPerson() {
-		log.info("*** testUpdatetInValidPerson ***");
+		logger.info("*** testUpdatetInValidPerson ***");
 		
 		Person p = new Person()
 		    .setFirstName("Bob")
@@ -71,12 +71,12 @@ public class JPAValidation extends JPATestBase {
 		em.flush();
 		
 		try {
-			log.debug("nulling birth date");			
+			logger.debug("nulling birth date");			
 			p.setBirthDate(null);
-			log.debug("flushing changes");
+			logger.debug("flushing changes");
 			em.flush();			
 		} catch (ConstraintViolationException ex) {
-			log.info("caught expected exception:" + ex);
+			logger.info("caught expected exception:" + ex);
 		}
 	}
 	
