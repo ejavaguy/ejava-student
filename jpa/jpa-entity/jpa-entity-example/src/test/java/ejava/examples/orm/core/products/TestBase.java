@@ -28,15 +28,15 @@ public class TestBase {
 
     @After
     public void tearDownBase() throws Exception {
-    	if (em!=null) {
-	        EntityTransaction tx = em.getTransaction();
-	        if (tx.isActive()) {
-	            if (tx.getRollbackOnly() == true) { tx.rollback(); }
-	            else                              { tx.commit(); }
-	        }
-	        em.close();
-	        em=null;
-    	}
+        	if (em!=null) {
+    	        EntityTransaction tx = em.getTransaction();
+    	        if (tx.isActive()) {
+    	            if (tx.getRollbackOnly() == true) { tx.rollback(); }
+    	            else                              { tx.commit(); }
+    	        }
+    	        em.close();
+    	        em=null;
+        	}
     }
     
     @AfterClass
