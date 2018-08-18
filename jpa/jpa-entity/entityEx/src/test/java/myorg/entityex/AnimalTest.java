@@ -37,20 +37,20 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class AnimalTest {
-    private static final Logger log = LoggerFactory.getLogger(Auto.class);
+    private static final Logger logger = LoggerFactory.getLogger(Auto.class);
     private static final String PERSISTENCE_UNIT = "entityEx-test";
     private static EntityManagerFactory emf;
     private EntityManager em;    
 
     @BeforeClass
     public static void setUpClass() {
-        log.debug("creating entity manager factory");
+        logger.debug("creating entity manager factory");
         emf = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT);
     }
     
     @Before
     public void setUp() throws Exception {
-        log.debug("creating entity manager");
+        logger.debug("creating entity manager");
         em = emf.createEntityManager();
         cleanup();
         em.getTransaction().begin();
@@ -59,7 +59,7 @@ public class AnimalTest {
     @After
     public void tearDown() throws Exception {
         try {
-            log.debug("tearDown() started, em=" + em);
+            logger.debug("tearDown() started, em= {}",em);
             if (!em.getTransaction().isActive()) {
                 em.getTransaction().begin();
                 em.getTransaction().commit();            
@@ -69,17 +69,17 @@ public class AnimalTest {
             	em.getTransaction().rollback();
             }
             em.close();
-            log.debug("tearDown() complete, em=" + em);
+            logger.debug("tearDown() complete, em= {}",em);
         }
         catch (Exception ex) {
-            log.error("tearDown failed", ex);
+            logger.error("tearDown failed", ex);
             throw ex;
         }
      }
     
     @AfterClass
     public static void tearDownClass() {
-        log.debug("closing entity manager factory");
+        logger.debug("closing entity manager factory");
         if (emf!=null) { emf.close(); }
     }
     
@@ -95,10 +95,10 @@ public class AnimalTest {
 
     @Test
     public void testCreateAnimal() {
-        log.info("testCreateAnimal");
-        log.info("{}", em.createQuery("select a from Animal a").getResultList());
+        logger.info("testCreateAnimal");
+        logger.info("{}", em.createQuery("select a from Animal a").getResultList());
         
-    	Animal animal = new Animal("bessie", 
+    	    Animal animal = new Animal("bessie", 
     			new GregorianCalendar(1960, 1, 1).getTime(), 1400.2);
         em.persist(animal);        
         
@@ -111,8 +111,8 @@ public class AnimalTest {
 
     @Test
     public void testCreateAnimalAnnotated() {
-        log.info("testCreateAnimalAnnotated");
-    	myorg.entityex.annotated.Animal2 animal = new myorg.entityex.annotated.Animal2("bessie", 
+        logger.info("testCreateAnimalAnnotated");
+    	    myorg.entityex.annotated.Animal2 animal = new myorg.entityex.annotated.Animal2("bessie", 
     			new GregorianCalendar(1960, 1, 1).getTime(), 1400.2);
         em.persist(animal);        
         
@@ -125,7 +125,7 @@ public class AnimalTest {
     
     @Test
     public void testCreateCatMapped() {
-    	log.info("testCreateCatMapped");
+    	logger.info("testCreateCatMapped");
     	myorg.entityex.mapped.Cat cat = new myorg.entityex.mapped.Cat("fluffy", null, 99.9);
     	em.persist(cat);                                             //get provider to call getters
     	em.flush(); em.detach(cat);
@@ -134,7 +134,7 @@ public class AnimalTest {
 
     @Test
     public void testCreateCatAnnotated() {
-    	log.info("testCreateCatAnnotated");
+    	logger.info("testCreateCatAnnotated");
     	myorg.entityex.annotated.Cat2 cat = new myorg.entityex.annotated.Cat2("fluffy", null, 99.9);
     	em.persist(cat);                                                 //get provider to call getters
     	em.flush(); em.detach(cat);
@@ -143,23 +143,23 @@ public class AnimalTest {
 
     @Test
     public void testTemporal() {
-    	log.info("testTemporal");
+    	logger.info("testTemporal");
     	Shark shark = new Shark()
     		.setDate(new GregorianCalendar(1776, Calendar.JULY, 4))
     		.setTime(new Date())
     		.setTimestamp(new Date());
     	em.persist(shark);
-    	log.info("initial object=" + shark);
+    	logger.info("initial object= {}",shark);
     	
     	//flush commands to DB and get new instance
     	em.flush(); em.detach(shark);
     	Shark shark2 = em.find(Shark.class, shark.getId());
-    	log.info("object from DB=" + shark2);
+    	logger.info("object from DB= {}",shark2);
     }
     
     @Test
     public void testEnums() {
-    	log.info("testEnums");
+    	logger.info("testEnums");
     	Dog dog = new Dog()
     		.setGender(Dog.Sex.FEMALE)
     		.setColor(Dog.Color.MIX)
@@ -168,9 +168,10 @@ public class AnimalTest {
     	em.flush();
     	
     	//check the raw value stored in the database
-    	Object[] o = (Object[])em.createNativeQuery("select GENDER, COLOR, BREED from ENTITYEX_DOG where id=" + dog.getId())
+    	Object[] o = (Object[])em.createNativeQuery("select GENDER, COLOR, BREED from ENTITYEX_DOG where id=?")
+    	        .setParameter(1, dog.getId())
     			.getSingleResult();
-    	log.debug("cols=" + Arrays.toString(o));
+    	logger.debug("cols= {}",Arrays.toString(o));
     	assertEquals("unexpected gender", Dog.Sex.FEMALE.ordinal(), ((Number)o[0]).intValue());
     	assertEquals("unexpected color", Dog.Color.MIX.name(), ((String)o[1]));
     	assertEquals("unexpected breed", Dog.Breed.SAINT_BERNARD.prettyName, ((String)o[2]));
@@ -185,13 +186,13 @@ public class AnimalTest {
     
     @Test
     public void testPKGen() {
-    	log.info("testPKGen");
+    	logger.info("testPKGen");
     	Bunny bunny = new Bunny();
     	bunny.setName("fuzzy");
     	assertTrue("primary key unexpectedly assigned", bunny.getId()==0);
     	em.persist(bunny);
     	em.flush();
-    	log.info("bunny.getId()=" + bunny.getId());
+    	logger.info("bunny.getId()= {}",bunny.getId());
     	assertFalse("primary key not assigned", bunny.getId()==0);
     	
     	Set<Integer> ids = new HashSet<Integer>();
@@ -203,12 +204,12 @@ public class AnimalTest {
             em.flush();
         	assertTrue("id not unique:" + b.getId(), ids.add(b.getId()));
     	}
-    	log.debug("ids=" + ids);
+    	logger.debug("ids= {}",ids);
     }
     
     @Test 
     public void testLob() {
-    	log.info("testLob");
+    	logger.info("testLob");
     	//create our host object with Lob objects
     	Horse horse = new Horse();
     	horse.setName("Mr. Ed");
@@ -233,7 +234,7 @@ public class AnimalTest {
     
     @Test
     public void testEmbeddedId() {
-    	log.info("testEmbedded");
+    	logger.info("testEmbedded");
     	Cow cow = new Cow(new CowPK("Ponderosa", "Bessie"));
     	cow.setWeight(900);
     	em.persist(cow);
@@ -249,7 +250,7 @@ public class AnimalTest {
     
     @Test
     public void testIdClass() {
-    	log.info("testIdClass");
+    	logger.info("testIdClass");
     	Cow2 cow = new Cow2("Ponderosa", "Bessie");
     	cow.setWeight(900);
     	em.persist(cow);
@@ -265,7 +266,7 @@ public class AnimalTest {
     
     @Test
     public void testEmbeddedObject() {
-    	log.info("testEmbeddedObject");
+    	logger.info("testEmbeddedObject");
     	Bear bear = new Bear();
     	bear.setName(new Name().setFirstName("Yogi").setLastName("Bear"));
     	bear.setAddress(new Address()
@@ -291,7 +292,7 @@ public class AnimalTest {
     
     @Test
     public void testMultiTableMapping() {
-    	log.info("testMultiTableMapping");
+    	logger.info("testMultiTableMapping");
     	Bear2 bear = new Bear2()
     		.setFirstName("Yogi")
     		.setLastName("Bear")
