@@ -6,6 +6,7 @@ import static org.junit.Assert.*;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 
 import org.slf4j.Logger;
@@ -17,20 +18,20 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class AutoTest {
-    private static final Logger log = LoggerFactory.getLogger(Auto.class);
+    private static final Logger logger = LoggerFactory.getLogger(Auto.class);
     private static final String PERSISTENCE_UNIT = "entityEx-test";
     private static EntityManagerFactory emf;
     private EntityManager em;    
 
     @BeforeClass
     public static void setUpClass() {
-        log.debug("creating entity manager factory");
+        logger.debug("creating entity manager factory");
         emf = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT);
     }
     
     @Before
     public void setUp() throws Exception {
-        log.debug("creating entity manager");
+        logger.debug("creating entity manager");
         em = emf.createEntityManager();
         cleanup();
         em.getTransaction().begin();
@@ -38,28 +39,25 @@ public class AutoTest {
 
     @After
     public void tearDown() throws Exception {
-        try {
-            log.debug("tearDown() started, em=" + em);
-            if (!em.getTransaction().isActive()) {
-                em.getTransaction().begin();
-                em.getTransaction().commit();            
-            } else if (!em.getTransaction().getRollbackOnly()) {
-                em.getTransaction().commit();                        	
+        logger.debug("tearDown() started, em={}", em);
+        if (em!=null) {
+            EntityTransaction tx = em.getTransaction();
+            if (tx.isActive()) {
+                if (tx.getRollbackOnly() == true) { tx.rollback(); }
+                else                              { tx.commit(); }
             } else {
-            	em.getTransaction().rollback();
+                tx.begin();
+                tx.commit();
             }
             em.close();
-            log.debug("tearDown() complete, em=" + em);
+            em=null;
         }
-        catch (Exception ex) {
-            log.error("tearDown failed", ex);
-            throw ex;
-        }
+        logger.debug("tearDown() complete, em={}", em);
      }
     
     @AfterClass
     public static void tearDownClass() {
-        log.debug("closing entity manager factory");
+        logger.debug("closing entity manager factory");
         if (emf!=null) { emf.close(); }
     }
     
@@ -71,12 +69,12 @@ public class AutoTest {
             em.remove(a);
         }
         em.getTransaction().commit();
-        log.info("removed " + autos.size() + " autos");
+        logger.info("removed " + autos.size() + " autos");
     }
 
     @Test
     public void testCreate() {
-        log.info("testCreate");
+        logger.info("testCreate");
         
         Auto car = new Auto();
         car.setMake("Chrysler");
@@ -84,7 +82,7 @@ public class AutoTest {
         car.setColor("Gold");
         car.setMileage(60*1000);
         
-        log.info("creating auto:" + car);                        
+        logger.info("creating auto:" + car);                        
         em.persist(car);        
         
         assertNotNull("car not found", em.find(Auto.class,car.getId()));

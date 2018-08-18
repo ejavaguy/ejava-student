@@ -58,7 +58,6 @@ public class AnimalTest {
 
     @After
     public void tearDown() throws Exception {
-        try {
             logger.debug("tearDown() started, em= {}",em);
             if (!em.getTransaction().isActive()) {
                 em.getTransaction().begin();
@@ -70,11 +69,6 @@ public class AnimalTest {
             }
             em.close();
             logger.debug("tearDown() complete, em= {}",em);
-        }
-        catch (Exception ex) {
-            logger.error("tearDown failed", ex);
-            throw ex;
-        }
      }
     
     @AfterClass
