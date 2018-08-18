@@ -111,14 +111,14 @@ public class ProductsResource {
 	 * Updates a product with the values of the object passed in
 	 * @param id
 	 * @param product
-	 * @return
+	 * @return updated product if successful
 	 */
 	@PUT @Path("{id}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-	@JsonbAnnotation  //helps trigger JSON-B response marshaling when class also JAXB
+	@JsonbAnnotation  //helps trigger JSON-B response marshaling when DTO also JAXB
 	public Response updateProduct(@PathParam("id") int id, 
-	        @JsonbProperty Product product  //annotation helps trigger JSON-B request demarshaling when class also JAXB
+	        @JsonbProperty Product product  //annotation helps trigger JSON-B request demarshaling when DTO also JAXB
 	     ) {
 		logger.debug("{} {}", request.getMethod(), uriInfo.getAbsolutePath());
 
