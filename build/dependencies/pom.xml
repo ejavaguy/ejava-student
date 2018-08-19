@@ -1009,7 +1009,6 @@
                                 <id>cargo-post</id>
                                 <phase>post-integration-test</phase>
                                 <goals>
-                                     <goal>undeploy</goal>
                                      <goal>stop</goal>
                                 </goals>
                                 <configuration>
