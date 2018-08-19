@@ -3,6 +3,7 @@ package org.myorg.basicejb.webejb;
 import javax.annotation.PostConstruct;
 
 import javax.annotation.PreDestroy;
+import javax.ejb.Remove;
 import javax.ejb.Stateful;
 
 import org.slf4j.Logger;
@@ -29,5 +30,11 @@ public class ShopperEJB implements ShopperRemote {
     public int ping() {
         logger.debug("ping({}) called, returned {}", super.hashCode(), counter);
         return counter++;
+    }
+    
+    @Override
+    @Remove
+    public void close() {
+        logger.debug("close({}) called", super.hashCode());        
     }
 }

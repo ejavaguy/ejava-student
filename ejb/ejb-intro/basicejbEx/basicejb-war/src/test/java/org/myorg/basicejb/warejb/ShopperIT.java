@@ -29,13 +29,20 @@ public class ShopperIT {
     @Test
     public void testPing() throws NamingException {
         logger.info("*** testPing ***");
-        ShopperRemote shopper1= (ShopperRemote) jndi.lookup(shopperJNDI);
-        ShopperRemote shopper2= (ShopperRemote) jndi.lookup(shopperJNDI);
-        for (int i=0; i<10; i++) {
-            int counter1=shopper1.ping();
-            int counter2=shopper2.ping();
-            assertEquals("unexpected count from shopper1",  i, counter1);
-            assertEquals("unexpected count from shopper2",  i, counter2);
+        ShopperRemote shopper1=null;
+        ShopperRemote shopper2=null;
+        try {
+            shopper1= (ShopperRemote) jndi.lookup(shopperJNDI);
+            shopper2= (ShopperRemote) jndi.lookup(shopperJNDI);
+            for (int i=0; i<10; i++) {
+                int counter1=shopper1.ping();
+                int counter2=shopper2.ping();
+                assertEquals("unexpected count from shopper1",  i, counter1);
+                assertEquals("unexpected count from shopper2",  i, counter2);
+            }
+        } finally {
+            if (shopper1!=null) { shopper1.close(); }
+            if (shopper2!=null) { shopper2.close(); }           
         }
     }
 }
