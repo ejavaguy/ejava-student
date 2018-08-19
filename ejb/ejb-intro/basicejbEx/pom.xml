@@ -28,10 +28,10 @@
 
         <ejava.version>5.0.0-SNAPSHOT</ejava.version>
         <javax.ejb-api.version>3.2.2</javax.ejb-api.version>
-        <junit.version>4.11</junit.version>
-        <log4j.version>1.2.13</log4j.version>
+        <junit.version>4.12</junit.version>
         <slf4j.version>1.7.25</slf4j.version>
-        <wildfly.version>8.1.0.Final</wildfly.version>
+        <log4j.version>1.2.17</log4j.version>
+        <wildfly-controller-client.version>8.2.1.Final</wildfly-controller-client.version>
 
         <cargo-maven2-plugin.version>1.4.3</cargo-maven2-plugin.version>
         <maven-compiler-plugin.version>3.7.0</maven-compiler-plugin.version>
@@ -43,13 +43,11 @@
         <cargo.containerId>wildfly8x</cargo.containerId>
         <jboss.host>localhost</jboss.host>
         <jboss.http.port>8080</jboss.http.port>
-        <jboss.remoting.port>${jboss.http.port}</jboss.remoting.port>
-        <jboss.naming.port>${jboss.remoting.port}</jboss.naming.port>
         <jboss.mgmt.host>${jboss.host}</jboss.mgmt.host>
         <jboss.mgmt.port>9990</jboss.mgmt.port>
 
         <java.naming.factory.initial>org.wildfly.naming.client.WildFlyInitialContextFactory</java.naming.factory.initial>
-        <java.naming.provider.url>remote+http://${jboss.host}:${jboss.http.port}</java.naming.provider.url>
+        <java.naming.provider.url>http-remoting://${jboss.host}:${jboss.http.port}</java.naming.provider.url>
         <java.naming.factory.url.pkgs/>
         <jndi.user>known</jndi.user>
         <jndi.password>password1!</jndi.password>
@@ -191,7 +189,7 @@
                         <dependency>
                             <groupId>org.wildfly</groupId>
                             <artifactId>wildfly-controller-client</artifactId>
-                            <version>${wildfly.version}</version>
+                            <version>${wildfly-controller-client.version}</version>
                         </dependency>
                     </dependencies>
                     <executions>
