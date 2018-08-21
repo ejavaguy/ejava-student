@@ -24,13 +24,16 @@
         Maven setup required to create your implementation of the class project.
     </description>
     <modules>
+    <!--
         <module>eMarket</module>
+        -->
     </modules>
 
     <profiles>
         <profile>
             <id>all-modules</id>
             <modules>
+                <module>eMarket</module>
                 <module>eDataShare</module>
                 <module>eSport</module>
             </modules>

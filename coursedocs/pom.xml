@@ -132,6 +132,8 @@
             <type>war</type>
             <scope>runtime</scope>
         </dependency>
+
+        <!--
         <dependency>
             <groupId>info.ejava.docs.ejb</groupId>
             <artifactId>enc-config-notes</artifactId>
@@ -223,8 +225,10 @@
             <type>war</type>
             <scope>runtime</scope>
         </dependency>
+        -->
 
         <!-- Async -->
+        <!--
         <dependency>
             <groupId>info.ejava.docs.async</groupId>
             <artifactId>jmsCore</artifactId>
@@ -239,8 +243,10 @@
             <type>war</type>
             <scope>runtime</scope>
         </dependency>
+        -->
 
 
+        <!-- Exercises -->
         <dependency>
             <groupId>info.ejava.docs.intro</groupId>
             <artifactId>jhu784-devenv-setup-lab</artifactId>
@@ -290,6 +296,7 @@
             <type>war</type>
             <scope>runtime</scope>
         </dependency>
+        <!--
         <dependency>
             <groupId>info.ejava.docs.ejb</groupId>
             <artifactId>enc-config-lab</artifactId>
@@ -304,6 +311,7 @@
             <type>war</type>
             <scope>runtime</scope>
         </dependency>
+        -->
 
         <dependency>
             <groupId>info.ejava.docs.courses</groupId>
@@ -313,6 +321,7 @@
             <scope>runtime</scope>
         </dependency>
 
+        <!--
         <dependency>
             <groupId>info.ejava.docs.projects</groupId>
             <artifactId>emarket-project</artifactId>
@@ -320,6 +329,7 @@
             <type>war</type>
             <scope>runtime</scope>
         </dependency>
+        -->
     </dependencies>
 
     <build>
@@ -440,6 +450,7 @@
                     <type>war</type>
                     <targetPath>../site/docs/content</targetPath>
                 </overlay>
+                <!--
                 <overlay>
                     <groupId>info.ejava.docs.ejb</groupId>
                     <artifactId>enc-config-notes</artifactId>
@@ -518,8 +529,10 @@
                     <type>war</type>
                     <targetPath>../site/docs/content</targetPath>
                 </overlay>
+                -->
 
                 <!-- Async -->
+                <!--
                 <overlay>
                     <groupId>info.ejava.docs.async</groupId>
                     <artifactId>jmsCore</artifactId>
@@ -532,6 +545,7 @@
                     <type>war</type>
                     <targetPath>../site/docs/content</targetPath>
                 </overlay>
+                -->
 
 
                 <overlay>
@@ -576,6 +590,7 @@
                     <type>war</type>
                     <targetPath>../site/docs/content</targetPath>
                 </overlay>
+                <!--
                 <overlay>
                     <groupId>info.ejava.docs.ejb</groupId>
                     <artifactId>enc-config-lab</artifactId>
@@ -595,6 +610,7 @@
                     <type>war</type>
                     <targetPath>../site/docs/content</targetPath>
                 </overlay>
+                -->
             </configuration>
           </plugin>
 
