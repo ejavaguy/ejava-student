@@ -32,7 +32,7 @@
       <appender-ref ref="logfile"/>  
    </logger>
    <logger name="org.hibernate.type">
-      <level value="trace"/>
+      <level value="INFO"/>
       <appender-ref ref="logfile"/>  
    </logger>
 
