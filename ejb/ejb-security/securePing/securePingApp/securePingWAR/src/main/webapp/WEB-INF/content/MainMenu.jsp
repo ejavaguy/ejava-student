@@ -41,41 +41,44 @@
             <input type="submit" name="command" value="isCallerInRole"/>
         </form>
         <form method="GET" action="<%=action%>">
+            Everyone will have luck with this
             <input type="submit" name="command" value="pingAll"/>
         </form>
         
-        <jsp:scriptlet>
-            if (!request.isUserInRole("user")) {
-        </jsp:scriptlet>
-            You are not a user, so you're not going to have luck with this<p/>
-        <jsp:scriptlet>
-            } else {
-        </jsp:scriptlet>
-            You are have the user role, so this should work<p/>
-        <jsp:scriptlet>
-            } 
-        </jsp:scriptlet>
-
+        <p>
         <form method="GET" action="<%=action%>">
+	        <jsp:scriptlet>
+	            if (!request.isUserInRole("user")) {
+	        </jsp:scriptlet>
+	            You are not a user, so you're not going to have luck with this
+	        <jsp:scriptlet>
+	            } else {
+	        </jsp:scriptlet>
+	            You are have the user role, so this should work
+	        <jsp:scriptlet>
+	            } 
+	        </jsp:scriptlet>
             <input type="submit" name="command" value="pingUser"/>
         </form>
-        
+        </p>
 
-        <jsp:scriptlet>
-            if (!request.isUserInRole("admin")) {
-        </jsp:scriptlet>
-        You are not an admin, so you're not going to have luck with this<p/>
-        <jsp:scriptlet>
-            } else {
-        </jsp:scriptlet>
-        You are have the admin role, so this should work<p/>
-        <jsp:scriptlet>
-            } 
-        </jsp:scriptlet>
+        <p>
         
-            <form method="GET" action="<%=action%>">
-                <input type="submit" name="command" value="pingAdmin"/>
-            </form>
+        <form method="GET" action="<%=action%>">
+	        <jsp:scriptlet>
+	            if (!request.isUserInRole("admin")) {
+	        </jsp:scriptlet>
+	            You are not an admin, so you're not going to have luck with this
+	        <jsp:scriptlet>
+	            } else {
+	        </jsp:scriptlet>
+	            You are have the admin role, so this should work
+	        <jsp:scriptlet>
+	            } 
+	        </jsp:scriptlet>
+	       <input type="submit" name="command" value="pingAdmin"/>
+	    </form>
+        </p>
         
         <p/><a href="<%=request.getContextPath()%>/index.jsp">Go to Main Page</a>        
     </body>

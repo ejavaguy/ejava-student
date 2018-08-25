@@ -1,8 +1,13 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
             "http://www.w3.org/TR/html4/strict.dtd">
 <html>
+<jsp:scriptlet>
+    String principal = (request.getUserPrincipal() != null) ?
+        request.getUserPrincipal().getName() : "'null'";
+</jsp:scriptlet>        
+
 <body>
-    <h2>Hello SecurePing World!</h2>
+    <h2>Hello SecurePing World! [<%=principal%>]</h2>
     
     Use the links below to access a main menu. Depending on which link you 
     choose, you will be prompted for a login (or not). If you login with

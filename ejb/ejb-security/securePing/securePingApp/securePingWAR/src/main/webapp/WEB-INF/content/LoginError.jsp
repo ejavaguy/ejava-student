@@ -2,9 +2,9 @@
             "http://www.w3.org/TR/html4/strict.dtd">
             
 <html>
-  <head><title>SecurePing Login Form</title></head>
+  <head><title>SecurePing Login Error Form</title></head>
   <body>
-    <h1>Login Required</h1>
+    <h1>Login Required -- Get It Right This Time!!!</h1>
     <form action="j_security_check" method="POST">
        <table border="0" width="30%" cellspacing="3" cellpadding="2">
           <tr>
@@ -13,7 +13,7 @@
           </tr>
           <tr>
              <td><b><label for="password">Password</label></b></td>
-             <td><input type="password" size="10" name="j_password"></td>
+             <td><input type="password" size="10" name="j_password" value="password1!"></td>
           </tr>
           <tr>
              <td><p><input type="submit" value="Login"></td> 

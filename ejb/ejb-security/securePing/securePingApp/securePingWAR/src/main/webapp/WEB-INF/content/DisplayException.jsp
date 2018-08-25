@@ -7,7 +7,7 @@
 </head>
 <body>
    <center><h1>General Exception Page</h1></center>
-   <p>An error was reported by the application. More detailed information
+   <p>An exception was reported by the application. More detailed information
    may follow.</p>.
 
    <p>
@@ -15,6 +15,12 @@
       Exception ex = (Exception)request.getAttribute("exception");
       if (ex != null) { 
           java.io.PrintWriter writer = new java.io.PrintWriter(out);
+          </jsp:scriptlet>
+          </p>
+          <p>Message: <%=ex.getMessage()%></p>
+          <p>Details:</p>
+          <p>
+          <jsp:scriptlet>
           ex.printStackTrace(writer);
       } 
    </jsp:scriptlet>      
