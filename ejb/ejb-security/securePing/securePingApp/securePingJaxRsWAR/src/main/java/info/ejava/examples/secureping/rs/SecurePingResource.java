@@ -59,13 +59,14 @@ public class SecurePingResource {
         public Response pingAdmin() {
             ResponseBuilder rb = null;
             try {
-                String ejbResponse = secureService!=null ? secureService.pingAdmin() : null;
-                PingResult entity = makeResourcePayload(ejbResponse);
-                rb = Response.ok(entity);
+                PingResult result = makeResourcePayload(secureService!=null ?
+                        secureService.pingAdmin() : "no ejb injected!!!");
+                rb = secureService!=null ? 
+                        Response.ok(result) :
+                        Response.serverError().entity(result);
             } catch (EJBAccessException ex) {
                 PingResult entity = makeResourcePayload(ex.toString());
-                rb = Response.serverError()
-                             .entity(entity);                
+                rb = Response.serverError().entity(entity);                
             } catch (Exception ex) {
                 rb=makeExceptionResponse(ex);
             }
@@ -79,9 +80,11 @@ public class SecurePingResource {
         public Response pingUser() {
             ResponseBuilder rb = null;
             try {
-                String ejbResponse = secureService!=null ? secureService.pingUser() : null;
-                PingResult entity = makeResourcePayload(ejbResponse);
-                rb = Response.ok(entity);
+                PingResult result = makeResourcePayload(secureService!=null ?
+                        secureService.pingUser() : "no ejb injected!!!");
+                rb = secureService!=null ? 
+                        Response.ok(result) :
+                        Response.serverError().entity(result);
             } catch (EJBAccessException ex) {
                 PingResult entity = makeResourcePayload(ex.toString());
                 rb = Response.serverError()
@@ -99,9 +102,11 @@ public class SecurePingResource {
         public Response pingAll() {
             ResponseBuilder rb = null;
             try {
-                String ejbResponse = secureService!=null ? secureService.pingAll() : null;
-                PingResult entity = makeResourcePayload(ejbResponse);
-                rb = Response.ok(entity);
+                PingResult result = makeResourcePayload(secureService!=null ?
+                        secureService.pingAll() : "no ejb injected!!!");
+                rb = secureService!=null ? 
+                        Response.ok(result) :
+                        Response.serverError().entity(result);
             } catch (Exception ex) {
                 rb=makeExceptionResponse(ex);
             }
