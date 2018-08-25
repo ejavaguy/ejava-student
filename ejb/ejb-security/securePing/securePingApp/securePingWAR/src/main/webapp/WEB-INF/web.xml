@@ -86,7 +86,7 @@
         <auth-method>FORM</auth-method>
         <form-login-config>
             <form-login-page>/WEB-INF/content/Login.jsp</form-login-page>
-            <form-error-page>/WEB-INF/content/Login.jsp</form-error-page>
+            <form-error-page>/WEB-INF/content/LoginError.jsp</form-error-page>
         </form-login-config>
     </login-config>    
     
