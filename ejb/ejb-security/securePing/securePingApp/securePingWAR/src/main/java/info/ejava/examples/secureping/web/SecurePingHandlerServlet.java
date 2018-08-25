@@ -234,7 +234,8 @@ public class SecurePingHandlerServlet extends HttpServlet {
                 HttpServletResponse response) 
                 throws ServletException, IOException {
             try {
-                request.getSession().invalidate();
+                request.logout();
+                request.getSession(false).invalidate();
                 
                 RequestDispatcher rd = 
                   getServletContext().getRequestDispatcher(MAINMENU_URL);
