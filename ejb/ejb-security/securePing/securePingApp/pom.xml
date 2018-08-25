@@ -18,6 +18,7 @@
     <modules>
         <module>securePingEJB</module>
         <module>securePingWAR</module>
+        <module>securePingJaxRsWAR</module>
         <module>securePingEAR</module>
         <module>securePingTest</module>
     </modules>

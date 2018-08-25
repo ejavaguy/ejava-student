@@ -20,6 +20,13 @@
 
         <dependency>
             <groupId>${project.groupId}</groupId>
+            <artifactId>securePingJaxRsWAR</artifactId>
+            <version>${project.version}</version>
+            <type>war</type>
+        </dependency>
+
+        <dependency>
+            <groupId>${project.groupId}</groupId>
             <artifactId>securePingWAR</artifactId>
             <version>${project.version}</version>
             <type>war</type>
@@ -39,6 +46,11 @@
                             <groupId>${project.groupId}</groupId>
                             <artifactId>securePingWAR</artifactId>
                             <contextRoot>securePingApp</contextRoot>
+                        </webModule>
+                        <webModule>
+                            <groupId>${project.groupId}</groupId>
+                            <artifactId>securePingJaxRsWAR</artifactId>
+                            <contextRoot>securePingApi</contextRoot>
                         </webModule>
                         <ejbModule>
                             <groupId>${project.groupId}</groupId>
