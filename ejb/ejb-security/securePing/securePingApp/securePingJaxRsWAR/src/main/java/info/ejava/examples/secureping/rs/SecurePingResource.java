@@ -26,8 +26,8 @@ import info.ejava.examples.secureping.ejb.SecurePingLocal;
 public class SecurePingResource {
     private static final Logger logger = LoggerFactory.getLogger(SecurePingResource.class);
     
-    @EJB(lookup="ejb:securePingEAR/securePingEJB/SecurePingEJB!info.ejava.examples.secureping.ejb.SecurePingRemote")
-    //@EJB(beanName="SecurePingEJB", beanInterface=SecurePingLocal.class)
+    //@EJB(lookup="ejb:securePingEAR/securePingEJB/SecurePingEJB!info.ejava.examples.secureping.ejb.SecurePingRemote")
+    @EJB(beanName="SecurePingEJB", beanInterface=SecurePingLocal.class)
     private SecurePing secureService;
     
     @Context
@@ -38,6 +38,17 @@ public class SecurePingResource {
     @Path("admin")
     //@RolesAllowed("admin")
     public Pinger admin() {
+        return new Pinger();
+    }
+
+    @Path("user")
+    //@RolesAllowed("user")
+    public Pinger user() {
+        return new Pinger();
+    }
+
+    @Path("")
+    public Pinger anonymous() {
         return new Pinger();
     }
     
