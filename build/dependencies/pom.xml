@@ -156,6 +156,8 @@
         <java.naming.factory.initial>${jboss.remoting.java.naming.factory.initial}</java.naming.factory.initial>
         <java.naming.provider.url>${jboss.remoting.java.naming.provider.url}</java.naming.provider.url>
         <java.naming.factory.url.pkgs>${jboss.remoting.java.naming.factory.url.pkgs}</java.naming.factory.url.pkgs>
+        
+        <java.truststore>${jboss.home}/standalone/configuration/application.keystore</java.truststore>
     </properties>
 
 
@@ -636,6 +638,9 @@
                     <version>${maven-failsafe-plugin.version}</version>
                     <configuration>
                         <argLine>${surefire.argLine}</argLine>
+                        <systemPropertyVariables>
+                            <javax.net.ssl.trustStore>${java.truststore}</javax.net.ssl.trustStore>
+                        </systemPropertyVariables>
                     </configuration>
                     <executions>
                         <execution> <!-- run the tests here -->
