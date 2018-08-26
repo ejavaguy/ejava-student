@@ -130,6 +130,7 @@
         <jboss.mgmt.port>9990</jboss.mgmt.port>
         <jboss.protocol>http</jboss.protocol>
         <jboss.http.port>8080</jboss.http.port>
+        <jboss.https.port>8443</jboss.https.port>
         <jboss.remoting.port>${jboss.http.port}</jboss.remoting.port>
         <jboss.naming.port>${jboss.remoting.port}</jboss.naming.port>
         <db.host>${jboss.host}</db.host>

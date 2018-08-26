@@ -3,6 +3,7 @@ package info.ejava.examples.secureping.ejbclient;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -11,13 +12,19 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.json.bind.annotation.JsonbAnnotation;
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLSession;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.core.Configuration;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriBuilder;
 
 import org.junit.Assume;
 import org.junit.Before;
@@ -41,14 +48,16 @@ import info.ejava.examples.secureping.dto.PingResult;
  */
 public class SecurePingJaxRsIT extends SecurePingTestBase {
     private static final Logger logger = LoggerFactory.getLogger(SecurePingJaxRsIT.class);
-    String baseUrlString = System.getProperty("url.base.secureping",
-            "https://localhost:8443/securePingApi/api/");
+    String baseHttpsUrlString = System.getProperty("url.base.https", "https://localhost:8443");
+    String baseHttpUrlString = System.getProperty("url.base.http", "http://localhost:8080");
     String mediaType = System.getProperty("type.media.secureping", "application/json");
-    private URI baseUrl;
+    private URI baseHttpsUrl;    
+    private URI baseHttpUrl;    
     private Object[] mediaTypes;
     private Map<String, SecurePingJaxRsClient> pingClients = new HashMap<>();
+    private ClientBuilder clientBuilder = ClientBuilder.newBuilder().hostnameVerifier(new MyHostnameVerifier());
     
-    //@BeforeClass
+    @BeforeClass
     public static void check() {
         String trustStore = System.getProperty("javax.net.ssl.trustStore");
         logger.info("trustStore={}", trustStore);
@@ -60,9 +69,21 @@ public class SecurePingJaxRsIT extends SecurePingTestBase {
     
     @Before
     public void setUpJaxRs() throws URISyntaxException {
-        baseUrl = new URI(baseUrlString);
+        baseHttpsUrl = UriBuilder.fromPath(baseHttpsUrlString).path("securePingApi/api").build();
+        baseHttpUrl = UriBuilder.fromPath(baseHttpUrlString).path("securePingApi/api").build();
         //some replies will come back as plain text
         mediaTypes = new Object[] { mediaType, MediaType.TEXT_PLAIN};
+    }
+    
+    private static class MyHostnameVerifier implements HostnameVerifier {
+        @Override
+        public boolean verify(String hostname, SSLSession session) {
+            if (hostname!=null && (hostname.equals("localhost") || hostname.startsWith("127"))) {
+                return true;
+            } 
+            HostnameVerifier hv = HttpsURLConnection.getDefaultHostnameVerifier();
+            return hv.verify(hostname, session);
+        }
     }
     
     /*
@@ -75,7 +96,7 @@ public class SecurePingJaxRsIT extends SecurePingTestBase {
         String key = login==null ? "anonymous" : login[0] + login[1].hashCode();
         SecurePingJaxRsClient pingClient = pingClients.get(key); 
         if (pingClient==null) {
-            Client jaxRsClient = ClientBuilder.newClient();
+            Client jaxRsClient = clientBuilder.build();
             if (login!=null) {
                 jaxRsClient.register(new BasicAuthnFilter(login[0], login[1]));
             }
@@ -83,7 +104,7 @@ public class SecurePingJaxRsIT extends SecurePingTestBase {
                 jaxRsClient.register(new LoggingFilter(logger));
             }
             jaxRsClient.register(new AcceptFilter(mediaTypes));
-            pingClient = new SecurePingJaxRsClient(jaxRsClient, baseUrl);
+            pingClient = new SecurePingJaxRsClient(jaxRsClient, baseHttpsUrl);
             pingClients.put(key, pingClient);
         }
         return pingClient;
@@ -96,11 +117,35 @@ public class SecurePingJaxRsIT extends SecurePingTestBase {
         if (Response.Status.Family.SUCCESSFUL.equals(response.getStatusInfo().getFamily())) {
             return response.readEntity(type, UseJsonb.class.getAnnotations());
         } else {
-            throw new IllegalStateException(String.format("error response[%s]: %s",
+            throw new IllegalStateException(String.format("error response[%d %s]: %s",
+                    response.getStatus(),
                     response.getStatusInfo(),
                     response.readEntity(String.class))
                     );
         }
+    }
+    
+    /**
+     * This test verifies that we can communicate with unsecured endpoints using HTTP
+     * and that secured endpoints will be redirected to HTTPS
+     * @throws URISyntaxException
+     */
+    @Test
+    public void testUnsecured() throws URISyntaxException {
+        Client jaxRsClient = clientBuilder.build()
+                .register(new LoggingFilter())
+                .register(new AcceptFilter(mediaTypes));
+        
+        SecurePingJaxRsClient securePing = new SecurePingJaxRsClient(jaxRsClient, baseHttpUrl);        
+        PingResult result = getEntity(securePing.pingAll("unsecured"), PingResult.class);
+        assertTrue("did not use unsecured HTTP" + result.getContext(), result.getContext().contains("http:"));
+        
+        
+        Response response = securePing.pingAll("secured");
+        assertEquals("attempt at HTTP did not return 302/FOUND", 302, response.getStatus());
+        URI altUri = response.getLocation();
+        assertNotNull("no location provided", altUri);
+        assertEquals("altUri not HTTPS", "https", altUri.getScheme());
     }
     
     /**

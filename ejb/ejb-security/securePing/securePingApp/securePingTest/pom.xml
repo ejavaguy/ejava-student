@@ -9,7 +9,7 @@
     <artifactId>securePingTest</artifactId>
     <packaging>jar</packaging>
 
-    <name>EJB::Security::Secure Ping::RMI Test</name>
+    <name>EJB::Security::Secure Ping::Remote Test</name>
     <properties>
         <admin.username>admin1</admin.username>
         <admin.password>password1!</admin.password>
@@ -117,6 +117,8 @@
                         <jmx.username>${jboss.user}</jmx.username>
                         <jmx.password>${jboss.password}</jmx.password>
                         <cargo.startstop>${cargo-startstop}</cargo.startstop>
+                        <url.base.https>https://${jboss.host}:${jboss.https.port}</url.base.https>        
+                        <url.base.http>http://${jboss.host}:${jboss.http.port}</url.base.http>        
                     </systemPropertyVariables>
                 </configuration>
             </plugin>
