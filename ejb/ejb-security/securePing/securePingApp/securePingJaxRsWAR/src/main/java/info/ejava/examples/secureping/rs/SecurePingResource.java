@@ -1,12 +1,11 @@
 package info.ejava.examples.secureping.rs;
 
 import javax.annotation.security.PermitAll;
-import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
 import javax.ejb.EJBAccessException;
-import javax.ejb.Stateless;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
@@ -18,12 +17,14 @@ import javax.ws.rs.core.UriInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import info.ejava.examples.secureping.dto.PingResult;
 import info.ejava.examples.secureping.ejb.SecurePing;
 import info.ejava.examples.secureping.ejb.SecurePingLocal;
 
 @Path("ping")
 @PermitAll
 public class SecurePingResource {
+    @SuppressWarnings("unused")
     private static final Logger logger = LoggerFactory.getLogger(SecurePingResource.class);
     
     //@EJB(lookup="ejb:securePingEAR/securePingEJB/SecurePingEJB!info.ejava.examples.secureping.ejb.SecurePingRemote")
@@ -34,6 +35,42 @@ public class SecurePingResource {
     private SecurityContext ctx;
     @Context
     private UriInfo uriInfo;
+    
+    @Path("whoAmI")
+    @GET
+    @Produces(MediaType.TEXT_PLAIN)
+    public Response whoAmiI() {
+        ResponseBuilder rb = null;
+        try {
+            if (secureService!=null) {
+                rb = Response.ok(secureService.whoAmI());
+            } else {
+                rb = Response.serverError().entity("no ejb injected!!!"); 
+            }
+        } catch (Exception ex) {
+            rb=makeExceptionResponse(ex);
+        }
+        
+        return rb.build();
+    }
+    
+    @Path("roles/{role}")
+    @GET
+    @Produces(MediaType.TEXT_PLAIN)
+    public Response isCallerInRole(@PathParam("role") String role) {
+        ResponseBuilder rb = null;
+        try {
+            if (secureService!=null) {
+                rb = Response.ok(secureService.isCallerInRole(role));
+            } else {
+                rb = Response.serverError().entity("no ejb injected!!!"); 
+            }
+        } catch (Exception ex) {
+            rb=makeExceptionResponse(ex);
+        }
+        
+        return rb.build();        
+    }
     
     @Path("admin")
     //@RolesAllowed("admin")
@@ -55,7 +92,7 @@ public class SecurePingResource {
     public class Pinger {
         @Path("pingAdmin")
         @GET
-        @Produces(MediaType.APPLICATION_JSON)
+        @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
         public Response pingAdmin() {
             ResponseBuilder rb = null;
             try {
@@ -76,7 +113,7 @@ public class SecurePingResource {
 
         @Path("pingUser")
         @GET
-        @Produces(MediaType.APPLICATION_JSON)
+        @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
         public Response pingUser() {
             ResponseBuilder rb = null;
             try {
@@ -98,7 +135,7 @@ public class SecurePingResource {
 
         @Path("pingAll")
         @GET
-        @Produces(MediaType.APPLICATION_JSON)
+        @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
         public Response pingAll() {
             ResponseBuilder rb = null;
             try {
@@ -128,13 +165,6 @@ public class SecurePingResource {
         
         PingResult result = new PingResult(context, userName, isAdmin, isUser);
         result.setServiceResult(ejbResponse);
-//
-//        StringBuilder text = new StringBuilder(uriInfo.getAbsolutePath().toString());
-//        text.append(" called by ").append(userName);
-//        text.append(", who isAdmin=").append(isAdmin);
-//        text.append(", who isUser=").append(isUser);
-//        text.append(" - recieved from EJB: ").append(ejbResponse);
-        logger.debug("{}", result);
         return result;
     }
 

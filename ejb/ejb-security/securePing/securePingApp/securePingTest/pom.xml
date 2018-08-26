@@ -39,6 +39,12 @@
             <type>jar</type>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>securePingJaxRsClient</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
 
         <!-- package being deployed must be a scope=compile dependency -->
         <dependency>
@@ -58,6 +64,19 @@
         
 
         <!-- test dependencies -->
+        <!-- JAX-RS provider -->
+        <dependency>
+            <groupId>org.jboss.resteasy</groupId>
+            <artifactId>resteasy-client</artifactId>
+            <scope>test</scope>
+        </dependency>    
+       <!-- JSON-B JSON wiring for RESTEasy JAX-RS provider (javaee8; highest JSON priority) -->
+       <dependency>
+          <groupId>org.jboss.resteasy</groupId>
+          <artifactId>resteasy-json-binding-provider</artifactId>
+            <scope>test</scope>
+       </dependency>
+
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>

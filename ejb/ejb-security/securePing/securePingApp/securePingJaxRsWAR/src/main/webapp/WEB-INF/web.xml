@@ -5,11 +5,10 @@
   version="4.0">
   <display-name>SecurePing JaxRS Web Interface</display-name>
 
-<!-- 
   <security-constraint>
       <web-resource-collection>
           <web-resource-name>admin-only</web-resource-name>
-          <url-pattern>/api/admin/*</url-pattern>
+          <url-pattern>/api/ping/admin/*</url-pattern>
       </web-resource-collection>
       <auth-constraint>
           <role-name>admin</role-name>
@@ -22,7 +21,7 @@
   <security-constraint>
       <web-resource-collection>
           <web-resource-name>user-access</web-resource-name>
-          <url-pattern>/api/user/*</url-pattern>
+          <url-pattern>/api/ping/user/*</url-pattern>
       </web-resource-collection>
       <auth-constraint>
           <role-name>user</role-name>
@@ -31,7 +30,11 @@
           <transport-guarantee>CONFIDENTIAL</transport-guarantee>
       </user-data-constraint>
   </security-constraint>
- -->    
+  
+  <login-config>
+    <auth-method>BASIC</auth-method>
+    <realm-name>ApplicationRealm</realm-name>
+  </login-config>
     
   <security-role>
       <role-name>admin</role-name>

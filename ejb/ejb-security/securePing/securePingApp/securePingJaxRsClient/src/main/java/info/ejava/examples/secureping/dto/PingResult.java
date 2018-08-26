@@ -1,5 +1,8 @@
-package info.ejava.examples.secureping.rs;
+package info.ejava.examples.secureping.dto;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement(name="pingResult", namespace="urn:ejava.ejb.security.ping")
 public class PingResult {
     private String context;
     private String userName;
@@ -44,5 +47,16 @@ public class PingResult {
     }
     public String getServiceResult() {
         return serviceResult;
+    }
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("PingResult [context=").append(context)
+               .append(", userName=").append(userName)
+               .append(", isAdmin=").append(isAdmin)
+               .append(", isUser=").append(isUser)
+               .append(",\nserviceResult=")
+               .append(serviceResult).append("]");
+        return builder.toString();
     }
 }
