@@ -25,6 +25,6 @@ public class LoggingFilter implements ClientResponseFilter {
         String method = requestContext.getMethod();
         String uri = requestContext.getUri().toString();
         StatusType status = responseContext.getStatusInfo();
-        logger.debug("{} {}, returned {}", method, uri, status);
+        logger.debug("{} {}, returned {}\n{}", method, uri, status, requestContext.getStringHeaders());
     }
 }

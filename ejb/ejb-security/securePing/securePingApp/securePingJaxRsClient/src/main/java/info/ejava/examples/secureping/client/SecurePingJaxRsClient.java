@@ -3,14 +3,12 @@ package info.ejava.examples.secureping.client;
 import java.net.URI;
 
 import javax.ws.rs.client.Client;
-import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
 
 public class SecurePingJaxRsClient {
     private Client client;
     private URI baseUrl; //https://localhost:8443/securePingApi/api/;
-    private MediaType[] acceptTypes;
     
     public SecurePingJaxRsClient(Client client, URI baseUrl) {
         this.client = client;

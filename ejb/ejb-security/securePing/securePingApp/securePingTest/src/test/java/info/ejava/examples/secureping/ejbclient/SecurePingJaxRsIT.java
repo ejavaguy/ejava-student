@@ -6,9 +6,10 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import java.lang.annotation.Annotation;
+import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,8 +19,9 @@ import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import org.eclipse.yasson.internal.model.JsonbAnnotated;
+import org.junit.Assume;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,6 +47,16 @@ public class SecurePingJaxRsIT extends SecurePingTestBase {
     private URI baseUrl;
     private Object[] mediaTypes;
     private Map<String, SecurePingJaxRsClient> pingClients = new HashMap<>();
+    
+    //@BeforeClass
+    public static void check() {
+        String trustStore = System.getProperty("javax.net.ssl.trustStore");
+        logger.info("trustStore={}", trustStore);
+        Assume.assumeTrue("no trustStore specified, we cannot run this testcase", trustStore!=null);
+        File f = new File(trustStore);
+        assertTrue("trustStore path does not exist: " + trustStore, f.exists());
+        assertTrue("trustStore path is not readable: " + trustStore, f.canRead());
+    }
     
     @Before
     public void setUpJaxRs() throws URISyntaxException {
@@ -80,11 +92,11 @@ public class SecurePingJaxRsIT extends SecurePingTestBase {
     //a dummy class to be able to express JSON-B in marshaling an un-annotated DTO class
     @JsonbAnnotation private class UseJsonb {};
     
-    private <T> T getEntity(Response response, Class<T> type) throws Exception {
+    private <T> T getEntity(Response response, Class<T> type) {
         if (Response.Status.Family.SUCCESSFUL.equals(response.getStatusInfo().getFamily())) {
             return response.readEntity(type, UseJsonb.class.getAnnotations());
         } else {
-            throw new Exception(String.format("error response[%s]: %s",
+            throw new IllegalStateException(String.format("error response[%s]: %s",
                     response.getStatusInfo(),
                     response.readEntity(String.class))
                     );
@@ -97,16 +109,13 @@ public class SecurePingJaxRsIT extends SecurePingTestBase {
      * @throws Exception
      */
     @Test 
-    public void testLogin() throws Exception {
+    public void testLogin() {
         logger.info("*** testLogin ***");
 
         SecurePingJaxRsClient securePing = runAs(null);
-        try {
-            String name = securePing.whoAmI().readEntity(String.class);
-            logger.debug("anonymous user whoAmI={}", name);
-        } catch (Exception ex) {
-            logger.debug("expected exception:{}", ex.getMessage());
-        }
+        String name = securePing.whoAmI().readEntity(String.class);
+        logger.debug("anonymous user whoAmI={}", name);
+        assertEquals("unexpected user", "anonymous", name);
         
         securePing = runAs(knownLogin);
         assertEquals("unexpected user", knownUser, securePing.whoAmI().readEntity(String.class));
@@ -124,7 +133,7 @@ public class SecurePingJaxRsIT extends SecurePingTestBase {
      * @throws Exception
      */
     @Test
-    public void testIsCallerInRole() throws Exception {
+    public void testIsCallerInRole() {
         logger.info("*** testIsCallerInRole ***");
 
         SecurePingJaxRsClient securePing = runAs(knownLogin);
@@ -142,208 +151,186 @@ public class SecurePingJaxRsIT extends SecurePingTestBase {
         assertTrue("admin not in user role",  getEntity(securePing.isCallerInRole("user"), Boolean.class));
         assertTrue("admin not in internalRole role", getEntity(securePing.isCallerInRole("internalRole"), Boolean.class));
     }
-
+    
     /**
-     * This test verifies the different users can call a method annotated with @PermitAll
-     * @throws Exception
+     * In this test, we will be calling a series of methods against endpoints in the JaxRS facade
+     * that are unprotected. They will allow non-HTTPS connections and require no authentication to 
+     * invoke. However, they will be invoking a protected EJB in the back-end -- so the call will not
+     * go any further than the JaxRS facade if the caller is not authorized for the EJB action.
      */
     @Test
-    public void testPingAll() throws Exception {
-        logger.info("*** testPingAll ***");
-        try {
-            SecurePingJaxRsClient securePing = runAs(null);
-            PingResult result = getEntity(securePing.pingAll(null), PingResult.class);
-            logger.info("{}", result);
-            assertEquals("unexpected result for known",
-                    "called pingAll, principal=anonymous, isUser=false, isAdmin=false, isInternalRole=false",
-                    result.getServiceResult());
-            assertFalse("is user", result.getIsUser());
-            assertFalse("is admin", result.getIsAdmin());
-        } 
-        catch (Exception ex) {
-            logger.info("expected error annonymous calling pingAll:" + ex);
-            logger.info("error calling pingAll for anonymous", ex);
-            fail("error calling pingAll for anonymous:" +ex);
-        }
+    public void testUnsecuredJaxRs() {
+        logger.info("*** testUnsecuredJaxRs() ***");
 
-        try {
-            SecurePingJaxRsClient securePing = runAs(knownLogin);
-            PingResult result = getEntity(securePing.pingAll(null), PingResult.class);
+        for (String[] login: new String[][] {null, knownLogin, userLogin, adminLogin}) {
+            String name = login==null ? "anonymous" : login[0];
+            logger.info("processing {}", name);
+            SecurePingJaxRsClient securePing = runAs(login);
+            PingResult result = getEntity(securePing.pingAll("unsecured"), PingResult.class); //<== UNSECURED JAX-RS endpoint
             logger.info("{}", result);
-            assertEquals("unexpected result for known",
-            		"called pingAll, principal=known, isUser=false, isAdmin=false, isInternalRole=false",
-            		result.getServiceResult());
-            assertFalse("is user", result.getIsUser());
-            assertFalse("is admin", result.getIsAdmin());
+            boolean isUser = login==null ? false : Arrays.asList("admin1", "user1").contains(login[0]);
+            boolean isAdmin = login==null ? false : Arrays.asList("admin1").contains(login[0]);
+            boolean isInternalRole = login==null ? false : Arrays.asList("admin1").contains(login[0]);
+            String expectedStr = String.format("called pingAll, principal=%s, isUser=%s, isAdmin=%s, isInternalRole=%s", 
+                    name, isUser, isAdmin, isInternalRole);
+            assertEquals("unexpected result for " + name, expectedStr,result.getServiceResult());
+            assertEquals(name + " is user", isUser, result.getIsUser());
+            assertEquals(name + " is admin", isAdmin, result.getIsAdmin());
         }
-        catch (Exception ex) {
-            logger.info("error calling pingAll for known", ex);
-            fail("error calling pingAll for known:" +ex);
-        }
-
-        try {
-            SecurePingJaxRsClient securePing = runAs(userLogin);
-            PingResult result = getEntity(securePing.pingAll(null), PingResult.class);
-            logger.info("{}", result);
-            assertEquals("unexpected result for known",
-                String.format("called pingAll, principal=%s, isUser=true, isAdmin=false, isInternalRole=false", userUser),
-                result.getServiceResult());
-            assertTrue("not user", result.getIsUser());
-            assertFalse("is admin", result.getIsAdmin());
-        }
-        catch (Exception ex) {
-            logger.info("error calling pingAll for user", ex);
-            fail("error calling pingAll for user:" +ex);
-        }        
-
-        try {
-            SecurePingJaxRsClient securePing = runAs(adminLogin);
-            PingResult result = getEntity(securePing.pingAll(null), PingResult.class);
-            logger.info("{}", result);
-            assertEquals("unexpected result for known",
-                String.format("called pingAll, principal=%s, isUser=true, isAdmin=true, isInternalRole=true", adminUser),
-                result.getServiceResult());
-            assertTrue("not user", result.getIsUser());
-            assertTrue("not admin", result.getIsAdmin());
-        }
-        catch (Exception ex) {
-            logger.info("error calling pingAll:" + ex, ex);
-            fail("error calling pingAll:" +ex);
-        }        
     }
 
     /**
-     * This test verifies the ability to control access to methods restricted 
-     * to the user role.
-     * @throws Exception
+     * This test will attempt to invoke the same EJB methods as the testUnsecuredJaxRs test, except 
+     * this time we will invoke each through a secured endpoint in the JaxRS facade. This endpoint 
+     * requires HTTPS and an identity that is in either the admin or user role.
+     */
     @Test
-    public void testPingUser() throws Exception {
-        logger.info("*** testPingUser ***");
-        try {
-            SecurePingJaxRsClient securePing = runAs(null);
-            PingResult result = getEntity(securePing.pingUser(null), PingResult.class);
+    public void testSecuredJaxRs() {
+        logger.info("*** testSecuredJaxRs() ***");
+
+        for (String[] login: new String[][] {null, knownLogin, userLogin, adminLogin}) {
+            String name = login==null ? "anonymous" : login[0];
+            logger.info("processing {}", name);
+            SecurePingJaxRsClient securePing = runAs(login);
+            Response response = securePing.pingAll("secured");  //<== SECURED JAX-RS endpoint
+            if (login!=null && Arrays.asList("admin1", "user1").contains(login[0])) {
+                /*
+                 * These users are authorized by the JaxRS web facade and can make correct calls to back-end EJB
+                 */
+                PingResult result = getEntity(response, PingResult.class);
+                logger.info("{}", result);
+                boolean isUser = login==null ? false : Arrays.asList("admin1", "user1").contains(login[0]);
+                boolean isAdmin = login==null ? false : Arrays.asList("admin1").contains(login[0]);
+                boolean isInternalRole = login==null ? false : Arrays.asList("admin1").contains(login[0]);
+                String expectedStr = String.format("called pingAll, principal=%s, isUser=%s, isAdmin=%s, isInternalRole=%s", 
+                        name, isUser, isAdmin, isInternalRole);
+                assertEquals("unexpected result for " + name, expectedStr,result.getServiceResult());
+                assertEquals(name + " is user", isUser, result.getIsUser());
+                assertEquals(name + " is admin", isAdmin, result.getIsAdmin());
+            } else if (Response.Status.Family.CLIENT_ERROR.equals(response.getStatusInfo().getFamily())) {
+                /*
+                 * These users are not authorized by the JaxRS web facade and will get an error payload from container
+                 */
+                String payload = response.readEntity(String.class);
+                logger.debug("received expected error {} {} for {},\n{}", 
+                        response.getStatus(), response.getStatusInfo(), name, payload);
+                if (login==null) {
+                    //unknown == UNAUTHORIZED
+                    assertEquals(String.format("unexpected error response for %s", name), 
+                            Response.Status.UNAUTHORIZED, response.getStatusInfo());
+                    assertTrue("response may not have come from container", payload.contains("<body>Unauthorized</body>"));
+                } else {
+                    //known but no access == FORBIDDEN
+                    assertEquals(String.format("unexpected error response for %s", name), 
+                            Response.Status.FORBIDDEN, response.getStatusInfo());
+                    assertTrue("response may not have come from container", payload.contains("<body>Forbidden</body>"));
+                }
+            } else {
+                /*
+                 * We received a non CLIENT_ERROR - fail the test
+                 */
+                String payload = response.readEntity(String.class);
+                logger.debug("received unexpected status {} {} for {},\n{}", 
+                        response.getStatus(), response.getStatusInfo(), name, payload);
+                fail(String.format("received unexpected status %s for %s", name, response.getStatus()));
+            }
+        }
+    }
+    
+    /**
+     * This test will verify that the EJB tier will be invoked with the caller's identity
+     * and will be able to make security decisions based on the user's role. The is the same 
+     * sort of test as testUnsecuredJaxRs except now we are calling a few methods that are 
+     * not allowed at the EJB layer. 
+     */
+    @Test
+    public void testUnsecuredJaxRsCallingConstrainedMethod() {
+        logger.info("*** testUnsecuredJaxRsCallingConstrainedMethod() ***");
+        
+        for (String[] login: new String[][] {null, knownLogin, userLogin, adminLogin}) {
+            String name = login==null ? "anonymous" : login[0];
+            logger.info("processing {}", name);
+            SecurePingJaxRsClient securePing = runAs(login);
+            Response response = securePing.pingAdmin("unsecured");  //<== UNSECURED JAX-RS endpoint
+                //all results are handled internal to JaxRS facade and everything gets a response payload
+            PingResult result = response.readEntity(PingResult.class, UseJsonb.class.getAnnotations());
             logger.info("{}", result);
-            
-            logger.info(securePing.pingUser());
-            fail("didn't detect anonymous user");
-        }
-        catch (Exception ex) {
-            logger.info("expected exception thrown:" + ex);
-        }
+            boolean isUser = login==null ? false : Arrays.asList("admin1", "user1").contains(login[0]);
+            boolean isAdmin = login==null ? false : Arrays.asList("admin1").contains(login[0]);
+            boolean isInternalRole = login==null ? false : Arrays.asList("admin1").contains(login[0]);
 
-        try {
-            runAs(knownLogin);
-            logger.info(securePing.pingUser());
-            fail("didn't detect known, but non-user");
+            if (login!=null && Arrays.asList("admin1").contains(login[0])) {
+                /*
+                 * These users are authorized by the JaxRS web facade and can make correct calls to back-end EJB
+                 */
+                String expectedStr = String.format("called pingAdmin, principal=%s, isUser=%s, isAdmin=%s, isInternalRole=%s", 
+                        name, isUser, isAdmin, isInternalRole);
+                assertEquals("unexpected result for " + name, expectedStr,result.getServiceResult());
+                assertEquals(name + " is user", isUser, result.getIsUser());
+                assertEquals(name + " is admin", isAdmin, result.getIsAdmin());
+            } else if (Response.Status.FORBIDDEN.equals(response.getStatusInfo())) {
+                /*
+                 * These users were allowed into the JaxRS web facade, but failed to contact the EJB
+                 */
+                assertTrue("response may not have come from EJB", result.getServiceResult().contains("EJBAccessException"));
+            } else {
+                fail(String.format("received unexpected status %s for %s", name, response.getStatus()));
+            }
         }
-        catch (Exception ex) {
-            logger.info("expected exception thrown:" + ex);
-        }
-        
-        try {
-            runAs(userLogin);
-            logger.info(securePing.pingUser());
-        }
-        catch (Exception ex) {
-            logger.info("error calling pingUser:" + ex, ex);
-            fail("error calling pingUser:" +ex);
-        }        
-
-        try {
-            runAs(adminLogin);
-            logger.info(securePing.pingUser());
-        }
-        catch (Exception ex) {
-            logger.info("error calling pingUser:" + ex, ex);
-            fail("error calling pingUser:" +ex);
-        }        
     }
-     */
-
+    
     /**
-     * This test verifies the ability to control access to methods restricted
-     * to the admin role
+     * This test is similar the the previous except that the JaxRS web facade will restrict callers of it
+     * to allowed roles at the container level.
+     */
     @Test
-    public void testPingAdmin() throws Exception {
-        logger.info("*** testPingAdmin ***");
-        try {
-            logger.info(securePing.pingAdmin());
-            fail("didn't detect anonymous user");
-        }
-        catch (Exception ex) {
-            logger.info("expected exception thrown:" + ex);
-        }
-
-        try {
-            runAs(knownLogin);
-            logger.info(securePing.pingAdmin());
-            fail("didn't detect known, but non-admin user");
-        }
-        catch (EJBAccessException ex) {
-            logger.info("expected exception thrown:" + ex);
-        }
+    public void testSecuredJaxRsCallingConstrainedMethod() {
+        logger.info("*** testSecuredJaxRsCallingConstrainedMethod() ***");
         
-        try {
-            runAs(userLogin);
-            logger.info(securePing.pingAdmin());
-            fail("didn't detect non-admin user");
-        }
-        catch (EJBAccessException ex) {
-            logger.info("expected exception thrown:" + ex);
-        }        
+        for (String[] login: new String[][] {null, knownLogin, userLogin, adminLogin}) {
+            String name = login==null ? "anonymous" : login[0];
+            logger.info("processing {}", name);
+            SecurePingJaxRsClient securePing = runAs(login);
+            Response response = securePing.pingAdmin("secured");  //<== SECURED JAX-RS endpoint
 
-        try {
-            runAs(adminLogin);
-            logger.info(securePing.pingAdmin());
+            if (login!=null && Arrays.asList("admin1").contains(login[0])) {
+                /*
+                 * These users are authorized by the JaxRS web facade and can make correct calls to back-end EJB
+                 */
+                PingResult result = getEntity(response, PingResult.class);
+                logger.info("{}", result);
+                boolean isUser = login==null ? false : Arrays.asList("admin1", "user1").contains(login[0]);
+                boolean isAdmin = login==null ? false : Arrays.asList("admin1").contains(login[0]);
+                boolean isInternalRole = login==null ? false : Arrays.asList("admin1").contains(login[0]);
+                String expectedStr = String.format("called pingAdmin, principal=%s, isUser=%s, isAdmin=%s, isInternalRole=%s", 
+                        name, isUser, isAdmin, isInternalRole);
+                assertEquals("unexpected result for " + name, expectedStr,result.getServiceResult());
+                assertEquals(name + " is user", isUser, result.getIsUser());
+                assertEquals(name + " is admin", isAdmin, result.getIsAdmin());
+            } else if (Response.Status.Family.CLIENT_ERROR.equals(response.getStatusInfo().getFamily())) {
+                /*
+                 * These users are not authorized by the JaxRS web facade and will get an error payload from container
+                 */
+                String payload = response.readEntity(String.class);
+                logger.debug("received expected error {} {} for {},\n{}", 
+                        response.getStatus(), response.getStatusInfo(), name, payload);
+                if (login==null) {
+                    //unknown == UNAUTHORIZED
+                    assertEquals(String.format("unexpected error response for %s", name), 
+                            Response.Status.UNAUTHORIZED, response.getStatusInfo());
+                    assertTrue("response may not have come from container", payload.contains("<body>Unauthorized</body>"));
+                } else {
+                    //known but no access == FORBIDDEN
+                    assertEquals(String.format("unexpected error response for %s", name), 
+                            Response.Status.FORBIDDEN, response.getStatusInfo());
+                    assertTrue("response may not have come from container", payload.contains("<body>Forbidden</body>"));
+                }
+            } else {
+                String payload = response.readEntity(String.class);
+                logger.debug("received unexpected status {} {} for {},\n{}", 
+                        response.getStatus(), response.getStatusInfo(), name, payload);
+                fail(String.format("received unexpected status %s for %s", name, response.getStatus()));
+            }
         }
-        catch (Exception ex) {
-            logger.info("error calling pingAdmin:" + ex, ex);
-            fail("error calling pingAdmin:" +ex);
-        }
-        
     }
-     */
-
-    /**
-     * This method verifies the ability to restrict all from accessing
-     * a method annotated as excluded.
-    @Test
-    public void testPingExcluded() throws Exception {
-        logger.info("*** testPingExcluded ***");
-        try {
-            logger.info(securePing.pingExcluded());
-            fail("didn't detect excluded");
-        }
-        catch (Exception ex) {
-            logger.info("expected exception thrown:" + ex);
-        }
-
-        try {
-            runAs(knownLogin);
-            logger.info(securePing.pingExcluded());
-            fail("didn't detect excluded");
-        }
-        catch (Exception ex) {
-            logger.info("expected exception thrown:" + ex);
-        }
-        
-        try {
-            runAs(userLogin);
-            logger.info(securePing.pingExcluded());
-            fail("didn't detect excluded");
-        }
-        catch (Exception ex) {
-            logger.info("expected exception thrown:" + ex);
-        }        
-
-        try {
-            runAs(adminLogin);
-            logger.info(securePing.pingExcluded());
-            fail("didn't detect excluded");
-        }
-        catch (Exception ex) {
-            logger.info("expected exception thrown:" + ex);
-        }        
-    } 
-     */
 }
