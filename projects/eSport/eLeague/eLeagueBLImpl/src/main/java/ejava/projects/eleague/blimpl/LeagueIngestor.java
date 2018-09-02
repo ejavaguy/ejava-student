@@ -1,5 +1,6 @@
 package ejava.projects.eleague.blimpl;
 
+import java.io.IOException;
 import java.io.InputStream;
 
 import javax.xml.bind.JAXBException;
@@ -13,11 +14,10 @@ import ejava.projects.eleague.dto.ELeague;
 import ejava.projects.eleague.dto.Season;
 import ejava.projects.eleague.xml.ELeagueParser;
 
-public class ELeagueIngestor {
-	private static final Logger log = LoggerFactory.getLogger(ELeagueIngestor.class);
-	InputStream is;
-	ClubDAO clubDAO;
-	ELeagueParser parser;
+public class LeagueIngestor {
+	private static final Logger logger = LoggerFactory.getLogger(LeagueIngestor.class);
+	private InputStream is;
+	private ClubDAO clubDAO;
 	
 	public void setInputStream(InputStream is) {
 		this.is = is; 
@@ -37,8 +37,9 @@ public class ELeagueIngestor {
 	 * 
 	 * @throws JAXBException
 	 * @throws XMLStreamException
+	 * @throws IOException 
 	 */
-	public void ingest() throws JAXBException, XMLStreamException {
+	public void ingest() throws JAXBException, XMLStreamException, IOException {
 		ELeagueParser parser = new ELeagueParser(ELeague.class, is);
 		
 		Object object = parser.getObject(
@@ -53,15 +54,16 @@ public class ELeagueIngestor {
 			object = parser.getObject(
 			        "contact", "league-metadata", "club", "season");
 		}
+		is.close();
 	}
 	
 	private void checkSeason(Season season) {
 		if ("Spring NeverEnds".equals(season.getName())) {
-			log.info("checking " + season.getName() + " for null contact");
+			logger.info("checking {} for null contact", season.getName());
 			for (ejava.projects.eleague.dto.Division division : season.getDivision()) {
 			    if (division.getContact() == null) {
-			    	log.error("current season has no contact, " +
-			    			"check project version: refId" + division.getRefid());
+			    	logger.error("current season has no contact, " +
+			    			"check project version: refId {}", division.getRefid());
 			    }
 			}
 		}		
@@ -84,8 +86,7 @@ public class ELeagueIngestor {
     		venueBO.setAddress(addressBO);
     		
     		clubDAO.createVenue(venueBO);
-    		log.debug("created venue:" + venueBO + 
-    		        " for club " + clubDTO.getName());
+    		logger.debug("created venue: {} for club {}", venueBO, clubDTO.getName());
 	    }
 	}
 }

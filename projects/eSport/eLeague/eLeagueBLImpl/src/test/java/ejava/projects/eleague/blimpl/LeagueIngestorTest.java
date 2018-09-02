@@ -9,7 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.junit.Test;
 
-import ejava.projects.eleague.blimpl.ELeagueIngestor;
+import ejava.projects.eleague.blimpl.LeagueIngestor;
 import ejava.projects.eleague.dao.ClubDAO;
 import ejava.projects.eleague.jpa.JPAClubDAO;
 import ejava.projects.eleague.jpa.JPADAOTestBase;
@@ -18,8 +18,8 @@ import ejava.projects.eleague.jpa.JPADAOTestBase;
  * This class provides a test of the business logic classes in the league.
  *
  */
-public class ELeagueIngestorTest extends JPADAOTestBase {
-	private static Logger log = LoggerFactory.getLogger(ELeagueIngestorTest.class);
+public class LeagueIngestorTest extends JPADAOTestBase {
+	private static Logger logger = LoggerFactory.getLogger(LeagueIngestorTest.class);
 	private ClubDAO clubDAO;
 
 	@Override
@@ -33,7 +33,7 @@ public class ELeagueIngestorTest extends JPADAOTestBase {
 
 	@Test
 	public void testIngestAll() throws Exception {
-		log.info("*** testIngestAll ***");
+		logger.info("*** testIngestAll ***");
 		
 		String fileName = "xml/eLeague-all.xml";
 		InputStream is = Thread.currentThread()
@@ -41,7 +41,7 @@ public class ELeagueIngestorTest extends JPADAOTestBase {
 		                       .getResourceAsStream(fileName);
 		assertNotNull(fileName + " not found", is);
 		
-		ELeagueIngestor ingestor = new ELeagueIngestor();
+		LeagueIngestor ingestor = new LeagueIngestor();
 		ingestor.setClubDAO(clubDAO);
 		ingestor.setInputStream(is);
 		ingestor.ingest();

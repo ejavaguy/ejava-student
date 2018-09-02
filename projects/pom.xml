@@ -24,9 +24,7 @@
         Maven setup required to create your implementation of the class project.
     </description>
     <modules>
-    <!--
-        <module>eMarket</module>
-        -->
+        <module>eSport</module>
     </modules>
 
     <profiles>

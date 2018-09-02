@@ -9,9 +9,6 @@ import ejava.projects.eleague.dao.ClubDAO;
 
 /**
  * This class provides a simple example of the account mgmt implementation.
- * 
- * @author jcstaff
- *
  */
 public class ClubMgmtImpl implements ClubMgmt {
 	private ClubDAO clubDAO;

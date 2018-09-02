@@ -14,9 +14,6 @@ import javax.persistence.Table;
  * object class for the project. Only a few fields are mapped and we
  * will make full use of JPA annotations over an orm.xml file in this 
  * example.
- * 
- * @author jcstaff
- *
  */
 @Entity @Table(name="ELEAGUE_ADDR")
 public class Address implements Serializable {
@@ -55,8 +52,8 @@ public class Address implements Serializable {
 	
 	public String toString() {
 		StringBuilder text = new StringBuilder();
-		text.append("id=" + id);
-		text.append(", city=" + city);
+		text.append("id=").append(id);
+		text.append(", city=").append(city);
 		return text.toString();
 	}
 }

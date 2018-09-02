@@ -16,9 +16,6 @@ import javax.persistence.Table;
  * This is an example eLeague Venue class. It will use full JPA annotations
  * to define the mappings to the database. We could have also used an orm.xml
  * file supplied by the DAO.
- * 
- * @author jcstaff
- *
  */
 @Entity @Table(name="ELEAGUE_VEN")
 public class Venue implements Serializable {
@@ -66,9 +63,9 @@ public class Venue implements Serializable {
     
     public String toString() {
         StringBuilder text = new StringBuilder();
-        text.append("id=" + id);
-        text.append(", name=" + name);
-        text.append(", address=" + address);        
+        text.append("id=").append(id);
+        text.append(", name=").append(name);
+        text.append(", address=").append(address);        
         return text.toString();
     }
     

@@ -11,9 +11,6 @@ import ejava.projects.eleague.dao.ClubDAOException;
 /**
  * This class provides a sparse example of a JPA DAO for the class project.
  * It is put in place here to demonstrate some of the end-to-end use cases,
- * 
- * @author jcstaff
- *
  */
 public class JPAClubDAO implements ClubDAO {
 	private EntityManager em;
@@ -31,11 +28,10 @@ public class JPAClubDAO implements ClubDAO {
         em.persist(venue);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
     public List<Venue> getVenues(int index, int count) 
         throws ClubDAOException {
-	    return (List<Venue>)em.createQuery("select v from Venue v")
+	    return em.createQuery("select v from Venue v", Venue.class)
 	                             .setFirstResult(index)
 	                             .setMaxResults(count)
 	                             .getResultList();

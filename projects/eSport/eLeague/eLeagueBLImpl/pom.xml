@@ -86,82 +86,12 @@
     <build>
          <!--tell the resource plugin to perform filtering on resources 
              to fill in JDBC URL, etc. -->
-        <resources>
-            <resource>
-                <directory>src/main/resources</directory>
-                <filtering>true</filtering>
-            </resource>
-        </resources>
-        <!-- filter resource files for profile-specific values -->
         <testResources>
             <testResource>
                 <directory>src/test/resources</directory>
                 <filtering>true</filtering>
-                <excludes>
-                    <exclude>**/*-ant.xml</exclude>
-                </excludes>
-            </testResource>
-            <testResource>
-                <directory>src/test/resources</directory>
-                <filtering>false</filtering>
-                <includes>
-                    <include>**/*-ant.xml</include>
-                </includes>
             </testResource>
         </testResources>
-
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <configuration>
-                    <argLine>${surefire.argLine}</argLine>
-                    <systemPropertyVariables>
-                        <jdbc.driver>${jdbc.driver}</jdbc.driver>
-                        <jdbc.url>${jdbc.url}</jdbc.url>
-                        <jdbc.user>${jdbc.user}</jdbc.user>
-                        <jdbc.password>${jdbc.password}</jdbc.password>
-                    </systemPropertyVariables>
-                </configuration>
-            </plugin>
-
-            <!-- create a classpath for our JSE clients to run -->
-            <!-- used only for the Ant script -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>copy-jars</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>copy-dependencies</goal>
-                        </goals>
-                        <configuration>
-                            <includeScope>test</includeScope>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>unpack-ddl</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>unpack</goal>
-                        </goals>
-                        <configuration>
-                            <artifactItems>
-                                <artifactItem>
-                                    <groupId>${project.groupId}</groupId>
-                                    <artifactId>eLeagueDAO</artifactId>
-                                    <version>${project.version}</version>
-                                    <includes>ddl/*</includes>
-                                    <outputDirectory>${project.build.directory}</outputDirectory>
-                                </artifactItem>
-                            </artifactItems>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>      
-        </plugins>
     </build>
 
 </project>

@@ -5,8 +5,6 @@ package ejava.projects.eleague.dao;
  * ClubDAO. A more general exception could be defined for all DAOs. This
  * exception should report plumbing errors with the infrastructure -- not
  * items like invalid inputs.
- * @author jcstaff
- *
  */
 public class ClubDAOException extends RuntimeException {
 	private static final long serialVersionUID = 1L;

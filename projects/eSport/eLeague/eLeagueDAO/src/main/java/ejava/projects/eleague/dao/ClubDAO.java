@@ -7,8 +7,6 @@ import ejava.projects.eleague.bo.Venue;
 /**
  * This interface defines the data access methods defined for the Club
  * portion of the League.
- * @author jcstaff
- *
  */
 public interface ClubDAO {
 	/**

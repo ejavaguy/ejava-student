@@ -19,11 +19,9 @@ import ejava.projects.eleague.bo.Venue;
 /**
  * This class implements data access to the club portion of the league
  * using JDBC.
- * @author jcstaff
- *
  */
 public class JDBCClubDAO implements ClubDAO {
-	private static Logger log = LoggerFactory.getLogger(JDBCClubDAO.class);
+	private static Logger logger = LoggerFactory.getLogger(JDBCClubDAO.class);
 	private Connection connection;
 	
 	/**
@@ -87,11 +85,11 @@ public class JDBCClubDAO implements ClubDAO {
             }
 		}
 		catch (SQLException ex) {
-		    log.error("SQL error creating account", ex);
+		    logger.error("SQL error creating account", ex);
 		    throw new ClubDAOException("error creating account"+ex, ex);
 		}
 		catch (Exception ex) {
-		    log.error("error creating account", ex);
+		    logger.error("error creating account", ex);
 		    throw new ClubDAOException("error creating account"+ex, ex);
 		}
 		finally {

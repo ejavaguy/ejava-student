@@ -14,16 +14,13 @@ import ejava.projects.eleague.bo.Address;
  * could be tested. The functionality of the business objects should be
  * tested at this level prior to adding more complex scenarios, like 
  * persistence and server-side logic.
- * 
- * @author jcstaff
- *
  */
-public class ELeagueBOTest {
-	Logger log = LoggerFactory.getLogger(ELeagueBOTest.class);
+public class LeagueBOTest {
+	private static final Logger logger = LoggerFactory.getLogger(LeagueBOTest.class);
 	
 	@Test
     public void testVenue() {
-    	log.info("*** testVenue ***");
+    	logger.info("*** testVenue ***");
     	
     	String name = "myVenue";
     	String city = "Laurel";
@@ -33,7 +30,7 @@ public class ELeagueBOTest {
     	
     	venue.setAddress(new Address(0, city));
     	
-    	log.debug("created Venue:" + venue);
+    	logger.debug("created Venue: {}", venue);
     	
     	assertEquals("unexpected name", name, venue.getName());
     	assertEquals("unexpected city", city, venue.getAddress().getCity());    	
