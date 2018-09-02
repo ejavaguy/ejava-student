@@ -25,9 +25,6 @@ import com.sun.xml.bind.IDResolver;
 /**
  * This class will read in Java objects from a specified XML file. These objects
  * can be used to create ingest data for projects.
- * 
- * @author jcstaff
- * 
  */
 public class ELeagueParser {
 	@SuppressWarnings("unused")

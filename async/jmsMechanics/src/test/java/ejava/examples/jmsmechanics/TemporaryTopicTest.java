@@ -18,8 +18,6 @@ import org.junit.Test;
 /**
  * This test case tests the ability to create and send/receive messages 
  * to/from a temporary topic. 
- *
- * @author jcstaff
  */
 public class TemporaryTopicTest extends JMSTestBase {
     static Logger log = LoggerFactory.getLogger(TemporaryTopicTest.class);

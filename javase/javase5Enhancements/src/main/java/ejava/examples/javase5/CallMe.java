@@ -11,8 +11,6 @@ import java.lang.annotation.Target;
  * of a class should get called, and in what order, within a demo. An
  * optional name is supplied with each method.
  * 
- * @author jcstaff
- * $Id:$
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)

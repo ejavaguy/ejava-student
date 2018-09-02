@@ -37,8 +37,6 @@ import ejava.examples.ejbsessionbank.jpa.JPAOwnerDAO;
  * adding this specific class permits a clear separation between implementing
  * the business logic and handling RMI, transactions, and security (coming)
  * issues that are part of being a session bean. 
- *
- * @author jcstaff
  */
 @Stateless
 public class TellerEJB implements TellerLocal, TellerRemote {

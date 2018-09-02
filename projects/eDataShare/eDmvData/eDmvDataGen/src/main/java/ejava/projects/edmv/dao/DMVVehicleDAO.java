@@ -6,8 +6,6 @@ import ejava.projects.edmv.bo.DMVVehicleRegistration;
 /**
  * This interface provides core functionality needed by the DataGen to 
  * access vehicle registrations.
- * 
- * @author jcstaff
  *
  */
 public interface DMVVehicleDAO {

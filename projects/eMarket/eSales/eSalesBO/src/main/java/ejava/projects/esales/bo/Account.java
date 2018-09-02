@@ -17,8 +17,6 @@ import javax.persistence.Table;
  * This is an example eSales Account class. It will use full JPA annotations
  * to define the mappings to the database. We could have also used an orm.xml
  * file supplied by the DAO.
- * 
- * @author jcstaff
  *
  */
 @SuppressWarnings("serial")

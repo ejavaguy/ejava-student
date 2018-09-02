@@ -17,8 +17,6 @@ import org.junit.Test;
 /**
  * This test case tests the ability to create and send/receive messages 
  * to/from a temporary queue. 
- *
- * @author jcstaff
  */
 public class TemporaryQueueTest extends JMSTestBase {
     static Logger log = LoggerFactory.getLogger(TemporaryQueueTest.class);

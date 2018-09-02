@@ -19,9 +19,6 @@ import ejava.projects.eleague.jdbc.JDBCClubDAO;
  * provides most of the basics, knowing the DAO only implemented one method.
  * As more tests are added, the implementation show here would benefit from
  * re-usable techniques to check the values within the database.
- * 
- * @author jcstaff
- *
  */
 public class JDBCClubDAOTest extends JDBCDAOTestBase {
 	private static Logger log = LoggerFactory.getLogger(JDBCClubDAO.class);

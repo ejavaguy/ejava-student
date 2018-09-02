@@ -18,8 +18,6 @@ import ejava.projects.edmv.dao.PersonDAO;
 /**
  * This class provides a _sparse_ example of a JDBC DAO providing a mapping
  * of objects related to people in the DB.
- * 
- * @author jcstaff
  *
  */
 public class JDBCPersonDAO implements PersonDAO {

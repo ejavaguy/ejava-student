@@ -9,8 +9,6 @@ import ejava.projects.esales.dao.AccountDAO;
 
 /**
  * This class provides a simple example of the account mgmt implementation.
- * 
- * @author jcstaff
  *
  */
 public class AccountMgmtImpl implements AccountMgmt {

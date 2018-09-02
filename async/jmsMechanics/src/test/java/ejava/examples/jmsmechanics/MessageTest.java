@@ -34,8 +34,6 @@ import org.junit.Test;
 
 /**
  * This test case performs a demonstration of using a each message type.
- *
- * @author jcstaff
  */
 public class MessageTest extends JMSTestBase {
     static Logger log = LoggerFactory.getLogger(MessageTest.class);

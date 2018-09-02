@@ -16,7 +16,6 @@ import ejava.examples.ejbsessionbank.jpa.JPAAccountDAO;
 
 /**
  * This class tests the implementation of the JPAAccountDAO.
- * @author jcstaff
  *
  */
 public class JPAAccountDAOTest extends DemoBase {

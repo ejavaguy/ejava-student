@@ -26,7 +26,6 @@ import ejava.examples.txhotel.jpa.JPAReservationDAO;
  * This class provides a stateless EJB wrapper around stateless logic 
  * that performs operations on the hotel.
  *
- * @author jcstaff
  */
 //@Stateless - will be supplied in ejb-jar.xml due to multi deploy
 public class HotelRegistrationEJB implements HotelRegistrationRemote,

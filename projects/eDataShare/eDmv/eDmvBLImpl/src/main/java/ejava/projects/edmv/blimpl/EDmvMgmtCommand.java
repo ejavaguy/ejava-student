@@ -18,9 +18,6 @@ import ejava.projects.edmv.jpa.JPAVehicleDAO;
  * This class provides an example wrapper of the business logic to show
  * how the business logic cab be wrapped in a main to be run outside
  * of JUnit.
- * 
- * @author jcstaff
- *
  */
 public class EDmvMgmtCommand extends EDmvIngestCommand {
 	private static String command = System.getProperty("command");

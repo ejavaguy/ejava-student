@@ -15,8 +15,6 @@ import ejava.projects.esales.dao.AccountDAO;
  * This test case provides an example of one might test the JPA DAO. It 
  * tests only a minor set of functionality. However, this can be used
  * as a starting point for more detailed tests. 
- * 
- * @author jcstaff
  *
  */
 public class JPAAccountDAOTest extends JPADAOTestBase {

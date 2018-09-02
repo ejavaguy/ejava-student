@@ -4,8 +4,6 @@ import java.util.Date;
 
 /**
  * This class is used to represent a residence in the test data database.
- * 
- * @author jcstaff
  *
  */
 public class DMVResidence {

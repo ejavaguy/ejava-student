@@ -10,8 +10,6 @@ import javax.persistence.*;
  * This class provides a sparse _example_ implementation of a vehicle
  * entity that will get populated from the ingested data from the parser.
  * 
- * @author jcstaff
- *
  */
 @Entity(name="VehicleRegistration")
 @Table(name="EDMV_VREG")

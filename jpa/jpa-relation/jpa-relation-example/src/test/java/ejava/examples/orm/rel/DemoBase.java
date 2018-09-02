@@ -20,7 +20,6 @@ import org.junit.BeforeClass;
  * class are causing callbacks within the base to fire. The static/class 
  * variables are reused across the entire suite. The object variables are
  * per testMethod.
- * @author jcstaff
  *
  */
 public abstract class DemoBase {

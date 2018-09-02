@@ -28,8 +28,6 @@ import ejava.projects.eleague.xml.ELeagueParser;
  * This class provides a sanity parse check of the XML file when deployed
  * to the server as an EJB. This test verifies the right XML classes get
  * deployed.
- * @author jcstaff
- *
  */
 @Stateless
 public class ParserTestEJB implements ParserTestRemote {

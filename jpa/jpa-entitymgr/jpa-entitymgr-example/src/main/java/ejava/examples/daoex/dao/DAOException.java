@@ -3,7 +3,6 @@ package ejava.examples.daoex.dao;
 /**
  * This is the base exception for example DAOs.
  *
- * @author jcstaff
  */
 public class DAOException extends RuntimeException {
     private static final long serialVersionUID = 1L;

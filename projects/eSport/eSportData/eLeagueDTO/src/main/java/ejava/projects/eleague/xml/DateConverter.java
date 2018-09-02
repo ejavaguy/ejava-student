@@ -9,8 +9,6 @@ import javax.xml.bind.DatatypeConverter;
 /**
  * This class will convert the dateTime strings from XML documents to/from
  * java.util.Date instead of the default XMLGregorianCalendar. 
- * @author jcstaff
- *
  */
 public class DateConverter {
     public static Date parseDate(String s) {

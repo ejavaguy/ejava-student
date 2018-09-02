@@ -54,7 +54,6 @@ import ejava.examples.txhotel.bo.Reservation;
  * It implements the javax.ejb.SessionSynchronization interface so that it
  * can listen, impact, or react to the state of the active transaction.
  *
- * @author jcstaff
  */
 //@Stateful - will be supplied in ejb-jar.xml due to multi deploy
 @StatefulTimeout(value=3, unit=TimeUnit.MINUTES)

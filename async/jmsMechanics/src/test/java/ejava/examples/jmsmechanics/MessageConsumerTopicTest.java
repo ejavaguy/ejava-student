@@ -23,8 +23,6 @@ import org.junit.Test;
 /**
  * This test case performs a demonstration of the two mechanisms that a 
  * MessageConsumer has for receiving messages using a Topic.
- *
- * @author jcstaff
  */
 public class MessageConsumerTopicTest extends JMSTestBase {
     static Logger log = LoggerFactory.getLogger(MessageConsumerTopicTest.class);

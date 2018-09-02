@@ -12,8 +12,6 @@ import org.junit.Test;
  * could be tested. The functionality of the business objects should be
  * tested at this level prior to adding more complex scenarios, like 
  * persistence and server-side logic.
- * 
- * @author jcstaff
  *
  */
 public class ESalesBOTest {

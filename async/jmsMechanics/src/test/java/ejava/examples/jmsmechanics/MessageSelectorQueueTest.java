@@ -27,8 +27,6 @@ import org.junit.Test;
  * of messages sent will be received. However, one of the clients will only
  * receive 'warn' and 'fatal' messages and the other client will receive 
  * 'info', 'warn', and 'fatal'. No one will receive 'debug'.
- *
- * @author jcstaff
  */
 public class MessageSelectorQueueTest extends JMSTestBase {
     static Logger log = LoggerFactory.getLogger(MessageSelectorQueueTest.class);

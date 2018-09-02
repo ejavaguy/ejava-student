@@ -3,8 +3,6 @@ package ejava.projects.edmv.dao;
 /**
  * This class provides a base exception to report DAO checked exceptions.
  * 
- * @author jcstaff
- *
  */
 public class DAOException extends Exception {
     private static final long serialVersionUID = 1L;

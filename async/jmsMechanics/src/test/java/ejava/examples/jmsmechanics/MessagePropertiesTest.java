@@ -20,8 +20,6 @@ import org.junit.Test;
 
 /**
  * This test case demonstrates some basic use of message properties.
- *
- * @author jcstaff
  */
 public class MessagePropertiesTest extends JMSTestBase {
     static Logger log = LoggerFactory.getLogger(MessagePropertiesTest.class);

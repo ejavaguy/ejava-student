@@ -9,8 +9,6 @@ import ejava.examples.orm.core.MowerPK;
  * primary key using annotations. The primary key class does not use 
  * annotations. All annotations are within the using class.
  * 
- * @author jcstaff
- * $Id:$
  */
 @Entity
 @Table(name="ORMCORE_MOWER")

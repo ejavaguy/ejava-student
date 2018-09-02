@@ -3,8 +3,6 @@ package ejava.projects.edmv.bo;
 
 /**
  * This class is used to represent a location from the test database.
- * 
- * @author jcstaff
  *
  */
 public class DMVLocation {

@@ -9,7 +9,6 @@ import javax.persistence.*;
  * the inheritance stratgy to be JOIN, all sub-classes will have their own 
  * tables and join with this table to form an object.
  *
- * @author jcstaff
  */
 @Entity @Table(name="ORMINH_SHAPE")
 @Inheritance(strategy=InheritanceType.JOINED)

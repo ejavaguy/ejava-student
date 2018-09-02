@@ -19,8 +19,6 @@ import org.slf4j.LoggerFactory;
 /**
  * This is a support class uses to receive messages by test cases that
  * are sending messages either to a queue or a topic.
- *
- * @author jcstaff
  */
 public class MessageCatcher implements Runnable {
     private static final Logger log = LoggerFactory.getLogger(MessageCatcher.class);

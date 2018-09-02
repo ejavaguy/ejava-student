@@ -29,7 +29,6 @@ import ejava.util.jndi.JNDIUtil;
 /**
  * This test case provides an example of conducting a failed usecase 
  * across a set of EJBs that have a mixture of transaction scope.
- * @author jcstaff
  *
  */
 public class HotelReservationSessionIT extends HotelRemoteTestBase {

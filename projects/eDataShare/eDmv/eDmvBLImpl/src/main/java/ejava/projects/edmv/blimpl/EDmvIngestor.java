@@ -22,9 +22,6 @@ import ejava.projects.edmv.xml.EDmvParser;
  * This class provides a _sparse_ example implementation of how one can use
  * the parser to ingest the information from the XML file to populate the
  * database.
- * 
- * @author jcstaff
- *
  */
 public class EDmvIngestor {
 	private static final Logger log = LoggerFactory.getLogger(EDmvIngestor.class);

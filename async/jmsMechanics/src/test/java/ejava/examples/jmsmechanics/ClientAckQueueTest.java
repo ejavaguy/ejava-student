@@ -18,8 +18,6 @@ import org.junit.Test;
  * This test case performs the basic steps to send/receive messages to/from
  * a JMS queue. In this test, the receiver performs a manual acknowledgement
  * of the last message received.
- *
- * @author jcstaff
  */
 public class ClientAckQueueTest extends JMSTestBase {
     static Logger log = LoggerFactory.getLogger(ClientAckQueueTest.class);

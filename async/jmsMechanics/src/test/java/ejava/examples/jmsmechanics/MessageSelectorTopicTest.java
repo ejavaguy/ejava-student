@@ -25,8 +25,6 @@ import org.junit.Test;
  * a MessageConsumer and a Topic. In the specific case tested, the number
  * of messages received will be 2x the number sent for 'warn' and 'fatal' plus
  * 1x the number sent for 'info' plus zero for number sent for 'debug'.
- *
- * @author jcstaff
  */
 public class MessageSelectorTopicTest extends JMSTestBase {
     static Logger log = LoggerFactory.getLogger(MessageSelectorTopicTest.class);

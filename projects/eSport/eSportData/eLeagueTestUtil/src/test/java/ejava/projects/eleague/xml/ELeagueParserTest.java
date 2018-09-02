@@ -24,8 +24,6 @@ import ejava.projects.eleague.dto.Season;
 
 /**
  * This class provides a test of the provided XML data file and DTO parer.
- * @author jcstaff
- *
  */
 public class ELeagueParserTest {
 	private static final Logger log = LoggerFactory.getLogger(ELeagueParserTest.class);

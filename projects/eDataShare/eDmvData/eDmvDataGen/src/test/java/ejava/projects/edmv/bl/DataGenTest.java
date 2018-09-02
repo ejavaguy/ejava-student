@@ -26,8 +26,6 @@ import junit.framework.TestCase;
  * to a test directory as XML. Note that this class requires access
  * to a specific DB instance and is not portable outside of the
  * course authoring environment. 
- * 
- * @author jcstaff
  *
  */
 public class DataGenTest extends TestCase {

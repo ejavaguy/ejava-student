@@ -18,8 +18,6 @@ import org.junit.Test;
  * This test case performs a test of a transacted session using a topic. 
  * Receivers should not receive messages until they are committed by the 
  * sender.
- *
- * @author jcstaff
  */
 public class TransactedTopicSessionTest extends JMSTestBase {
     static Logger log = LoggerFactory.getLogger(TransactedTopicSessionTest.class);

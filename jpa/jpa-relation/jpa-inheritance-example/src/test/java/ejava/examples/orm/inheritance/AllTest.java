@@ -11,8 +11,6 @@ import junit.framework.TestCase;
  * cases. It provides one-time setUp and tearDown functionality needed by 
  * all individual test cases.
  * 
- * @author jcstaff
- * $Id:$
  */
 
 @RunWith(Suite.class)

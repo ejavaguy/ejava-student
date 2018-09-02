@@ -19,8 +19,6 @@ import ejava.projects.edmv.dao.VehicleDAO;
 /**
  * This class provides a _sparse_ example of a JDBC DAO that implements 
  * O/R mapping for objects related to vehicles.
- * 
- * @author jcstaff
  *
  */
 public class JDBCVehicleDAO implements VehicleDAO {

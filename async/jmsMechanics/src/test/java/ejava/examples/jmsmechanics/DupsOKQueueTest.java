@@ -19,8 +19,6 @@ import org.junit.Test;
  * This test case performs the basic steps to send/receive messages to/from
  * a JMS queue. In this test, the receiver allows session to lazily acknowledge
  * messages.
- *
- * @author jcstaff
  */
 public class DupsOKQueueTest extends JMSTestBase {
     static Logger log = LoggerFactory.getLogger(DupsOKQueueTest.class);

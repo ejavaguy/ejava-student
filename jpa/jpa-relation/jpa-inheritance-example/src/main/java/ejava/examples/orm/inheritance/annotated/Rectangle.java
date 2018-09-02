@@ -9,7 +9,6 @@ import javax.persistence.*;
 * will be created to hold the unque properties of this class and joined with
 * the parent table.
  *
- * @author jcstaff
  */
 @Entity @Table(name="ORMINH_RECTANGLE")
 public class Rectangle extends Shape {

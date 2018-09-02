@@ -9,8 +9,6 @@ import ejava.projects.edmv.dao.DMVPersonDAO;
 
 /**
  * This class provides a JPA DAO implementation for people.
- * 
- * @author jcstaff
  *
  */
 public class JPADMVPersonDAO implements DMVPersonDAO {

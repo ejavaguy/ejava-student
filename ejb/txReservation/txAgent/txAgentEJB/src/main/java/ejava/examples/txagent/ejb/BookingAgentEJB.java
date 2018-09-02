@@ -30,7 +30,6 @@ import ejava.examples.txhotel.ejb.HotelRegistrationRemote;
  * It is stateless and can answer questions and perform cleanup actions 
  * associated with Bookings. 
  *
- * @author jcstaff
  */
 @Stateless
 @TransactionAttribute(TransactionAttributeType.REQUIRED)

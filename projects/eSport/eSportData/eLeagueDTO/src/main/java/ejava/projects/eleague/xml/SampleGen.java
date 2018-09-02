@@ -22,9 +22,6 @@ import ejava.projects.eleague.dto.Venue;
  * DTOs and XML document. Of note, this is is to be used for initial 
  * implementation testing only. It is not the official data set required
  * for submission with the project.
- * 
- * @author jcstaff
- *
  */
 public class SampleGen {
     private int refid=0;

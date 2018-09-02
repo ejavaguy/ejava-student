@@ -22,8 +22,6 @@ import org.junit.Test;
 
 /**
  * This test case performs a demonstration of durable topic subscriptions. 
- *
- * @author jcstaff
  */
 public class DurableSubscriberTest extends JMSTestBase {
     static Logger log = LoggerFactory.getLogger(DurableSubscriberTest.class);

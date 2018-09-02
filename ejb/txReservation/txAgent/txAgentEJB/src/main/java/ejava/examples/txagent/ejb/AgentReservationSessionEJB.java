@@ -47,8 +47,6 @@ import ejava.examples.txhotel.ejb.HotelReservationSessionRemote;
  * This allows it to be called at the start and end of a transaction so that
  * it has a chance to update its cached values appropriately. This bean,
  * however, just prints some debug.
- *
- * @author jcstaff
  */
 @Stateful
 @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)

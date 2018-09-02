@@ -19,9 +19,6 @@ import ejava.projects.edmv.jpa.JPAVehicleDAO;
 
 /**
  * This class provides a basic test of the ingest capability.
- * 
- * @author jcstaff
- *
  */
 public class EDmvIngestorTest extends JPADAOTestBase {
 	private static Logger log = LoggerFactory.getLogger(EDmvIngestorTest.class);

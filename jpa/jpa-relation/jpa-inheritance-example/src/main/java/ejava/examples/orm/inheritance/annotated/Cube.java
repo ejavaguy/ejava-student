@@ -8,7 +8,6 @@ import javax.persistence.*;
  * this instruction is ignored and the Cube sub-table is JOINED with the parent
  * class tables to form the object instead.
  *
- * @author jcstaff
  */
 @Entity
 @Inheritance(strategy=InheritanceType.TABLE_PER_CLASS) //ignored!!!

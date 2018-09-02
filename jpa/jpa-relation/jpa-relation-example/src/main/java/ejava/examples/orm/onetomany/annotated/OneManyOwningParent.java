@@ -114,8 +114,6 @@ import javax.persistence.*;
     </pre><p/>
  *  
  *  
- * @author jcstaff
- *
  */
 @Entity(name="O2MOwningParent") @Table(name="ORMO2M_PARENT")
 public class OneManyOwningParent {

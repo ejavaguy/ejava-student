@@ -17,7 +17,6 @@ import ejava.examples.txhotel.bo.Reservation;
  * This class tests the ReservationDAO. The code contained here will be 
  * similar to the calls made by the Hotel Reservation business logic.
  *
- * @author jcstaff
  */
 public class AgentDAOTest extends AgentDAOTestBase {
     

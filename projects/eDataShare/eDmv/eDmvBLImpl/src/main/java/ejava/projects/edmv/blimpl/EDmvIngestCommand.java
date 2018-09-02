@@ -16,9 +16,6 @@ import ejava.projects.edmv.jdbc.JDBCVehicleDAO;
  * This class provides an example of how one might wrap the business logic 
  * within a Java main() versus JUnit so that it can be run in a 
  * more standard operational environment.
- * 
- * @author jcstaff
- *
  */
 public class EDmvIngestCommand {
 	@SuppressWarnings("unused")

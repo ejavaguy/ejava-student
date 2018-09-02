@@ -8,8 +8,6 @@ import ejava.projects.edmv.bo.Person;
  * This interface provides a _sparse_ example of the methods offered by a 
  * DAO supplying O/R mapping to the DB.
  * 
- * @author jcstaff
- *
  */
 public interface PersonDAO {
 	void createPerson(Person person) 

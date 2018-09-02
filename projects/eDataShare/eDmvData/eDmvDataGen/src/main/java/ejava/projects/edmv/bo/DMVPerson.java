@@ -5,8 +5,6 @@ import java.util.List;
 
 /**
  * This class is used to represent a person from the test database.
- * 
- * @author jcstaff
  *
  */
 public class DMVPerson {

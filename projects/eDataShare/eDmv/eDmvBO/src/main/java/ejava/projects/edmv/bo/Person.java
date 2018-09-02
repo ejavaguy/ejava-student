@@ -8,8 +8,6 @@ import javax.persistence.*;
  * This class provides a sparse _example_ of a person entity that will get
  * populated from the ingested data and inserted into the DB. 
  * 
- * @author jcstaff
- *
  */
 @Entity(name="Person")
 @Table(name="EDMV_PERSON")

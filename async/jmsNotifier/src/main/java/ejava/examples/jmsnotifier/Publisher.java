@@ -15,8 +15,6 @@ import org.slf4j.LoggerFactory;
 /**
  * This issues messages to a specified destination. You can use many of the
  * properties to control the content of the message.
- *
- * @author jcstaff
  */
 public class Publisher implements Runnable {
     private static final Logger log = LoggerFactory.getLogger(Publisher.class);

@@ -18,8 +18,6 @@ import ejava.util.jndi.JNDIUtil;
  * This class is primarily an example of configuring an EJB through 
  * @Annotations. There is no external ejb-jar.xml deployment descriptor 
  * entries for this EJB.
- * 
- * @author jcstaff
  *
  */
 @Stateful(name="BakeScheduler")

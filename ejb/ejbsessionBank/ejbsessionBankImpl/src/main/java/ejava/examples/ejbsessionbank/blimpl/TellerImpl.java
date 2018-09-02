@@ -21,7 +21,6 @@ import ejava.examples.ejbsessionbank.dao.OwnerDAO;
  * half is used to demonstrate some of the basics. The Owner+Account half 
  * is used to add a small amount of complexity to the data model to demo
  * some lazy load issues within the remote facade/EJB layer.
- * @author jcstaff
  *
  */
 public class TellerImpl implements Teller {

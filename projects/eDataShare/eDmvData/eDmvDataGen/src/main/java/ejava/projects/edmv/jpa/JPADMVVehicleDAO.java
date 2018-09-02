@@ -9,8 +9,6 @@ import ejava.projects.edmv.dao.DMVVehicleDAO;
 
 /**
  * This class provides a JPA DAO implementation for vehicles.
- * 
- * @author jcstaff
  *
  */
 public class JPADMVVehicleDAO implements DMVVehicleDAO {

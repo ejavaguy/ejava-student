@@ -18,8 +18,6 @@ import org.slf4j.LoggerFactory;
 /**
  * This is used to listen to messages on a destination. You can control the
  * durability (topics only) and selector used using the properties.
- *
- * @author jcstaff
  */
 public class Subscriber implements Runnable {
     private static final Logger logger = LoggerFactory.getLogger(Subscriber.class);

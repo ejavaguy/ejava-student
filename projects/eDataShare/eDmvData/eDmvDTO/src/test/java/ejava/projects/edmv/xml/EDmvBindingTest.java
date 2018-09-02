@@ -29,7 +29,6 @@ import junit.framework.TestCase;
 /**
  * This provides a basic test of a constructed DMV DTO graph to be 
  * successfully marshalled and de-marshalled to/from an XML steam. 
- * @author jcstaff
  *
  */
 public class EDmvBindingTest extends TestCase {

@@ -2,8 +2,6 @@ package ejava.projects.edmv.bo;
 
 /**
  * This class is used to represent a photo in the test data database.
- * 
- * @author jcstaff
  *
  */
 public class DMVPhoto {

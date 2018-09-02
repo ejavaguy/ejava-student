@@ -10,8 +10,6 @@ import ejava.projects.edmv.dao.VehicleDAO;
 /**
  * This class provides a _sparse_ example of a JPA DAO for the class project.
  * It is put in place here to demonstrate some of the end-to-end use cases,
- * 
- * @author jcstaff
  *
  */
 public class JPAVehicleDAO implements VehicleDAO {

@@ -18,8 +18,6 @@ import org.junit.Test;
  * This test case performs the basic steps to send/receive messages to/from
  * a JMS queue. Notice that only one of the catchers in this test should a
  * copy of any single message. 
- *
- * @author jcstaff
  */
 public class JMSQueueBasicsTest extends JMSTestBase {
     private static final Logger logger = LoggerFactory.getLogger(JMSQueueBasicsTest.class);

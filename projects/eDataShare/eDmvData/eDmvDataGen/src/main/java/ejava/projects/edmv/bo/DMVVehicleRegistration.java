@@ -7,8 +7,6 @@ import java.util.List;
 /**
  * This class is used to represent a vehicle registration from the test data
  * database.
- * 
- * @author jcstaff
  *
  */
 public class DMVVehicleRegistration {

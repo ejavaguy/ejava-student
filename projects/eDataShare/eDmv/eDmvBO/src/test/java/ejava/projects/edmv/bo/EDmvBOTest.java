@@ -10,8 +10,6 @@ import org.junit.Test;
  * This test case provides a _sparse_ example of testing of business
  * object functionality.
  * 
- * @author jcstaff
- *
  */
 public class EDmvBOTest {
     private static Logger log = LoggerFactory.getLogger(EDmvBOTest.class);

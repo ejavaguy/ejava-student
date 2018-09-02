@@ -19,9 +19,6 @@ import ejava.projects.edmv.dao.VehicleDAO;
  * management implementation. They were combined into a single implementation
  * class here for simplicity. They could easily be broken out into separate
  * classes as their implementation gets more complex.
- * 
- * @author jcstaff
- *
  */
 public class EDmvMgmtImpl implements PersonMgmt, VehicleMgmt {
     private Logger log = LoggerFactory.getLogger(EDmvMgmtImpl.class); 

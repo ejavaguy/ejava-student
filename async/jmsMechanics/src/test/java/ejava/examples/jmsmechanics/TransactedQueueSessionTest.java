@@ -18,8 +18,6 @@ import org.junit.Test;
  * This test case performs a test of a transacted session using a queue. 
  * Receivers should not receive messages until they are committed by the 
  * sender.
- *
- * @author jcstaff
  */
 public class TransactedQueueSessionTest extends JMSTestBase {
     static Logger log = LoggerFactory.getLogger(TransactedQueueSessionTest.class);

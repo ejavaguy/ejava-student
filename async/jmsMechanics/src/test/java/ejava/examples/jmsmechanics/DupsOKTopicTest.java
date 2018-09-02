@@ -18,8 +18,6 @@ import org.junit.Test;
  * This test case performs the basic steps to send/receive messages to/from
  * a JMS topic. In this test, the receiver allows session to lazily acknowledge
  * messages.
- *
- * @author jcstaff
  */
 public class DupsOKTopicTest extends JMSTestBase {
     static Logger log = LoggerFactory.getLogger(DupsOKTopicTest.class);

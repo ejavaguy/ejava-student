@@ -23,8 +23,6 @@ import org.junit.Test;
  * This test case performs a demonstration of using a message time to live.
  * Messages will be sent and left in the server beyond a specified time to 
  * live.
- *
- * @author jcstaff
  */
 public class MessageTimeToLiveTest extends JMSTestBase {
     static Logger log = LoggerFactory.getLogger(MessageTimeToLiveTest.class);

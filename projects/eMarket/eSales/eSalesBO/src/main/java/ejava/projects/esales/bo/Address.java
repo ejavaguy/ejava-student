@@ -14,8 +14,6 @@ import javax.persistence.Table;
  * object class for the project. Only a few fields are mapped and we
  * will make full use of JPA annotations over an orm.xml file in this 
  * example.
- * 
- * @author jcstaff
  *
  */
 @SuppressWarnings("serial")

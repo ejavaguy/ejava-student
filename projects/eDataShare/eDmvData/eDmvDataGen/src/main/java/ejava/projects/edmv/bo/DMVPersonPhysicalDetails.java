@@ -5,8 +5,6 @@ import java.util.Date;
 /**
  * This class is used to represent the physical details of a person from the
  * test data database.
- * 
- * @author jcstaff
  *
  */
 public class DMVPersonPhysicalDetails {

@@ -16,8 +16,6 @@ import ejava.util.jndi.JNDIUtil;
  * @Annotations defined here. All properties are injected through definitions
  * in the ejb-jar.xml file.
  *  
- * @author jcstaff
- *
  */
 //@Stateless declared by ejb-jar.xml entry
 public class AidSchedulerEJB extends SchedulerBase

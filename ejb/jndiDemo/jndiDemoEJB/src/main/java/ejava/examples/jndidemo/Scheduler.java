@@ -3,8 +3,6 @@ package ejava.examples.jndidemo;
 /**
  * This interface defines some key debug methods we need to inspect the
  * Session Beans that we are configuring. 
- *
- * @author jcstaff
  */
 public interface Scheduler {
     /** return the name of the bean */

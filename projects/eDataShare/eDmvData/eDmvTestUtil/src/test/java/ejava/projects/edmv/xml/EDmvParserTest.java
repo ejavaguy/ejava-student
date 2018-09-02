@@ -28,8 +28,6 @@ import junit.framework.TestCase;
  * This class provides a quick sanity check of the provided XML file. The
  * contents of the XML file will be obtained through reflection and printed
  * to stdout.
- * 
- * @author jcstaff
  *
  */
 public class EDmvParserTest extends TestCase {

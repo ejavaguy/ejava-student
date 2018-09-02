@@ -16,7 +16,6 @@ import ejava.examples.txhotel.bo.Reservation;
  * object in the database with a detached object that contains a version
  * different from what is in the database.
  *
- * @author jcstaff
  */
 public class OptimisticLockingTest extends DAOTestBase {
 
