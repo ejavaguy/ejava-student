@@ -38,9 +38,9 @@
           <li>2018-09-29: Posted Updated ORM Relationship TODOs</li>
           <li>2018-09-22: Posted Core JPA TODOs</li>
           <li>2018-09-15: Posted EntityManager TODOs</li>
-          <li>2018-09-09: Activated project and jpa modules in root-level build</li>
-          <li>2018-09-09: Posted Project 1 description and Business Logic TODOs</li>
           -->
+          <li>2018-09-05: Activated project and jpa modules in root-level build</li>
+          <li>2018-09-05: Posted Project 1 description and Business Logic TODOs</li>
           <li>2018-08-31: Fixed placement of week 1 TODOs</li>
           <li>2018-08-21: Posted initial class site</li>
       </ul>
@@ -492,6 +492,7 @@
 
 
       <!-- week 02: DevEnv and Business Logic 
+      -->
       <li><ul> 
             <li>Project
                 <ul>
@@ -527,7 +528,13 @@
                 </ul>
             </li>
       </ul></li>
-      -->
+
+      </ul>
+      </subsection>
+
+      <subsection name="Things you should have finished!" id="completed">
+      <ul>
+
 
       <!-- week 01: Course Intro -->
       <li><ul> 
@@ -536,13 +543,6 @@
           <li>setup development environment by going through exercises 0 and 1</li>
           <li>post your weekly newsgroup contribution based on development environment setup</li>
       </ul></li>
-
-
-      </ul>
-      </subsection>
-
-      <subsection name="Things you should have finished!" id="completed">
-      <ul>
 
 
       <li><ul>
