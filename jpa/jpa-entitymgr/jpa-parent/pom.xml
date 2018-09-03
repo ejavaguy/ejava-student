@@ -166,7 +166,7 @@
             <id>h2srv</id>
             <properties>
                   <jdbc.driver>org.h2.Driver</jdbc.driver>
-                  <jdbc.url>jdbc:h2:tcp://${db.host}:9092/h2db/ejava</jdbc.url>
+                  <jdbc.url>jdbc:h2:tcp://${db.host}:9092/./h2db/ejava</jdbc.url>
                   <jdbc.user>sa</jdbc.user>
                   <jdbc.password/>
                   <hibernate.dialect>org.hibernate.dialect.H2Dialect</hibernate.dialect>
