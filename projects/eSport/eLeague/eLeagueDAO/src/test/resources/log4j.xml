@@ -17,14 +17,16 @@
    
    <appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
          <param name="Target" value="System.out"/>
+         <param name="Threshold" value="TRACE"/>
    
          <layout class="org.apache.log4j.PatternLayout">
             <!-- The default pattern: Date Priority [Category] Messagen -->
             <!--
             <param name="ConversionPattern" value="%d{ABSOLUTE} %-5p [%c{1}] %m%n"/>
             <param name="ConversionPattern" value="(%F:%M:%L)  -%m%n"/>
-            -->
             <param name="ConversionPattern" value=" -%m%n"/>
+            -->
+            <param name="ConversionPattern" value="(%F:%M:%L)  -%m%n"/>
          </layout>
    </appender>
 
@@ -36,21 +38,24 @@
       <layout class="org.apache.log4j.PatternLayout">
          <param name="ConversionPattern" value="%-5p %d{dd-MM HH:mm:ss,SSS} [%c] (%F:%M:%L)  -%m%n"/>
       </layout>
-      
    </appender>
 
-   <logger name="orh.hibernate.SQL">
+   <logger name="org.hibernate.jpa">
+      <level value="debug"/>
+      <appender-ref ref="CONSOLE"/>  
+   </logger>
+   <logger name="org.hibernate.SQL">
       <level value="debug"/>
    </logger>
-   <logger name="orh.hibernate.type">
-      <level value="trace"/>
+   <logger name="org.hibernate.type">
+      <level value="info"/>
    </logger>
    <logger name="ejava">
       <level value="debug"/>
    </logger>
    <root>
       <priority value="info"/>    
+      <appender-ref ref="logfile"/>  
       <appender-ref ref="CONSOLE"/>  
    </root>   
-   
 </log4j:configuration>
