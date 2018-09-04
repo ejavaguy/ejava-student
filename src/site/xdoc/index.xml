@@ -494,26 +494,27 @@
       <!-- week 02: DevEnv and Business Logic 
       -->
       <li><ul> 
-            <li>Project
+            <li>Overall Project
                 <ul>
                   <li>Look over the class project 1 and post any questions.</li>
-                  <li>Establish your project directory structure and perform a build from the root.</li>
-                  <b><li>Send me an early submission of your project sometime this week 
-                      (ideally by Mon evening) in a stable, known but not necessarily complete state. 
-                      You should have a project structure in place that can build from the root, a good 
-                      start on the items mentioned above, and a list of issues or questions
-                      that you would like answered about how to move forward.
-                      This will be used as feedback to the class.</li></b>
+                  <li>Establish your project directory structure and perform a build from the root.
+                      Start one module at a time. Avoid doing a blind bulk copy and replace of the 
+                      course "thin thread" example. Understand the purpose of the directories, 
+                      modules, and contents before you copy them in total.</li>
+                  <li>Establish a short name mangler (e.g., jcsSport, JCS_CLUB) that will be 
+                      unique to your project.</li>
                 </ul>
             </li>
             <li>Business Logic
                 <ul>
-                  <li>Create the business logic interfaces and define the operations that will
-                      satisfy the end-to-end scenario.</li>
                   <li>Create a JUnit unit test for the business logic to address the requirements 
                       for the end-to-end scenario.  Place this unit test in with the module
-                      containing your business logic 
-                      and use it to help scope your future work on the project.</li>
+                      containing your business logic and use it to help scope your future work 
+                      on the project. Start with a @Test full of comments expressing the end-to-end
+                      scenario and progress to code.</li>
+                  <li>Create the business logic interfaces and define the operations that will
+                      satisfy the actions of the end-to-end scenario. Host the interfaces in the same 
+                      module as the Business Objects.</li>
                   <li>Create a set of business logic classes to implement the busines logic
                       interfaces. Stub out each call for now so the end-to-end test will
                       execute.</li>
@@ -522,9 +523,20 @@
             <li>Business Objects
                 <ul>
                   <li>Create skeletal business object classes necessary to express the vocabulary 
-                      of the business logic interfaces.</li>
+                      of the business logic interfaces. Add attribute properties as you encounter
+                      them. Do not worry about JPA aspects just yet.</li>
                   <li>Design and implement the basics of a JUnit unit test for a business object (just one). 
                       Place this unit test within the module containing your business objects.</li>
+                </ul>
+            </li>
+            <li>Early Project Submissions
+                <ul>
+                  <b><li>Send me an early submission of your project sometime this week 
+                      (ideally by Mon evening) in a stable, known but not necessarily complete state. 
+                      You should have a project structure in place that can build from the root, a good 
+                      start on the items mentioned above, and a list of issues or questions
+                      that you would like answered about how to move forward.
+                      This will be used as feedback to the class.</li></b>
                 </ul>
             </li>
       </ul></li>

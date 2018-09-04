@@ -23,10 +23,10 @@
         <module>build</module>
         <module>common</module>
         <module>javase</module>
+        <module>servers</module>
         <module>projects</module>
         <module>jpa</module>
         <!--
-        <module>servers</module>
         <module>ejb</module>
         <module>async</module>
         -->
