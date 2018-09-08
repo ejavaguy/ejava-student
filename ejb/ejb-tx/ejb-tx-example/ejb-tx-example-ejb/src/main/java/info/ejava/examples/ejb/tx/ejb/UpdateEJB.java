@@ -48,8 +48,16 @@ public class UpdateEJB {
                 Integer.class)
                 .setParameter("productId", productId);
         //get current value prior to attempting update
-        List<Integer> values = getQuantity.getResultList();
-        Integer currentValue = values.isEmpty() ? null : values.get(0);
+        List<Integer> values = null;
+        Integer currentValue = null;
+        for (int i=0; currentValue==null && i<5; i++) {
+            values = getQuantity.getResultList();
+            currentValue = values.isEmpty() ? null : values.get(0);
+            if (currentValue==null) {
+                logger.debug("waiting for productId {} to appear", productId);
+                try { Thread.sleep(200); } catch (Exception ex) {}
+            }
+        }
 
         //perform the update
         int updated = em.createNamedQuery("EJBTxProduct.addQuantity")
