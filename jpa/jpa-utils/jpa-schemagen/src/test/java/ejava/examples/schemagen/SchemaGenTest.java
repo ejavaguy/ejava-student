@@ -35,14 +35,14 @@ public class SchemaGenTest {
 	public void createScript() throws FileNotFoundException {
 		String script = readScript("create");
 		assertTrue("missing create", script.contains("create table JPAUTIL_TABLET"));
-		assertTrue("missing line termination", script.contains(";\n"));
-		assertTrue("missing formatting", script.contains(",\n"));
+		assertTrue("missing line termination", script.contains(";" + System.lineSeparator()));
+		assertTrue("missing formatting", script.contains("," + System.lineSeparator()));
 	}
 	
 	@Test
 	public void dropScript() throws FileNotFoundException {
 		String script = readScript("drop");
 		assertTrue("missing create", script.contains("drop table JPAUTIL_TABLET"));
-		assertTrue("missing line termination", script.contains(";\n"));
+		assertTrue("missing line termination", script.contains(";" + System.lineSeparator()));
 	}	
 }

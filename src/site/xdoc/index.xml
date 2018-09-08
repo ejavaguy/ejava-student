@@ -39,6 +39,7 @@
           <li>2018-09-22: Posted Core JPA TODOs</li>
           <li>2018-09-15: Posted EntityManager TODOs</li>
           -->
+          <li>2018-09-07: Updated non-portable line separator in schemagen tests</li>
           <li>2018-09-05: Activated project and jpa modules in root-level build</li>
           <li>2018-09-05: Posted Project 1 description and Business Logic TODOs</li>
           <li>2018-08-31: Fixed placement of week 1 TODOs</li>
