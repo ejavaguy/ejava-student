@@ -37,8 +37,8 @@
           <li>2018-10-07: Posted JPA-QL TODOs</li>
           <li>2018-09-29: Posted Updated ORM Relationship TODOs</li>
           <li>2018-09-22: Posted Core JPA TODOs</li>
-          <li>2018-09-15: Posted EntityManager TODOs</li>
           -->
+          <li>2018-09-12: Posted EntityManager TODOs</li>
           <li>2018-09-07: Updated non-portable line separator in schemagen tests</li>
           <li>2018-09-05: Activated project and jpa modules in root-level build</li>
           <li>2018-09-05: Posted Project 1 description and Business Logic TODOs</li>
@@ -411,7 +411,7 @@
       -->
 
 
-      <!-- week 03: DAOs and EntityManager 
+      <!-- week 03: DAOs and EntityManager -->
       <li><ul> 
             <li>Project Sanity Check
             <ul>
@@ -430,7 +430,7 @@
                   the details to create a maven module for data tier classes as it is about the JPA 
                   EntityManager.</li>          
               <li>Look over the class project example implementation under the 
-                projects/eMarket/eSales directory as it relates to integrating
+                projects/eSport/eLeague directory as it relates to integrating
                 JPA within the individual modules.
               </li>
             </ul>
@@ -489,11 +489,15 @@
             </ul>
             </li>
       </ul></li>
-      -->
 
 
-      <!-- week 02: DevEnv and Business Logic 
-      -->
+      </ul>
+      </subsection>
+
+      <subsection name="Things you should have finished!" id="completed">
+      <ul>
+
+      <!-- week 02: DevEnv and Business Logic -->
       <li><ul> 
             <li>Overall Project
                 <ul>
@@ -541,13 +545,6 @@
                 </ul>
             </li>
       </ul></li>
-
-      </ul>
-      </subsection>
-
-      <subsection name="Things you should have finished!" id="completed">
-      <ul>
-
 
       <!-- week 01: Course Intro -->
       <li><ul> 
