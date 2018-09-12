@@ -416,7 +416,8 @@
             <li>Project Sanity Check
             <ul>
               <li>Correct and complete your project structure based on comments from your early submission
-                   last week. Turn in by due date unless your early submission was previously accepted.</li>          
+                   last week. Turn in update module tree (ideally by Sunday evening) unless early 
+                   submission was previously accepted.</li>          
               <li>Only business logic interfaces, skeletal business objects, and skeletal end-to-end tests
                   are required for the project sanity check. Data tier/JPA topics listed below are not a 
                   required part.</li>          
@@ -438,8 +439,8 @@
 
             <li>Database Schema
                 <ul>
-                  <li>Design a draft DB schema for your business object. This should go in 
-                    the module hosting your DAOs.</li>
+                  <li>Create a file to host your draft DB schema for your business object(s). This should go in 
+                    the module hosting your DAOs. This is expected to be very basic at this point.</li>
                   <li>Implement a way to create your schema in the DB as a part of your DAO testing. Factor
                       in reuse across multiple modules, multiple test cases, and multiple test methods.</li>
                 </ul>
@@ -447,23 +448,23 @@
 
             <li>Maven and DAO Unit Test Framework
                 <ul>
-                  <li>Add JPA/Hibernate infrastructure to your project DAO/Impl module.
-                    This should at least consist of a successful connection to
-                    the DB.  You are done with this goal when you have a
-                    JPA JUnit test for the DAO and the setUp() method is able to
-                    create an EntityManager.
+		  <li>Add JPA/Hibernate infrastructure to project module(s) hosting
+		    DAO classes and higher.  This should at least consist of a successful 
+                    connection to the DB.  You are done with this goal when you have a JPA
+		    JUnit test for the DAO and the setUp() method is able to create an 
+                    EntityManager.
                   </li>
                 </ul>
             </li>          
           
             <li>JPA Entities and DAOs
             <ul>
-              <li>Enhance your business object (BO) definition with @Entity
-                declarations, a non-private default constructor, and a primary
-                key designation (@Id) to make them legal entities. Leave
-                other things default for now. Annotate all collections with
-                @Transient annotation. We are not ready to cover relationships
-                just yet.
+              <li>Enhance your business object (BO) class(es) with @Entity
+                declarations, a public default constructor, and a primary
+                key designation (@Id) to make them legal JPA Entity classes. Leave
+                other things default for now. Annotate any and all collections 
+                and references to other Entity classes with @Transient annotation. 
+                We are not ready to cover relationships just yet.
               </li>
               <li>Design DAO interfaces to support the data access requirements
                   of your business logic participating in the end-to-end 
@@ -472,9 +473,9 @@
                   semantics of how the calls should work.
               </li>
               <li>Implement an initial JPA implementation for your DAO
-                   interfaces. Keep in mind the scope of the end-to-end 
-                   scenario when building these methods to help limit and
-                   focus the work performed.
+                   interfaces for create and find methods. Keep in mind the 
+                   scope of the end-to-end scenario when building these 
+                   methods to help limit and focus the work performed.
               </li>
             </ul>
             </li>
@@ -482,9 +483,9 @@
             <li>DAO Testing
             <ul>
               <li>Design and implement a set of unit tests for a few of your JPA
-                DAO(s). Note how the default schema for the @Entities may not
-                match up with your desired DB schema at this point when you run
-                the tests.
+                DAO(s) to save and find a few of your business objects. Note how 
+                the default schema for the @Entities may not match up with your 
+                desired DB schema at this point when you run the tests.
               </li>
             </ul>
             </li>
