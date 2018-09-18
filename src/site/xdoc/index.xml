@@ -36,8 +36,8 @@
           <li>2018-10-14: Posted Final Project 1 TODOs, Project2 Spec and Server-side EJB Modules</li>
           <li>2018-10-07: Posted JPA-QL TODOs</li>
           <li>2018-09-29: Posted Updated ORM Relationship TODOs</li>
-          <li>2018-09-22: Posted Core JPA TODOs</li>
           -->
+          <li>2018-09-19: Posted Core JPA TODOs</li>
           <li>2018-09-12: Posted EntityManager TODOs</li>
           <li>2018-09-07: Updated non-portable line separator in schemagen tests</li>
           <li>2018-09-05: Activated project and jpa modules in root-level build</li>
@@ -357,7 +357,7 @@
       </ul></li>
       -->
 
-      <!-- week 04: JPA Core 
+      <!-- week 04: JPA Core -->
       <li><ul> 
             <li>Exercises
                 <ul>
@@ -369,10 +369,13 @@
                 <ul>
                   <li>Create the remainder of your business objects for the project.</li>
                   <li>Declare the business objects as @Entities and map the classes
-                      to tables and columns in your database. Your schema file(s) and JPA
-                      DAOs should be using the same database tables at this point.
-                      Mark relationships and problem fields as @Transient at this point 
-                      in time.</li>
+                      to tables and columns in your database. Last week you accepted 
+                      mostly defaults. This week you will perform fine tuned table and
+                      column mapping.  Your schema file(s) and JPA DAOs should be using 
+                      the same database tables at this point. The easiest way to do that
+                      is to have the JPA provider generate a starting schema from your
+                      mappings.  Mark relationships and problem fields as @Transient at 
+                      this point in time.</li>
                   <li>Add additional bean validation rules to your business objects
                       to address any non-null, minimum, maximum, and pattern constraints
                       you may have.</li>
@@ -383,10 +386,12 @@
             <li>JPA DAOs
                 <ul>
                   <li>Create unit tests for the ability to create your business objects
-                      and get them by primary key.
+                      and get them by primary key. With relationships marked @Transient,
+                      there should be no relationships expressed between your tables.
                       Pay attention to the business rules your application has for ordering
-                      the creation (e.g., must have AuctionItem before having a Bid).
-                      Solve dependency issues with sensible pre-conditions for child objects.</li>
+                      the creation (e.g., must have Season before creating a Contest).
+                      Solve dependency issues with sensible pre-conditions for child objects
+                      (i.e. assume/insist that parent be in place before child exists).</li>
                   <li>Enact your bean validation rules for @PrePersist and @PreUpdate</li>
                 </ul>
             </li>
@@ -402,14 +407,22 @@
                   slice of the overall dataset.
                   </li>
                   <li>Manually validate a DTO or business object using the programmatic 
-                      validation API in your JUNit test or helper class that is part of 
+                      validation API in your JUnit test or helper class that is part of 
                       the application. Try not to make a specific call from within the 
-                      business logic.</li>
+                      business logic. This will help you later when we begin leveraging
+                      the server-side container.</li>
                 </ul>
             </li>
       </ul></li>
-      -->
 
+
+
+
+      </ul>
+      </subsection>
+
+      <subsection name="Things you should have finished!" id="completed">
+      <ul>
 
       <!-- week 03: DAOs and EntityManager -->
       <li><ul> 
@@ -490,13 +503,6 @@
             </ul>
             </li>
       </ul></li>
-
-
-      </ul>
-      </subsection>
-
-      <subsection name="Things you should have finished!" id="completed">
-      <ul>
 
       <!-- week 02: DevEnv and Business Logic -->
       <li><ul> 
