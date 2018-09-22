@@ -66,4 +66,37 @@
             </modules>
         </profile>
     </profiles>
+
+    <!-- student will include this in their root project pom
+         to resolve any dependencies on ejava modules
+    <repositories>
+        <repository>
+            <id>webdev-snapshot</id>
+            <name>ejava webdev snapshot repository</name>
+            <url>http://webdev.jhuep.com/~jcs/maven2-snapshot</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>daily</updatePolicy>
+            </snapshots>
+        </repository>
+    </repositories>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>webdev</id>
+            <name>ejava webdev repository</name>
+            <url>http://webdev.jhuep.com/~jcs/maven2</url>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>never</updatePolicy>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>daily</updatePolicy>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
+    -->
 </project>

@@ -35,8 +35,8 @@
           <li>2018-10-21: Posted EJB TODOs</li>
           <li>2018-10-14: Posted Final Project 1 TODOs, Project2 Spec and Server-side EJB Modules</li>
           <li>2018-10-07: Posted JPA-QL TODOs</li>
-          <li>2018-09-29: Posted Updated ORM Relationship TODOs</li>
           -->
+          <li>2018-09-26: Posted Updated ORM Relationship TODOs</li>
           <li>2018-09-19: Posted Core JPA TODOs</li>
           <li>2018-09-12: Posted EntityManager TODOs</li>
           <li>2018-09-07: Updated non-portable line separator in schemagen tests</li>
@@ -296,13 +296,16 @@
             </li>
             <li>Project
                 <ul>
-                  <li>Finish adding required business logic for end-to-end testing.</li>
+                  <li>Finish adding required business logic to satisfy the
+                  specified end-to-end scenario.</li>
+                  <li>Add unit tests to verify the functionality of the individual 
+                  business logic methods.</li>
                 </ul>
             </li>
       </ul></li>
       -->
 
-      <!-- week 05: JPA Relationships 
+      <!-- week 05: JPA Relationships -->
       <li><ul> 
             <li>Exercises
                 <ul>
@@ -339,23 +342,21 @@
                   for the entire model ingested, but provide a brief set of 
                   sanity checks that compares pre/post and selected information.
                   </li>
-                  <li>Implement your populate() method of the end-to-end scenario 
-                  using your ingest capability.
-                  Encapsulate it and your resetAll() within a TestUtilImpl class.
-                  Re-use this class as a part of your unit testing. You may want 
-                  to reference the following examples when implementing this class.
-                    <ul>
-                      <li><a href="https://github.com/jcstaff/ejava-javaee/blob/master/solutions/javaeeEx/partC/javaeeExImpl/src/main/java/myorg/javaeeex/blimpl/TestUtilImpl.java">TestUtilImpl.java</a></li>
-                      <li><a href="https://github.com/jcstaff/ejava-javaee/blob/master/solutions/javaeeEx/partC/javaeeExImpl/src/main/java/myorg/javaeeex/jpa/DBUtil.java">DBUtil.java</a></li>
-                    </ul>
+                  <li>Implement your populate/ingest portion of the end-to-end scenario 
+                  using your ingest capability.  Encapsulate it and your reset within 
+                  a TestUtilImpl class.  Re-use this class as a part of your unit testing. 
                   </li>
-                  <li>Begin filling in business logic methods to satisfy the
-                  specified end-to-end scenario. Add unit tests to verify
-                  the functionality of the individual business logic methods.</li>
                 </ul>
             </li>
       </ul></li>
-      -->
+
+
+
+      </ul>
+      </subsection>
+
+      <subsection name="Things you should have finished!" id="completed">
+      <ul>
 
       <!-- week 04: JPA Core -->
       <li><ul> 
@@ -416,14 +417,6 @@
       </ul></li>
 
 
-
-
-      </ul>
-      </subsection>
-
-      <subsection name="Things you should have finished!" id="completed">
-      <ul>
-
       <!-- week 03: DAOs and EntityManager -->
       <li><ul> 
             <li>Project Sanity Check
@@ -450,15 +443,6 @@
             </ul>
             </li>
 
-            <li>Database Schema
-                <ul>
-                  <li>Create a file to host your draft DB schema for your business object(s). This should go in 
-                    the module hosting your DAOs. This is expected to be very basic at this point.</li>
-                  <li>Implement a way to create your schema in the DB as a part of your DAO testing. Factor
-                      in reuse across multiple modules, multiple test cases, and multiple test methods.</li>
-                </ul>
-            </li>
-
             <li>Maven and DAO Unit Test Framework
                 <ul>
 		  <li>Add JPA/Hibernate infrastructure to project module(s) hosting
@@ -469,6 +453,23 @@
                   </li>
                 </ul>
             </li>          
+
+            <li>Database Schema
+                <ul>
+                  <li>Create a file to host your draft DB schema for your business object(s). This should go in 
+                    the module hosting your DAOs. This is expected to be very basic at this point.</li>
+                  <li>Implement a way to create your schema in the DB as a part of your DAO testing. Factor
+                      in reuse across multiple modules, multiple test cases, and multiple test methods.
+                      You may want to review the following classes, directly re-use the DBUtil class from
+                      the ejava-util course module, and implement your version of the TestUtilImpl class
+                      to the specifics of your project.
+                    <ul>
+<li><a href="https://github.com/ejavaguy/ejava-student/blob/master/common/ejava-util/src/main/java/ejava/util/jpa/DBUtil.java">DBUtil.java</a></li>
+<li><a href="https://github.com/ejavaguy/ejava-student/blob/master/projects/eSport/eLeague/eLeagueBLImpl/src/main/java/ejava/projects/eleague/blimpl/LeagueTestUtilImpl.java.java">TestUtilImpl.java</a></li>
+                    </ul>
+                  </li>
+                </ul>
+            </li>
           
             <li>JPA Entities and DAOs
             <ul>

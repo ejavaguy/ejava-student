@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.junit.Test;
 
+import ejava.projects.eleague.bl.LeagueTestUtil;
 import ejava.projects.eleague.blimpl.LeagueIngestor;
 import ejava.projects.eleague.dao.ClubDAO;
 import ejava.projects.eleague.jpa.JPAClubDAO;
@@ -21,14 +22,20 @@ import ejava.projects.eleague.jpa.JPADAOTestBase;
 public class LeagueIngestorTest extends JPADAOTestBase {
 	private static Logger logger = LoggerFactory.getLogger(LeagueIngestorTest.class);
 	private ClubDAO clubDAO;
+	private LeagueTestUtil testUtil;
 
 	@Override
 	public void setUp() throws Exception {
 		super.setUp();
+		testUtil = new LeagueTestUtilImpl();
+		((LeagueTestUtilImpl)testUtil).setEntityManager(em);
 	    clubDAO = new JPAClubDAO();
 	    ((JPAClubDAO)clubDAO).setEntityManager(em);
 		
 		em.getTransaction().begin();
+		testUtil.reset();
+        em.getTransaction().commit();
+        em.getTransaction().begin();
 	}
 
 	@Test
