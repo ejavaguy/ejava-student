@@ -27,6 +27,11 @@
             <version>${project.version}</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>info.ejava.examples.common</groupId>
+            <artifactId>ejava-util</artifactId>
+            <scope>compile</scope>
+        </dependency>        
 
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -45,11 +50,6 @@
             <scope>provided</scope>
         </dependency>
 
-        <dependency>
-            <groupId>info.ejava.examples.common</groupId>
-            <artifactId>ejava-util</artifactId>
-            <scope>provided</scope>
-        </dependency>        
         <dependency>
             <groupId>javax.persistence</groupId>
             <artifactId>javax.persistence-api</artifactId>

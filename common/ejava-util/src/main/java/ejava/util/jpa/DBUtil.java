@@ -71,7 +71,7 @@ public class DBUtil {
            }
         }
         
-        return is; //let a null inputStream be returned
+        return is; //inputStream should not be null at this point
     }
     
     /**
