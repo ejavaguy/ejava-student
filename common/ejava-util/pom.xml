@@ -31,5 +31,10 @@
             <artifactId>javax.persistence-api</artifactId>
             <scope>provided</scope>
         </dependency>        
+        <dependency>
+            <groupId>javax.json.bind</groupId>
+            <artifactId>javax.json.bind-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 </project>
