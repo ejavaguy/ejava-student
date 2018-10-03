@@ -30,7 +30,7 @@ import ejava.jpa.examples.query.Sale;
 import ejava.jpa.examples.query.Store;
 
 public class JPAQLTest extends QueryBase {
-	private static final Logger log = LoggerFactory.getLogger(BulkQueryTest.class);
+	private static final Logger logger = LoggerFactory.getLogger(BulkQueryTest.class);
 
     private <T> List<T> executeQuery(String ejbqlString, Class<T> resultType) {
         return executeQuery(ejbqlString, null, resultType);
@@ -39,7 +39,7 @@ public class JPAQLTest extends QueryBase {
     private <T> List<T> executeQuery(String ejbqlString, 
             Map<String, Object> params, Class<T> resultType) {
         TypedQuery<T> query = em.createQuery(ejbqlString, resultType);
-        log.info("executing query:" + ejbqlString);
+        logger.info("executing query: {}", ejbqlString);
         if (params != null && !params.isEmpty()) {
             StringBuilder text=new StringBuilder();
             for(String key: params.keySet()) {
@@ -47,11 +47,11 @@ public class JPAQLTest extends QueryBase {
                 text.append(key +"=" + param + ",");
                 query.setParameter(key, param);
             }
-            log.info("   with params:{" + text + "}");
+            logger.info("   with params:[{}]", text);
         }
         List<T> objects = query.getResultList();
         for(Object o: objects) {
-           log.info("found result:" + o);
+           logger.info("found result:{}", o);
         }
         return objects;
     }
@@ -61,14 +61,14 @@ public class JPAQLTest extends QueryBase {
      */
     @Test
     public void testSimpleSelect() {
-        log.info("*** testSimpleSelect() ***");
+        logger.info("*** testSimpleSelect() ***");
         
         TypedQuery<Customer> query = em.createQuery(
         		"select object(c) from Customer as c", 
         		Customer.class);
         List<Customer> results = query.getResultList();
         for (Customer result : results) {
-        	log.info("found=" + result);
+        	logger.info("found={}", result);
         }
         int rows = results.size();
         assertTrue("unexpected number of customers", rows > 0);
@@ -79,7 +79,7 @@ public class JPAQLTest extends QueryBase {
      */
     @Test
     public void testResultStream() {
-        log.info("*** testStream() ***");
+        logger.info("*** testStream() ***");
         TypedQuery<Customer> query = em.createQuery(
                 "select c from Customer as c", 
                 Customer.class);
@@ -89,7 +89,7 @@ public class JPAQLTest extends QueryBase {
                 Collectors.toMap(c->c.getFirstName()+c.getLastName(), c->c ));
         
         for (Entry<String, Customer> result : resultMap.entrySet()) {
-            log.info("found=" + result);
+            logger.info("found={}", result);
         }
         int rows = resultMap.size();
         assertTrue("unexpected number of customers", rows > 0);
@@ -103,14 +103,14 @@ public class JPAQLTest extends QueryBase {
      */
     @Test
     public void testNonEntityQuery() {
-        log.info("*** testNonEntityQuery() ***");
+        logger.info("*** testNonEntityQuery() ***");
         
         TypedQuery<String> query = em.createQuery(
                 "select c.lastName from Customer c", String.class);
         List<String> results = query.getResultList();
         assertTrue("no results", results.size() > 0);
         for(String result : results) {
-            log.info("lastName=" + result);
+            logger.info("lastName={}", result);
         }
     }
 
@@ -120,7 +120,7 @@ public class JPAQLTest extends QueryBase {
      */
     @Test
     public void testMultiSelectObjectArray() {
-        log.info("*** testMultiSelectObjectArray() ***");
+        logger.info("*** testMultiSelectObjectArray() ***");
         
         TypedQuery<Object[]> query = em.createQuery(
                 "select c.firstName, c.hireDate from Clerk c", Object[].class);
@@ -130,7 +130,7 @@ public class JPAQLTest extends QueryBase {
             assertEquals("unexpected result length", 2, result.length);
             String firstName = (String) result[0];
             Date hireDate = (Date) result[1];
-            log.info("firstName=" + firstName + " hireDate=" + hireDate);
+            logger.info("firstName={} hireDate={}", firstName, hireDate);
         }
     }
 
@@ -140,7 +140,7 @@ public class JPAQLTest extends QueryBase {
      */
     @Test
     public void testMultiSelectTuple() {
-        log.info("*** testMultiSelectTuple() ***");
+        logger.info("*** testMultiSelectTuple() ***");
         
         TypedQuery<Tuple> query = em.createQuery(
                 "select c.firstName as firstName, c.hireDate as hireDate from Clerk c", Tuple.class);
@@ -150,7 +150,7 @@ public class JPAQLTest extends QueryBase {
             assertEquals("unexpected result length", 2, result.getElements().size());
             String firstName = result.get("firstName", String.class);
             Date hireDate = result.get("hireDate", Date.class);
-            log.info("firstName=" + firstName + " hireDate=" + hireDate);
+            logger.info("firstName={} hireDate={}", firstName, hireDate);
         }
     }
     
@@ -161,7 +161,7 @@ public class JPAQLTest extends QueryBase {
      */
     @Test
     public void testMultiSelectConstructor() {
-        log.info("*** testMultiSelectConstructor() ***");
+        logger.info("*** testMultiSelectConstructor() ***");
         
         TypedQuery<Receipt> query = em.createQuery(
             String.format("select new %s(", Receipt.class.getName()) +
@@ -171,7 +171,7 @@ public class JPAQLTest extends QueryBase {
         assertTrue("no results", results.size() > 0);
         for(Receipt receipt : results) {
             assertNotNull("no receipt", receipt);
-            log.info("receipt=" + receipt);
+            logger.info("receipt={}", receipt);
         }        
     }
 
@@ -181,7 +181,7 @@ public class JPAQLTest extends QueryBase {
      */
     @Test
     public void testPathExpressions() {
-        log.info("*** testPathExpressions() ***");
+        logger.info("*** testPathExpressions() ***");
         
         TypedQuery<Object[]> query = em.createQuery(
                 "select s.id, s.store.name from Sale s", Object[].class);
@@ -191,7 +191,7 @@ public class JPAQLTest extends QueryBase {
             assertEquals("unexpected result length", 2, result.length);
             Long id = (Long) result[0];
             String name = (String) result[1];
-            log.info("sale.id=" + id + ", sale.store.name=" + name);
+            logger.info("sale.id={}, sale.store.name={}", id, name);
         }
     }
 
@@ -200,7 +200,7 @@ public class JPAQLTest extends QueryBase {
      */
     @Test
     public void testCollectionPathExpressionsInnerJoin() {
-        log.info("*** testCollectionPathExpressionsInnerJoin ***");
+        logger.info("*** testCollectionPathExpressionsInnerJoin ***");
         
         int rows = executeQuery(
 //              "select sale.date from Clerk c INNER JOIN c.sales sale", 
@@ -215,7 +215,7 @@ public class JPAQLTest extends QueryBase {
      */
     @Test
     public void testOuterJoin() {
-        log.info("*** testOuterJoin() ***");
+        logger.info("*** testOuterJoin() ***");
         
         TypedQuery<Object[]> query = em.createQuery(
             "select c.id, c.firstName, sale.amount " +
@@ -230,8 +230,8 @@ public class JPAQLTest extends QueryBase {
             Long id = (Long) result[0];
             String name = (String) result[1];
             BigDecimal amount = (BigDecimal) result[2];
-            log.info("clerk.id=" + id + ", clerk.firstName=" + name +
-                    ", amount=" + amount);
+            logger.info("clerk.id={}, clerk.firstName={}, amount={}", 
+                    id, name, amount);
         }
     }
     
@@ -240,7 +240,7 @@ public class JPAQLTest extends QueryBase {
      */
     @Test
     public void testExplicitJoin() {
-    	log.info("*** testExplicitJoin ***");
+    	logger.info("*** testExplicitJoin ***");
     	
     	int rows = executeQuery(
     		"select c from Sale s, Customer c " +
@@ -256,30 +256,30 @@ public class JPAQLTest extends QueryBase {
      */
     @Test
     public void testFetchJoin1() {        
-        log.info("** testFetchJoin1() ***");
+        logger.info("** testFetchJoin1() ***");
         EntityManager em2 = createEm();
         Store store = em2.createQuery(
         		"select s from Store s JOIN s.sales " +
         		"where s.name='Big Al''s'",
         		Store.class).getSingleResult();
-        log.info("em.contains(" + em2.contains(store) + ")");
+        logger.info("em.contains({})", em2.contains(store));
         em2.close();
         try {
         	store.getSales().get(0).getAmount();
         	fail("did not trigger lazy initialization exception");
         } catch (LazyInitializationException expected) {
-        	log.info("caught expected exception:" + expected);
+        	logger.info("caught expected exception:" + expected);
         }
     }
     @Test
     public void testFetchJoin2() {        
-        log.info("** testFetchJoin2() ***");
+        logger.info("** testFetchJoin2() ***");
         EntityManager em2 = createEm();
         Store store = em2.createQuery(
         		"select s from Store s JOIN FETCH s.sales " +
         		"where s.name='Big Al''s'",
         		Store.class).getSingleResult();
-        log.info("em.contains(" + em2.contains(store) + ")");
+        logger.info("em.contains({})", em2.contains(store));
         em2.close();
        	store.getSales().get(0).getAmount();
     }
@@ -290,7 +290,7 @@ public class JPAQLTest extends QueryBase {
      */
     @Test
     public void testMultiSelectEntities() {
-        log.info("** testMultiSelectEntities() ***");
+        logger.info("** testMultiSelectEntities() ***");
 
         EntityManager em2 = createEm();
         Sale sale = em2.createQuery(
@@ -315,7 +315,7 @@ public class JPAQLTest extends QueryBase {
      */
     @Test
     public void testDISTINCT() {
-        log.info("*** testDISTINCT() ***");
+        logger.info("*** testDISTINCT() ***");
         
         int rows = executeQuery(
                 "select DISTINCT c.lastName from Customer c",
@@ -336,7 +336,7 @@ public class JPAQLTest extends QueryBase {
      */
     @Test
     public void testLiteral() {
-        log.info("*** testLiteral() ***");
+        logger.info("*** testLiteral() ***");
         int rows = executeQuery(
                 "select c from Customer c " +
                 "where c.firstName='cat'",
@@ -346,7 +346,7 @@ public class JPAQLTest extends QueryBase {
 
     @Test
     public void testSpecialCharacter() {
-        log.info("*** testSpecialCharacter() ***");
+        logger.info("*** testSpecialCharacter() ***");
         int rows = executeQuery(
                 "select s from Store s " +
                 "where s.name='Big Al''s'",
@@ -359,7 +359,7 @@ public class JPAQLTest extends QueryBase {
      */
     @Test
     public void testLike() {
-        log.info("*** testLike() ***");
+        logger.info("*** testLike() ***");
         
         int rows = executeQuery(
                   "select c from Clerk c " +
@@ -397,7 +397,7 @@ public class JPAQLTest extends QueryBase {
      */
     @Test
     public void testFormulas() {
-        log.info("*** testFormulas() ***");
+        logger.info("*** testFormulas() ***");
         
         String jpaql = "select count(s) from Sale s " +
                        "where (s.amount * :tax) > :amount";
@@ -409,9 +409,9 @@ public class JPAQLTest extends QueryBase {
         for (;query.setParameter("tax", new BigDecimal(tax))
         		   .getSingleResult().intValue()==0;
         	  tax += 0.01) {
-        	log.debug("tax=" + NumberFormat.getPercentInstance().format(tax));
+        	logger.debug("tax={}", NumberFormat.getPercentInstance().format(tax));
         }
-        log.info("raise taxes to: " + NumberFormat.getPercentInstance().format(tax));
+        logger.info("raise taxes to: {}", NumberFormat.getPercentInstance().format(tax));
         
         assertEquals("unexpected level for tax:" + tax, 0.07, tax, .01);
     }
@@ -422,7 +422,7 @@ public class JPAQLTest extends QueryBase {
      */
     @Test
     public void testLogical() {
-        log.info("*** testLogical() ***");
+        logger.info("*** testLogical() ***");
         int rows = executeQuery(
             "select c from Customer c " +
             "where (c.firstName='cat' AND c.lastName='inhat')" +
@@ -444,7 +444,7 @@ public class JPAQLTest extends QueryBase {
      */
     @Test
     public void testEquality() {
-        log.info("*** testEquality() ***");
+        logger.info("*** testEquality() ***");
         
         //get a clerk entity
         Clerk clerk = em.createQuery(
@@ -462,7 +462,7 @@ public class JPAQLTest extends QueryBase {
 	            .getResultList();
 
         for (Sale result : sales) {
-        	log.info("found=" + result);
+        	logger.info("found={}", result);
         }
         assertEquals("unexpected number of rows", 2, sales.size());
     }
@@ -472,7 +472,7 @@ public class JPAQLTest extends QueryBase {
      */
     @Test
     public void testBetween() {
-        log.info("*** testBetween() ***");
+        logger.info("*** testBetween() ***");
         
         String query = "select s from Sale s " +
             "where s.amount BETWEEN :low AND :high";
@@ -498,7 +498,7 @@ public class JPAQLTest extends QueryBase {
      */
     @Test
     public void testIsNull() {
-        log.info("*** testIsNull() ***");
+        logger.info("*** testIsNull() ***");
         
         String query = "select s from Sale s " +
             "where s.store IS NULL";
@@ -519,7 +519,7 @@ public class JPAQLTest extends QueryBase {
      */
     @Test
     public void testIsEmpty() {
-        log.info("*** testIsEmpty() ***");
+        logger.info("*** testIsEmpty() ***");
         
         String query = "select c from Clerk c " +
             "where c.sales IS EMPTY";
@@ -540,7 +540,7 @@ public class JPAQLTest extends QueryBase {
      */
     @Test
     public void testMemberOf() {
-        log.info("*** testMemberOf() ***");
+        logger.info("*** testMemberOf() ***");
         
         //get a clerk entity
         Clerk clerk = em.createQuery(
@@ -556,7 +556,7 @@ public class JPAQLTest extends QueryBase {
                 .getResultList();
         
         for (Sale result : sales) {
-        	log.info("found=" + result);
+        	logger.info("found={}", result);
         }
         assertEquals("unexpected number of rows", 2, sales.size());
     }
@@ -566,7 +566,7 @@ public class JPAQLTest extends QueryBase {
      */
     @Test
     public void testSubqueries() {
-       log.info("*** testSubqueries() ***");   
+       logger.info("*** testSubqueries() ***");   
        
        List<Customer> results = executeQuery(
                "select c from Customer c " +
@@ -584,7 +584,7 @@ public class JPAQLTest extends QueryBase {
      */
     @Test
     public void testAll() {
-        log.info("*** testAll() ***");  
+        logger.info("*** testAll() ***");  
         
         //executeQuery("select s from Sale s", Sale.class);
         
@@ -631,7 +631,7 @@ public class JPAQLTest extends QueryBase {
      */
     @Test
     public void testStringFunctions() {
-        log.info("*** testStringFunctions() ***");
+        logger.info("*** testStringFunctions() ***");
 
         int rows = executeQuery(
                 "select c from Customer c " +
@@ -699,7 +699,7 @@ public class JPAQLTest extends QueryBase {
      */
     @Test
     public void testDates() {        
-        log.info("*** testDates() ***");
+        logger.info("*** testDates() ***");
 
         int rows = executeQuery(
                 "select s from Sale s " +
@@ -734,7 +734,7 @@ public class JPAQLTest extends QueryBase {
      */
     @Test
     public void testOrderBy() {
-        log.info("*** testOrderBy() ***");
+        logger.info("*** testOrderBy() ***");
 
         List<Sale> results = executeQuery(
             "select s from Sale s ORDER BY s.amount ASC", Sale.class); 
@@ -764,7 +764,7 @@ public class JPAQLTest extends QueryBase {
      */    
     @Test
     public void testCount() {        
-        log.info("*** testCount() ***");
+        logger.info("*** testCount() ***");
 
         List<Number> results= executeQuery(
                 "select COUNT(s) from Sale s", Number.class);
@@ -777,7 +777,7 @@ public class JPAQLTest extends QueryBase {
      */
     @Test
     public void testMaxMin() {        
-        log.info("*** testMaxMin() ***");
+        logger.info("*** testMaxMin() ***");
 
         List<Number> results= executeQuery(
                 "select max(s.amount) from Sale s", Number.class);
@@ -795,7 +795,7 @@ public class JPAQLTest extends QueryBase {
      */
     @Test
     public void testSumAve() {        
-        log.info("*** testSumAve() ***");
+        logger.info("*** testSumAve() ***");
 
         List<Number> results= executeQuery(
             "select sum(s.amount) from Sale s", Number.class);
@@ -813,7 +813,7 @@ public class JPAQLTest extends QueryBase {
      */
     @Test
     public void testGroupBy() {
-        log.info("*** testGroupBy() ***");
+        logger.info("*** testGroupBy() ***");
     	
         List<Object[]> results= em.createQuery(
                 "select c, COUNT(s) from Clerk c " +
@@ -821,7 +821,7 @@ public class JPAQLTest extends QueryBase {
                 "GROUP BY c", Object[].class)
                 .getResultList();
         for (Object[] result : results) {
-        	log.info("found=" + Arrays.toString(result));
+        	logger.info("found={}", Arrays.toString(result));
         }
         assertEquals("unexpected number of rows", 3, results.size());
     }
@@ -833,7 +833,7 @@ public class JPAQLTest extends QueryBase {
      */
     @Test
     public void testHaving() {
-        log.info("*** testHaving() ***");
+        logger.info("*** testHaving() ***");
     	
         List<Object[]> results= em.createQuery(
                 "select c, COUNT(s) from Clerk c " +
@@ -842,7 +842,7 @@ public class JPAQLTest extends QueryBase {
                 "HAVING COUNT(s) <= 1", Object[].class)
                 .getResultList();
         for (Object[] result : results) {
-        	log.info("found=" + Arrays.toString(result));
+        	logger.info("found={}", Arrays.toString(result));
         }
         assertEquals("unexpected number of rows", 2, results.size());
     }
