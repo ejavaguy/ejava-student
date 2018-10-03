@@ -35,7 +35,7 @@
         <!-- JMS dependencies for resources injected -->
         <dependency>
             <groupId>javax.jms</groupId>
-            <artifactId>jms</artifactId>
+            <artifactId>javax.jms-api</artifactId>
         </dependency>
 
         <!-- provides RMI dependencies for JBoss -->
