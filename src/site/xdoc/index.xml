@@ -34,8 +34,8 @@
           <li>2018-10-28: Posted Transaction TODOs</li>
           <li>2018-10-21: Posted EJB TODOs</li>
           <li>2018-10-14: Posted Final Project 1 TODOs, Project2 Spec and Server-side EJB Modules</li>
-          <li>2018-10-07: Posted JPA-QL TODOs</li>
           -->
+          <li>2018-10-02: Posted JPA-QL TODOs</li>
           <li>2018-09-26: Posted Updated ORM Relationship TODOs</li>
           <li>2018-09-19: Posted Core JPA TODOs</li>
           <li>2018-09-12: Posted EntityManager TODOs</li>
@@ -281,7 +281,7 @@
       </ul></li>
       -->
 
-      <!-- week 06: JPAQL 
+      <!-- week 06: JPAQL -->
       <li><ul> 
             <li>Exercises
                 <ul>
@@ -303,7 +303,14 @@
                 </ul>
             </li>
       </ul></li>
-      -->
+
+
+
+      </ul>
+      </subsection>
+
+      <subsection name="Things you should have finished!" id="completed">
+      <ul>
 
       <!-- week 05: JPA Relationships -->
       <li><ul> 
@@ -350,13 +357,6 @@
             </li>
       </ul></li>
 
-
-
-      </ul>
-      </subsection>
-
-      <subsection name="Things you should have finished!" id="completed">
-      <ul>
 
       <!-- week 04: JPA Core -->
       <li><ul> 
