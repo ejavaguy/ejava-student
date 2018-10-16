@@ -260,10 +260,10 @@
             </li>
             <li>Exercises
                 <ul>
-                  <li>Start working through the EJB exercises.
+                  <li>Work through the Basic EJB Development exercise.
                   It is highly recommended that you go through this since it
                   takes you through many of the use cases and common issues
-                  related to project 2.  Stop after completing Basic EJB Development</li>
+                  related to project 2.</li>
                 </ul>
             </li>
             <li>Project 2
@@ -273,8 +273,8 @@
                   <li>Look over the specification for project 2.</li>
                   <li>Apply the maven, EJB, EAR, RMI Test, and remote interface
                   concepts from the exercises to your project 2.</li>
-                  <li>Have one IT test deploying eLeagueEAR with an EJB and invoking
-                  a skeletal method using RMI.
+                  <li>Attempt to have one IT test deploying eLeagueEAR with an EJB and 
+                  no persistence unit. Try to invoke at least one skeletal method using RMI.
                   </li>
                 </ul>
             </li>
