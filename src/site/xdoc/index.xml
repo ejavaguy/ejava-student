@@ -33,8 +33,8 @@
           <li>2018-11-04: Posted Web Tier TODOs</li>
           <li>2018-10-28: Posted Transaction TODOs</li>
           <li>2018-10-21: Posted EJB TODOs</li>
-          <li>2018-10-14: Posted Final Project 1 TODOs, Project2 Spec and Server-side EJB Modules</li>
           -->
+          <li>2018-10-17: Posted Project2 and 3 Specs and Server-side EJB Modules</li>
           <li>2018-10-10: Posted Final Project 1 TODOs</li>
           <li>2018-10-02: Posted JPA-QL TODOs</li>
           <li>2018-09-26: Posted Updated ORM Relationship TODOs</li>
@@ -238,32 +238,19 @@
       </ul></li>
       -->
 
-      <!-- week 07: SQL Tuning and Session Beans 
+      <!-- week 08: SQL Tuning and Session Beans 
+      -->
       <li><ul> 
-            <li>DAOs
-                <ul>
-                  <li>Add indexes to your DB schema to at least account for where 
-                      clauses used in queries and foreign keys used in relationship joins.</li>
-                </ul>
-            </li>
-            <li>Project
+            <li>Project 1
                 <ul>
                   <li>Finish up project 1 and submit according
                   to the submission guidelines.</li>
-                  <li>Perform any desired post-submission refactoring of your 
-                  project 1 implementation prior to re-use within project 2.</li>
-                  <li>Look over the specification for project 2.</li>
-                  <li>Apply the maven, EJB, EAR, RMI Test, and remote interface
-                  concepts from the exercises to your project 2.</li>
-                  <li>Have one IT test deploying eSalesEAR with and EJB and invoking
-                  skeletal methods from end-to-end scenario.
-                  </li>
                 </ul>
             </li>
             <li>Examples
                 <ul>
                   <li>The class examples have been updated to include the 
-                  server-side modules. Be be sure to have your jboss server 
+                  server-side modules. Be be sure to have your JBoss server 
                   running when building prior to building them from this 
                   point forward.</li>
                   <li>Begin looking at ejb-basic-example and ejbsessionBank example applications; 
@@ -279,9 +266,28 @@
                   related to project 2.  Stop after completing Basic EJB Development</li>
                 </ul>
             </li>
+            <li>Project 2
+                <ul>
+                  <li>Perform any desired post-submission refactoring of your 
+                  project 1 implementation prior to re-use within project 2.</li>
+                  <li>Look over the specification for project 2.</li>
+                  <li>Apply the maven, EJB, EAR, RMI Test, and remote interface
+                  concepts from the exercises to your project 2.</li>
+                  <li>Have one IT test deploying eLeagueEAR with an EJB and invoking
+                  a skeletal method using RMI.
+                  </li>
+                </ul>
+            </li>
       </ul></li>
-      -->
 
+
+      </ul>
+      </subsection>
+
+      <subsection name="Things you should have finished!" id="completed">
+      <ul>
+
+      <!-- week 07: Project 1 Work -->
       <li><ul> 
             <li>DAOs
                 <ul>
@@ -296,14 +302,6 @@
                 </ul>
             </li>
       </ul></li>
-
-
-
-      </ul>
-      </subsection>
-
-      <subsection name="Things you should have finished!" id="completed">
-      <ul>
 
       <!-- week 06: JPAQL -->
       <li><ul> 
