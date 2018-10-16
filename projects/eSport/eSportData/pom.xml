@@ -21,6 +21,11 @@
     <modules>
         <module>eLeagueDTO</module>
         <module>eLeagueTestUtil</module>
+        <module>eLeagueTestEJB</module>
+        <module>eLeagueTestEAR</module>
+        <module>eLeagueRMITest</module>
+        <!--
+        -->
     </modules>
 
     <properties>
