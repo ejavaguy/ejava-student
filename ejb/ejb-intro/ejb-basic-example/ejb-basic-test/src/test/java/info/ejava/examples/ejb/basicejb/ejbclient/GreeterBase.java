@@ -31,15 +31,12 @@ public abstract class GreeterBase {
     private static final Logger logger = LoggerFactory
             .getLogger(GreeterBase.class);
 
-    protected Properties jndiProperties; // varies whether using Remoting or
-                                         // EJBClient
     protected String jndiName; // varies whether accessing EJB, WAR or EAR deployment and access
     protected Context jndi;
     protected GreeterRemote greeter;
 
     @Before
     public void setUp() throws Exception {
-        logger.info("using jndiProperties={}", jndiProperties);
         logger.info("using jndiName={}", jndiName);
         jndi = new InitialContext();
         greeter = (GreeterRemote) jndi.lookup(jndiName);

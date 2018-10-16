@@ -1,7 +1,6 @@
 package info.ejava.examples.ejb.basicejb.ejbclient;
 
 import info.ejava.examples.ejb.basic.ejb.GreeterRemote;
-import ejava.util.jndi.JNDIUtil;
 
 /**
  * This class sets up the base IT test to use JBoss Remoting and access the
@@ -14,7 +13,6 @@ public class GreeterRemotingWARIT extends GreeterBase {
 
     @Override
     public void setUp() throws Exception {
-        super.jndiProperties = JNDIUtil.getJNDIProperties("jboss.remoting.");
         super.jndiName = WAR_REMOTING_JNDINAME;
         super.setUp();
     }
