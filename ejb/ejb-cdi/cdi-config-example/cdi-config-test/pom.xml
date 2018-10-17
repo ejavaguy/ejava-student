@@ -1,0 +1,126 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <parent>
+        <groupId>info.ejava.examples.ejb</groupId>
+        <artifactId>cdi-config-example</artifactId>
+        <version>5.0.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>cdi-config-test</artifactId>
+    <packaging>jar</packaging>
+
+    <name>EJB::CDI::CDI Config Example::RMI Test</name>
+    <description>
+        This project is used to deploy and test the server-side components
+        for the CDI configuration example.
+    </description>
+
+    <dependencies>
+        <!-- core dependencies -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- component to test within deployment-->
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>cdi-config-ejb</artifactId>
+            <version>${project.version}</version>
+            <!--  eclipse/junit not working with ejb-client type -->
+            <type>jar</type>
+            <scope>test</scope>
+        </dependency>
+        
+        <!-- package being deployed must be a dependency -->
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>cdi-config-ear</artifactId>
+            <version>${project.version}</version>
+            <type>ear</type>
+        </dependency>
+
+        <!-- brings in JBoss RMI dependencies -->
+        <dependency>
+            <groupId>info.ejava.examples.common</groupId>
+            <artifactId>jboss-rmi-client</artifactId>
+            <version>${project.version}</version>
+            <type>pom</type>
+            <scope>test</scope>
+        </dependency>    
+
+        <!-- aids in JNDI slow JNDI lookups when low resources -->
+        <dependency>
+            <groupId>info.ejava.examples.common</groupId>
+            <artifactId>ejava-util</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+            
+        <!-- test dependencies -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <scope>test</scope>
+        </dependency>    
+    </dependencies>
+
+    <build>
+        <!-- filter test/resource files for profile-specific valies -->
+        <testResources>
+            <testResource>
+                <directory>src/test/resources</directory>
+                <filtering>true</filtering>
+            </testResource>
+        </testResources>
+
+        <plugins>
+            <!-- artifacts to deploy to server -->
+            <plugin>
+                <groupId>org.codehaus.cargo</groupId>
+                <artifactId>cargo-maven2-plugin</artifactId>
+                <configuration>
+                    <deployables>
+                        <deployable>
+                            <groupId>${project.groupId}</groupId>
+                            <artifactId>cdi-config-ear</artifactId>
+                            <type>ear</type>
+                        </deployable>
+                    </deployables>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <configuration>
+                    <systemPropertyVariables>
+                        <cargo.startstop>${cargo-startstop}</cargo.startstop>
+                    </systemPropertyVariables>
+                </configuration>
+            </plugin>
+
+            <!-- this module does not play well with the site plugin -->
+            <plugin> 
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-site-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                    <skipDeploy>true</skipDeploy>
+                </configuration>
+            </plugin>
+
+        </plugins>      
+    </build>
+</project>

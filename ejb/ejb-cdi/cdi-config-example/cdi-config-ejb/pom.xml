@@ -1,0 +1,65 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <parent>
+        <groupId>info.ejava.examples.ejb</groupId>
+        <artifactId>cdi-config-example</artifactId>
+        <version>5.0.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>cdi-config-ejb</artifactId>
+    <packaging>ejb</packaging>
+
+    <name>EJB::CDI::CDI Config Example::EJB</name>
+    <description>
+        This project provides example usages of CDI configuration within the EJB tier.
+    </description>
+
+    <dependencies>
+        <!-- core dependencies -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <!--
+        <dependency>
+            <groupId>javax.annotation</groupId>
+            <artifactId>javax.annotation-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        -->
+        <dependency>
+            <groupId>javax.enterprise</groupId>
+            <artifactId>cdi-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.ejb</groupId>
+            <artifactId>javax.ejb-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.persistence</groupId>
+            <artifactId>javax.persistence-api</artifactId>
+            <scope>provided</scope>
+        </dependency>        
+            
+       </dependencies>
+    <build>
+        <plugins>
+              <!-- tell the EJB plugin we are using EJB3  and configure client-jar -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-ejb-plugin</artifactId>
+                <configuration>
+                    <generateClient>true</generateClient>
+                    <clientExcludes>
+                        <clientExclude>**/ejb/*EJB.class</clientExclude>
+                        <clientExclude>META-INF/**/*</clientExclude>
+                    </clientExcludes>
+                </configuration>
+            </plugin>      
+        </plugins>      
+    </build>
+</project>

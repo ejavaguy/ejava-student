@@ -18,13 +18,13 @@
     <modules>
         <module>ejb-intro</module>
         <module>ejb-config</module>
+        <module>ejbsessionBank</module>
         <module>ejb-jpa</module>
         <module>ejb-cdi</module>
+        <module>jndiDemo</module>
         <module>ejb-tx</module>
         <module>ejb-security</module>
         <module>ejb-interceptor</module>
-        <module>ejbsessionBank</module>
-        <module>jndiDemo</module>
         <module>webtier</module>
         <module>webejb</module>
         <module>txReservation</module>

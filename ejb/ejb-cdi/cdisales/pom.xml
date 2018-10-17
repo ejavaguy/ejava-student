@@ -11,7 +11,7 @@
     <artifactId>cdisales</artifactId>
     <packaging>pom</packaging>
 
-    <name>EJB::CDI Example</name>
+    <name>EJB::CDI::CDI Sales Example</name>
     <description>
         This project provides a examples of using CDI
     </description>

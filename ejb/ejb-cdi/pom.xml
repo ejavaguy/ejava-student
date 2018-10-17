@@ -10,12 +10,14 @@
     <artifactId>ejb-cdi</artifactId>
     <packaging>pom</packaging>
 
-    <name>EJB::Contexts and Dependency Injection</name>
+    <name>EJB::CDI</name>
     <description>
-        This project provides the home for demonstrating concepts related to CDI.
+        This project provides the home for demonstrating concepts related to 
+        Contexts and Dependency Injection (CDI).
     </description>
 
     <modules>
+        <module>cdi-config-example</module>
         <module>cdisales</module>
     </modules>
     <profiles>

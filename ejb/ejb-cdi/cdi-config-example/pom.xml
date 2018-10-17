@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <parent>
+        <groupId>info.ejava.examples.ejb</groupId>
+        <artifactId>ejb-cdi</artifactId>
+        <version>5.0.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>cdi-config-example</artifactId>
+    <packaging>pom</packaging>
+
+    <name>EJB::CDI::CDI Config Example</name>
+    <description>
+        This project is the root project for a basic CDI
+        configuration example for EJBs
+    </description>
+    <modules>
+        <module>cdi-config-ejb</module>
+        <module>cdi-config-ear</module>
+        <module>cdi-config-test</module>
+    </modules>
+</project>
