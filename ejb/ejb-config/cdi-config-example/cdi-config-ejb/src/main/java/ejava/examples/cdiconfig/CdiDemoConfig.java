@@ -42,7 +42,7 @@ public class CdiDemoConfig {
 	
 	
     @Produces
-    @CdiDemo
+    //@CdiDemo
     public JobsDao jobsDao(@CdiDemo EntityManager em) {
         JobsDaoImpl impl = new JobsDaoImpl();
         impl.setEntityManager(em);
