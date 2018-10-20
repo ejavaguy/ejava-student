@@ -79,12 +79,22 @@ public class AnnotatedEJB extends JNDIReader
 	private InjectedEJB ejb7;
 	@EJB(lookup="java:module/InjectedEJB")
 	private InjectedEJB ejb8;
+    @EJB
+    private InjectedTypedLocal ejb9a;
+    @EJB
+    private InjectedTypedRemote ejb9b;
+//    @EJB
+//    private InjectedTyped ejb10;
+    @EJB(beanInterface=InjectedTypedLocal.class)
+    private InjectedTyped ejb10a;
+    @EJB(beanInterface=InjectedTypedRemote.class)
+    private InjectedTyped ejb10b;    
 
 	@PersistenceContext(unitName="enc-config")
 	private EntityManager em1;
 	@PersistenceContext(unitName="enc-config", name="jpa/em2")
 	private EntityManager em2;
-	@PersistenceContext(name="jpa/em2")
+	@PersistenceContext(name="jpa/em3")
 	private EntityManager em3;
 
 	@PersistenceUnit(unitName="enc-config")
