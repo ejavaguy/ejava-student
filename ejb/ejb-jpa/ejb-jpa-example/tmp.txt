@@ -1,4 +1,0 @@
-./ejb-jpa-example-war/target/ejb-jpa-example-war-sources.jar
-./ejb-jpa-example-war/target/ejb-jpa-example-war/WEB-INF/lib/ejb-jpa-example-blimpl-4.0.0-SNAPSHOT.jar
-./ejb-jpa-example-blimpl/target/ejb-jpa-example-blimpl.jar
-./ejb-jpa-example-blimpl/target/ejb-jpa-example-blimpl-sources.jar
