@@ -35,9 +35,12 @@ public class HotelMgmtEJBIT  {
             "ejb:/ejb-jpa-example-war/HotelInitEJB!" + HotelInitRemote.class.getName());
     private static final String reservationJNDI = System.getProperty("reservation.jndi.name",
             "ejb:/ejb-jpa-example-war/ReservationEJB!" + ReservationRemote.class.getName() +"?stateful");
+    private static final String hotelRlinitJNDI = System.getProperty("hotelRlinit.jndi.name",
+            "ejb:/ejb-jpa-example-war/HotelInitResourceLocalEJB!" + HotelInitRemote.class.getName());
 	private Context jndi;
 	private HotelMgmtRemote hotelMgmt;
     private HotelInitRemote hotelInit;
+    private HotelInitRemote hotelRlInit;
 	
 	@BeforeClass
 	public static void setUpClass() throws NamingException {
@@ -50,6 +53,8 @@ public class HotelMgmtEJBIT  {
 	    hotelMgmt = (HotelMgmtRemote)jndi.lookup(hotelmgmtJNDI);
         logger.debug("looking up jndi.name={}", hotelinitJNDI);
         hotelInit = (HotelInitRemote)jndi.lookup(hotelinitJNDI);
+        logger.debug("looking up jndi.name={}", hotelRlinitJNDI);
+        hotelRlInit = (HotelInitRemote)jndi.lookup(hotelRlinitJNDI);
         
         cleanup();
         populate();
@@ -61,6 +66,34 @@ public class HotelMgmtEJBIT  {
 	
 	private void populate() {
 	    hotelInit.populate();
+	}
+	
+	/**
+	 * This test uses the INIT EJB configured to use BMT and JTA
+	 */
+    @Test
+    public void jta() {
+        hotelInit.clearAll();
+        List<Room> rooms = hotelMgmt.getAvailableRooms(null, 0, 0);
+        assertEquals("available room not found", 0, rooms.size());
+        
+        hotelInit.populate();
+        rooms = hotelMgmt.getAvailableRooms(null, 0, 0);
+        assertEquals("available room not found", 4, rooms.size());
+    }
+
+    /**
+     * This test uses the INIT EJB configured to use BMT and RESOURCE_LOCAL
+     */
+    @Test
+	public void resourceLocal() {
+	    hotelRlInit.clearAll();
+        List<Room> rooms = hotelMgmt.getAvailableRooms(null, 0, 0);
+        assertEquals("available room not found", 0, rooms.size());
+	    
+        hotelRlInit.populate();
+        rooms = hotelMgmt.getAvailableRooms(null, 0, 0);
+        assertEquals("available room not found", 4, rooms.size());
 	}
 
 	/**
@@ -74,7 +107,7 @@ public class HotelMgmtEJBIT  {
         assertEquals("available room not found", 1, rooms.size());
         Room room = rooms.get(0);
         logger.info("lets take: {}", room);
-        logger.info("what's floor is this??? {}", room.getFloor().getClass());
+        logger.info("what floor class is this??? {}", room.getFloor().getClass());
         assertFalse("floor was not proxy", room.getFloor().getClass().equals(Floor.class));
         
         Guest guest = new Guest("Cosmo Kramer");

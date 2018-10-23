@@ -7,6 +7,7 @@
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         <jta-data-source>java:jboss/datasources/ExampleDS</jta-data-source>
 
+        <!-- located in WEB-INF/lib/ejb-jpa-example-blimpl-${project.version}.jar -->
         <class>info.ejava.examples.ejb.ejbjpa.bo.Guest</class>
         <class>info.ejava.examples.ejb.ejbjpa.bo.Room</class>
         <class>info.ejava.examples.ejb.ejbjpa.bo.Floor</class>
@@ -19,9 +20,10 @@
         </properties>
     </persistence-unit>
                 
-    <persistence-unit name="ejbjpa-hotel" transaction-type="RESOURCE_LOCAL">
+    <persistence-unit name="ejbjpa-hotel-rl" transaction-type="RESOURCE_LOCAL">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 
+        <!-- located in WEB-INF/lib/ejb-jpa-example-blimpl-${project.version}.jar -->
         <class>info.ejava.examples.ejb.ejbjpa.bo.Guest</class>
         <class>info.ejava.examples.ejb.ejbjpa.bo.Room</class>
         <class>info.ejava.examples.ejb.ejbjpa.bo.Floor</class>
