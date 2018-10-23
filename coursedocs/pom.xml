@@ -147,7 +147,6 @@
             <type>war</type>
             <scope>runtime</scope>
         </dependency>
-        <!--
         <dependency>
             <groupId>info.ejava.docs.ejb</groupId>
             <artifactId>ejb-jpa-notes</artifactId>
@@ -155,6 +154,7 @@
             <type>war</type>
             <scope>runtime</scope>
         </dependency>
+        <!--
         <dependency>
             <groupId>info.ejava.docs.ejb</groupId>
             <artifactId>ejb-tx-notes</artifactId>
@@ -448,16 +448,16 @@
                     <type>war</type>
                     <targetPath>../site/docs/content</targetPath>
                 </overlay>
+                <overlay>
+                    <groupId>info.ejava.docs.ejb</groupId>
+                    <artifactId>ejb-jpa-notes</artifactId>
+                    <type>war</type>
+                    <targetPath>../site/docs/content</targetPath>
+                </overlay>
                 <!--
                 <overlay>
                     <groupId>info.ejava.docs.ejb</groupId>
                     <artifactId>enc-config-notes</artifactId>
-                    <type>war</type>
-                    <targetPath>../site/docs/content</targetPath>
-                </overlay>
-                <overlay>
-                    <groupId>info.ejava.docs.ejb</groupId>
-                    <artifactId>ejb-jpa-notes</artifactId>
                     <type>war</type>
                     <targetPath>../site/docs/content</targetPath>
                 </overlay>
