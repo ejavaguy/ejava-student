@@ -39,7 +39,8 @@ public class WarehouseEJBIT  {
         logger.debug("looking up jndi.name={}", warehouseJNDI);
 	    warehouse = (WarehouseRemote)jndi.lookup(warehouseJNDI);
         
-        logger.debug("{} rows deleted", warehouse.cleanup());
+	    int rows = warehouse.cleanup();
+        logger.debug("{} rows deleted", rows);
 	}
 	
 	private List<Shipment> makeShipments() {
