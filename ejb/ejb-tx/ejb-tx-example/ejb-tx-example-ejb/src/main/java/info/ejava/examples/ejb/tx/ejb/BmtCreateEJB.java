@@ -13,6 +13,7 @@ import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.SynchronizationType;
 import javax.transaction.HeuristicMixedException;
 import javax.transaction.HeuristicRollbackException;
 import javax.transaction.NotSupportedException;
@@ -29,7 +30,8 @@ import org.slf4j.LoggerFactory;
 public class BmtCreateEJB {
     private static final Logger logger = LoggerFactory.getLogger(CreateEJB.class);
     
-    @PersistenceContext(unitName="ejbtx-warehouse")
+        //synchronization=SynchronizationType.SYNCHRONIZED is the default
+    @PersistenceContext(unitName="ejbtx-warehouse", synchronization=SynchronizationType.UNSYNCHRONIZED)
     private EntityManager em;
     
     @EJB
