@@ -31,8 +31,8 @@
           <li>2018-11-18: Posted JMS TODOs</li>
           <li>2018-11-11: Posted Security TODOs</li>
           <li>2018-11-04: Posted Web Tier TODOs</li>
-          <li>2018-10-31: Posted Transaction TODOs</li>
           -->
+          <li>2018-10-31: Posted Transaction TODOs</li>
           <li>2018-10-24: Posted EJB TODOs</li>
           <li>2018-10-17: Posted Project2 and 3 Specs and Server-side EJB Modules</li>
           <li>2018-10-10: Posted Final Project 1 TODOs</li>
@@ -179,21 +179,24 @@
       -->
 
       <!-- week 09: Transactions 
+      -->
       <li><ul>
-            <li>Examples
+            <li>Exercises
                 <ul>
-                  <li>ejb-jpa-example provides beyond-basic examples of using 
-                    JPA on the server-side - to include LAZy-load exceptions/solutions,
-                    DTOs, caching state with Stateful EJBs, etc.
-                  </li>
+                  <li>Complete the JPA/EJB Remote Interfaces Exercise.
+                  It is highly recommended that you go through this since it
+                  takes you through many of the use cases and common issues
+                  related to project 2.</li>
                 </ul>
             </li>
             <li>Project
                 <ul>
-                  <li>Design your remote interfaces and DTO classes for eSales</li>
+                  <li>Design your remote interfaces and DTO classes for eLeague</li>
                   <li>Begin adding the other session beans, remote interfaces,
                   business logic integration, and RMI tests for project 2.</li>
-                  <li>Finish implementing EJB use cases for eSales end-to-end testing.</li>
+                  <li>Work thru the EJB use cases for eLeague end-to-end testing
+                  using RMI. You will be able to reuse all of these artifacts for 
+                  JAX-RS covered next week.</li>
                   <li>Transactions
                         <ul>
                           <li>Add @Transaction declarations</li>
@@ -206,15 +209,19 @@
                 </ul>
             </li>
       </ul></li>
-      -->
+
+      </ul>
+      </subsection>
+
+      <subsection name="Things you should have finished!" id="completed">
+      <ul>
 
       <!-- week 09: Session Beans 
       -->
       <li><ul>
             <li>Exercises
                 <ul>
-                  <li>Continue working through the Java EE exercises (Basic EJB Development
-                  and JPA/EJB Remote Interfaces).
+                  <li>Continue working through the Java EE exercises (Basic EJB Development).
                   It is highly recommended that you go through this since it
                   takes you through many of the use cases and common issues
                   related to project 2.</li>
@@ -232,18 +239,14 @@
                   <li>Look over the specification for project 2.</li>
                   <li>Apply the maven, EJB, EAR, RMI Test, and remote interface
                   concepts from the exercises to your project 2.</li>
-                  <li>Have one end-to-end RMI thread through eLeagueTest, EJB, and project 1
-                  operational</li>
+                  <li>Have an EAR and WAR deployments to the server complete
+                  with a hollow EJB (no persistence unit or dependencies) 
+                  and a remote interface in each.</li>
+                  <li>Have a working JNDI lookup and call from your IT test
+                  to the deployed hollow EJB.</li>
                 </ul>
             </li>
       </ul></li>
-
-
-      </ul>
-      </subsection>
-
-      <subsection name="Things you should have finished!" id="completed">
-      <ul>
 
       <!-- week 08: SQL Tuning and Session Beans 
       -->
