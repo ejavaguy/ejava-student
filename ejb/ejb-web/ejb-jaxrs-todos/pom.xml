@@ -2,21 +2,21 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <parent>
         <groupId>info.ejava.examples.ejb</groupId>
-        <artifactId>ejb</artifactId>
+        <artifactId>ejb-web</artifactId>
         <version>5.0.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>ejb-web</artifactId>
+    <artifactId>ejb-jaxrs-todos</artifactId>
     <packaging>pom</packaging>
 
-    <name>EJB::Web-oriented EJB</name>
+    <name>EJB::Web::JAX-RS TODOs Example</name>
     <description>
-        This project is the root project for JAX-RS Web API
-        examples.
+        This project is the root project for a JAX-RS
+        example using TODOs.
     </description>
     <modules>
-        <module>ejb-web-todos</module>
-        <module>ejb-web-inventory</module>
+        <module>ejb-jaxrs-todos-client</module>
+        <module>ejb-jaxrs-todos-war</module>
     </modules>
 </project>
