@@ -2,6 +2,9 @@ package info.ejava.examples.jaxrs.todos.dto;
 
 import java.io.Serializable;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement(name="todoItem", namespace="urn:ejava.jaxrs.todos")
 public class TodoItemDTO implements Serializable {
     private static final long serialVersionUID = 1L;
     private String name;

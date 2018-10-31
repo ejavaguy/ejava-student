@@ -34,6 +34,7 @@ public class TodoListsIT {
     private static final Logger logger = LoggerFactory.getLogger(TodoListsIT.class);
     private static final String baseHttpUrlString = System.getProperty("url.base.http", "http://localhost:8080");
     private static final String mediaType = System.getProperty("media_type", "application/json");
+    //private static final String mediaType = System.getProperty("media_type", "application/xml");
     
     private TodosJaxRsClient todosClient;
 
@@ -239,6 +240,7 @@ public class TodoListsIT {
                     todosClient.deleteTodoItem(todoList.getName(), item.getName()));
         }
         todoList = getEntity(todosClient.getTodoList(todoList.getName()), TodoListDTO.class);
-        assertEquals("unexpected number of todoItems", 0, todoList.getTodoItems().size());
+        assertTrue("unexpected number of todoItems",
+                todoList.getTodoItems()==null || todoList.getTodoItems().size()==0);
     }
 }

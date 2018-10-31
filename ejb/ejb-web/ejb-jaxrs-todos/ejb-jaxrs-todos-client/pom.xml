@@ -27,12 +27,52 @@
             <scope>provided</scope>
         </dependency>
 
-        <!-- defines JSON-B entry point e.g., Jsonb and @Annotations 
+        <!-- defines JSON-B entry point e.g., Jsonb and @Annotations -->
         <dependency>
             <groupId>javax.json.bind</groupId>
             <artifactId>javax.json.bind-api</artifactId>
             <scope>provided</scope>
         </dependency>
+        
+        <!-- JSON wiring for RESTEasy JAX-RS provider (javaee7)
         -->
+        <dependency>
+          <groupId>org.jboss.resteasy</groupId>
+          <artifactId>resteasy-jackson2-provider</artifactId>
+            <scope>test</scope>
+       </dependency>
+       <!-- JSON-B JSON wiring for RESTEasy JAX-RS provider (javaee8; highest JSON priority) -->
+       <dependency>
+          <groupId>org.jboss.resteasy</groupId>
+          <artifactId>resteasy-json-binding-provider</artifactId>
+            <scope>test</scope>
+       </dependency>
+        
+           <!--  testing -->        
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <scope>test</scope>
+        </dependency>
+        
+        <!-- JAX-RS provider 
+        <dependency>
+            <groupId>org.jboss.resteasy</groupId>
+            <artifactId>resteasy-client</artifactId>
+            <scope>test</scope>
+        </dependency>
+        -->
+        
+        
     </dependencies>
 </project>

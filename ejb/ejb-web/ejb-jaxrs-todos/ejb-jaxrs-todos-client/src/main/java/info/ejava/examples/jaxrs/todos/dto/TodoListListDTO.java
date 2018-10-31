@@ -4,6 +4,9 @@ import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement(name="todoListList", namespace="urn:ejava.jaxrs.todos")
 public class TodoListListDTO implements Serializable {
    private static final long serialVersionUID = 1L;
    private List<TodoListDTO> todoLists;
