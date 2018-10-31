@@ -11,7 +11,7 @@ import ejava.examples.cdiconfig.dao.JobsDao;
 @Stateless
 @Remote(JobsMgmtRemote.class)
 public class JobsMgmtEJB implements JobsMgmtRemote {
-    @Inject //@CdiDemo
+    @Inject @CdiDemo
     private JobsDao jobDao;
     
     @Override
