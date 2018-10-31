@@ -74,6 +74,19 @@
             <scope>test</scope>
         </dependency>
         
+        <!-- JAXB wiring for RESTEasy JAX-RS provider -->
+       <dependency>
+          <groupId>org.jboss.resteasy</groupId>
+          <artifactId>resteasy-jaxb-provider</artifactId>
+          <scope>test</scope>
+       </dependency>    
+        <!-- JSON wiring for RESTEasy JAX-RS provider (javaee7)-->
+        <dependency>
+          <groupId>org.jboss.resteasy</groupId>
+          <artifactId>resteasy-jackson2-provider</artifactId>
+          <scope>test</scope>
+       </dependency>
+       <!-- use Jackson on client when using a javaee7 server  -->
        <!-- JSON-B JSON wiring for RESTEasy JAX-RS provider (javaee8; highest JSON priority) 
        <dependency>
           <groupId>org.jboss.resteasy</groupId>
@@ -81,17 +94,6 @@
             <scope>test</scope>
        </dependency>
        -->
-        <!-- JSON wiring for RESTEasy JAX-RS provider (javaee7)-->
-        <dependency>
-          <groupId>org.jboss.resteasy</groupId>
-          <artifactId>resteasy-jackson2-provider</artifactId>
-          <scope>test</scope>
-       </dependency>
-      <dependency>
-          <groupId>org.jboss.resteasy</groupId>
-          <artifactId>resteasy-jaxb-provider</artifactId>
-          <scope>test</scope>
-      </dependency>    
                         
     </dependencies>
     

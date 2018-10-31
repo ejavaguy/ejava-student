@@ -64,15 +64,5 @@
             <artifactId>log4j</artifactId>
             <scope>test</scope>
         </dependency>
-        
-        <!-- JAX-RS provider 
-        <dependency>
-            <groupId>org.jboss.resteasy</groupId>
-            <artifactId>resteasy-client</artifactId>
-            <scope>test</scope>
-        </dependency>
-        -->
-        
-        
     </dependencies>
 </project>
