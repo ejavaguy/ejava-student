@@ -26,6 +26,11 @@
             <artifactId>javax.ws.rs-api</artifactId>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>info.ejava.examples.common</groupId>
+            <artifactId>ejava-util</artifactId>
+            <version>${project.version}</version>
+        </dependency>
 
         <!-- defines JSON-B entry point e.g., Jsonb and @Annotations -->
         <dependency>

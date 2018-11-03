@@ -94,6 +94,19 @@
             <scope>test</scope>
        </dependency>
        -->
+        <!-- JSON-B - reference implementation for JSON-B (e.g., JsonBindingProvider) - needed by ejava-util -->
+        <dependency>
+            <groupId>org.eclipse</groupId>
+            <artifactId>yasson</artifactId>
+            <scope>test</scope>
+        </dependency>              
+        <!-- JSON provider for JSON-B reference implementation - needed by yasson -->
+        <dependency>
+            <groupId>org.glassfish</groupId>
+            <artifactId>javax.json</artifactId>
+            <scope>test</scope>
+        </dependency>
+       
                         
     </dependencies>
     

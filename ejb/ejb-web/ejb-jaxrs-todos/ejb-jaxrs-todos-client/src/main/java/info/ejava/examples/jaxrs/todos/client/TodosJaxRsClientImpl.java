@@ -12,6 +12,8 @@ import javax.ws.rs.core.UriBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import ejava.util.jaxb.JAXBUtil;
+import ejava.util.json.JsonbUtil;
 import info.ejava.examples.jaxrs.todos.dto.TodoItemDTO;
 import info.ejava.examples.jaxrs.todos.dto.TodoListDTO;
 
@@ -41,6 +43,22 @@ public class TodosJaxRsClientImpl implements TodosJaxRsClient {
             }
         }
         return builder;
+    }
+    
+    private String marshal(Object object) {
+        try {
+            if (object==null) {
+                return null;
+            } else if (MediaType.APPLICATION_JSON_TYPE.equals(mediaType)) {
+                return JsonbUtil.marshal(object);
+            } else if (MediaType.APPLICATION_SVG_XML_TYPE.equals(mediaType)) {
+                return JAXBUtil.marshal(object);
+            } else {
+                return object.toString();
+            }
+        } catch (Exception ex) {
+            return ""; //don't barf if missing any supporting libs
+        }
     }
     
     @Override 
@@ -76,11 +94,19 @@ public class TodosJaxRsClientImpl implements TodosJaxRsClient {
     public Response createTodoList(TodoListDTO todoList) {
         URI uri = getBaseUrl(TODO_LISTS_PATH).build();
         WebTarget target = client.target(uri);
-        logger.debug("POST {}", target.getUri());
         
-        return target.request(mediaType)
+        Response response = target.request(mediaType)
                 .buildPost(Entity.entity(todoList, mediaType, todoList.getClass().getAnnotations()))
                 .invoke();
+        logger.debug("POST {}\n{}\n=>{}/{}\n"
+                + "Location: {}\n"
+                + "Content-Location: {}", target.getUri(), 
+                marshal(todoList),
+                response.getStatusInfo(), response.getStatus(), 
+                response.getHeaderString("Location"),
+                response.getHeaderString("Content-Location")
+                );        
+        return response;
     }
 
     @Override
