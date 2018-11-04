@@ -19,7 +19,7 @@ public class GreetingEJB {
             return String.format("hello %s", name);  //core business code
             
         } catch (RuntimeException ex) {
-            throw new InternalErrorException("Internal error greeting name[%s]", name);
+            throw new InternalErrorException("Internal error greeting name[%s]: %s", name, ex);
         }
     }
 }

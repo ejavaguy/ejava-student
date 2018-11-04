@@ -9,7 +9,10 @@ public class InternalErrorException extends RuntimeException {
     public InternalErrorException(String msg) {
         super(msg);
     }
-    public InternalErrorException(String msg, Throwable ex) {
+    public InternalErrorException(Throwable ex, String msg) {
         super(msg, ex);
+    }
+    public InternalErrorException(Throwable ex, String format, Object...args) {
+        super(String.format(format, args), ex);
     }
 }
