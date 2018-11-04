@@ -96,7 +96,6 @@ public class TodoListsResource {
                     .path(TodoListsResource.class, "getTodoList")
                     .build(entity.getName());
             rb = Response.created(location)                    
-                    .location(location)
                     .contentLocation(location)
                     .entity(entity);
         } catch (InvalidRequestException ex) {

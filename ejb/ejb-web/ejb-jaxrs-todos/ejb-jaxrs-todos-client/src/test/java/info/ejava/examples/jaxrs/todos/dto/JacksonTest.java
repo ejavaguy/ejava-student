@@ -1,15 +1,8 @@
 package info.ejava.examples.jaxrs.todos.dto;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
 import java.io.IOException;
 import java.io.StringWriter;
-import java.util.LinkedList;
-import java.util.Map;
-import java.util.stream.Collectors;
 
-import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -1,7 +1,6 @@
 package info.ejava.examples.jaxrs.todos.client;
 
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
 
 public class ResponseUtil {
     static <T> T getEntity(Response response, Class<T> type) {

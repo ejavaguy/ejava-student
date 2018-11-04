@@ -1,28 +1,12 @@
 package info.ejava.examples.jaxrs.todos.dto;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
-import java.io.IOException;
-import java.io.StringWriter;
-import java.util.LinkedList;
-import java.util.Map;
-import java.util.stream.Collectors;
-
 import javax.json.bind.Jsonb;
 import javax.json.bind.JsonbBuilder;
 import javax.json.bind.JsonbConfig;
-import javax.json.bind.config.PropertyNamingStrategy;
 
 import org.junit.Before;
-import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.fasterxml.jackson.core.JsonGenerationException;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class JsonbTest extends MarshallingTest {
     private Logger logger = LoggerFactory.getLogger(JsonbTest.class);

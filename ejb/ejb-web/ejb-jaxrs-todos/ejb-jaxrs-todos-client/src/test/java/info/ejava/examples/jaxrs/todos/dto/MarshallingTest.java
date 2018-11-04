@@ -3,11 +3,8 @@ package info.ejava.examples.jaxrs.todos.dto;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-import java.io.IOException;
-import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -15,11 +12,8 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.fasterxml.jackson.core.JsonGenerationException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 public abstract class MarshallingTest {
+    @SuppressWarnings("unused")
     private Logger logger = LoggerFactory.getLogger(MarshallingTest.class);
     
     protected abstract <T> String marshal(T object) throws Exception;
