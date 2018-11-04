@@ -2,38 +2,22 @@ package info.ejava.examples.jaxrs.todos.client;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import java.net.URI;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.Random;
-import java.util.Set;
 
 import javax.naming.NamingException;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.Invocation;
-import javax.ws.rs.client.Invocation.Builder;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.Response.Status;
-import javax.ws.rs.core.Response.StatusType;
+import javax.ws.rs.core.UriBuilder;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import info.ejava.examples.jaxrs.todos.dto.MessageDTO;
-import info.ejava.examples.jaxrs.todos.dto.TodoItemDTO;
-import info.ejava.examples.jaxrs.todos.dto.TodoListDTO;
-import info.ejava.examples.jaxrs.todos.dto.TodoListListDTO;
-import static info.ejava.examples.jaxrs.todos.client.ResponseUtil.getEntity;
-import static info.ejava.examples.jaxrs.todos.client.ResponseUtil.assertSuccess;
 
 public class GreetingsIT {
     private static final Logger logger = LoggerFactory.getLogger(GreetingsIT.class);
@@ -109,6 +93,39 @@ public class GreetingsIT {
         logger.info("GET {} => {}", target.getUri(), response.getStatusInfo());
         String greeting = response.readEntity(String.class);
         logger.info("{}", greeting);
-        assertEquals("", Status.OK, response.getStatusInfo());
+        assertEquals("unexpected status", Status.OK, response.getStatusInfo());
+        assertEquals("unexpected greeting", "hi", greeting);
+    }
+    
+    @Test
+    public void greetBadRequest() {
+        URI uri = UriBuilder.fromUri(baseTodosUrl)
+                .path("greetings")
+                .path("greet")
+                .build();
+        WebTarget target = client.target(uri);
+        Response response = target.request(MediaType.TEXT_PLAIN_TYPE)
+                      .get();
+        logger.info("GET {} => {}/{}", target.getUri(), response.getStatus(), response.getStatusInfo());
+        String greeting = response.readEntity(String.class);
+        logger.info("{}", greeting);
+        assertEquals("unexpected status", Status.BAD_REQUEST, response.getStatusInfo());        
+    }
+    
+    @Test
+    public void greetOK() {
+        URI uri = UriBuilder.fromUri(baseTodosUrl)
+                .path("greetings")
+                .path("greet")
+                .build();
+        WebTarget target = client.target(uri)
+                .queryParam("name", "ejava");
+        Response response = target.request(MediaType.TEXT_PLAIN_TYPE)
+                      .get();
+        logger.info("GET {} => {}", target.getUri(), response.getStatusInfo());
+        String greeting = response.readEntity(String.class);
+        logger.info("{}", greeting);
+        assertEquals("unexpected status", Status.OK, response.getStatusInfo());        
+        assertEquals("unexpected greeting", "hello ejava", greeting);        
     }
 }
