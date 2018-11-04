@@ -16,7 +16,7 @@
         examples.
     </description>
     <modules>
-        <module>ejb-web-todos</module>
+        <module>ejb-jaxrs-todos</module>
         <module>ejb-web-inventory</module>
     </modules>
 </project>

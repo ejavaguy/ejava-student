@@ -93,7 +93,7 @@
         <inject.version>1</inject.version>
         <interceptor-api.version>1.2.2</interceptor-api.version>
         <jandex.version>1.2.2.Final</jandex.version>
-        <jackson-annotations.version>2.9.5</jackson-annotations.version>
+        <jackson.version>2.9.5</jackson.version>
         <javaee-api.version>8.0</javaee-api.version>
         <javax.persistence-api.version>2.2</javax.persistence-api.version>
         <javax.ejb-api.version>3.2.2</javax.ejb-api.version>
@@ -550,7 +550,12 @@
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-annotations</artifactId>
-                <version>${jackson-annotations.version}</version>
+                <version>${jackson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>${jackson.version}</version>
             </dependency>
             
             <!-- JAX-B provider -->
@@ -586,6 +591,7 @@
                 <artifactId>javax.json</artifactId>
                 <version>${glassfish-json.version}</version>
             </dependency>
+
 
             <dependency>
                 <groupId>net.sourceforge.cobertura</groupId>

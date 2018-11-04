@@ -39,19 +39,40 @@
             <scope>provided</scope>
         </dependency>
         
-        <!-- JSON wiring for RESTEasy JAX-RS provider (javaee7)
-        -->
+        <!-- JSON-B - reference implementation for JSON-B (e.g., JsonBindingProvider) --> 
+        <dependency>
+            <groupId>org.eclipse</groupId>
+            <artifactId>yasson</artifactId>
+            <scope>test</scope>
+        </dependency>              
+        <!-- JSON provider for JSON-B reference implementation - needed by yasson -->
+        <dependency>
+            <groupId>org.glassfish</groupId>
+            <artifactId>javax.json</artifactId>
+            <scope>test</scope>
+        </dependency>
+        
+        <!-- core Jackson2 libraries -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <scope>test</scope>
+        </dependency>
+        
+        <!-- JSON wiring for RESTEasy JAX-RS provider (javaee7) - includes jackson2 libs
         <dependency>
           <groupId>org.jboss.resteasy</groupId>
           <artifactId>resteasy-jackson2-provider</artifactId>
             <scope>test</scope>
        </dependency>
-       <!-- JSON-B JSON wiring for RESTEasy JAX-RS provider (javaee8; highest JSON priority) -->
+        -->
+       <!-- JSON-B JSON wiring for RESTEasy JAX-RS provider (javaee8; highest JSON priority) 
        <dependency>
           <groupId>org.jboss.resteasy</groupId>
           <artifactId>resteasy-json-binding-provider</artifactId>
             <scope>test</scope>
        </dependency>
+       -->
         
            <!--  testing -->        
         <dependency>
