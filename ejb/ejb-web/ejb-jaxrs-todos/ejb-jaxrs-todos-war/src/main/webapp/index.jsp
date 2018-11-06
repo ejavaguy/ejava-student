@@ -10,7 +10,7 @@
         <li><a href="ui/todo_lists">Display Todo Lists</a>
             <ul>
                 <li><form action="${pageContext.request.contextPath}/ui/todo_lists" method="POST">
-                        <button name="action" value="populate"></button>
+                        <button name="action" value="populate">Populate</button>
                     </form>
                 </li>
             </ul>

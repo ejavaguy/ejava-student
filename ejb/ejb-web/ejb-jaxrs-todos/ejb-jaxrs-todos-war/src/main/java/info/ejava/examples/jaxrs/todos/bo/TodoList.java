@@ -23,9 +23,6 @@ import javax.persistence.Table;
 @NamedQuery(name="TodoList.getListByName",
             query="select tl from TodoList tl where tl.name=:name"
 )
-@NamedQuery(name="TodoList.deleteList",
-            query="delete from TodoList tl where tl.name=:name"            
-)
 public class TodoList {
     @Id @GeneratedValue(strategy=GenerationType.SEQUENCE)
     private int id;

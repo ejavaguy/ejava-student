@@ -6,33 +6,29 @@
 <jsp:directive.page import="info.ejava.examples.jaxrs.todos.dto.*"/>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
-    <title>Todo Lists</title>
+    <title>Todo List</title>
 <body>
-<h2>Todo Lists</h2>
+<h2>Todo List: ${requestScope.todoList.name}</h2>
     <div>
         <table>
-            <thead>
-                <tr>
-                    <th>Name</th>
-                </tr>                
-            </thead>
             <tbody>
-        <c:forEach items="${requestScope.todoLists}" var="todoList">
+                <tr>
+                    <th>Task</th>
+                    <th>Priority</th>
+                </tr>                
+            </tbody>
+        <c:forEach items="${requestScope.todoList.todoItems}" var="item">
             <tr>
+                <td><c:out value="${item.name}"></c:out></td>
                 <td>
-                    <a href="<c:url value="/ui/todo_lists/${todoList.name}"/>">
-                        <c:out value="${todoList.name}"></c:out>
-                    </a>
-                </td>
-                <td>
-                    <form action="${pageContext.request.contextPath}/ui/todo_lists/${todoList.name}" 
+                    <form action="${pageContext.request.contextPath}/ui/todo_lists/${requestScope.todoList.name}/todo_items/${item.name}" 
                           method="POST">
-                        <button name="action" value="deleteList">Delete</button>
+                        <input type="number" min="0" max="10" name="priority" value="${item.priority}">
+                        <button name="action" value="setPriority">Update</button>
                     </form>
                 </td>
             </tr>
-        </c:forEach>
-            </tbody>  
+        </c:forEach>  
         </table>
     </div>
     

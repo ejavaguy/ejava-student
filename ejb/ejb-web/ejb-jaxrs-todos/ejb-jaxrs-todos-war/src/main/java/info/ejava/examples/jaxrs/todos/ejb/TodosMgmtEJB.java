@@ -112,9 +112,13 @@ public class TodosMgmtEJB implements TodosMgmtRemote {
     
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public int deleteTodoListLocal(String listName) {
-        return em.createNamedQuery("TodoList.deleteList")
-                .setParameter("name", listName)
-                .executeUpdate();
+        TodoList todoList = getTodoListLocal(listName);
+        if (todoList==null) {
+            return 0;
+        } else {
+            em.remove(todoList); //use casecades
+            return 1;
+        }            
     }
 
     @Override

@@ -4,7 +4,10 @@ import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.json.bind.annotation.JsonbTransient;
 import javax.xml.bind.annotation.XmlRootElement;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @XmlRootElement(name="todoList", namespace="urn:ejava.jaxrs.todos")
 public class TodoListDTO implements Serializable {
@@ -37,6 +40,16 @@ public class TodoListDTO implements Serializable {
         if (todoItem!=null) {
             todoItems.add(todoItem);
         }
+    }
+    
+    @JsonbTransient
+    @JsonIgnore
+    public TodoItemDTO getListItem(String itemName) {
+        if (todoItems==null) { return null; }
+        return todoItems.stream()
+                        .filter(item->itemName.equalsIgnoreCase(item.getName()))
+                        .findFirst()
+                        .orElseGet(null);
     }
 
     @Override

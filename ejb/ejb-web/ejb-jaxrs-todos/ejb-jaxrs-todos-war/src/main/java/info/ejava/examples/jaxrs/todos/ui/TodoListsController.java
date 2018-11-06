@@ -1,9 +1,11 @@
 package info.ejava.examples.jaxrs.todos.ui;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
@@ -17,6 +19,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import info.ejava.examples.jaxrs.todos.bo.TodoItem;
+import info.ejava.examples.jaxrs.todos.dto.TodoItemDTO;
 import info.ejava.examples.jaxrs.todos.dto.TodoListDTO;
 import info.ejava.examples.jaxrs.todos.dto.TodoListListDTO;
 import info.ejava.examples.jaxrs.todos.ejb.ClientErrorException;
@@ -100,8 +104,16 @@ public class TodoListsController extends HttpServlet {
         public void execute(HttpServletRequest req, HttpServletResponse resp) 
                     throws InvalidRequestException, ServletException, IOException {
             todosMgmt.deleteAll();
+            Random r = new Random();
             for (int i=0; i<20; i++) {
                 TodoListDTO todoList = new TodoListDTO("List" + i);
+                int items = r.nextInt(10);
+                todoList.setTodoItems(new ArrayList<>(items));
+                for (int j=0; j<items; j++) {
+                    TodoItemDTO item = new TodoItemDTO("Item" + (char)('A'+j));
+                    item.setPriority(r.nextInt(10));
+                    todoList.getTodoItems().add(item);
+                }
                 todosMgmt.createTodoList(todoList);
             }
             TodoListListDTO todoLists = todosMgmt.getTodoLists(0, 0);
