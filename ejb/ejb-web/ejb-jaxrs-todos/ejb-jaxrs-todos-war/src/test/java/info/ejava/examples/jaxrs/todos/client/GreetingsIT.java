@@ -34,7 +34,7 @@ public class GreetingsIT {
     @Test
     public void clientBasics() {
             //determine the baseUrl for the application
-        String baseHttpUrlString = System.getProperty("url.base.http", "http://localhost:8080");
+        String baseHttpUrlString = TodoListsIT.getITProperty("url.base.http", "http://localhost:8080");
             //build a URL to the specific resource  
         URI resourceUrl = javax.ws.rs.core.UriBuilder.fromUri(baseHttpUrlString)
                 //.path("") //using root resource - no need for extra path
