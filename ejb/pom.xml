@@ -23,10 +23,10 @@
         <module>ejb-cdi</module>
         <module>jndiDemo</module>
         <module>ejb-tx</module>
+        <module>txReservation</module>
+        <module>ejb-web</module>
+        <module>webtier</module>
         <module>ejb-security</module>
         <module>ejb-interceptor</module>
-        <module>webtier</module>
-        <module>webejb</module>
-        <module>txReservation</module>
     </modules>
 </project>
