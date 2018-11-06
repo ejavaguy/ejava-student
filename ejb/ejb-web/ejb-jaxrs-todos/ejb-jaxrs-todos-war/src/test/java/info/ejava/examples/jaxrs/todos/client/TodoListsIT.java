@@ -56,7 +56,7 @@ public class TodoListsIT {
         assertSuccess("error deleting all", todosClient.deleteAll());
     }
     
-    private static String getITProperty(String key, String defaultValue) {
+    static String getITProperty(String key, String defaultValue) {
         Properties props = new Properties();
         try (InputStream is = TodoListsIT.class.getResourceAsStream("/it.properties")) {
             props.load(is);            

@@ -21,7 +21,7 @@ import org.slf4j.LoggerFactory;
 
 public class GreetingsIT {
     private static final Logger logger = LoggerFactory.getLogger(GreetingsIT.class);
-    private static final String baseHttpUrlString = System.getProperty("url.base.http", "http://localhost:8080");
+    private static final String baseHttpUrlString = TodoListsIT.getITProperty("url.base.http", "http://localhost:8080"); 
     
     URI baseTodosUrl = UriBuilder.fromPath(baseHttpUrlString).path("ejavaTodos/api").build();
     Client client;
