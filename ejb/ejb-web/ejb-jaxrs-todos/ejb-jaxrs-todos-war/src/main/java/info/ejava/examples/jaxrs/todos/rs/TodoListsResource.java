@@ -161,7 +161,7 @@ public class TodoListsResource {
         } catch (InternalErrorException ex) {
             rb = getInternalErrorResponse(ex);
         } catch (Exception ex) {
-            rb = getUndexpectedErrorResponse("Unexpected error creating TodoList", ex);
+            rb = getUndexpectedErrorResponse("Unexpected error deleting TodoList", ex);
         }
         return rb.build();                
     }
@@ -176,7 +176,7 @@ public class TodoListsResource {
         } catch (InternalErrorException ex) {
             rb = getInternalErrorResponse(ex);
         } catch (Exception ex) {
-            rb = getUndexpectedErrorResponse("Unexpected error deleting All Todos", ex);
+            rb = getUndexpectedErrorResponse("Unexpected error deleting all Todos", ex);
         }
         return rb.build();
     }
