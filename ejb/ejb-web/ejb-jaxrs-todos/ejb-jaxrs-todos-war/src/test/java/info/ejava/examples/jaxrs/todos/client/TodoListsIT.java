@@ -5,9 +5,11 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.io.InputStream;
 import java.net.URI;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.Properties;
 import java.util.Random;
 import java.util.Set;
 
@@ -37,7 +39,7 @@ import static info.ejava.examples.jaxrs.todos.client.ResponseUtil.assertSuccess;
 
 public class TodoListsIT {
     private static final Logger logger = LoggerFactory.getLogger(TodoListsIT.class);
-    private static final String baseHttpUrlString = System.getProperty("url.base.http", "http://localhost:8080");
+    private static final String baseHttpUrlString = getITProperty("url.base.http", "http://localhost:8080");
     private static final String mediaType = System.getProperty("media_type", "application/json");
     //private static final String mediaType = System.getProperty("media_type", "application/xml");
     
@@ -52,6 +54,16 @@ public class TodoListsIT {
         todosClient = new TodosJaxRsClientImpl(jaxRsClient, baseTodosUrl, mediaType);
         
         assertSuccess("error deleting all", todosClient.deleteAll());
+    }
+    
+    private static String getITProperty(String key, String defaultValue) {
+        Properties props = new Properties();
+        try (InputStream is = TodoListsIT.class.getResourceAsStream("/it.properties")) {
+            props.load(is);            
+            return props.containsKey(key) ? (String)props.get(key) : defaultValue;        
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
     }
     
     @Test

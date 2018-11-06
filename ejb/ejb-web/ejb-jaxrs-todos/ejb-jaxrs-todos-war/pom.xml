@@ -127,6 +127,22 @@
                 </excludes>
             </resource>
         </resources>
+        <testResources>
+            <testResource>
+                <directory>src/test/resources</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>it.properties</include>
+                </includes>
+            </testResource>
+            <testResource>
+                <directory>src/test/resources</directory>
+                <filtering>false</filtering>
+                <excludes>
+                    <exclude>it.properties</exclude>
+                </excludes>
+            </testResource>
+        </testResources>
         
         <plugins>
             <!-- This deploys/undeploys WAR to server -->
