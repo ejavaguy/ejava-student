@@ -453,7 +453,7 @@
                 <site>
                     <id>local</id>
                     <name>Local Site</name>
-                    <url>file://tmp/ejava-javaee</url>
+                    <url>file:///tmp/ejava-javaee</url>
                 </site>
             </distributionManagement>
         </profile>
