@@ -25,6 +25,7 @@
                           method="POST">
                         <input type="number" min="0" max="10" name="priority" value="${item.priority}">
                         <button name="action" value="setPriority">Update</button>
+                        <button name="action" value="deleteItem">Delete</button>
                     </form>
                 </td>
             </tr>

@@ -34,6 +34,7 @@ public class TodoListController extends HttpServlet {
     public void init() throws ServletException {
         actions.put("deleteList", new DeleteTodoListAction());
         actions.put("setPriority", new SetPriorityAction());        
+        actions.put("deleteItem", new DeleteTodoItemAction());        
     }
     
     private int getInt(String value, int defaultValue) {
@@ -81,7 +82,7 @@ public class TodoListController extends HttpServlet {
             logger.error("error getting todoList:" + ex);
             req.setAttribute("exception", ex);
             RequestDispatcher rd = getServletContext().getRequestDispatcher(
-                "DisplayException.jsp");
+                "/WEB-INF/content/DisplayException.jsp");
             rd.forward(req, resp);
         }
     }
@@ -118,7 +119,7 @@ public class TodoListController extends HttpServlet {
             logger.error("error getting todoList:" + ex);
             req.setAttribute("exception", ex);
             RequestDispatcher rd = getServletContext().getRequestDispatcher(
-                "DisplayException.jsp");
+                "/WEB-INF/content/DisplayException.jsp");
             rd.forward(req, resp);
         }
     }
@@ -162,4 +163,19 @@ public class TodoListController extends HttpServlet {
         }
     }
     
+    private class DeleteTodoItemAction implements Action {
+        @Override
+        public void execute(HttpServletRequest req, HttpServletResponse resp,
+                TodoListDTO todoList, TodoItemDTO todoItem) 
+                        throws ClientErrorException, ServletException, IOException {
+            todosMgmt.deleteTodoListItem(todoList.getName(), todoItem.getName());
+                //get list with new sorted order
+            todoList = todosMgmt.getTodoList(todoList.getName());
+            
+            req.setAttribute("todoList", todoList);
+            RequestDispatcher rd = getServletContext().getRequestDispatcher(
+                    "/WEB-INF/content/DisplayTodoList.jsp");
+            rd.forward(req, resp);
+        }
+    }
 }
