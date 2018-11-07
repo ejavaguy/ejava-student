@@ -27,11 +27,11 @@
       <subsection name="What's New" id="whatsnew">
       <ul>
       <!--
-          <li>2018-12-02: Posted Async TODOs</li>
-          <li>2018-11-18: Posted JMS TODOs</li>
-          <li>2018-11-11: Posted Security TODOs</li>
-          <li>2018-11-04: Posted Web Tier TODOs</li>
+          <li>2018-12-05: Posted Async TODOs</li>
+          <li>2018-11-28: Posted JMS TODOs</li>
+          <li>2018-11-14: Posted Security TODOs</li>
           -->
+          <li>2018-11-07: Posted Web Tier JAX-RS TODOs</li>
           <li>2018-10-31: Posted Transaction TODOs</li>
           <li>2018-10-24: Posted EJB TODOs</li>
           <li>2018-10-17: Posted Project2 and 3 Specs and Server-side EJB Modules</li>
@@ -153,30 +153,41 @@
       -->
 
       <!-- week 10: Web 
+      -->
       <li><ul>
             <li>Examples
                 <ul>
-                  <li>Look over Web UI parts of the ejbsessionBank (Servlets &amp; JSPs) and cdisales (JSF).</li>
-                  <li>The webejb example shows an example of RMI and JAX-RS
-                      being used as a remote facade. You may use either technique 
-                      for eBidbot. eSales must use RMI.</li>
+                  <li>Look over JAX-RS example(s); ejb-jaxrs-todos and ejb-web-inventory under ejb-web.
+                  The ejb-jaxrs-todos example was created with the intent to be closely aligned 
+                  with project architectural layers (JAX-RS Client/Server, XML and JSON DTOs, JPA BOs, EJB
+                  @Remote interfaces, exceptions, status reporting, etc.). 
+                  ejb-web-inventory mixes in some RMI with HTTP-based services.
+                  </li>
                 </ul>
             </li>
-            <li>Web/Project
+            <li>Project
                 <ul>
-                  <li>Add a WAR project to eSales. Add in supporting 
-                      Web UI implementations.</li>
-                  <li>Add supporting Web UI implementations for eBidbot.  
-                      This WAR may obtain functionality implemented by eSalesEJB. 
-                      However, it should not directly communicate with eSalesEJB. 
-                      eBidbotEJB should act as a facade for all behavior performed 
-                      on behalf of eBidbot</li>
-                  <li>Re-implement the JUnit end-to-end scenario using a Web UI.
-                      Keep both.</li>
+                  <li>Add a WAR project to eLeague. Add in supporting JAX-RS Resource class(es)
+                      to expose EJB functionality through a REST-like API. You may want to create 
+                      separate Java classes to represent each Resource since this 
+                      application is considered "complex, modular, and layered".
+                      </li>
+                  <li>Add supporting JAX-RS Resources to eClub WAR to expose EJB functionality
+                      through another REST-like API. You may want to create a single class to 
+                      represent each of the Resources since this application is considered 
+                      "simple, small, and quickly developed".
+                      </li>
+                  <li>Implement JAX-RS Client calls for each of the implemented end-to-end steps.</li>
+                  <li>Integrate the HTTP calls with the existing RMI calls of the end-to-end IT scenario</li>
                 </ul>
             </li>
       </ul></li>
-      -->
+
+      </ul>
+      </subsection>
+
+      <subsection name="Things you should have finished!" id="completed">
+      <ul>
 
       <!-- week 09: Transactions 
       -->
@@ -210,11 +221,6 @@
             </li>
       </ul></li>
 
-      </ul>
-      </subsection>
-
-      <subsection name="Things you should have finished!" id="completed">
-      <ul>
 
       <!-- week 09: Session Beans 
       -->
