@@ -107,6 +107,7 @@
         <javax.jms-api.version>2.0.1</javax.jms-api.version>
         <jnpserver.version>5.0.3.GA</jnpserver.version>
         <jsr250-api.version>1.0</jsr250-api.version>
+        <jstl.version>1.2</jstl.version>
         <jta.version>1.0.1B</jta.version>
         <junit.version>4.12</junit.version>
         <maven-jaxb2-plugin.version>0.14.0</maven-jaxb2-plugin.version>
@@ -455,6 +456,11 @@
                 <artifactId>javax.faces-api</artifactId>
                 <version>${faces-api.version}</version>
             </dependency>
+            <dependency>
+                <groupId>javax.servlet</groupId>
+                <artifactId>jstl</artifactId>
+                <version>${jstl.version}</version>
+            </dependency>            
             <dependency>
                 <groupId>org.hibernate</groupId>
                 <artifactId>hibernate-core</artifactId>
