@@ -168,6 +168,20 @@
             <type>war</type>
             <scope>runtime</scope>
         </dependency>
+        <dependency>
+            <groupId>info.ejava.docs.ejb</groupId>
+            <artifactId>ejb-security-notes</artifactId>
+            <version>${project.version}</version>
+            <type>war</type>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>info.ejava.docs.ejb</groupId>
+            <artifactId>javaee-interceptor-notes</artifactId>
+            <version>${project.version}</version>
+            <type>war</type>
+            <scope>runtime</scope>
+        </dependency>
         <!--
         <dependency>
             <groupId>info.ejava.docs.ejb</groupId>
@@ -200,20 +214,6 @@
         <dependency>
             <groupId>info.ejava.docs.ejb</groupId>
             <artifactId>webtier-notes</artifactId>
-            <version>${project.version}</version>
-            <type>war</type>
-            <scope>runtime</scope>
-        </dependency>
-        <dependency>
-            <groupId>info.ejava.docs.ejb</groupId>
-            <artifactId>ejb-security-notes</artifactId>
-            <version>${project.version}</version>
-            <type>war</type>
-            <scope>runtime</scope>
-        </dependency>
-        <dependency>
-            <groupId>info.ejava.docs.ejb</groupId>
-            <artifactId>javaee-interceptor-notes</artifactId>
             <version>${project.version}</version>
             <type>war</type>
             <scope>runtime</scope>
@@ -478,6 +478,18 @@
                     <type>war</type>
                     <targetPath>../site/docs/content</targetPath>
                 </overlay>
+                <overlay>
+                    <groupId>info.ejava.docs.ejb</groupId>
+                    <artifactId>ejb-security-notes</artifactId>
+                    <type>war</type>
+                    <targetPath>../site/docs/content</targetPath>
+                </overlay>
+                <overlay>
+                    <groupId>info.ejava.docs.ejb</groupId>
+                    <artifactId>javaee-interceptor-notes</artifactId>
+                    <type>war</type>
+                    <targetPath>../site/docs/content</targetPath>
+                </overlay>
                 <!--
                 <overlay>
                     <groupId>info.ejava.docs.ejb</groupId>
@@ -506,18 +518,6 @@
                 <overlay>
                     <groupId>info.ejava.docs.ejb</groupId>
                     <artifactId>webtier-notes</artifactId>
-                    <type>war</type>
-                    <targetPath>../site/docs/content</targetPath>
-                </overlay>
-                <overlay>
-                    <groupId>info.ejava.docs.ejb</groupId>
-                    <artifactId>ejb-security-notes</artifactId>
-                    <type>war</type>
-                    <targetPath>../site/docs/content</targetPath>
-                </overlay>
-                <overlay>
-                    <groupId>info.ejava.docs.ejb</groupId>
-                    <artifactId>javaee-interceptor-notes</artifactId>
                     <type>war</type>
                     <targetPath>../site/docs/content</targetPath>
                 </overlay>
