@@ -56,12 +56,11 @@ public class SecurePingRemotingIT extends SecurePingTestBase {
      * @throws NamingException
      */
 	private Context runAs(String[] login) throws NamingException, IOException {
-        Properties env = new Properties(); //JNDIUtil.getJNDIProperties("jboss.remoting.");
+        Properties env = new Properties(); //load the defaults from jndi.properties
         if (login != null) {
 	        env.put(Context.SECURITY_PRINCIPAL, login[0]);
 	        env.put(Context.SECURITY_CREDENTIALS, login[1]);
         }
-        env.put("jboss.naming.client.ejb.context", true); //override anything we put there for EJBClient
         logger.debug(String.format("%s env=%s", login==null?"anonymous":login[0], env));
         return new InitialContext(env);
     }

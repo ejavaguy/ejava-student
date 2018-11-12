@@ -57,7 +57,7 @@ public class SecurePingEJBClientIT extends SecurePingTestBase {
      */
     private void runAs(String[] login) throws NamingException, IOException {
         if (!Arrays.equals(login, currentLogin) || securePing==null) {
-            Properties props = new Properties();
+            Properties props = new Properties(); //initialize with values from jndi.properties
             if (login!=null) {
                 props.put(Context.SECURITY_PRINCIPAL, login[0]);
                 props.put(Context.SECURITY_CREDENTIALS, login[1]);
@@ -171,7 +171,7 @@ public class SecurePingEJBClientIT extends SecurePingTestBase {
         }        
 
         try {
-        	runAs(adminLogin);
+        	    runAs(adminLogin);
             String result=securePing.pingAll();
             logger.info(result);
             assertEquals("unexpected result for admin",

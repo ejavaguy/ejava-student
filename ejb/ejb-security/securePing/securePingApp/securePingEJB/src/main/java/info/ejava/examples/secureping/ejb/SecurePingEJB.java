@@ -92,15 +92,14 @@ public class SecurePingEJB
     @PermitAll
     public boolean isCallerInRole(String role) {
         boolean result = ctx.isCallerInRole(role);
-        logger.debug("user=" + ctx.getCallerPrincipal().getName() + 
-                ", isCallerInRole(" + role + ")=" + result);  
+        logger.debug("user={}, isCallerInRole({})={}", ctx.getCallerPrincipal().getName(), role, result);  
         return result;
     }
     
     @PermitAll
     public String whoAmI() {
         String name= ctx.getCallerPrincipal().getName();
-        logger.debug("whoAmI()=" + name);
+        logger.debug("whoAmI()={}", name);
         return name;
     }
 }
