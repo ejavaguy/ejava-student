@@ -16,7 +16,6 @@ import org.myorg.jpatickets.bl.EventMgmt;
 import org.myorg.jpatickets.bl.EventMgmtImpl;
 import org.myorg.jpatickets.bl.UnavailableException;
 import org.myorg.jpatickets.bo.Event;
-import org.myorg.jpatickets.bo.Seat;
 import org.myorg.jpatickets.bo.Ticket;
 import org.myorg.jpatickets.bo.Venue;
 import org.myorg.jpatickets.dao.EventMgmtDAO;
