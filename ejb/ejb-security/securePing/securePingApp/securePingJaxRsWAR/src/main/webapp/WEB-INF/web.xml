@@ -41,12 +41,29 @@
           <role-name>user</role-name>
       </auth-constraint>
   </security-constraint>
+
+  <security-constraint>
+      <web-resource-collection>
+          <web-resource-name>methods</web-resource-name>
+          <url-pattern>/api/ping/whoAmI</url-pattern>
+          <url-pattern>/api/ping/canAccess</url-pattern>
+      </web-resource-collection>
+      <!-- 
+      <user-data-constraint>
+          <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+      </user-data-constraint>
+       -->
+  </security-constraint>
   
   <login-config>
     <auth-method>BASIC</auth-method>
     <realm-name>ApplicationRealm</realm-name>
+    <!-- if mixing JAX-RS BASIC with HTML FORM
+    <auth-method>BASIC?silent=true,FORM</auth-method>
+    http://undertow.io/undertow-docs/undertow-docs-1.3.0/index.html#servlet-security
+     -->
   </login-config>
-    
+
   <security-role>
       <role-name>admin</role-name>
   </security-role>
