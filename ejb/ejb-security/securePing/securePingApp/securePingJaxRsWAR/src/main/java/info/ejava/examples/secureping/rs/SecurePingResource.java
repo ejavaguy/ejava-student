@@ -48,7 +48,7 @@ public class SecurePingResource {
     @Path("whoAmI")
     @GET
     @Produces(MediaType.TEXT_PLAIN)
-    public Response whoAmiI() {
+    public Response whoAmI() {
         ResponseBuilder rb = null;
         try {
             if (secureService!=null) {
