@@ -1,6 +1,5 @@
 package info.ejava.examples.secureping.rs;
 
-import javax.annotation.security.PermitAll;
 import javax.ejb.EJB;
 import javax.ejb.EJBAccessException;
 import javax.ws.rs.GET;
@@ -30,7 +29,6 @@ import info.ejava.examples.secureping.ejb.SecurePingLocal;
  * annotations.    
  */
 @Path("ping")
-@PermitAll
 public class SecurePingResource {
     @SuppressWarnings("unused")
     private static final Logger logger = LoggerFactory.getLogger(SecurePingResource.class);
