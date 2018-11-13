@@ -620,7 +620,7 @@
                 <version>${wagon-ssh-external.version}</version>
             </extension>
         </extensions>
-    	<pluginManagement>
+        	<pluginManagement>
             <plugins>
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
