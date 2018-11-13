@@ -1,7 +1,5 @@
 package info.ejava.examples.secureping.client;
 
-import java.io.IOException;
-
 import javax.ws.rs.client.ClientRequestContext;
 import javax.ws.rs.client.ClientResponseContext;
 import javax.ws.rs.client.ClientResponseFilter;
@@ -21,12 +19,12 @@ public class LoggingFilter implements ClientResponseFilter {
     }
     
     @Override
-    public void filter(ClientRequestContext requestContext, ClientResponseContext responseContext) throws IOException {
+    public void filter(ClientRequestContext requestContext, ClientResponseContext responseContext) {
         String method = requestContext.getMethod();
         String uri = requestContext.getUri().toString();
         StatusType status = responseContext.getStatusInfo();
-        logger.debug("{} {}, returned {}\nhdrs sent: {}\nhdrs rcvd: {}", 
-                method, uri, status, 
+        logger.debug("{} {}, returned {}/{}\nhdrs sent: {}\nhdrs rcvd: {}", 
+                method, uri, status.getStatusCode(), status, 
                 requestContext.getStringHeaders(), 
                 responseContext.getHeaders());
     }
