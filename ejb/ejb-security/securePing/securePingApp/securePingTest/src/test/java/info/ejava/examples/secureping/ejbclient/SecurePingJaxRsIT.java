@@ -11,8 +11,8 @@ import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.json.bind.annotation.JsonbAnnotation;
@@ -21,9 +21,12 @@ import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLSession;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.core.Configuration;
+import javax.ws.rs.client.ClientRequestFilter;
+import javax.ws.rs.client.ClientResponseFilter;
+import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriBuilder;
 
 import org.junit.Assume;
@@ -146,6 +149,72 @@ public class SecurePingJaxRsIT extends SecurePingTestBase {
         URI altUri = response.getLocation();
         assertNotNull("no location provided", altUri);
         assertEquals("altUri not HTTPS", "https", altUri.getScheme());
+    }
+    
+    /**
+     * An unwrapped version of the client -- so that all is easy to see.
+     */
+    @Test
+    public void unwrappedAnonymous() {
+        Client jaxRsClient = ClientBuilder.newClient();        
+        URI baseHttpUrl = UriBuilder.fromPath(baseHttpUrlString).path("securePingApi/api/ping").build();
+        
+        URI whoAmIUri = UriBuilder.fromUri(baseHttpUrl).path("whoAmI").build();
+        WebTarget target = jaxRsClient.target(whoAmIUri);
+        logger.debug("GET {}", target.getUri());
+        Response response = target.request(MediaType.TEXT_PLAIN).get();
+        
+        assertEquals("unexpected status", Status.OK, response.getStatusInfo());
+        String identity = response.readEntity(String.class);
+        assertEquals("unexpected identity", "anonymous", identity);
+    }
+    
+    @Test
+    public void unwrappedUser() {
+        Client jaxRsClient = ClientBuilder.newClient(); 
+        URI baseHttpUrl = UriBuilder.fromPath(baseHttpUrlString).path("securePingApi/api/ping").build();
+        
+        String credentials = userUser + ":" + userPassword;
+        String authn = "Basic " + Base64.getEncoder().encodeToString(credentials.getBytes());
+        
+        URI whoAmIUri = UriBuilder.fromUri(baseHttpUrl).path("whoAmI").build();
+        WebTarget target = jaxRsClient.target(whoAmIUri);
+        logger.debug("GET {}", target.getUri());
+        logger.debug("with BASIC credentials[{}] for {}, {}", authn, userUser, userPassword);
+        Response response = target.request(MediaType.TEXT_PLAIN)
+                .header("Authorization", authn)
+                .get();
+        
+        assertEquals("unexpected status:" + response.getStatus(), Status.OK, response.getStatusInfo());
+        String identity = response.readEntity(String.class);
+        assertEquals("unexpected identity", userUser, identity);
+    }
+    
+    @Test
+    public void unwrappedAdapterUser() {
+        Client jaxRsClient = ClientBuilder.newClient(); 
+        URI baseHttpUrl = UriBuilder.fromPath(baseHttpUrlString).path("securePingApi/api/ping").build();
+        
+        ClientRequestFilter authnFilter = new BasicAuthnFilter(userUser, userPassword);
+        jaxRsClient.register(authnFilter);
+        ClientResponseFilter loggingFilter = new LoggingFilter(logger);
+        jaxRsClient.register(loggingFilter);
+        
+        URI whoAmIUri = UriBuilder.fromUri(baseHttpUrl).path("whoAmI").build();
+        WebTarget target = jaxRsClient.target(whoAmIUri);
+        logger.debug("GET {}", target.getUri());
+        Response response = target.request(MediaType.TEXT_PLAIN).get();
+        
+        if (response.getStatus()==302) {
+            String redirectTo = response.getHeaderString("Location");
+            target = jaxRsClient.target(redirectTo);
+            logger.debug("GET {}", target.getUri());
+            response = target.request(MediaType.TEXT_PLAIN).get();
+        }
+        
+        assertEquals("unexpected status:" + response.getStatus(), Status.OK, response.getStatusInfo());
+        String identity = response.readEntity(String.class);
+        assertEquals("unexpected identity", userUser, identity);
     }
     
     /**
@@ -277,7 +346,7 @@ public class SecurePingJaxRsIT extends SecurePingTestBase {
                 String payload = response.readEntity(String.class);
                 logger.debug("received unexpected status {} {} for {},\n{}", 
                         response.getStatus(), response.getStatusInfo(), name, payload);
-                fail(String.format("received unexpected status %s for %s", name, response.getStatus()));
+                fail(String.format("received unexpected status %s for %s", response.getStatus(), name));
             }
         }
     }
