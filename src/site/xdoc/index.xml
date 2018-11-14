@@ -29,8 +29,8 @@
       <!--
           <li>2018-12-05: Posted Async TODOs</li>
           <li>2018-11-28: Posted JMS TODOs</li>
-          <li>2018-11-14: Posted Security TODOs</li>
           -->
+          <li>2018-11-14: Posted Security TODOs</li>
           <li>2018-11-07: Posted Web Tier JAX-RS TODOs</li>
           <li>2018-10-31: Posted Transaction TODOs</li>
           <li>2018-10-24: Posted EJB TODOs</li>
@@ -103,6 +103,7 @@
       -->
 
       <!-- week 11: Security 
+      -->
       <li><ul>
             <li>Project
                 <ul>
@@ -112,45 +113,51 @@
             </li>
           <li>Examples
               <ul>
-                  <li>Look at updated securePing application for examples
-                  on how to perform different logins using EJB Client
-                  and JBoss Remoting.</li>
+                  <li>Look at securePing application for examples
+                  on how to perform access control and authentication using EJB Client
+                  and JAX-RS.</li>
               </ul>
           </li>
           <li>EJB
               <ul>
-                  <li>Assign EJB to security-domain "other".
-                  The RMI Tests should fail access at this point.</li>
-                  <li>Specify required roles to access each EJB method</li>
-              </ul>
-          </li>
-          <li>Integration Tests
-              <ul>
-                  <li>Add the necessary logins to your existing integration tests
-                  to allow them to pass again.</li>
-                  <li>Author at least one new test to demonstrate you have security
-                  enabled</li>
+                  <li>Assign EJB to security-domain "other".</li>
+                  <li>Specify required roles to access each EJB method.
+                  The IT Tests should fail access at this point.</li>
               </ul>
           </li>
           <li>WAR
               <ul>
                   <li>Assign WAR to security-domain "other"</li>
-                  <li>Add security-constraint elements to the WAR web.xml. The 
-                  user should be prompted for a login at this point and be able to
-                  access web pages and EJB methods that they are authorized for
-                  and be refused access to what they are un-authorized to access</li>
-                  <li>Eliminate access to any information or option the user does
-                  not have access to see or use</li>
+                  <li>Add security-constraints for URIs within the JAX-RS API. 
+                  The caller should be able to access EJB methods they are authorized 
+                  to invoke and be refused access to the JAX-RS API for what
+                  they are unauthorized to invoke.
+                  </li>
+              </ul>
+          </li>
+          <li>Integration Tests
+              <ul>
+                  <li>Add the necessary authentication to your existing integration tests
+                  to allow them to pass again for both RMI and JAX-RS.</li>
+                  <li>Author at least one new test to demonstrate you have security
+                  enabled</li>
               </ul>
           </li>
           <li>Overall
               <ul>
                   <li>Eliminate the passing of userId information when the appropriate
-                  means is to obtain through the EJB or WARs security context.</li>
+                  means is to obtain that information is through an authenticated security
+                  context within the EJB or WAR.</li>
               </ul>
           </li>
       </ul></li>
-      -->
+
+
+      </ul>
+      </subsection>
+
+      <subsection name="Things you should have finished!" id="completed">
+      <ul>
 
       <!-- week 10: Web 
       -->
@@ -182,12 +189,6 @@
                 </ul>
             </li>
       </ul></li>
-
-      </ul>
-      </subsection>
-
-      <subsection name="Things you should have finished!" id="completed">
-      <ul>
 
       <!-- week 09: Transactions 
       -->
