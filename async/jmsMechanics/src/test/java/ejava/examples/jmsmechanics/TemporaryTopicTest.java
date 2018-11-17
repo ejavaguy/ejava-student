@@ -20,7 +20,7 @@ import org.junit.Test;
  * to/from a temporary topic. 
  */
 public class TemporaryTopicTest extends JMSTestBase {
-    static Logger log = LoggerFactory.getLogger(TemporaryTopicTest.class);
+    static final Logger logger = LoggerFactory.getLogger(TemporaryTopicTest.class);
     protected Session session;
     protected MessageCatcher catcher1;
     protected MessageCatcher catcher2;
@@ -52,14 +52,14 @@ public class TemporaryTopicTest extends JMSTestBase {
 
     @Test
     public void testTemporaryTopicSend() throws Exception {
-        log.info("*** testTemporaryTopicSend ***");
+        logger.info("*** testTemporaryTopicSend ***");
         MessageProducer producer = null;
         try {
             connection.stop();
             session = connection.createSession(
                     false, Session.CLIENT_ACKNOWLEDGE);
             Topic destination = session.createTemporaryTopic();
-            log.debug("created temporary topic=" + destination);
+            logger.debug("created temporary topic={}", destination);
             startCatchers(session, destination);
             connection.start();
             producer = session.createProducer(destination);
@@ -68,11 +68,11 @@ public class TemporaryTopicTest extends JMSTestBase {
             catcher1.clearMessages();
             catcher2.clearMessages();
             producer.send(message);
-            log.info("sent msgId=" + message.getJMSMessageID());
+            logger.info("sent msgId={}", message.getJMSMessageID());
             for(int i=0; i<10 && 
                 (catcher1.getMessages().size() < 1 ||
                 catcher2.getMessages().size() < 1); i++) {
-                log.debug("waiting for messages...");
+                logger.debug("waiting for messages...");
                 Thread.sleep(1000);
             }
             assertEquals(1, catcher1.getMessages().size());
@@ -85,14 +85,14 @@ public class TemporaryTopicTest extends JMSTestBase {
     
     @Test
     public void testTemporaryTopicMultiSend() throws Exception {
-        log.info("*** testTemporaryTopicMultiSend ***");
+        logger.info("*** testTemporaryTopicMultiSend ***");
         MessageProducer producer = null;
         try {
             connection.stop();
             session = connection.createSession(
                     false, Session.CLIENT_ACKNOWLEDGE);
             Topic destination = session.createTemporaryTopic();
-            log.debug("created temporary topic=" + destination);
+            logger.debug("created temporary topic={}", destination);
             startCatchers(session, destination);
             connection.start();
             producer = session.createProducer(destination);
@@ -102,12 +102,12 @@ public class TemporaryTopicTest extends JMSTestBase {
             catcher2.clearMessages();
             for(int i=0; i<msgCount; i++) {
                 producer.send(message);
-                log.info("sent msgId=" + message.getJMSMessageID());
+                logger.info("sent msgId={}", message.getJMSMessageID());
             }
             for(int i=0; i<10 && 
                 (catcher1.getMessages().size() < msgCount ||
                 catcher2.getMessages().size() < msgCount); i++) {
-                log.debug("waiting for messages...");
+                logger.debug("waiting for messages...");
                 Thread.sleep(1000);
             }
             assertEquals(msgCount, catcher1.getMessages().size());

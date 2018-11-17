@@ -25,7 +25,7 @@ import org.junit.Test;
  * live.
  */
 public class MessageTimeToLiveTest extends JMSTestBase {
-    static Logger log = LoggerFactory.getLogger(MessageTimeToLiveTest.class);
+    static final Logger logger = LoggerFactory.getLogger(MessageTimeToLiveTest.class);
     protected Destination destination;        
 
     @Before
@@ -45,14 +45,12 @@ public class MessageTimeToLiveTest extends JMSTestBase {
             try {
                 long now = System.currentTimeMillis();
                 long expiration = message.getJMSExpiration();
-                log.debug("onMessage received (" + ++count + 
-                        "):" + message.getJMSMessageID() +
-                        ", expiration=" + expiration +
-                        ", " + (expiration == 0 ? 0 : expiration-now) +
-                        "msecs");
+                logger.debug("onMessage received ({}):{}, expiration={}, {} msecs", 
+                        ++count, message.getJMSMessageID(), expiration , 
+                        (expiration == 0 ? 0 : expiration-now));
                 messages.add(message);
             } catch (JMSException ex) {
-                log.error("error handling message", ex);
+                logger.error("error handling message", ex);
             }
         }        
         public int getCount() { return count; }
@@ -63,7 +61,7 @@ public class MessageTimeToLiveTest extends JMSTestBase {
 
     @Test
     public void testProducerTimeToLive() throws Exception {
-        log.info("*** testProducerPriority ***");
+        logger.info("*** testProducerPriority ***");
         Session session = null;
         MessageProducer producer = null;
         MessageConsumer consumer = null;
@@ -88,17 +86,14 @@ public class MessageTimeToLiveTest extends JMSTestBase {
                     producer.send(message);
                     long now = System.currentTimeMillis();
                     long expiration = message.getJMSExpiration();
-                    log.info("sent (" + ++count + 
-                        ")msgId=" + message.getJMSMessageID() +
-                        ", expiration=" + expiration +
-                        ", " + (expiration == 0 ? 0 : expiration-now) +
-                        "msecs");
+                    logger.info("sent ({}) msgId={}, expiration={} msecs", 
+                            ++count, message.getJMSMessageID(), expiration, 
+                            (expiration == 0 ? 0 : expiration-now));
                 }
             }
             
             long sleepTime = 1000; 
-            log.info("waiting " + sleepTime + 
-                    "msecs for some messages to expire");
+            logger.info("waiting {} msecs for some messages to expire", sleepTime);
             Thread.sleep(sleepTime);  //wait for some to expire
             
             connection.start();
@@ -110,10 +105,10 @@ public class MessageTimeToLiveTest extends JMSTestBase {
                    receivedCount += (m != null ? 1 : 0);
                 } while (m != null);
                 if (receivedCount == (3*msgCount)) { break; }
-                log.debug("waiting for messages...");
+                logger.debug("waiting for messages...");
                 Thread.sleep(1000);
             }
-            log.info("client received " +client.getCount()+ " msgs");
+            logger.info("client received {} msgs", client.getCount());
             assertEquals(3*msgCount, 
                     client.getCount());
         }
@@ -127,7 +122,7 @@ public class MessageTimeToLiveTest extends JMSTestBase {
 
     @Test
     public void testSendTimeToLive() throws Exception {
-        log.info("*** testSendTimeToLive ***");
+        logger.info("*** testSendTimeToLive ***");
         Session session = null;
         MessageProducer producer = null;
         MessageConsumer consumer = null;
@@ -154,17 +149,14 @@ public class MessageTimeToLiveTest extends JMSTestBase {
                             ttl);
                     long now = System.currentTimeMillis();
                     long expiration = message.getJMSExpiration();
-                    log.info("sent (" + ++count + 
-                            ")msgId=" + message.getJMSMessageID() +
-                            ", expiration=" + expiration +
-                            ", " + (expiration == 0 ? 0 : expiration-now) +
-                            "msecs");
+                    logger.info("sent ({}) msgId={}, expiration={}, {} msecs",
+                            ++count, message.getJMSMessageID(), expiration,
+                            (expiration == 0 ? 0 : expiration-now));
                 }
             }
             
             long sleepTime = 1000; 
-            log.info("waiting " + sleepTime + 
-                    "msecs for some messages to expire");
+            logger.info("waiting {} msecs for some messages to expire", sleepTime);
             Thread.sleep(sleepTime);  //wait for some to expire
             
             connection.start();
@@ -176,10 +168,10 @@ public class MessageTimeToLiveTest extends JMSTestBase {
                    receivedCount += (m != null ? 1 : 0);
                 } while (m != null);
                 if (receivedCount == (3*msgCount)) { break; }
-                log.debug("waiting for messages...");
+                logger.debug("waiting for messages...");
                 Thread.sleep(1000);
             }
-            log.info("client received " +client.getCount()+ " msgs");
+            logger.info("client received {} msgs", client.getCount());
             assertEquals(3*msgCount, 
                     client.getCount());
         }

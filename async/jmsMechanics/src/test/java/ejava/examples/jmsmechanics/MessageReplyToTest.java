@@ -27,7 +27,7 @@ import org.junit.Test;
  * live.
  */
 public class MessageReplyToTest extends JMSTestBase {
-    static Logger log = LoggerFactory.getLogger(MessageReplyToTest.class);
+    static final Logger logger = LoggerFactory.getLogger(MessageReplyToTest.class);
     protected Destination destination;        
 
     @Before
@@ -48,7 +48,7 @@ public class MessageReplyToTest extends JMSTestBase {
             Message message = null;
             do {
                 message = consumer.receiveNoWait();
-                log.debug("clearing old message" + message);
+                logger.debug("clearing old message {}", message);
             } while (message != null);
             connection.stop();
         }
@@ -68,23 +68,22 @@ public class MessageReplyToTest extends JMSTestBase {
         }
         public void onMessage(Message message) {
             try {
-                log.debug("onMessage received (" + ++count + 
-                        "):" + message.getJMSMessageID() +
-                        ", replyTo=" + message.getJMSReplyTo());
+                logger.debug("onMessage received ({}): {}, replyTo={}", 
+                        ++count , message.getJMSMessageID() , message.getJMSReplyTo());
                 Destination replyDestination = message.getJMSReplyTo();
                 reply.setIntProperty("count", count);
                 reply.setJMSCorrelationID(message.getJMSMessageID());
                 producer.send(replyDestination, reply);
                 
             } catch (JMSException ex) {
-                log.error("error handling message", ex);
+                logger.error("error handling message", ex);
             }
         }        
     }
 
     @Test
     public void testReplyTo() throws Exception {
-        log.info("*** testReplyTo ***");
+        logger.info("*** testReplyTo ***");
         Session replySession = null;
         Session session = null;
         MessageProducer producer = null;
@@ -102,7 +101,6 @@ public class MessageReplyToTest extends JMSTestBase {
                     false, Session.CLIENT_ACKNOWLEDGE);
             client.setSession(replySession);
             consumer.setMessageListener(client);
-            
             
             session = connection.createSession(
                     false, Session.CLIENT_ACKNOWLEDGE);
@@ -124,9 +122,8 @@ public class MessageReplyToTest extends JMSTestBase {
                 message.setJMSReplyTo(replyTo);
                 producer.send(message);
                 responses.put(message.getJMSMessageID(), null);
-                log.info("sent (" + ++sendCount + 
-                    ")msgId=" + message.getJMSMessageID() +
-                    ", replyTo=" + message.getJMSReplyTo());
+                logger.info("sent ({}) msgId={}, replyTo={}", 
+                        ++sendCount , message.getJMSMessageID(), message.getJMSReplyTo());
             }
             
             connection.start();
@@ -148,14 +145,12 @@ public class MessageReplyToTest extends JMSTestBase {
                     m.acknowledge();
                 }
             }
-            log.info("sent=" + sendCount + " messages, received=" + 
-                    totalCount + " messages");
+            logger.info("sent={} messages, received={} messages", sendCount, totalCount);
             assertEquals(sendCount, totalCount);
             
             for(int d=0; d<receivedCount.length; d++) {
-                log.info("replyTo " + replyDestinations[d] + " received " +
-                        receivedCount[d] + " messages");
-               assertEquals(totalCount/receivedCount.length,receivedCount[d]); 
+                logger.info("replyTo {} received {} messages", replyDestinations[d], receivedCount[d]);
+                assertEquals(totalCount/receivedCount.length,receivedCount[d]); 
             }
             for(String id : responses.keySet()) {
                 assertNotNull(responses.get(id));
@@ -172,7 +167,7 @@ public class MessageReplyToTest extends JMSTestBase {
 
     @Test
     public void testReplyToMulti() throws Exception {
-        log.info("*** testReplyToMulti ***");
+        logger.info("*** testReplyToMulti ***");
         Session session = null;
         Session replySession = null;
         MessageProducer producer = null;
@@ -211,9 +206,8 @@ public class MessageReplyToTest extends JMSTestBase {
                     message.setJMSReplyTo(replyTo);
                     producer.send(message);
                     responses.put(message.getJMSMessageID(), null);
-                    log.info("sent (" + ++sendCount + 
-                        ")msgId=" + message.getJMSMessageID() +
-                        ", replyTo=" + message.getJMSReplyTo());
+                    logger.info("sent ({}) msgId={}, replyTo={}", 
+                            ++sendCount, message.getJMSMessageID(), message.getJMSReplyTo());
                 }
             }
             
@@ -237,17 +231,14 @@ public class MessageReplyToTest extends JMSTestBase {
                     }
                 }
                 if (totalCount == sendCount) { break; }
-                log.debug("waiting for messages..." + totalCount +
-                        " of expected " + sendCount);
+                logger.debug("waiting for messages...{} of expected {}", totalCount, sendCount);
             }
-            log.info("sent=" + sendCount + " messages, received=" + 
-                    totalCount + " messages");
+            logger.info("sent={} messages, received={} messages",  sendCount, totalCount);
             assertEquals(sendCount, totalCount);
             
             for(int d=0; d<receivedCount.length; d++) {
-                log.info("replyTo " + replyDestinations[d] + " received " +
-                        receivedCount[d] + " messages");
-               assertEquals(totalCount/receivedCount.length,receivedCount[d]); 
+                logger.info("replyTo {} received {} messages", replyDestinations[d], receivedCount[d]);
+                assertEquals(totalCount/receivedCount.length,receivedCount[d]); 
             }
             for(String id : responses.keySet()) {
                 assertNotNull(responses.get(id));

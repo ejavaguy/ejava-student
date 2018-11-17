@@ -25,7 +25,7 @@ import org.junit.Test;
  * you would expect some type of priority ordering in this case.
  */
 public class MessagePriorityTest extends JMSTestBase {
-    static Logger log = LoggerFactory.getLogger(MessagePriorityTest.class);
+    static final Logger logger = LoggerFactory.getLogger(MessagePriorityTest.class);
     protected Destination destination;        
 
     @Before
@@ -43,14 +43,13 @@ public class MessagePriorityTest extends JMSTestBase {
         LinkedList<Message> messages = new LinkedList<Message>();
         public void onMessage(Message message) {
             try {
-                log.debug("onMessage received (" + ++count + 
-                        "):" + message.getJMSMessageID() +
-                        ", priority=" + message.getJMSPriority());
+                logger.debug("onMessage received ({}):{}, priority={}", 
+                        ++count, message.getJMSMessageID(), message.getJMSPriority());
                 synchronized (messages) {
                     messages.add(message);
 				}
             } catch (JMSException ex) {
-                log.error("error handling message", ex);
+                logger.error("error handling message", ex);
             }
         }        
         public int getCount() { return count; }
@@ -63,7 +62,7 @@ public class MessagePriorityTest extends JMSTestBase {
     
     @Test
     public void testProducerPriority() throws Exception {
-        log.info("*** testProducerPriority ***");
+        logger.info("*** testProducerPriority ***");
         Session session = null;
         MessageProducer producer = null;
         MessageConsumer consumer = null;
@@ -85,9 +84,8 @@ public class MessagePriorityTest extends JMSTestBase {
                 for (int priority : priorities) {
                     producer.setPriority(priority);
                     producer.send(message);
-                    log.info("sent (" + i + 
-                            ")msgId=" + message.getJMSMessageID() +
-                            ", priority=" + message.getJMSPriority());
+                    logger.info("sent ({}) msgId={}, priority={}", 
+                            i,message.getJMSMessageID(), message.getJMSPriority());
                 }
             }
             
@@ -102,17 +100,16 @@ public class MessagePriorityTest extends JMSTestBase {
                        receivedCount += 1;
                        int priority = m.getJMSPriority();
                        if (priority > prevPriority) {
-                           log.warn("previous priority=" + prevPriority +
-                                   " received " + priority);
+                           logger.warn("previous priority={} received {}", prevPriority, priority);
                        }
                        prevPriority = priority;
                    }
                 } while (m != null);
                 if (receivedCount == (priorities.length*msgCount)) { break; }
-                log.debug("waiting for messages...");
+                logger.debug("waiting for messages...");
                 Thread.sleep(1000);
             }
-            log.info("client received " +client.getCount()+ " msgs");
+            logger.info("client received {} msgs", client.getCount());
             assertEquals(msgCount*priorities.length, 
                     client.getCount());
         }
@@ -126,7 +123,7 @@ public class MessagePriorityTest extends JMSTestBase {
 
     @Test
     public void testSendPriority() throws Exception {
-        log.info("*** testSendPriority ***");
+        logger.info("*** testSendPriority ***");
         Session session = null;
         MessageProducer producer = null;
         MessageConsumer consumer = null;
@@ -150,9 +147,8 @@ public class MessagePriorityTest extends JMSTestBase {
                                   Message.DEFAULT_DELIVERY_MODE,
                                   priority,
                                   Message.DEFAULT_TIME_TO_LIVE);
-                    log.info("sent (" + i + 
-                            ")msgId=" + message.getJMSMessageID() +
-                            ", priority=" + message.getJMSPriority());
+                    logger.info("sent ({}) msgId={}, priority={}", 
+                            i, message.getJMSMessageID(), message.getJMSPriority());
                 }
             }
             
@@ -167,17 +163,16 @@ public class MessagePriorityTest extends JMSTestBase {
                        receivedCount += 1;
                        int priority = m.getJMSPriority();
                        if (priority > prevPriority) {
-                           log.warn("previous priority=" + prevPriority +
-                                   " received " + priority);
+                           logger.warn("previous priority={} received {}", prevPriority, priority);
                        }
                        prevPriority = priority;
                    }
                 } while (m != null);
                 if (receivedCount == (priorities.length*msgCount)) { break; }
-                log.debug("waiting for messages...");
+                logger.debug("waiting for messages...");
                 Thread.sleep(1000);
             }
-            log.info("client received " +client.getCount()+ " msgs");
+            logger.info("client received {} msgs", client.getCount());
             assertEquals(msgCount*priorities.length, 
                     client.getCount());
         }
@@ -191,7 +186,7 @@ public class MessagePriorityTest extends JMSTestBase {
 
     @Test
     public void testMessagePriority() throws Exception {
-        log.info("*** testMessagePriority ***");
+        logger.info("*** testMessagePriority ***");
         Session session = null;
         MessageProducer producer = null;
         MessageConsumer consumer = null;
@@ -213,9 +208,8 @@ public class MessagePriorityTest extends JMSTestBase {
                 for (int priority : priorities) {
                     message.setJMSPriority(priority);
                     producer.send(message);
-                    log.info("sent (" + i + 
-                            ")msgId=" + message.getJMSMessageID() +
-                            ", priority=" + message.getJMSPriority());
+                    logger.info("sent ({}) msgId={}, priority={}", 
+                            i, message.getJMSMessageID(), message.getJMSPriority());
                 }
             }
             
@@ -230,17 +224,16 @@ public class MessagePriorityTest extends JMSTestBase {
                        receivedCount += 1;
                        int priority = m.getJMSPriority();
                        if (priority > prevPriority) {
-                           log.warn("previous priority=" + prevPriority +
-                                   " received " + priority);
+                           logger.warn("previous priority={} received={}", prevPriority, priority);
                        }
                        prevPriority = priority;
                    }
                 } while (m != null);
                 if (receivedCount == (priorities.length*msgCount)) { break; }
-                log.debug("waiting for messages...");
+                logger.debug("waiting for messages...");
                 Thread.sleep(1000);
             }
-            log.info("client received " +client.getCount()+ " msgs");
+            logger.info("client received {} msgs", client.getCount());
             assertEquals(msgCount*priorities.length, 
                     client.getCount());
         }

@@ -20,7 +20,7 @@ import org.junit.Test;
  * sender.
  */
 public class TransactedQueueSessionTest extends JMSTestBase {
-    static Logger log = LoggerFactory.getLogger(TransactedQueueSessionTest.class);
+    static final Logger logger = LoggerFactory.getLogger(TransactedQueueSessionTest.class);
     protected Destination destination;        
     protected MessageCatcher catcher1;
     protected MessageCatcher catcher2;
@@ -42,7 +42,7 @@ public class TransactedQueueSessionTest extends JMSTestBase {
 
     @Test
     public void testTransactedQueueSessionSend() throws Exception {
-        log.info("*** testTransactedQueueSessionSend ***");
+        logger.info("*** testTransactedQueueSessionSend ***");
         Session session = null;
         MessageProducer producer = null;
         try {
@@ -54,7 +54,7 @@ public class TransactedQueueSessionTest extends JMSTestBase {
             
             catcher1.clearMessages();
             producer.send(message);
-            log.info("sent msgId=" + message.getJMSMessageID());
+            logger.info("sent msgId={}", message.getJMSMessageID());
 
             //queues will hold messages waiting for delivery. We don't have
             //to have catcher started prior to sending the message to the 
@@ -67,7 +67,7 @@ public class TransactedQueueSessionTest extends JMSTestBase {
             for(int i=0; i<10 && 
                 (catcher1.getMessages().size() + 
                  catcher2.getMessages().size()< 1); i++) {
-                log.debug("waiting for messages...");
+                logger.debug("waiting for messages...");
                 Thread.sleep(1000);
             }
             if (catcher1.getMessages().size() == 0) {
@@ -85,7 +85,7 @@ public class TransactedQueueSessionTest extends JMSTestBase {
 
     @Test
     public void testRollbackTransactedQueueSessionSend() throws Exception {
-        log.info("*** testRollbackTransactedQueueSessionSend ***");
+        logger.info("*** testRollbackTransactedQueueSessionSend ***");
         Session session = null;
         MessageProducer producer = null;
         try {
@@ -97,7 +97,7 @@ public class TransactedQueueSessionTest extends JMSTestBase {
             
             catcher1.clearMessages();
             producer.send(message);
-            log.info("sent msgId=" + message.getJMSMessageID());
+            logger.info("sent msgId={}", message.getJMSMessageID());
 
             //queues will hold messages waiting for delivery. We don't have
             //to have catcher started prior to sending the message to the 
@@ -110,7 +110,7 @@ public class TransactedQueueSessionTest extends JMSTestBase {
             for(int i=0; i<10 && 
                 (catcher1.getMessages().size() + 
                  catcher2.getMessages().size()< 1); i++) {
-                log.debug("waiting for rolled back messages...");
+                logger.debug("waiting for rolled back messages...");
                 Thread.sleep(1000);
             }
             assertEquals(0, catcher2.getMessages().size());
@@ -124,7 +124,7 @@ public class TransactedQueueSessionTest extends JMSTestBase {
 
     @Test
     public void testTransactedQueueSessionMultiSend() throws Exception {
-        log.info("*** testTransactedQueueSessionMultiSend ***");
+        logger.info("*** testTransactedQueueSessionMultiSend ***");
         Session session = null;
         MessageProducer producer = null;
         try {
@@ -137,7 +137,7 @@ public class TransactedQueueSessionTest extends JMSTestBase {
             catcher1.clearMessages();
             for(int i=0; i<msgCount; i++) {
                 producer.send(message);
-                log.info("sent msgId=" + message.getJMSMessageID());
+                logger.info("sent msgId={}", message.getJMSMessageID());
             }
             //queues will hold messages waiting for delivery
             new Thread(catcher1).start();
@@ -149,7 +149,7 @@ public class TransactedQueueSessionTest extends JMSTestBase {
             for(int i=0; i<10 && 
                 (catcher1.getMessages().size() +
                  catcher2.getMessages().size()< msgCount); i++) {
-                log.debug("waiting for messages...");
+                logger.debug("waiting for messages...");
                 Thread.sleep(1000);
             }
             assertEquals(msgCount, 
@@ -164,7 +164,7 @@ public class TransactedQueueSessionTest extends JMSTestBase {
 
     @Test
     public void testRollbackTransactedQueueSessionMultiSend() throws Exception {
-        log.info("*** testRollbackTransactedQueueSessionMultiSend ***");
+        logger.info("*** testRollbackTransactedQueueSessionMultiSend ***");
         Session session = null;
         MessageProducer producer = null;
         try {
@@ -177,7 +177,7 @@ public class TransactedQueueSessionTest extends JMSTestBase {
             catcher1.clearMessages();
             for(int i=0; i<msgCount; i++) {
                 producer.send(message);
-                log.info("sent msgId=" + message.getJMSMessageID());
+                logger.info("sent msgId={}", message.getJMSMessageID());
             }
             //queues will hold messages waiting for delivery
             new Thread(catcher1).start();
@@ -189,7 +189,7 @@ public class TransactedQueueSessionTest extends JMSTestBase {
             for(int i=0; i<10 && 
                 (catcher1.getMessages().size() +
                  catcher2.getMessages().size()< msgCount); i++) {
-                log.debug("waiting for rolled back messages...");
+                logger.debug("waiting for rolled back messages...");
                 Thread.sleep(1000);
             }
             assertEquals(0, 

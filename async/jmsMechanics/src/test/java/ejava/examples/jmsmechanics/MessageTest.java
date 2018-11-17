@@ -36,7 +36,7 @@ import org.junit.Test;
  * This test case performs a demonstration of using a each message type.
  */
 public class MessageTest extends JMSTestBase {
-    static Logger log = LoggerFactory.getLogger(MessageTest.class);
+    static final Logger logger = LoggerFactory.getLogger(MessageTest.class);
     protected Destination destination;        
     
     protected Session session = null;
@@ -88,7 +88,7 @@ public class MessageTest extends JMSTestBase {
             Message message = null;
             do {
                 message = consumer.receiveNoWait();
-                log.debug("clearing old message" + message);
+                logger.debug("clearing old message {}", message);
             } while (message != null);
             connection.stop();
         }
@@ -114,8 +114,8 @@ public class MessageTest extends JMSTestBase {
         }
         public void onMessage(Message request) {
             try {
-                log.debug("onMessage received:"  + request.getJMSMessageID() + 
-                        ":" + request.getClass().getName());
+                logger.debug("onMessage received:{}:{}", 
+                        request.getJMSMessageID(), request.getClass().getName());
                 Destination replyDestination = request.getJMSReplyTo();
                 
                 Message reply = null;
@@ -141,7 +141,7 @@ public class MessageTest extends JMSTestBase {
                 producer.send(replyDestination, reply);
                 
             } catch (Exception ex) {
-                log.error("error handling message", ex);
+                logger.error("error handling message", ex);
             }
         }        
         public void close() throws JMSException {
@@ -169,7 +169,7 @@ public class MessageTest extends JMSTestBase {
         }
 
         protected Message getReply(TextMessage request) throws Exception {
-            log.debug("text request body=" + request.getText());
+            logger.debug("text request body={}", request.getText());
             Properties props = new Properties();
             props.load(new ByteArrayInputStream(request.getText().getBytes()));
             String operator = props.getProperty("operator");
@@ -182,7 +182,7 @@ public class MessageTest extends JMSTestBase {
         }
         
         protected Message getReply(ObjectMessage request) throws Exception {
-            log.debug("object request body=" + request.getObject());
+            logger.debug("object request body={}", request.getObject());
             @SuppressWarnings("unchecked")
 			Map<String, Object> body = (Map<String, Object>)request.getObject();
             String operator =  (String)body.get("operator");
@@ -195,7 +195,7 @@ public class MessageTest extends JMSTestBase {
         }
 
         protected Message getReply(BytesMessage request) throws JMSException {
-            log.debug("body="  + request.getBodyLength() + " bytes");
+            logger.debug("body={} bytes", request.getBodyLength());
             byte buffer[] = new byte[10];
             request.readBytes(buffer, 3);
             String operator = new String(buffer);
@@ -220,7 +220,7 @@ public class MessageTest extends JMSTestBase {
     
     @Test
     public void testStreamMessage() throws Exception {
-        log.info("*** testStreamMessage ***");
+        logger.info("*** testStreamMessage ***");
         
         StreamMessage request = session.createStreamMessage();        
         request.writeString("add");
@@ -237,7 +237,7 @@ public class MessageTest extends JMSTestBase {
     
     @Test
     public void testMapMessage() throws Exception {
-        log.info("*** testMapMessage ***");
+        logger.info("*** testMapMessage ***");
         
         MapMessage request = session.createMapMessage();        
         request.setString("operator", "add");
@@ -254,7 +254,7 @@ public class MessageTest extends JMSTestBase {
 
     @Test
     public void testTextMessage() throws Exception {
-        log.info("*** testTextMessage ***");
+        logger.info("*** testTextMessage ***");
         
         TextMessage request = session.createTextMessage();
         Properties props = new Properties();
@@ -276,7 +276,7 @@ public class MessageTest extends JMSTestBase {
 
     @Test
     public void testObjectMessage() throws Exception {
-        log.info("*** testObjectMessage ***");
+        logger.info("*** testObjectMessage ***");
         
         ObjectMessage request = session.createObjectMessage();
         Map<String, Serializable> body = new HashMap<String, Serializable>();
@@ -295,7 +295,7 @@ public class MessageTest extends JMSTestBase {
 
     @Test
     public void testBytesMessage() throws Exception {
-        log.info("*** testBytesMessage ***");
+        logger.info("*** testBytesMessage ***");
        
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         bos.write("add".getBytes());
@@ -315,7 +315,7 @@ public class MessageTest extends JMSTestBase {
 
     @Test
     public void testMessage() throws Exception {
-        log.info("*** testMessage ***");
+        logger.info("*** testMessage ***");
 
         Message request = session.createMessage();        
         request.setStringProperty("operator", "add");

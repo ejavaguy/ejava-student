@@ -26,12 +26,12 @@ import static org.junit.Assert.*;
  * Timings will be taken using both PERSISTENT and NON_PERSISTENT modes.
  */
 public class MessageDeliveryModeTest extends JMSTestBase {
-    static Logger log = LoggerFactory.getLogger(MessageDeliveryModeTest.class);
+    static final Logger logger = LoggerFactory.getLogger(MessageDeliveryModeTest.class);
     protected Destination destination;        
     
     @Before
     public void setUp() throws Exception {
-        log.debug("getting jndi initial context");
+        logger.debug("getting jndi initial context");
         destination = (Queue) lookup(queueJNDI);
         assertNotNull("null destination:" + queueJNDI, destination);
     }
@@ -47,15 +47,15 @@ public class MessageDeliveryModeTest extends JMSTestBase {
             try {
                 count += 1;
                 //if (count == 1 || count % 100 ==0) {
-                //    log.debug("onMessage received (" + count + 
-                //            "):" + message.getJMSMessageID() +
-                //            ", mode=" + message.getJMSDeliveryMode());
+                //    logger.debug("onMessage received ({}):{}, mode={}", 
+                //              count, message.getJMSMessageID(), 
+                //              message.getJMSDeliveryMode());
                 //}
                 synchronized(messages) {
                     messages.add(message);
                 }
             } catch (Exception ex) {
-                log.error("error handling message", ex);
+                logger.error("error handling message", ex);
             }
         }        
         public int getCount() { return count; }
@@ -80,7 +80,7 @@ public class MessageDeliveryModeTest extends JMSTestBase {
                hacks.put(mode, doTestProducerDeliveryMode(mode)); 
             }
         }
-        log.info("total messages per test=" + msgCount);
+        logger.info("total messages per test={}", msgCount);
         for(Mode mode: hacks.keySet()) {
             long total = hacks.get(mode);
             StringBuilder text = new StringBuilder();
@@ -89,11 +89,11 @@ public class MessageDeliveryModeTest extends JMSTestBase {
                 text.append("msecs , ave=" + 
                         (double)total/(double)msgCount + "msecs");
             }
-            log.info(text.toString());
+            logger.info(text.toString());
         }
     }
     public long doTestProducerDeliveryMode(Mode mode) throws Exception {
-        log.info("*** testProducerDeliverMode:"+ mode.name() + " ***");
+        logger.info("*** testProducerDeliverMode:{} ***", mode.name());
         Session session = null;
         MessageProducer producer = null;
         MessageConsumer consumer = null;
@@ -114,7 +114,7 @@ public class MessageDeliveryModeTest extends JMSTestBase {
                 message.setChar("val" + i, (char)('a' + i));
             }
             long start=System.currentTimeMillis();
-            log.info("sending " + msgCount + " messages");
+            logger.info("sending {} messages", msgCount);
             for (int i=0; i<msgCount; i++) {
                 producer.send(message,
                         mode.mode,
@@ -132,17 +132,14 @@ public class MessageDeliveryModeTest extends JMSTestBase {
                    receivedCount += (m != null ? 1 : 0);
                 } while (m != null);
                 if (receivedCount == (msgCount)) { break; }
-                log.debug("waiting for messages..." + client.getCount());
+                logger.debug("waiting for messages...{}", client.getCount());
                 Thread.sleep(1000);
             }
-            log.info("client received " +client.getCount()+ " msgs");
-            assertEquals(msgCount, 
-                    client.getCount());
-            log.info("total time to transmit=" + 
-                    (sendComplete - start) + "msecs");
+            logger.info("client received {} msgs", client.getCount());
+            assertEquals(msgCount, client.getCount());
+            logger.info("total time to transmit={} msecs", (sendComplete - start));
             if (msgCount > 0) {
-                log.info("ave time to transmit=" + 
-                        (sendComplete - start)/msgCount + "msecs");
+                logger.info("ave time to transmit={} msecs", (sendComplete - start)/msgCount);
             }
             return (sendComplete - start);
         }

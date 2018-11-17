@@ -21,7 +21,7 @@ import org.slf4j.LoggerFactory;
  * are sending messages either to a queue or a topic.
  */
 public class MessageCatcher implements Runnable {
-    private static final Logger log = LoggerFactory.getLogger(MessageCatcher.class);
+    private static final Logger logger = LoggerFactory.getLogger(MessageCatcher.class);
     protected ConnectionFactory connFactory;
     protected String user;
     protected String password;
@@ -97,21 +97,20 @@ public class MessageCatcher implements Runnable {
                 connection.start();
             }
             stopped = stop = false;
-            log.info("catcher " + name + " starting (ackMode=" + ackMode + ")");
+            logger.info("catcher {} starting (ackMode={})", name, ackMode);
             started = true;
             for (int i=0;!stop; i++) {
-                if (i%30==0) { log.debug("catcher looking for message"); }
+                if (i%30==0) { logger.debug("catcher looking for message"); }
                 Message message = consumer.receive(100);
                 if (message != null) {
                     messages.add(message);
-                    log.debug(name + " received message #" + messages.size() +
-                            ", msgId=" + message.getJMSMessageID());
+                    logger.debug("{} received message #{}, msgId={}", name, messages.size(), message.getJMSMessageID());
                     Thread.yield();
                 }      
             }
-            log.info("catcher " + name + " stopping (ackMode=" + ackMode + ")");
+            logger.info("catcher {} stopping (ackMode={})", name, ackMode);
             if (ackMode == Session.CLIENT_ACKNOWLEDGE && messages.size() > 0) {
-                log.debug("catcher " + name + " acknowledging messages");
+                logger.debug("catcher {} acknowledging messages", name);
                 messages.get(messages.size()-1).acknowledge();
             }
             if (this.sharedSession == null) {
@@ -132,7 +131,7 @@ public class MessageCatcher implements Runnable {
             execute();
         }
         catch (Exception ex) {
-            log.error("error running " + name, ex);
+            logger.error("error running " + name, ex);
         }
     }    
 
@@ -166,7 +165,7 @@ public class MessageCatcher implements Runnable {
             catcher.execute();
         }
         catch (Exception ex) {
-            log.error("",ex);
+            logger.error("",ex);
             System.exit(-1);            
         }
     }

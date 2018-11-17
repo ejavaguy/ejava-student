@@ -26,7 +26,7 @@ import org.junit.Test;
  * MessageConsumer has for receiving messages using a Queue.
  */
 public class MessageConsumerQueueTest extends JMSTestBase {
-    static Logger logger = LoggerFactory.getLogger(MessageConsumerQueueTest.class);
+    static final Logger logger = LoggerFactory.getLogger(MessageConsumerQueueTest.class);
     Destination destination;        
 
     @Before

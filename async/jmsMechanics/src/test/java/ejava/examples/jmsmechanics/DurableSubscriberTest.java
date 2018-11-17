@@ -24,7 +24,7 @@ import org.junit.Test;
  * This test case performs a demonstration of durable topic subscriptions. 
  */
 public class DurableSubscriberTest extends JMSTestBase {
-    static Logger log = LoggerFactory.getLogger(DurableSubscriberTest.class);
+    static final Logger logger = LoggerFactory.getLogger(DurableSubscriberTest.class);
     protected Destination destination;        
 
     @Before
@@ -45,11 +45,10 @@ public class DurableSubscriberTest extends JMSTestBase {
         LinkedList<Message> messages = new LinkedList<Message>();
         public void onMessage(Message message) {
             try {
-                log.debug("onMessage received (" + ++count + 
-                        "):" + message.getJMSMessageID());
+                logger.debug("onMessage received ({}):{}", ++count, message.getJMSMessageID());
                 messages.add(message);
             } catch (JMSException ex) {
-                log.error("error handling message", ex);
+                logger.error("error handling message", ex);
             }
         }        
         public int getCount() { return count; }
@@ -68,8 +67,7 @@ public class DurableSubscriberTest extends JMSTestBase {
         public Message getMessage() throws JMSException {
             Message message=consumer.receiveNoWait();
             if (message != null) {
-                log.debug("receive (" + ++count + 
-                        "):" + message.getJMSMessageID());
+                logger.debug("receive ({}):{}", ++count, message.getJMSMessageID());
             }
             return message;
         }
@@ -77,7 +75,7 @@ public class DurableSubscriberTest extends JMSTestBase {
 
     @Test
     public void testNonDurableSubscription() throws Exception {
-        log.info("*** testNonDurableSubscription ***");
+        logger.info("*** testNonDurableSubscription ***");
         Session session = null;
         MessageProducer producer = null;
         MessageConsumer asyncConsumer = null;
@@ -104,8 +102,8 @@ public class DurableSubscriberTest extends JMSTestBase {
             producer = session.createProducer(destination);
             Message message = session.createMessage();
             producer.send(message);
-            log.info("clients=" + clients);
-            log.info("sent msgId=" + message.getJMSMessageID());
+            logger.info("clients={}", clients);
+            logger.info("sent msgId={}", message.getJMSMessageID());
             
             connection.start();
             int receivedCount=0;
@@ -115,7 +113,7 @@ public class DurableSubscriberTest extends JMSTestBase {
                     receivedCount += (m != null ? 1 : 0);
                 }
                 if (receivedCount == clients.size()) { break; }
-                log.debug("waiting for messages...");
+                logger.debug("waiting for messages...");
                 Thread.sleep(1000);
             }
             assertEquals(1, asyncClient.getCount());
@@ -136,8 +134,8 @@ public class DurableSubscriberTest extends JMSTestBase {
             producer = session.createProducer(destination);
             message = session.createMessage();
             producer.send(message);
-            log.info("clients=" + clients);
-            log.info("sent msgId=" + message.getJMSMessageID());
+            logger.info("clients={}", clients);
+            logger.info("sent msgId={}", message.getJMSMessageID());
 
             //now get in late for the messages
             asyncConsumer = session.createConsumer(destination);
@@ -157,7 +155,7 @@ public class DurableSubscriberTest extends JMSTestBase {
                     receivedCount += (m != null ? 1 : 0);
                 }
                 if (receivedCount == clients.size()) { break; }
-                log.debug("waiting for non-durable messages...");
+                logger.debug("waiting for non-durable messages...");
                 Thread.sleep(1000);
             }
             assertEquals(0, asyncClient.getCount());
@@ -175,7 +173,7 @@ public class DurableSubscriberTest extends JMSTestBase {
     
     @Test
     public void testDurableSubscription() throws Exception {
-        log.info("*** testNonDurableSubscription ***");
+        logger.info("*** testNonDurableSubscription ***");
         Session session = null;
         MessageProducer producer = null;
         MessageConsumer asyncConsumer = null;
@@ -209,8 +207,8 @@ public class DurableSubscriberTest extends JMSTestBase {
             producer = session.createProducer(destination);
             Message message = session.createMessage();
             producer.send(message);
-            log.info("clients=" + clients);
-            log.info("sent msgId=" + message.getJMSMessageID());
+            logger.info("clients={}", clients);
+            logger.info("sent msgId={}", message.getJMSMessageID());
             
             connection.start();
             int receivedCount=0;
@@ -220,7 +218,7 @@ public class DurableSubscriberTest extends JMSTestBase {
                     receivedCount += (m != null ? 1 : 0);
                 }
                 if (receivedCount == clients.size()) { break; }
-                log.debug("waiting for messages...");
+                logger.debug("waiting for messages...");
                 Thread.sleep(1000);
             }
             assertEquals(1, asyncClient.getCount());
@@ -243,8 +241,8 @@ public class DurableSubscriberTest extends JMSTestBase {
             producer = session.createProducer(destination);
             message = session.createMessage();
             producer.send(message);
-            log.info("clients=" + clients);
-            log.info("sent msgId=" + message.getJMSMessageID());
+            logger.info("clients={}", clients);
+            logger.info("sent msgId={}", message.getJMSMessageID());
 
             //now get in late for the messages - RESUME DURABLE SUBSCRIPTION
             asyncConsumer = 
@@ -266,14 +264,14 @@ public class DurableSubscriberTest extends JMSTestBase {
                     receivedCount += (m != null ? 1 : 0);
                 }
                 if (receivedCount == clients.size()) { break; }
-                log.debug("waiting for durable messages...");
+                logger.debug("waiting for durable messages...");
                 Thread.sleep(1000);
             }
             assertEquals(1, asyncClient.getCount());
             assertEquals(1, syncClient.getCount());
         }
         catch (Exception ex) {
-        	log.error("error testing durable subscription", ex);
+        	logger.error("error testing durable subscription", ex);
         	fail(ex.toString());
         }
         finally {

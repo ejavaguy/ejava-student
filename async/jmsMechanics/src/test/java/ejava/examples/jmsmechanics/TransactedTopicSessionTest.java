@@ -20,7 +20,7 @@ import org.junit.Test;
  * sender.
  */
 public class TransactedTopicSessionTest extends JMSTestBase {
-    static Logger log = LoggerFactory.getLogger(TransactedTopicSessionTest.class);
+    static final Logger logger = LoggerFactory.getLogger(TransactedTopicSessionTest.class);
     protected Destination destination;        
     protected MessageCatcher catcher1;
     protected MessageCatcher catcher2;
@@ -49,7 +49,7 @@ public class TransactedTopicSessionTest extends JMSTestBase {
 
     @Test
     public void testTransactedTopicSessionSend() throws Exception {
-        log.info("*** testTransactedTopicSessionSend ***");
+        logger.info("*** testTransactedTopicSessionSend ***");
         Session session = null;
         MessageProducer producer = null;
         try {
@@ -62,14 +62,14 @@ public class TransactedTopicSessionTest extends JMSTestBase {
             catcher1.clearMessages();
             catcher2.clearMessages();
             producer.send(message);
-            log.info("sent msgId=" + message.getJMSMessageID());
+            logger.info("sent msgId={}", message.getJMSMessageID());
             assertEquals(0, catcher1.getMessages().size());
             assertEquals(0, catcher2.getMessages().size());
             session.commit(); //<!-- COMMITTING SESSION TRANSACTION
             for(int i=0; i<10 && 
                 (catcher1.getMessages().size() < 1 ||
                 catcher2.getMessages().size() < 1); i++) {
-                log.debug("waiting for messages...");
+                logger.debug("waiting for messages...");
                 Thread.sleep(1000);
             }
             assertEquals(1, catcher1.getMessages().size());
@@ -83,7 +83,7 @@ public class TransactedTopicSessionTest extends JMSTestBase {
 
     @Test
     public void testRollbackTransactedTopicSessionSend() throws Exception {
-        log.info("*** testRollbackTransactedTopicSessionSend ***");
+        logger.info("*** testRollbackTransactedTopicSessionSend ***");
         Session session = null;
         MessageProducer producer = null;
         try {
@@ -96,14 +96,14 @@ public class TransactedTopicSessionTest extends JMSTestBase {
             catcher1.clearMessages();
             catcher2.clearMessages();
             producer.send(message);
-            log.info("sent msgId=" + message.getJMSMessageID());
+            logger.info("sent msgId={}", message.getJMSMessageID());
             assertEquals(0, catcher1.getMessages().size());
             assertEquals(0, catcher2.getMessages().size());
             session.rollback(); //<!-- ROLLING BACK SESSION TRANSACTION
             for(int i=0; i<10 && 
                 (catcher1.getMessages().size() < 1 ||
                 catcher2.getMessages().size() < 1); i++) {
-                log.debug("waiting for rolled back messages...");
+                logger.debug("waiting for rolled back messages...");
                 Thread.sleep(1000);
             }
             assertEquals(0, catcher1.getMessages().size());
@@ -117,7 +117,7 @@ public class TransactedTopicSessionTest extends JMSTestBase {
     
     @Test
     public void testTransactedTopicSessionMultiSend() throws Exception {
-        log.info("*** testTransactedTopicSessionMultiSend ***");
+        logger.info("*** testTransactedTopicSessionMultiSend ***");
         Session session = null;
         MessageProducer producer = null;
         try {
@@ -131,7 +131,7 @@ public class TransactedTopicSessionTest extends JMSTestBase {
             catcher2.clearMessages();
             for(int i=0; i<msgCount; i++) {
                 producer.send(message);
-                log.info("sent msgId=" + message.getJMSMessageID());
+                logger.info("sent msgId={}", message.getJMSMessageID());
             }
             assertEquals(0, catcher1.getMessages().size());
             assertEquals(0, catcher2.getMessages().size());
@@ -139,7 +139,7 @@ public class TransactedTopicSessionTest extends JMSTestBase {
             for(int i=0; i<10 && 
                 (catcher1.getMessages().size() < msgCount ||
                 catcher2.getMessages().size() < msgCount); i++) {
-                log.debug("waiting for messages...");
+                logger.debug("waiting for messages...");
                 Thread.sleep(1000);
             }
             assertEquals(msgCount, catcher1.getMessages().size());
@@ -153,7 +153,7 @@ public class TransactedTopicSessionTest extends JMSTestBase {
 
     @Test
     public void testRolledbackTransactedTopicSessionMultiSend() throws Exception {
-        log.info("*** testRolledbackTransactedTopicSessionMultiSend ***");
+        logger.info("*** testRolledbackTransactedTopicSessionMultiSend ***");
         Session session = null;
         MessageProducer producer = null;
         try {
@@ -167,7 +167,7 @@ public class TransactedTopicSessionTest extends JMSTestBase {
             catcher2.clearMessages();
             for(int i=0; i<msgCount; i++) {
                 producer.send(message);
-                log.info("sent msgId=" + message.getJMSMessageID());
+                logger.info("sent msgId={}", message.getJMSMessageID());
             }
             assertEquals(0, catcher1.getMessages().size());
             assertEquals(0, catcher2.getMessages().size());
@@ -175,7 +175,7 @@ public class TransactedTopicSessionTest extends JMSTestBase {
             for(int i=0; i<10 && 
                 (catcher1.getMessages().size() < msgCount ||
                 catcher2.getMessages().size() < msgCount); i++) {
-                log.debug("waiting for rolledback messages...");
+                logger.debug("waiting for rolledback messages...");
                 Thread.sleep(1000);
             }
             assertEquals(0, catcher1.getMessages().size());

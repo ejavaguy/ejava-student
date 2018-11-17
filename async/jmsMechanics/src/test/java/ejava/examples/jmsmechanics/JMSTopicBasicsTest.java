@@ -20,7 +20,7 @@ import static org.junit.Assert.*;
  * receive the same messages.
  */
 public class JMSTopicBasicsTest extends JMSTestBase {
-    private static Logger logger = LoggerFactory.getLogger(JMSTopicBasicsTest.class);
+    private static final Logger logger = LoggerFactory.getLogger(JMSTopicBasicsTest.class);
     private Destination destination;        
     private MessageCatcher catcher1;
     private MessageCatcher catcher2;

@@ -25,7 +25,7 @@ import org.junit.Test;
  * MessageConsumer has for receiving messages using a Topic.
  */
 public class MessageConsumerTopicTest extends JMSTestBase {
-    static Logger log = LoggerFactory.getLogger(MessageConsumerTopicTest.class);
+    static final Logger logger = LoggerFactory.getLogger(MessageConsumerTopicTest.class);
     protected Destination destination;        
 
     @Before
@@ -43,12 +43,11 @@ public class MessageConsumerTopicTest extends JMSTestBase {
         LinkedList<Message> messages = new LinkedList<Message>();
         public void onMessage(Message message) {
             try {
-                log.debug("onMessage received (" + ++count + 
-                        "):" + message.getJMSMessageID());
+                logger.debug("onMessage received ({}):{}", ++count , message.getJMSMessageID());
                 messages.add(message);
                 message.acknowledge();
             } catch (JMSException ex) {
-                log.error("error handling message", ex);
+                logger.error("error handling message", ex);
             }
         }        
         public int getCount() { return count; }
@@ -67,8 +66,7 @@ public class MessageConsumerTopicTest extends JMSTestBase {
         public Message getMessage() throws JMSException {
             Message message=consumer.receiveNoWait();
             if (message != null) {
-                log.debug("receive (" + ++count + 
-                        "):" + message.getJMSMessageID());
+                logger.debug("receive ({}):{}", ++count , message.getJMSMessageID());
                 message.acknowledge();
             }
             return message;
@@ -77,7 +75,7 @@ public class MessageConsumerTopicTest extends JMSTestBase {
 
     @Test
     public void testMessageConsumer() throws Exception {
-        log.info("*** testMessageConsumer ***");
+        logger.info("*** testMessageConsumer ***");
         Session session = null;
         MessageProducer producer = null;
         MessageConsumer asyncConsumer = null;
@@ -104,7 +102,7 @@ public class MessageConsumerTopicTest extends JMSTestBase {
             producer = session.createProducer(destination);
             Message message = session.createMessage();
             producer.send(message);
-            log.info("sent msgId=" + message.getJMSMessageID());
+            logger.info("sent msgId={}", message.getJMSMessageID());
             
             connection.start();
             int receivedCount=0;
@@ -114,7 +112,7 @@ public class MessageConsumerTopicTest extends JMSTestBase {
                     receivedCount += (m != null ? 1 : 0);
                 }
                 if (receivedCount == clients.size()) { break; }
-                log.debug("waiting for messages...");
+                logger.debug("waiting for messages...");
                 Thread.sleep(1000);
             }
             assertEquals(1, asyncClient.getCount());
@@ -131,7 +129,7 @@ public class MessageConsumerTopicTest extends JMSTestBase {
     
     @Test
     public void testMessageConsumerMulti() throws Exception {
-        log.info("*** testMessageConsumerMulti ***");
+        logger.info("*** testMessageConsumerMulti ***");
         Session session = null;
         MessageProducer producer = null;
         MessageConsumer asyncConsumer = null;
@@ -159,7 +157,7 @@ public class MessageConsumerTopicTest extends JMSTestBase {
             Message message = session.createMessage();
             for (int i=0; i<msgCount; i++) {
                 producer.send(message);
-                log.info("sent msgId=" + message.getJMSMessageID());
+                logger.info("sent msgId={}", message.getJMSMessageID());
             }
             
             connection.start();
@@ -173,7 +171,7 @@ public class MessageConsumerTopicTest extends JMSTestBase {
                     } while (m != null);
                 }
                 if (receivedCount == clients.size()*msgCount) { break; }
-                log.debug("waiting for messages...");
+                logger.debug("waiting for messages...");
                 Thread.sleep(10);
             }
             assertEquals(msgCount, asyncClient.getCount());

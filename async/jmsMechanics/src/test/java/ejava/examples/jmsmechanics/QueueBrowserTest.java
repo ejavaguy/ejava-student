@@ -25,7 +25,7 @@ import org.junit.Test;
  *
  */
 public class QueueBrowserTest extends JMSTestBase {
-    static Logger log = LoggerFactory.getLogger(QueueBrowserTest.class);
+    static final Logger logger = LoggerFactory.getLogger(QueueBrowserTest.class);
     protected Destination destination;        
     protected MessageCatcher catcher1;
     protected MessageCatcher catcher2;
@@ -47,7 +47,7 @@ public class QueueBrowserTest extends JMSTestBase {
 
     @Test
     public void testQueueBrowser() throws Exception {
-        log.info("*** testQueueBrowser ***");
+        logger.info("*** testQueueBrowser ***");
         Session session = null;
         MessageProducer producer = null;
         try {
@@ -60,7 +60,7 @@ public class QueueBrowserTest extends JMSTestBase {
             catcher1.clearMessages();
             for(int i=0; i<msgCount; i++) {
                 producer.send(message);
-                log.info("sent msgId=" + message.getJMSMessageID());
+                logger.info("sent msgId={}", message.getJMSMessageID());
             }
             
             QueueBrowser qbrowser = session.createBrowser((Queue)destination);
@@ -70,18 +70,17 @@ public class QueueBrowserTest extends JMSTestBase {
 	            for (Enumeration<?> e = qbrowser.getEnumeration(); e.hasMoreElements(); ) {
 	                Message m = (Message) e.nextElement();
 	                msgs += 1;
-	                log.debug("browsing message (" + msgs + ")=" + m.getJMSMessageID());
+	                logger.debug("browsing message ({})={}", msgs, m.getJMSMessageID());
 	            }
 	            if (msgs==msgCount) { break; }
 	            else { 
-	                log.debug("retrying queueBrowser, got " + msgs + " out of " + msgCount);
+	                logger.debug("retrying queueBrowser, got {} out of {}", msgs, msgCount);
 	            	msgs=0;
 	            	qbrowser.close();
 	            	qbrowser = session.createBrowser((Queue)destination); 
 	            }
             }
-            assertEquals("unexpected number nf queue browser messages", 
-                    msgCount, msgs);
+            assertEquals("unexpected number nf queue browser messages", msgCount, msgs);
             
             //queues will hold messages waiting for delivery
             new Thread(catcher1).start();
@@ -89,7 +88,7 @@ public class QueueBrowserTest extends JMSTestBase {
             for(int i=0; i<10 && 
                 (catcher1.getMessages().size() +
                  catcher2.getMessages().size()< msgCount); i++) {
-                log.debug("waiting for messages...");
+                logger.debug("waiting for messages...");
                 Thread.sleep(1000);
             }
             assertEquals(msgCount, 

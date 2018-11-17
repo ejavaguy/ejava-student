@@ -2,30 +2,34 @@ package ejava.examples.jmsmechanics;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.jms.ConnectionMetaData;
+
 import org.junit.Test;
 
 public class ConnectionTest extends JMSTestBase {
-    static Logger log = LoggerFactory.getLogger(ConnectionTest.class);
+    static final Logger logger = LoggerFactory.getLogger(ConnectionTest.class);
 
     @Test
     public void testConnectionMetadata() throws Exception {
-        log.info("*** testConnectionMetadata ***");
+        logger.info("*** testConnectionMetadata ***");
         
-        log.info("connection.metaData=" + connection.getMetaData());
-        log.info("connection.metaData.JMSMajorVersion=" + 
-                connection.getMetaData().getJMSMajorVersion());
-        log.info("connection.metaData.JMSMinorVersion=" + 
-                connection.getMetaData().getJMSMinorVersion());
-        log.info("connection.metaData.JMSProviderName=" + 
-                connection.getMetaData().getJMSProviderName());
-        log.info("connection.metaData.JMSVersion=" + 
-                connection.getMetaData().getJMSVersion());
-        log.info("connection.metaData.providerMajorVersion=" + 
-                connection.getMetaData().getProviderMajorVersion());
-        log.info("connection.metaData.providerMinorVersion=" + 
-                connection.getMetaData().getProviderMinorVersion());
-        log.info("connection.metaData.providerVersion=" + 
-                connection.getMetaData().getProviderVersion());
+        ConnectionMetaData cmd = connection.getMetaData();
+        logger.info("connection.metaData={}", cmd);
+        logger.info("connection.metaData.JMSMajorVersion={}", 
+                cmd.getJMSMajorVersion());
+        logger.info("connection.metaData.JMSMinorVersion={}", 
+                cmd.getJMSMinorVersion());
+        logger.info("connection.metaData.JMSProviderName={}", 
+                cmd.getJMSProviderName());
+        logger.info("connection.metaData.JMSVersion={}", 
+                cmd.getJMSVersion());
+        logger.info("connection.metaData.providerMajorVersion={}", 
+                cmd.getProviderMajorVersion());
+        logger.info("connection.metaData.providerMinorVersion={}", 
+                cmd.getProviderMinorVersion());
+        logger.info("connection.metaData.providerVersion={}", 
+                cmd.getProviderVersion());
     }
     
 }

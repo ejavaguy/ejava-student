@@ -29,7 +29,7 @@ import org.junit.Test;
  * 'info', 'warn', and 'fatal'. No one will receive 'debug'.
  */
 public class MessageSelectorQueueTest extends JMSTestBase {
-    static Logger log = LoggerFactory.getLogger(MessageSelectorQueueTest.class);
+    static final Logger logger = LoggerFactory.getLogger(MessageSelectorQueueTest.class);
     protected Destination destination;        
 
     @Before
@@ -47,13 +47,12 @@ public class MessageSelectorQueueTest extends JMSTestBase {
         LinkedList<Message> messages = new LinkedList<Message>();
         public void onMessage(Message message) {
             try {
-                log.debug("onMessage received (" + ++count + 
-                        "):" + message.getJMSMessageID() +
-                        ", level=" + message.getStringProperty("level"));
+                logger.debug("onMessage received ({}):{}, level={}", 
+                        ++count , message.getJMSMessageID(),  message.getStringProperty("level"));
                 messages.add(message);
                 message.acknowledge();
             } catch (JMSException ex) {
-                log.error("error handling message", ex);
+                logger.error("error handling message", ex);
             }
         }        
         public int getCount() { return count; }
@@ -72,9 +71,8 @@ public class MessageSelectorQueueTest extends JMSTestBase {
         public Message getMessage() throws JMSException {
             Message message=consumer.receiveNoWait();
             if (message != null) {
-                log.debug("receive (" + ++count + 
-                        "):" + message.getJMSMessageID() +
-                        ", level=" + message.getStringProperty("level"));
+                logger.debug("receive ({}):{}, level={}", 
+                        ++count , message.getJMSMessageID(),  message.getStringProperty("level"));
                 message.acknowledge();
             }
             return message;
@@ -83,7 +81,7 @@ public class MessageSelectorQueueTest extends JMSTestBase {
 
     @Test
     public void testMessageSelector() throws Exception {
-        log.info("*** testMessageSelector ***");
+        logger.info("*** testMessageSelector ***");
         Session session = null;
         MessageProducer producer = null;
         MessageConsumer asyncConsumer = null;
@@ -116,8 +114,8 @@ public class MessageSelectorQueueTest extends JMSTestBase {
             for (String level : levels) {
                 message.setStringProperty("level", level);
                 producer.send(message);
-                log.info("sent msgId=" + message.getJMSMessageID() +
-                        ", level=" + message.getStringProperty("level"));
+                logger.info("sent msgId={}, level={}", 
+                        message.getJMSMessageID(), message.getStringProperty("level"));
             }
             
             connection.start();
@@ -128,11 +126,11 @@ public class MessageSelectorQueueTest extends JMSTestBase {
                     receivedCount += (m != null ? 1 : 0);
                 }
                 if (receivedCount == 3) { break; }
-                log.debug("waiting for messages...");
+                logger.debug("waiting for messages...");
                 Thread.sleep(1000);
             }
-            log.info("asyncClient received " +asyncClient.getCount()+ " msgs");
-            log.info("syncClient received " +syncClient.getCount()+ " msgs");
+            logger.info("asyncClient received {} msgs", asyncClient.getCount());
+            logger.info("syncClient received {} msgs", syncClient.getCount());
             assertEquals(3, asyncClient.getCount()+ syncClient.getCount());
         }
         finally {
@@ -146,7 +144,7 @@ public class MessageSelectorQueueTest extends JMSTestBase {
     
     @Test
     public void testMessageSelectorMulti() throws Exception {
-        log.info("*** testMessageSelectorMulti ***");
+        logger.info("*** testMessageSelectorMulti ***");
         Session session = null;
         MessageProducer producer = null;
         MessageConsumer asyncConsumer = null;
@@ -180,8 +178,8 @@ public class MessageSelectorQueueTest extends JMSTestBase {
                 for (String level : levels) {
                     message.setStringProperty("level", level);
                     producer.send(message);
-                    log.info("sent msgId=" + message.getJMSMessageID() +
-                            ", level=" + message.getStringProperty("level"));
+                    logger.info("sent msgId={}, level={}", 
+                            message.getJMSMessageID(), message.getStringProperty("level"));
                 }
             }
             
@@ -196,11 +194,11 @@ public class MessageSelectorQueueTest extends JMSTestBase {
                     } while (m != null);
                 }
                 if (receivedCount == (3*msgCount)) { break; }
-                log.debug("waiting for messages...");
+                logger.debug("waiting for messages...");
                 Thread.sleep(10);
             }
-            log.info("asyncClient received " +asyncClient.getCount()+ " msgs");
-            log.info("syncClient received " +syncClient.getCount()+ " msgs");
+            logger.info("asyncClient received {} msgs", asyncClient.getCount());
+            logger.info("syncClient received {} msgs", syncClient.getCount());
             assertEquals(msgCount*3, 
                     asyncClient.getCount()+ syncClient.getCount());
         }

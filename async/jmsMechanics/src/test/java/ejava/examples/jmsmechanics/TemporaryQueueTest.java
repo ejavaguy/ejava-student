@@ -19,7 +19,7 @@ import org.junit.Test;
  * to/from a temporary queue. 
  */
 public class TemporaryQueueTest extends JMSTestBase {
-    static Logger log = LoggerFactory.getLogger(TemporaryQueueTest.class);
+    static final Logger logger = LoggerFactory.getLogger(TemporaryQueueTest.class);
     protected Session session = null;
     protected MessageCatcher catcher1;
     protected MessageCatcher catcher2;
@@ -41,7 +41,7 @@ public class TemporaryQueueTest extends JMSTestBase {
 
     @Test
     public void testTemporaryQueueSend() throws Exception {
-        log.info("*** testTemporaryQueueSend ***");
+        logger.info("*** testTemporaryQueueSend ***");
         MessageProducer producer = null;
         try {
             session = connection.createSession(
@@ -57,7 +57,7 @@ public class TemporaryQueueTest extends JMSTestBase {
             
             catcher1.clearMessages();
             producer.send(message);
-            log.info("sent msgId=" + message.getJMSMessageID());
+            logger.info("sent msgId={}", message.getJMSMessageID());
 
             //queues will hold messages waiting for delivery. We don't have
             //to have catcher started prior to sending the message to the 
@@ -67,7 +67,7 @@ public class TemporaryQueueTest extends JMSTestBase {
             for(int i=0; i<10 && 
                 (catcher1.getMessages().size() + 
                  catcher2.getMessages().size()< 1); i++) {
-                log.debug("waiting for messages...");
+                logger.debug("waiting for messages...");
                 Thread.sleep(1000);
             }
             if (catcher1.getMessages().size() == 0) {
@@ -85,7 +85,7 @@ public class TemporaryQueueTest extends JMSTestBase {
 
     @Test
     public void testTemporaryQueueMultiSend() throws Exception {
-        log.info("*** testTemporaryQueueMultiSend ***");
+        logger.info("*** testTemporaryQueueMultiSend ***");
         MessageProducer producer = null;
         try {
             session = connection.createSession(
@@ -102,7 +102,7 @@ public class TemporaryQueueTest extends JMSTestBase {
             catcher1.clearMessages();
             for(int i=0; i<msgCount; i++) {
                 producer.send(message);
-                log.info("sent msgId=" + message.getJMSMessageID());
+                logger.info("sent msgId={}", message.getJMSMessageID());
             }
             //queues will hold messages waiting for delivery
             new Thread(catcher1).start();
@@ -110,7 +110,7 @@ public class TemporaryQueueTest extends JMSTestBase {
             for(int i=0; i<10 && 
                 (catcher1.getMessages().size() +
                  catcher2.getMessages().size()< msgCount); i++) {
-                log.debug("waiting for messages...");
+                logger.debug("waiting for messages...");
                 Thread.sleep(1000);
             }
             assertEquals(msgCount, 

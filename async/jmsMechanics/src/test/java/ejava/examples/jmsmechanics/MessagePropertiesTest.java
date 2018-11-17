@@ -22,7 +22,7 @@ import org.junit.Test;
  * This test case demonstrates some basic use of message properties.
  */
 public class MessagePropertiesTest extends JMSTestBase {
-    static Logger log = LoggerFactory.getLogger(MessagePropertiesTest.class);
+    static final Logger logger = LoggerFactory.getLogger(MessagePropertiesTest.class);
     protected Destination destination;        
     protected MessageCatcher catcher1;
     protected MessageCatcher catcher2;
@@ -36,7 +36,7 @@ public class MessagePropertiesTest extends JMSTestBase {
 
     @Test
     public void testMessageProperties() throws Exception {
-        log.info("*** testMessageProperties ***");
+        logger.info("*** testMessageProperties ***");
         Session session = null;
         MessageProducer producer = null;
         MessageConsumer consumer = null;
@@ -61,33 +61,30 @@ public class MessagePropertiesTest extends JMSTestBase {
             Message message2 = consumer.receive(1000);
             assertNotNull("no message received", message2);
             
-            log.debug("message2.JMSMessageID=" + message2.getJMSMessageID());
-            log.debug("message2.JMSTimestamp=" + message2.getJMSTimestamp());
+            logger.debug("message2.JMSMessageID={}", message2.getJMSMessageID());
+            logger.debug("message2.JMSTimestamp={}", message2.getJMSTimestamp());
             try { 
-                log.debug("message2.JMSCorrelationIDAsBytes=" + 
+                logger.debug("message2.JMSCorrelationIDAsBytes={}", 
                         message2.getJMSCorrelationIDAsBytes());
             }
             catch (JMSException ex) {
-                log.debug("message2.JMSCorrelationIDAsBytes=" + 
-                        ex);
+                logger.debug("message2.JMSCorrelationIDAsBytes={}", ex.toString());
             }
-            log.debug("message2.JMSCorrelationID=" + message2.getJMSCorrelationID());
-            log.debug("message2.JMSReplyTo=" + message2.getJMSReplyTo());
-            log.debug("message2.JMSDestination=" + message2.getJMSDestination());
-            log.debug("message2.JMSDeliveryMode=" + message2.getJMSDeliveryMode());
-            log.debug("message2.JMSRedelivered=" + message2.getJMSRedelivered());
-            log.debug("message2.JMSType=" + message2.getJMSType());
-            log.debug("message2.JMSExpiration=" + message2.getJMSExpiration());
-            log.debug("message2.JMSPriority=" + message2.getJMSPriority());
+            logger.debug("message2.JMSCorrelationID={}", message2.getJMSCorrelationID());
+            logger.debug("message2.JMSReplyTo={}", message2.getJMSReplyTo());
+            logger.debug("message2.JMSDestination={}", message2.getJMSDestination());
+            logger.debug("message2.JMSDeliveryMode={}", message2.getJMSDeliveryMode());
+            logger.debug("message2.JMSRedelivered={}", message2.getJMSRedelivered());
+            logger.debug("message2.JMSType={}", message2.getJMSType());
+            logger.debug("message2.JMSExpiration={}", message2.getJMSExpiration());
+            logger.debug("message2.JMSPriority={}", message2.getJMSPriority());
 
             
             for(@SuppressWarnings("rawtypes")
 			Enumeration e=message2.getPropertyNames();e.hasMoreElements();){
                 String name = (String)e.nextElement();
                 Object property = message2.getObjectProperty(name);
-                log.debug("message2." + name +
-                        " (:" + property.getClass().getName() +
-                        ")=" + property);
+                logger.debug("message2.{} (:{})={}", name, property.getClass().getName(), property);
             }
             
             assertEquals(message2.getBooleanProperty("booleanProperty"), true);
