@@ -16,7 +16,7 @@
         This project is the root project for async materials.
     </description>
     <modules>
-        <module>jmsMechanics</module>
+        <module>jms10Mechanics</module>
         <module>jmsNotifier</module>
         <module>jmsScheduler</module>
         <module>asyncMarket</module>

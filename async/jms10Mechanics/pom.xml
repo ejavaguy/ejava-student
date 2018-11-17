@@ -1,0 +1,158 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <parent>
+        <groupId>info.ejava.examples.async</groupId>
+        <artifactId>async</artifactId>
+        <version>5.0.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>jms10Mechanics</artifactId>
+    <packaging>jar</packaging>
+
+    <name>Async::JMS 1.0 Mechanics</name>
+    <description>
+        This project provides examples for performing core JMS 1.0 mechanics
+        of establishing connections, creating, sending, and receiving
+        messages.
+    </description>
+
+    <properties>
+        <java.naming.factory.initial>org.apache.activemq.artemis.jndi.ActiveMQInitialContextFactory</java.naming.factory.initial>
+        <java.naming.provider.url>vm://0</java.naming.provider.url>
+        <java.naming.factory.url.pkgs></java.naming.factory.url.pkgs>
+        <jms.embedded>true</jms.embedded>
+        <jmsmechanics.multi.message.count>20</jmsmechanics.multi.message.count>
+    </properties>
+
+    <dependencies>
+        <!-- core dependencies -->
+        <dependency>
+            <groupId>javax.jms</groupId>
+            <artifactId>javax.jms-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- test dependencies -->
+        <dependency>
+            <groupId>org.apache.activemq</groupId>
+            <artifactId>artemis-jms-server</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <scope>test</scope>
+        </dependency>    
+    </dependencies>
+
+    <build>
+        <!-- filter resource files for profile-specific values -->
+        <testResources>
+            <testResource>
+                <directory>src/test/resources</directory>
+                <filtering>true</filtering>
+                <excludes>
+                    <exclude>**/*.xml</exclude>
+                </excludes>
+            </testResource>
+            <testResource>
+                <directory>src/test/resources</directory>
+                <filtering>false</filtering>
+                <includes>
+                    <include>**/*.xml</include>
+                </includes>
+            </testResource>
+        </testResources>
+
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <systemPropertyVariables>
+                        <multi.message.count>${jmsmechanics.multi.message.count}</multi.message.count>
+                        <jms.embedded>${jms.embedded}</jms.embedded>
+                    </systemPropertyVariables>
+                </configuration>
+            </plugin>
+
+            <!-- build a jar file to share JMS Test utilities -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>test-jar</goal>
+                        </goals>
+                        <configuration>
+                            <!-- build/install jar even if tests are not run -->
+                            <skip>false</skip>
+                            <!-- include or exclude as appropriate -->
+                            <includes>
+                                <include>**/*TestBase.class</include>
+                                <include>**/ArtemisServer.class</include>
+                            </includes>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- this module does not play well with the site plugin -->
+            <plugin> 
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-site-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                    <skipDeploy>true</skipDeploy>
+                </configuration>
+            </plugin>
+        </plugins>      
+    </build>
+
+    <profiles>
+        <!-- run tests against remote JBoss versus standing up embedded server -->
+      <profile>
+        <id>jms.remote</id>
+        <activation>
+          <property>
+            <name>jms.embedded</name>
+            <value>false</value>
+          </property>
+        </activation>
+        <properties>
+            <jms.embedded>false</jms.embedded>
+            <java.naming.factory.initial>${jboss.remoting.java.naming.factory.initial}</java.naming.factory.initial>
+            <java.naming.provider.url>${jboss.remoting.java.naming.provider.url}</java.naming.provider.url>
+            <java.naming.factory.url.pkgs>${jboss.remoting.java.naming.factory.url.pkgs}</java.naming.factory.url.pkgs>
+        </properties>
+        <dependencies>
+          <!-- brings in JBoss RMI dependencies -->
+          <dependency>
+              <groupId>info.ejava.examples.common</groupId>
+              <artifactId>jboss-rmi-client</artifactId>
+              <version>${project.version}</version>
+              <type>pom</type>
+              <scope>test</scope>
+          </dependency>    
+        </dependencies>
+      </profile>
+    </profiles>
+
+</project>

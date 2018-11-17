@@ -65,7 +65,7 @@
         <!-- test dependencies -->
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>jmsMechanics</artifactId>
+            <artifactId>jms10Mechanics</artifactId>
             <version>${project.version}</version>
             <scope>test</scope>
         </dependency>
