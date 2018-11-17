@@ -59,6 +59,7 @@ public class TemporaryQueueTest extends JMSTestBase {
             Message message = session.createMessage();
             
             catcher1.clearMessages();
+            catcher2.clearMessages();
             producer.send(message);
             logger.info("sent msgId={}", message.getJMSMessageID());
 
@@ -103,6 +104,7 @@ public class TemporaryQueueTest extends JMSTestBase {
             Message message = session.createMessage();
             
             catcher1.clearMessages();
+            catcher2.clearMessages();
             for(int i=0; i<msgCount; i++) {
                 producer.send(message);
                 logger.info("sent msgId={}", message.getJMSMessageID());
