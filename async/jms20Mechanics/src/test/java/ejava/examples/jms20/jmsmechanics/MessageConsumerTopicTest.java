@@ -1,24 +1,22 @@
 package ejava.examples.jms20.jmsmechanics;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.Arrays;
 
 import javax.jms.Destination;
-import javax.jms.JMSException;
+import javax.jms.JMSConsumer;
+import javax.jms.JMSContext;
+import javax.jms.JMSProducer;
 import javax.jms.Message;
-import javax.jms.MessageConsumer;
-import javax.jms.MessageListener;
-import javax.jms.MessageProducer;
 import javax.jms.Session;
 import javax.jms.Topic;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.junit.Before;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This test case performs a demonstration of the two mechanisms that a 
@@ -33,156 +31,91 @@ public class MessageConsumerTopicTest extends JMSTestBase {
         destination = (Topic) lookup(topicJNDI);
         assertNotNull("null destination:" + topicJNDI, destination);
     }
-    
-    private interface MyClient {
-        int getCount();
-        Message getMessage() throws Exception;
-    }
-    private class AsyncClient implements MessageListener, MyClient {
-        private int count=0;
-        LinkedList<Message> messages = new LinkedList<Message>();
-        public void onMessage(Message message) {
-            try {
-                logger.debug("onMessage received ({}):{}", ++count , message.getJMSMessageID());
-                messages.add(message);
-                message.acknowledge();
-            } catch (JMSException ex) {
-                logger.error("error handling message", ex);
-            }
-        }        
-        public int getCount() { return count; }
-        public Message getMessage() {
-            return (messages.isEmpty() ? null : messages.remove());
-        }
-    }
-    
-    private class SyncClient implements MyClient {
-        private MessageConsumer consumer;
-        private int count=0;
-        public SyncClient(MessageConsumer consumer) {
-            this.consumer = consumer;
-        }
-        public int getCount() { return count; }
-        public Message getMessage() throws JMSException {
-            Message message=consumer.receiveNoWait();
-            if (message != null) {
-                logger.debug("receive ({}):{}", ++count , message.getJMSMessageID());
-                message.acknowledge();
-            }
-            return message;
-        }
-    }
 
     @Test
     public void testMessageConsumer() throws Exception {
         logger.info("*** testMessageConsumer ***");
-        Session session = null;
-        MessageProducer producer = null;
-        MessageConsumer asyncConsumer = null;
-        MessageConsumer syncConsumer = null;
-        try {
-            connection.stop();
-            session = connection.createSession(
-                    false, Session.CLIENT_ACKNOWLEDGE);
-            List<MyClient> clients = new ArrayList<MyClient>();
-
-            //create a client to asynchronous receive messages through 
-            //onMessage() callbacks
-            asyncConsumer = session.createConsumer(destination);
-            AsyncClient asyncClient = new AsyncClient();
-            asyncConsumer.setMessageListener(asyncClient);
-            clients.add(asyncClient);
-
-            //create a client to synchronously poll for messages with 
-            //receive calls
-            syncConsumer = session.createConsumer(destination);
-            SyncClient syncClient = new SyncClient(syncConsumer);
-            clients.add(syncClient);
+        try (JMSContext context=createContext();
+             JMSContext context2=context.createContext(Session.AUTO_ACKNOWLEDGE)) {
+            context.stop();
             
-            producer = session.createProducer(destination);
-            Message message = session.createMessage();
-            producer.send(message);
-            logger.info("sent msgId={}", message.getJMSMessageID());
-            
-            connection.start();
-            int receivedCount=0;
-            for(int i=0; i<10; i++) {
-                for(MyClient client: clients) {
-                    Message m = client.getMessage();
-                    receivedCount += (m != null ? 1 : 0);
+            try (JMSConsumer syncConsumer = context.createConsumer(destination);
+                 JMSConsumer asyncConsumer = context2.createConsumer(destination)) {
+                
+                //create a client to synchronously poll for messages
+                SyncClient syncClient = new SyncClient(syncConsumer);
+                
+                //create a client to asynchronous receive messages through onMessage() callbacks
+                AsyncClient asyncClient = new AsyncClient();
+                asyncConsumer.setMessageListener(asyncClient);
+
+                //send a message
+                JMSProducer producer = context.createProducer();
+                Message message = context.createMessage();
+                producer.send(destination, message);
+                logger.info("sent msgId={}", message.getJMSMessageID());
+
+                //gather the messages from the clients
+                context.start();
+                int receivedCount=0;
+                for(int i=0; i<10; i++) {
+                    for(MyClient client: Arrays.asList(asyncClient, syncClient)) {
+                        Message m = client.getMessage();
+                        receivedCount += (m != null ? 1 : 0);
+                    }
+                    if (receivedCount == 2) { break; }
+                    logger.debug("waiting for messages...");
+                    Thread.sleep(1000);
                 }
-                if (receivedCount == clients.size()) { break; }
-                logger.debug("waiting for messages...");
-                Thread.sleep(1000);
+                assertEquals(1, asyncClient.getCount());
+                assertEquals(1, syncClient.getCount());
             }
-            assertEquals(1, asyncClient.getCount());
-            assertEquals(1, syncClient.getCount());
-        }
-        finally {
-            if (connection != null) { connection.stop(); }
-            if (asyncConsumer != null) { asyncConsumer.close(); }
-            if (syncConsumer != null) { syncConsumer.close(); }
-            if (producer != null) { producer.close(); }
-            if (session != null)  { session.close(); }
         }
     }
     
     @Test
     public void testMessageConsumerMulti() throws Exception {
         logger.info("*** testMessageConsumerMulti ***");
-        Session session = null;
-        MessageProducer producer = null;
-        MessageConsumer asyncConsumer = null;
-        MessageConsumer syncConsumer = null;
-        try {
-            connection.stop();
-            session = connection.createSession(
-                    false, Session.CLIENT_ACKNOWLEDGE);
-            List<MyClient> clients = new ArrayList<MyClient>();
-
-            //create a client to asynchronous receive messages through 
-            //onMessage() callbacks
-            asyncConsumer = session.createConsumer(destination);
-            AsyncClient asyncClient = new AsyncClient();
-            asyncConsumer.setMessageListener(asyncClient);
-            clients.add(asyncClient);
-
-            //create a client to synchronously poll for messages with 
-            //receive calls
-            syncConsumer = session.createConsumer(destination);
-            SyncClient syncClient = new SyncClient(syncConsumer);
-            clients.add(syncClient);
+        try (JMSContext context=createContext(Session.CLIENT_ACKNOWLEDGE);
+             JMSContext context2=context.createContext(Session.CLIENT_ACKNOWLEDGE)) {
+            context.stop();
             
-            producer = session.createProducer(destination);
-            Message message = session.createMessage();
-            for (int i=0; i<msgCount; i++) {
-                producer.send(message);
-                logger.info("sent msgId={}", message.getJMSMessageID());
-            }
-            
-            connection.start();
-            int receivedCount=0;
-            for(int i=0; i<10 || i<msgCount; i++) {
-                for(MyClient client: clients) {
-                    Message m=null;
-                    do {
-                       m = client.getMessage();
-                       receivedCount += (m != null ? 1 : 0);
-                    } while (m != null);
+            try (JMSConsumer syncConsumer = context.createConsumer(destination);
+                 JMSConsumer asyncConsumer = context2.createConsumer(destination)) {
+                
+                //create a client to asynchronous receive messages through onMessage() callbacks
+                AsyncClient asyncClient = new AsyncClient();
+                asyncConsumer.setMessageListener(asyncClient);
+
+                //create a client to synchronously poll for messages
+                SyncClient syncClient = new SyncClient(syncConsumer);
+                
+                //send some messages to the waiting subscribers
+                JMSProducer producer = context.createProducer();
+                Message message = context.createMessage();
+                for (int i=0; i<msgCount; i++) {
+                    producer.send(destination, message);
+                    logger.info("sent msgId={}", message.getJMSMessageID());
                 }
-                if (receivedCount == clients.size()*msgCount) { break; }
-                logger.debug("waiting for messages...");
-                Thread.sleep(10);
+
+                //collection messages from subscribers
+                connection.start();
+                int receivedCount=0;
+                for(int i=0; i<10 || i<msgCount; i++) {
+                    for(MyClient client: Arrays.asList(asyncClient, syncClient)) {
+                        Message m=null;
+                        do {
+                           m = client.getMessage();
+                           receivedCount += (m != null ? 1 : 0);
+                        } while (m != null);
+                    }
+                    if (receivedCount == 2*msgCount) { break; }
+                    logger.debug("waiting for messages...");
+                    Thread.sleep(10);
+                }
+                assertEquals(msgCount, asyncClient.getCount());
+                assertEquals(msgCount, syncClient.getCount());
             }
-            assertEquals(msgCount, asyncClient.getCount());
-            assertEquals(msgCount, syncClient.getCount());
-        }
-        finally {
-            if (connection != null) { connection.stop(); }
-            if (asyncConsumer != null) { asyncConsumer.close(); }
-            if (syncConsumer != null) { syncConsumer.close(); }
-            if (producer != null) { producer.close(); }
-            if (session != null)  { session.close(); }
         }
     }    
     

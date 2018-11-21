@@ -1,9 +1,17 @@
 package ejava.examples.jms20.jmsmechanics;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 
 import javax.jms.Destination;
+import javax.jms.JMSConsumer;
+import javax.jms.JMSContext;
 import javax.jms.JMSException;
+import javax.jms.JMSProducer;
 import javax.jms.Message;
 import javax.jms.MessageConsumer;
 import javax.jms.MessageListener;
@@ -34,214 +42,160 @@ public class MessagePriorityTest extends JMSTestBase {
         assertNotNull("null destination:" + queueJNDI, destination);
     }
     
-    private interface MyClient {
-        int getCount();
-        Message getMessage() throws Exception;
-    }
-    private class AsyncClient implements MessageListener, MyClient {
-        private int count=0;
-        LinkedList<Message> messages = new LinkedList<Message>();
-        public void onMessage(Message message) {
-            try {
-                logger.debug("onMessage received ({}):{}, priority={}", 
-                        ++count, message.getJMSMessageID(), message.getJMSPriority());
-                synchronized (messages) {
-                    messages.add(message);
-				}
-            } catch (JMSException ex) {
-                logger.error("error handling message", ex);
-            }
-        }        
-        public int getCount() { return count; }
-        public Message getMessage() {
-        	synchronized (messages) {
-                return (messages.isEmpty() ? null : messages.remove());
-			}
-        }
-    }
-    
     @Test
     public void testProducerPriority() throws Exception {
         logger.info("*** testProducerPriority ***");
-        Session session = null;
-        MessageProducer producer = null;
-        MessageConsumer consumer = null;
-        try {
-            connection.stop();
-            session = connection.createSession(
-                    false, Session.AUTO_ACKNOWLEDGE);
+        try (JMSContext context=createContext()) {
+            context.stop();
 
-            //create a client to asynchronous receive messages through 
-            //onMessage() callbacks
-            consumer = session.createConsumer(destination);
-            AsyncClient client = new AsyncClient();
-            consumer.setMessageListener(client);
-            
-            int priorities[] = {9,0,8,1,7,2,6,3,6,4,5};             
-            producer = session.createProducer(destination);
-            Message message = session.createMessage();
-            for (int i=0; i<msgCount; i++) {
-                for (int priority : priorities) {
-                    producer.setPriority(priority);
-                    producer.send(message);
-                    logger.info("sent ({}) msgId={}, priority={}", 
-                            i,message.getJMSMessageID(), message.getJMSPriority());
+            try (JMSConsumer consumer = context.createConsumer(destination)) {
+                //create a synchronous client to poll for messages -- better control            
+                SyncClient client = new SyncClient(consumer);
+                
+                //send the messages
+                int priorities[] = {9,0,8,1,7,2,6,3,6,4,5};             
+                JMSProducer producer = context.createProducer();
+                Message message = context.createMessage();
+                for (int i=0; i<msgCount; i++) {
+                    for (int priority : priorities) {
+                        producer.setPriority(priority);
+                        producer.send(destination, message);
+                        logger.info("sent ({}) msgId={}, priority={}", 
+                                i,message.getJMSMessageID(), message.getJMSPriority());
+                    }
                 }
-            }
-            
-            connection.start();
-            int receivedCount=0;
-            int prevPriority = 9;
-            for(int i=0; i<10 || i<msgCount; i++) {
-                Message m=null;
-                do {
-                   m = client.getMessage();
-                   if (m != null) {
+                
+                //gather received messages
+                context.start();
+                int receivedCount=0;
+                int prevPriority = 9;
+                for(int i=0; i<10 || i<msgCount; i++) {
+                    for (Message m=client.getMessage(); m!=null; ) {
                        receivedCount += 1;
                        int priority = m.getJMSPriority();
                        if (priority > prevPriority) {
                            logger.warn("previous priority={} received {}", prevPriority, priority);
                        }
                        prevPriority = priority;
-                   }
-                } while (m != null);
-                if (receivedCount == (priorities.length*msgCount)) { break; }
-                logger.debug("waiting for messages...");
-                Thread.sleep(1000);
+                       m = client.getMessage();
+                    }
+                    if (receivedCount == (priorities.length*msgCount)) { break; }
+                    logger.debug("waiting for messages...");
+                    Thread.sleep(1000);
+                }
+                logger.info("client received {} msgs", client.getCount());
+                assertEquals(msgCount*priorities.length, 
+                        client.getCount());
             }
-            logger.info("client received {} msgs", client.getCount());
-            assertEquals(msgCount*priorities.length, 
-                    client.getCount());
-        }
-        finally {
-            if (connection != null) { connection.stop(); }
-            if (consumer != null) { consumer.close(); }
-            if (producer != null) { producer.close(); }
-            if (session != null)  { session.close(); }
         }
     }    
 
     @Test
     public void testSendPriority() throws Exception {
         logger.info("*** testSendPriority ***");
-        Session session = null;
-        MessageProducer producer = null;
-        MessageConsumer consumer = null;
-        try {
-            connection.stop();
-            session = connection.createSession(
-                    false, Session.AUTO_ACKNOWLEDGE);
-
-            //create a client to asynchronous receive messages through 
-            //onMessage() callbacks
-            consumer = session.createConsumer(destination);
-            AsyncClient client = new AsyncClient();
-            consumer.setMessageListener(client);
+        try (JMSContext context=createContext()) {
+            context.stop();
             
-            int priorities[] = {9,0,8,1,7,2,6,3,6,4,5};             
-            producer = session.createProducer(destination);
-            Message message = session.createMessage();
-            for (int i=0; i<msgCount; i++) {
-                for (int priority : priorities) {
-                    producer.send(message, 
-                                  Message.DEFAULT_DELIVERY_MODE,
-                                  priority,
-                                  Message.DEFAULT_TIME_TO_LIVE);
-                    logger.info("sent ({}) msgId={}, priority={}", 
-                            i, message.getJMSMessageID(), message.getJMSPriority());
+            try (JMSConsumer consumer=context.createConsumer(destination)) {
+                //create a synchronous client to poll for messages -- better control            
+                SyncClient client = new SyncClient(consumer);
+                
+                //send messages and different priorities
+                Integer priorities[] = {9,0,8,1,7,2,6,3,6,4,5};             
+                JMSProducer producer = context.createProducer();
+                Message message = context.createMessage();
+                for (int i=0; i<msgCount; i++) {
+                    for (int priority : priorities) {
+                        producer.setPriority(priority);
+                        producer.send(destination, message);
+                        logger.info("sent ({}) msgId={}, priority={}", 
+                                i, message.getJMSMessageID(), message.getJMSPriority());
+                    }
                 }
-            }
-            
-            connection.start();
-            int receivedCount=0;
-            int prevPriority = 9;
-            for(int i=0; i<10 || i<msgCount; i++) {
-                Message m=null;
-                do {
-                   m = client.getMessage();
-                   if (m != null) {
+                
+                connection.start();
+                int receivedCount=0;
+                int prevPriority = 9;
+                Set<Integer> remainingPriorities = new HashSet<>(Arrays.asList(priorities));
+                for(int i=0; i<10 || i<msgCount; i++) {
+                    for (Message m=client.getMessage(); m!=null; ) {
                        receivedCount += 1;
                        int priority = m.getJMSPriority();
                        if (priority > prevPriority) {
                            logger.warn("previous priority={} received {}", prevPriority, priority);
                        }
+                       remainingPriorities.remove(priority);
                        prevPriority = priority;
-                   }
-                } while (m != null);
-                if (receivedCount == (priorities.length*msgCount)) { break; }
-                logger.debug("waiting for messages...");
-                Thread.sleep(1000);
+                       m = client.getMessage();
+                    }
+                    if (receivedCount == (priorities.length*msgCount)) { break; }
+                    logger.debug("waiting for messages...");
+                    Thread.sleep(1000);
+                }
+                logger.info("client received {} msgs", client.getCount());
+                assertEquals(msgCount*priorities.length, 
+                        client.getCount());
+                assertTrue("not all priorities seen: {}" + remainingPriorities, remainingPriorities.isEmpty());
             }
-            logger.info("client received {} msgs", client.getCount());
-            assertEquals(msgCount*priorities.length, 
-                    client.getCount());
-        }
-        finally {
-            if (connection != null) { connection.stop(); }
-            if (consumer != null) { consumer.close(); }
-            if (producer != null) { producer.close(); }
-            if (session != null)  { session.close(); }
+
+            
+            
         }
     }    
 
+    /**
+     * This test demonstrates that Message.setPriority() is not the method to 
+     * use to send a message with a specific priority.
+     */
     @Test
     public void testMessagePriority() throws Exception {
         logger.info("*** testMessagePriority ***");
-        Session session = null;
-        MessageProducer producer = null;
-        MessageConsumer consumer = null;
-        try {
-            connection.stop();
-            session = connection.createSession(
-                    false, Session.AUTO_ACKNOWLEDGE);
+        try (JMSContext context=createContext()) {
+            context.stop();
 
-            //create a client to asynchronous receive messages through 
-            //onMessage() callbacks
-            consumer = session.createConsumer(destination);
-            AsyncClient client = new AsyncClient();
-            consumer.setMessageListener(client);
-            
-            int priorities[] = {9,0,8,1,7,2,6,3,6,4,5};             
-            producer = session.createProducer(destination);
-            Message message = session.createMessage();
-            for (int i=0; i<msgCount; i++) {
-                for (int priority : priorities) {
-                    message.setJMSPriority(priority);
-                    producer.send(message);
-                    logger.info("sent ({}) msgId={}, priority={}", 
-                            i, message.getJMSMessageID(), message.getJMSPriority());
+            try (JMSConsumer consumer = context.createConsumer(destination)) {
+                //create a client to synchronously poll for messages
+                SyncClient client = new SyncClient(consumer);
+
+                    //send some messages at various priorities
+                Integer priorities[] = {9,0,8,1,7,2,6,3,6,4,5};             
+                JMSProducer producer = context.createProducer();
+                Message message = context.createMessage();
+                for (int i=0; i<msgCount; i++) {
+                    for (int priority : priorities) {
+                        message.setJMSPriority(priority);  //<== this is *NOT* how we do this!!!
+                        producer.send(destination, message);
+                        logger.info("sent ({}) msgId={}, priority={}", 
+                                i, message.getJMSMessageID(), message.getJMSPriority());
+                    }
                 }
-            }
-            
-            connection.start();
-            int receivedCount=0;
-            int prevPriority = 9;
-            for(int i=0; i<10 || i<msgCount; i++) {
-                Message m=null;
-                do {
-                   m = client.getMessage();
-                   if (m != null) {
+                
+                    //gather the messages from the client
+                context.start();
+                int receivedCount=0;
+                int prevPriority = 9;
+                Set<Integer> remainingPriorities = new HashSet<>(Arrays.asList(priorities));
+                for(int i=0; i<10 || i<msgCount; i++) {
+                    for (Message m=client.getMessage(); m!=null; ) {
                        receivedCount += 1;
                        int priority = m.getJMSPriority();
                        if (priority > prevPriority) {
                            logger.warn("previous priority={} received={}", prevPriority, priority);
                        }
+                       remainingPriorities.remove(priority);
                        prevPriority = priority;
-                   }
-                } while (m != null);
-                if (receivedCount == (priorities.length*msgCount)) { break; }
-                logger.debug("waiting for messages...");
-                Thread.sleep(1000);
+                       m = client.getMessage();
+                    }
+                    if (receivedCount == (priorities.length*msgCount)) { break; }
+                    logger.debug("waiting for messages...");
+                    Thread.sleep(1000);
+                }
+                logger.info("client received {} msgs", client.getCount());
+                assertEquals(msgCount*priorities.length, 
+                        client.getCount());
+                assertFalse("all priorities seen", remainingPriorities.isEmpty()); //<== we are looking for failure
+                logger.info("priorties not seen: {}", remainingPriorities);
             }
-            logger.info("client received {} msgs", client.getCount());
-            assertEquals(msgCount*priorities.length, 
-                    client.getCount());
-        }
-        finally {
-            if (connection != null) { connection.stop(); }
-            if (consumer != null) { consumer.close(); }
-            if (producer != null) { producer.close(); }
-            if (session != null)  { session.close(); }
         }
     }    
 

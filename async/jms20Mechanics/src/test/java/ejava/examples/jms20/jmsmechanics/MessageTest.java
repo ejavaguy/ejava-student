@@ -1,7 +1,7 @@
 package ejava.examples.jms20.jmsmechanics;
 
-import static org.junit.Assert.*;
-
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -14,23 +14,23 @@ import java.util.Properties;
 
 import javax.jms.BytesMessage;
 import javax.jms.Destination;
+import javax.jms.JMSConsumer;
+import javax.jms.JMSContext;
 import javax.jms.JMSException;
+import javax.jms.JMSProducer;
 import javax.jms.MapMessage;
 import javax.jms.Message;
-import javax.jms.MessageConsumer;
 import javax.jms.MessageListener;
-import javax.jms.MessageProducer;
 import javax.jms.ObjectMessage;
-import javax.jms.Session;
 import javax.jms.Queue;
 import javax.jms.StreamMessage;
 import javax.jms.TextMessage;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This test case performs a demonstration of using a each message type.
@@ -39,11 +39,11 @@ public class MessageTest extends JMSTestBase {
     static final Logger logger = LoggerFactory.getLogger(MessageTest.class);
     protected Destination destination;        
     
-    protected Session session = null;
-    protected MessageProducer producer = null;
-    protected MessageConsumer consumer = null;
-    protected MessageConsumer replyConsumer = null;
-    protected Destination replyDestination = null;
+    protected JMSContext context;
+    protected JMSProducer producer;
+    protected JMSConsumer consumer;
+    protected JMSConsumer replyConsumer;
+    protected Destination replyDestination;
     protected Replier client;
 
     @Before
@@ -51,18 +51,17 @@ public class MessageTest extends JMSTestBase {
         destination = (Queue) lookup(queueJNDI);
         assertNotNull("null destination:" + queueJNDI, destination);
         
-        emptyQueue();
+        emptyQueue(destination);
 
         //setup replies
-        session = connection.createSession(
-                false, Session.AUTO_ACKNOWLEDGE);
-        consumer = session.createConsumer(destination);
+        context = createContext();
+        consumer = context.createConsumer(destination);
         client = new Replier();
-        client.setSession(session);
+        client.setContext(context);
         consumer.setMessageListener(client);                    
-        producer = session.createProducer(destination);            
-        replyDestination = session.createTemporaryQueue();
-        replyConsumer = session.createConsumer(replyDestination);
+        producer = context.createProducer();            
+        replyDestination = context.createTemporaryQueue();
+        replyConsumer = context.createConsumer(replyDestination);
         connection.start();
     }
     
@@ -72,30 +71,7 @@ public class MessageTest extends JMSTestBase {
         if (connection != null) { connection.stop(); }
         if (replyConsumer != null) { replyConsumer.close(); }
         if (consumer != null) { consumer.close(); }
-        if (producer != null) { producer.close(); }
-        if (session != null)  { session.close(); }
-    }
-    
-    protected void emptyQueue() throws JMSException {
-        Session session = null;
-        MessageConsumer consumer = null;
-        try {
-            connection.stop();
-            session = connection.createSession(
-                false, Session.AUTO_ACKNOWLEDGE);
-            consumer = session.createConsumer(destination);
-            connection.start();
-            Message message = null;
-            do {
-                message = consumer.receiveNoWait();
-                logger.debug("clearing old message {}", message);
-            } while (message != null);
-            connection.stop();
-        }
-        finally {
-            if (consumer != null) { consumer.close(); }
-            if (session != null) { session.close(); }
-        }
+        if (context != null)  { context.close(); }
     }
     
     //this class is used to provide an example of a custom class sent within
@@ -108,9 +84,9 @@ public class MessageTest extends JMSTestBase {
     }
     
     private class Replier implements MessageListener {
-        private MessageProducer producer;
-        public void setSession(Session session) throws JMSException {
-            producer = session.createProducer(null);
+        private JMSProducer producer;
+        public void setContext(JMSContext context) throws JMSException {
+            producer = context.createProducer();
         }
         public void onMessage(Message request) {
             try {
@@ -145,7 +121,6 @@ public class MessageTest extends JMSTestBase {
             }
         }        
         public void close() throws JMSException {
-            if (producer != null) { producer.close(); }
         }
         
         protected Message getReply(StreamMessage request) throws JMSException {
@@ -153,7 +128,7 @@ public class MessageTest extends JMSTestBase {
             int operand1 = request.readInt();
             int operand2 = request.readInt();
             int result = ("add".equals(operator) ? operand1 + operand2 : -1);
-            StreamMessage reply = session.createStreamMessage();
+            StreamMessage reply = context.createStreamMessage();
             reply.writeInt(result);
             return reply;
         }
@@ -163,7 +138,7 @@ public class MessageTest extends JMSTestBase {
             int operand1 = request.getInt("operand1");
             int operand2 = request.getInt("operand2");
             int result = ("add".equals(operator) ? operand1 + operand2 : -1);
-            MapMessage reply = session.createMapMessage();
+            MapMessage reply = context.createMapMessage();
             reply.setInt("result", result);
             return reply;
         }
@@ -176,7 +151,7 @@ public class MessageTest extends JMSTestBase {
             int operand1 = Integer.parseInt(props.getProperty("operand1"));
             int operand2 = Integer.parseInt(props.getProperty("operand2"));
             int result = ("add".equals(operator) ? operand1 + operand2 : -1);
-            TextMessage reply = session.createTextMessage();
+            TextMessage reply = context.createTextMessage();
             reply.setText(new Integer(result).toString());
             return reply;
         }
@@ -189,7 +164,7 @@ public class MessageTest extends JMSTestBase {
             int operand1 = ((MyInteger)body.get("operand1")).getValue();
             int operand2 = ((MyInteger)body.get("operand2")).getValue();
             int result = ("add".equals(operator) ? operand1 + operand2 : -1);
-            ObjectMessage reply = session.createObjectMessage();
+            ObjectMessage reply = context.createObjectMessage();
             reply.setObject(new MyInteger(result));
             return reply;
         }
@@ -202,7 +177,7 @@ public class MessageTest extends JMSTestBase {
             int operand1 = request.readByte();
             int operand2 = request.readByte();
             int result = (operator.startsWith("add") ? operand1 + operand2 : -1);
-            BytesMessage reply = session.createBytesMessage();
+            BytesMessage reply = context.createBytesMessage();
             reply.writeInt(result);
             return reply;
         }
@@ -212,7 +187,7 @@ public class MessageTest extends JMSTestBase {
             int operand1 = request.getIntProperty("operand1");
             int operand2 = request.getIntProperty("operand2");
             int result = ("add".equals(operator) ? operand1 + operand2 : -1);
-            Message reply = session.createMessage();
+            Message reply = context.createMessage();
             reply.setIntProperty("result", result);
             return reply;
         }
@@ -222,13 +197,13 @@ public class MessageTest extends JMSTestBase {
     public void testStreamMessage() throws Exception {
         logger.info("*** testStreamMessage ***");
         
-        StreamMessage request = session.createStreamMessage();        
+        StreamMessage request = context.createStreamMessage();        
         request.writeString("add");
         request.writeInt(2);
         request.writeInt(3);
 
         request.setJMSReplyTo(replyDestination);
-        producer.send(request);
+        producer.send(destination, request);
 
         StreamMessage response = (StreamMessage)replyConsumer.receive();
         int result = response.readInt();
@@ -239,13 +214,13 @@ public class MessageTest extends JMSTestBase {
     public void testMapMessage() throws Exception {
         logger.info("*** testMapMessage ***");
         
-        MapMessage request = session.createMapMessage();        
+        MapMessage request = context.createMapMessage();        
         request.setString("operator", "add");
         request.setInt("operand1", 2);
         request.setInt("operand2", 3);
 
         request.setJMSReplyTo(replyDestination);
-        producer.send(request);
+        producer.send(destination, request);
 
         MapMessage response = (MapMessage)replyConsumer.receive();
         int result = response.getInt("result");
@@ -256,7 +231,7 @@ public class MessageTest extends JMSTestBase {
     public void testTextMessage() throws Exception {
         logger.info("*** testTextMessage ***");
         
-        TextMessage request = session.createTextMessage();
+        TextMessage request = context.createTextMessage();
         Properties props = new Properties();
         props.put("operator", "add");
         props.put("operand1", new Integer(2).toString());
@@ -266,7 +241,7 @@ public class MessageTest extends JMSTestBase {
         request.setText(bodyText.toString());
 
         request.setJMSReplyTo(replyDestination);
-        producer.send(request);
+        producer.send(destination, request);
 
         TextMessage response = (TextMessage)replyConsumer.receive();
         String resultStr = response.getText();
@@ -278,7 +253,7 @@ public class MessageTest extends JMSTestBase {
     public void testObjectMessage() throws Exception {
         logger.info("*** testObjectMessage ***");
         
-        ObjectMessage request = session.createObjectMessage();
+        ObjectMessage request = context.createObjectMessage();
         Map<String, Serializable> body = new HashMap<String, Serializable>();
         body.put("operator", "add");
         body.put("operand1", new MyInteger(2));  //use a custom class as an
@@ -286,7 +261,7 @@ public class MessageTest extends JMSTestBase {
         request.setObject((Serializable)body);
 
         request.setJMSReplyTo(replyDestination);
-        producer.send(request);
+        producer.send(destination, request);
 
         ObjectMessage response = (ObjectMessage)replyConsumer.receive();
         int result = ((MyInteger)response.getObject()).getValue();
@@ -302,11 +277,11 @@ public class MessageTest extends JMSTestBase {
         bos.write(2);
         bos.write(3);
         
-        BytesMessage request = session.createBytesMessage();
+        BytesMessage request = context.createBytesMessage();
         request.writeBytes(bos.toByteArray());
 
         request.setJMSReplyTo(replyDestination);
-        producer.send(request);
+        producer.send(destination, request);
 
         BytesMessage response = (BytesMessage)replyConsumer.receive();
         int result = response.readInt();
@@ -317,13 +292,13 @@ public class MessageTest extends JMSTestBase {
     public void testMessage() throws Exception {
         logger.info("*** testMessage ***");
 
-        Message request = session.createMessage();        
+        Message request = context.createMessage();        
         request.setStringProperty("operator", "add");
         request.setIntProperty("operand1", 2);
         request.setIntProperty("operand2", 3);
 
         request.setJMSReplyTo(replyDestination);
-        producer.send(request);
+        producer.send(destination, request);
 
         Message response = replyConsumer.receive();
         int result = response.getIntProperty("result");

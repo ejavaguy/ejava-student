@@ -5,7 +5,10 @@ import static org.junit.Assert.assertNotNull;
 import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
 import javax.jms.Destination;
+import javax.jms.JMSConsumer;
+import javax.jms.JMSContext;
 import javax.jms.JMSException;
+import javax.jms.Message;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -37,7 +40,7 @@ public class JMSTestBase {
 
     private static ArtemisServer server; //used when JMS server embedded in JVM
     private static Context jndi;     //used when JMS server remote in JBoss
-    private static ConnectionFactory connFactory;
+    protected static ConnectionFactory connFactory;
     protected static Connection connection;    
 
     @BeforeClass
@@ -46,7 +49,7 @@ public class JMSTestBase {
         logger.info("jndi.name.testQueue={}", queueJNDI);
         logger.info("jndi.name.testTopic={}", topicJNDI);
 
-        logger.debug("getting jndi initial context");
+        logger.debug("getting jndi initial parentContext");
         jndi = new InitialContext();    
         logger.debug("jndi=" + jndi.getEnvironment());
 
@@ -81,6 +84,12 @@ public class JMSTestBase {
 	protected static Connection createConnection() throws JMSException {
 		return connFactory.createConnection(user, password);
 	}
+    protected static JMSContext createContext() throws JMSException {
+        return connFactory.createContext(user, password);
+    }
+    protected static JMSContext createContext(int ackMode) throws JMSException {
+        return connFactory.createContext(user, password, ackMode);
+    }
 	
 	protected Object lookup(String name) throws NamingException {
 		logger.debug("lookup:" + name);
@@ -89,14 +98,13 @@ public class JMSTestBase {
 	
 	protected MessageCatcher createCatcher(String name, Destination destination) {
         MessageCatcher catcher = new MessageCatcher(name);
-        catcher.setConnFactory(connFactory);
         catcher.setDestination(destination);
-        catcher.setUser(user);
-        catcher.setPassword(password);
         return catcher;
 	}
 	
-	protected void startCatcher(MessageCatcher catcher) throws Exception {
+	protected void startCatcher(MessageCatcher catcher, JMSContext parentContext) throws Exception {
+	    catcher.setContext(parentContext);
+        catcher.clearMessages();
         new Thread(catcher).start();
         while (catcher.isStarted() != true) {
             logger.debug(String.format("waiting for %s to start", catcher.getName()));
@@ -117,4 +125,13 @@ public class JMSTestBase {
     	        }
         	}		
 	}
+	
+    protected void emptyQueue(Destination destination) throws JMSException {
+        try (JMSContext context=createContext();
+             JMSConsumer consumer=context.createConsumer(destination)) {
+            for (Message m=consumer.receiveNoWait();m!=null;) {
+                m=consumer.receiveNoWait();
+            }
+        }
+    }
 }

@@ -9,9 +9,9 @@
     <artifactId>jms10Mechanics</artifactId>
     <packaging>jar</packaging>
 
-    <name>Async::JMS 1.0 Mechanics</name>
+    <name>Async::JMS 1.x Mechanics</name>
     <description>
-        This project provides examples for performing core JMS 1.0 mechanics
+        This project provides examples for performing core JMS 1.x mechanics
         of establishing connections, creating, sending, and receiving
         messages.
     </description>

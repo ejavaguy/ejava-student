@@ -1,21 +1,20 @@
 package ejava.examples.jms20.jmsmechanics;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import javax.jms.Destination;
+import javax.jms.JMSContext;
+import javax.jms.JMSProducer;
 import javax.jms.Message;
-import javax.jms.MessageProducer;
 import javax.jms.Queue;
 import javax.jms.Session;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import ejava.examples.jms20.jmsmechanics.MessageCatcher;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This test case performs the basic steps to send/receive messages to/from
@@ -46,16 +45,14 @@ public class ClientAckQueueTest extends JMSTestBase {
     @Test
     public void testQueueSend() throws Exception {
         logger.info("*** testQueueSend ***");
-        Session session = null;
-        MessageProducer producer = null;
-        try {
-            session = connection.createSession(
-                    false, Session.AUTO_ACKNOWLEDGE);
-            producer = session.createProducer(destination);
-            Message message = session.createMessage();
-            
+        try (JMSContext context=createContext()){
+            catcher1.setContext(context);
+            catcher2.setContext(context);
             catcher1.clearMessages();
-            producer.send(message);
+            
+            Message message = context.createMessage();
+            JMSProducer producer = context.createProducer();
+            producer.send(destination, message);
             logger.info("sent msgId={}", message.getJMSMessageID());
 
             //queues will hold messages waiting for delivery. We don't have
@@ -76,26 +73,21 @@ public class ClientAckQueueTest extends JMSTestBase {
                 assertEquals(1, catcher1.getMessages().size());
             }
         }
-        finally {
-            if (producer != null) { producer.close(); }
-            if (session != null)  { session.close(); }
-        }
     }
 
     @Test
     public void testQueueMultiSend() throws Exception {
         logger.info("*** testQueueMultiSend ***");
-        Session session = null;
-        MessageProducer producer = null;
-        try {
-            session = connection.createSession(
-                    false, Session.AUTO_ACKNOWLEDGE);
-            producer = session.createProducer(destination);
-            Message message = session.createMessage();
+        try (JMSContext context=createContext()) {
+            catcher1.setContext(context);
+            catcher2.setContext(context);
+            JMSProducer producer = context.createProducer();
+            Message message = context.createMessage();
             
             catcher1.clearMessages();
+            catcher2.clearMessages();
             for(int i=0; i<msgCount; i++) {
-                producer.send(message);
+                producer.send(destination, message);
                 logger.info("sent msgId={}", message.getJMSMessageID());
             }
             //queues will hold messages waiting for delivery
@@ -110,10 +102,6 @@ public class ClientAckQueueTest extends JMSTestBase {
             assertEquals(msgCount, 
                     catcher1.getMessages().size() +
                     catcher2.getMessages().size());
-        }
-        finally {
-            if (producer != null) { producer.close(); }
-            if (session != null)  { session.close(); }
         }
     }
 }

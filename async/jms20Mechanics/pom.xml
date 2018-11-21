@@ -9,9 +9,9 @@
     <artifactId>jms20Mechanics</artifactId>
     <packaging>jar</packaging>
 
-    <name>Async::JMS 2.0 Mechanics</name>
+    <name>Async::JMS 2.x Mechanics</name>
     <description>
-        This project provides examples for performing core JMS 2.0 mechanics
+        This project provides examples for performing core JMS 2.x mechanics
         of establishing connections, creating, sending, and receiving
         messages.
     </description>

@@ -174,7 +174,7 @@ public class DurableSubscriberTest extends JMSTestBase {
     @Test
     public void testDurableSubscription() throws Exception {
         logger.info("*** testNonDurableSubscription ***");
-        Session session = null;
+        Session session1=null, session2 = null;
         MessageProducer producer = null;
         MessageConsumer asyncConsumer = null;
         MessageConsumer syncConsumer = null;
@@ -182,17 +182,19 @@ public class DurableSubscriberTest extends JMSTestBase {
             connection = createConnection();
             //the Connection.clientID is needed for Durable Subscriptions 
             connection.setClientID("testDurableSubscription"); 
-            session = connection.createSession(
+            session1 = connection.createSession(
+                    false, Session.AUTO_ACKNOWLEDGE);
+            session2 = connection.createSession(
                     false, Session.AUTO_ACKNOWLEDGE);
             List<MyClient> clients = new ArrayList<MyClient>();
             //make sure we don't have pre-existing subscriptions
-            try { session.unsubscribe("async1"); } catch(JMSException ignored){}
-            try { session.unsubscribe("sync1"); } catch(JMSException ignored){}
+            try { session1.unsubscribe("sync1"); } catch(JMSException ignored){}
+            try { session2.unsubscribe("async1"); } catch(JMSException ignored){}
 
             //create a client to asynchronous receive messages through 
             //onMessage() callbacks - USE A DURABLE TOPIC SUBSCRIPTION
             asyncConsumer = 
-                session.createDurableSubscriber((Topic)destination,"async1");
+                session2.createDurableSubscriber((Topic)destination,"async1");
             AsyncClient asyncClient = new AsyncClient();
             asyncConsumer.setMessageListener(asyncClient);
             clients.add(asyncClient);
@@ -200,12 +202,12 @@ public class DurableSubscriberTest extends JMSTestBase {
             //create a client to synchronously poll for messages with 
             //receive calls - USE A DURABLE TOPIC SUBSCRIPTION
             syncConsumer = 
-                session.createDurableSubscriber((Topic)destination, "sync1");
+                session1.createDurableSubscriber((Topic)destination, "sync1");
             SyncClient syncClient = new SyncClient(syncConsumer);
             clients.add(syncClient);
             
-            producer = session.createProducer(destination);
-            Message message = session.createMessage();
+            producer = session1.createProducer(destination);
+            Message message = session1.createMessage();
             producer.send(message);
             logger.info("clients={}", clients);
             logger.info("sent msgId={}", message.getJMSMessageID());
@@ -229,32 +231,35 @@ public class DurableSubscriberTest extends JMSTestBase {
             syncConsumer.close();
             clients.clear();
             producer.close();
-            session.close();
+            session1.close();
+            session2.close();
             connection.close(); connection=null;;
             
             //come back and send some messages
             connection = createConnection();
             //the Connection.clientID is needed for Durable Subscriptions 
             connection.setClientID("testDurableSubscription"); 
-            session = connection.createSession(
+            session1 = connection.createSession(
                     false, Session.AUTO_ACKNOWLEDGE);
-            producer = session.createProducer(destination);
-            message = session.createMessage();
+            session2 = connection.createSession(
+                    false, Session.AUTO_ACKNOWLEDGE);
+            producer = session1.createProducer(destination);
+            message = session1.createMessage();
             producer.send(message);
             logger.info("clients={}", clients);
             logger.info("sent msgId={}", message.getJMSMessageID());
 
             //now get in late for the messages - RESUME DURABLE SUBSCRIPTION
             asyncConsumer = 
-                session.createDurableSubscriber((Topic)destination,"async1");
+                session2.createDurableSubscriber((Topic)destination,"async1");
             asyncClient = new AsyncClient();
             asyncConsumer.setMessageListener(asyncClient);
             clients.add(asyncClient);
             syncConsumer = 
-                session.createDurableSubscriber((Topic)destination, "sync1");
+                session1.createDurableSubscriber((Topic)destination, "sync1");
             syncClient = new SyncClient(syncConsumer);
             clients.add(syncClient);            
-            producer = session.createProducer(destination);
+            producer = session1.createProducer(destination);
             
             connection.start();
             receivedCount=0;
@@ -271,15 +276,16 @@ public class DurableSubscriberTest extends JMSTestBase {
             assertEquals(1, syncClient.getCount());
         }
         catch (Exception ex) {
-        	logger.error("error testing durable subscription", ex);
-        	fail(ex.toString());
+            	logger.error("error testing durable subscription", ex);
+            	fail(ex.toString());
         }
         finally {
             if (connection != null) { connection.stop(); }
-            if (asyncConsumer != null) { asyncConsumer.close(); session.unsubscribe("async1");}
-            if (syncConsumer != null) { syncConsumer.close(); session.unsubscribe("sync1");}
+            if (syncConsumer != null) { syncConsumer.close(); session1.unsubscribe("sync1");}
+            if (asyncConsumer != null) { asyncConsumer.close(); session2.unsubscribe("async1");}
             if (producer != null) { producer.close(); }
-            if (session != null)  { session.close(); }
+            if (session1 != null)  { session1.close(); }
+            if (session2 != null)  { session2.close(); }
             if (connection != null) { connection.close(); connection=null;; }
         }
     }

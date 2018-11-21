@@ -17,6 +17,7 @@
     </description>
     <modules>
         <module>jms10Mechanics</module>
+        <module>jms20Mechanics</module>
         <module>jmsNotifier</module>
         <module>jmsScheduler</module>
         <module>asyncMarket</module>

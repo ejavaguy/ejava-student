@@ -4,6 +4,8 @@ import static org.junit.Assert.*;
 
 
 import javax.jms.Destination;
+import javax.jms.JMSContext;
+import javax.jms.JMSProducer;
 import javax.jms.Message;
 import javax.jms.MessageProducer;
 import javax.jms.Queue;
@@ -40,30 +42,25 @@ public class DupsOKQueueTest extends JMSTestBase {
     
     @After
     public void tearDown() throws Exception {
-    	shutdownCatcher(catcher1);
-    	shutdownCatcher(catcher2);
+        	shutdownCatcher(catcher1);
+        	shutdownCatcher(catcher2);
     }
 
     @Test
     public void testQueueSend() throws Exception {
         logger.info("*** testQueueSend ***");
-        Session session = null;
-        MessageProducer producer = null;
-        try {
-            session = connection.createSession(
-                    false, Session.AUTO_ACKNOWLEDGE);
-            producer = session.createProducer(destination);
-            Message message = session.createMessage();
+        try (JMSContext context=createContext()) {
+            JMSProducer producer = context.createProducer();
+            Message message = context.createMessage();
             
-            catcher1.clearMessages();
-            producer.send(message);
+            producer.send(destination, message);
             logger.info("sent msgId={}", message.getJMSMessageID());
 
             //queues will hold messages waiting for delivery. We don't have
             //to have catcher started prior to sending the message to the 
             //queue.
-            new Thread(catcher1).start();
-            new Thread(catcher2).start();
+            startCatcher(catcher1, context);
+            startCatcher(catcher2, context);
             for(int i=0; i<10 && 
                 (catcher1.getMessages().size() + 
                  catcher2.getMessages().size()< 1); i++) {
@@ -77,30 +74,22 @@ public class DupsOKQueueTest extends JMSTestBase {
                 assertEquals(1, catcher1.getMessages().size());
             }
         }
-        finally {
-            if (producer != null) { producer.close(); }
-            if (session != null)  { session.close(); }
-        }
     }
 
     @Test
     public void testQueueMultiSend() throws Exception {
         logger.info("*** testQueueMultiSend ***");
-        Session session = null;
-        MessageProducer producer = null;
-        try {
-            session = connection.createSession(
-                    false, Session.AUTO_ACKNOWLEDGE);
-            producer = session.createProducer(destination);
-            Message message = session.createMessage();
+        try (JMSContext context=createContext()){
+            JMSProducer producer = context.createProducer();
+            Message message = context.createMessage();
             
-            catcher1.clearMessages();
             for(int i=0; i<msgCount; i++) {
-                producer.send(message);
+                producer.send(destination, message);
                 logger.info("sent msgId={}", message.getJMSMessageID());
             }
             //queues will hold messages waiting for delivery
-            new Thread(catcher1).start();
+            startCatcher(catcher1, context);
+            startCatcher(catcher2, context);
             new Thread(catcher2).start();
             for(int i=0; i<10 && 
                 (catcher1.getMessages().size() +
@@ -111,10 +100,6 @@ public class DupsOKQueueTest extends JMSTestBase {
             assertEquals(msgCount, 
                     catcher1.getMessages().size() +
                     catcher2.getMessages().size());
-        }
-        finally {
-            if (producer != null) { producer.close(); }
-            if (session != null)  { session.close(); }
         }
     }
 }

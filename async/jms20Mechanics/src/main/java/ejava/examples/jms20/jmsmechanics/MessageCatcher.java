@@ -3,15 +3,12 @@ package ejava.examples.jms20.jmsmechanics;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.jms.Connection;
-import javax.jms.ConnectionFactory;
 import javax.jms.Destination;
+import javax.jms.JMSConsumer;
+import javax.jms.JMSContext;
 import javax.jms.JMSException;
 import javax.jms.Message;
-import javax.jms.MessageConsumer;
 import javax.jms.Session;
-import javax.naming.Context;
-import javax.naming.InitialContext;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,35 +19,23 @@ import org.slf4j.LoggerFactory;
  */
 public class MessageCatcher implements Runnable {
     private static final Logger logger = LoggerFactory.getLogger(MessageCatcher.class);
-    protected ConnectionFactory connFactory;
-    protected String user;
-    protected String password;
-    protected Session sharedSession;
-    protected Destination destination;
-    protected int ackMode = Session.AUTO_ACKNOWLEDGE;
-    protected boolean stop = false;
-    protected boolean stopped = false;
-    protected boolean started = false;
-    protected List<Message> messages = new ArrayList<Message>();
-    protected String name;
+    private String name;
+    private JMSContext parentContext;
+    private Destination destination;
+    private int ackMode = Session.AUTO_ACKNOWLEDGE;
+    private boolean stop;
+    private boolean stopped;
+    private boolean started;
+    private List<Message> messages = new ArrayList<Message>();
         
     public MessageCatcher(String name) {
         this.name = name;
     }
     public String getName() { return name; }
-    public void setConnFactory(ConnectionFactory connFactory) {
-        this.connFactory = connFactory;
-    }
-	public void setUser(String user) {
-		this.user = user;
-	}
-	public void setPassword(String password) {
-		this.password = password;
-	}
-    public MessageCatcher setSession(Session session) {
-        this.sharedSession = session;
+    public MessageCatcher setContext(JMSContext context) {
+        this.parentContext = context;
         return this;
-    }
+    }    
     public void setDestination(Destination destination) {
         this.destination = destination;
     }    
@@ -77,52 +62,33 @@ public class MessageCatcher implements Runnable {
         return started;
     }
     
-    protected Connection getConnection() throws JMSException {
-    	return user==null ? 
-			connFactory.createConnection() : 
-			connFactory.createConnection(user, password);
-    }
-    
     public void execute() throws JMSException {
-        Connection connection = null;
-        Session session = this.sharedSession;
-        MessageConsumer consumer = null;
-        try {
-            if (session == null) {
-                connection = getConnection();
-                session = connection.createSession(false, ackMode);
+        try (JMSContext context = parentContext.createContext(ackMode)) {
+            try (JMSConsumer consumer = context.createConsumer(destination)) {
+                context.start();
+                stopped = stop = false;
+                logger.info("catcher {} starting (ackMode={})", name, ackMode);
+                started = true;
+                for (int i=0;!stop; i++) {
+                    if (i%30==0) { logger.debug("catcher {} looking for message", name); }
+                    Message message = consumer.receive(100);
+                    if (message != null) {
+                        messages.add(message);
+                        logger.debug("{} received message #{}, msgId={}", name, messages.size(), message.getJMSMessageID());
+                        if (!stop) { Thread.yield(); }
+                    }      
+                }
             }
-            consumer = session.createConsumer(destination);
-            if (this.sharedSession == null) {
-                connection.start();
-            }
-            stopped = stop = false;
-            logger.info("catcher {} starting (ackMode={})", name, ackMode);
-            started = true;
-            for (int i=0;!stop; i++) {
-                if (i%30==0) { logger.debug("catcher looking for message"); }
-                Message message = consumer.receive(100);
-                if (message != null) {
-                    messages.add(message);
-                    logger.debug("{} received message #{}, msgId={}", name, messages.size(), message.getJMSMessageID());
-                    Thread.yield();
-                }      
-            }
+            
             logger.info("catcher {} stopping (ackMode={})", name, ackMode);
             if (ackMode == Session.CLIENT_ACKNOWLEDGE && messages.size() > 0) {
                 logger.debug("catcher {} acknowledging messages", name);
                 messages.get(messages.size()-1).acknowledge();
             }
-            if (this.sharedSession == null) {
-                connection.stop();
-            }
+            context.stop();
         }
         finally {
             stopped = true;
-            //started = false;
-            if (consumer != null)   { consumer.close(); }
-            if (this.sharedSession == null && session!=null){ session.close();}
-            if (connection != null) { connection.close(); }
         }
     }
     
@@ -132,41 +98,7 @@ public class MessageCatcher implements Runnable {
         }
         catch (Exception ex) {
             logger.error("error running " + name, ex);
-        }
-    }    
-
-    public static void main(String args[]) {
-        try {
-            String connFactoryJNDI=null;
-            String destinationJNDI=null;
-            String name="";
-            for (int i=0; i<args.length; i++) {
-                if ("-jndi.name.connFactory".equals(args[i])) {
-                    connFactoryJNDI = args[++i];
-                }
-                else if ("-jndi.name.destination".equals(args[i])) {
-                    destinationJNDI=args[++i];
-                }
-                else if ("-name".equals(args[i])) {
-                    name=args[++i];
-                }
-            }
-            if (connFactoryJNDI==null) { 
-                throw new Exception("jndi.name.connFactory not supplied");
-            }
-            else if (destinationJNDI==null) {
-                throw new Exception("jndi.name.destination not supplied");
-            }            
-            MessageCatcher catcher = new MessageCatcher(name);
-            Context jndi = new InitialContext();
-            catcher.setConnFactory(
-                    (ConnectionFactory)jndi.lookup(connFactoryJNDI));
-            catcher.setDestination((Destination)jndi.lookup(destinationJNDI));
-            catcher.execute();
-        }
-        catch (Exception ex) {
-            logger.error("",ex);
-            System.exit(-1);            
+            throw new RuntimeException("error running " + name, ex);
         }
     }
 }

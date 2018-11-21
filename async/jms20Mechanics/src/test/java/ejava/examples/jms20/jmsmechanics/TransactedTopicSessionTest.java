@@ -3,6 +3,8 @@ package ejava.examples.jms20.jmsmechanics;
 import static org.junit.Assert.*;
 
 import javax.jms.Destination;
+import javax.jms.JMSContext;
+import javax.jms.JMSProducer;
 import javax.jms.Message;
 import javax.jms.MessageProducer;
 import javax.jms.Session;
@@ -35,13 +37,6 @@ public class TransactedTopicSessionTest extends JMSTestBase {
         
         catcher1 = createCatcher("subscriber1", destination);
         catcher2 = createCatcher("subscriber2", destination);
-        
-        //topics will only deliver messages to subscribers that are 
-        //successfully registered prior to the message being published. We
-        //need to wait for the catcher to start so it doesn't miss any 
-        //messages.
-        startCatcher(catcher1);
-        startCatcher(catcher2);
     }
     
     @After
@@ -53,22 +48,21 @@ public class TransactedTopicSessionTest extends JMSTestBase {
     @Test
     public void testTransactedTopicSessionSend() throws Exception {
         logger.info("*** testTransactedTopicSessionSend ***");
-        Session session = null;
-        MessageProducer producer = null;
-        try {
-            connection.stop();
-            session = connection.createSession(
-                    true, Session.AUTO_ACKNOWLEDGE);  //<!-- TRUE=transacted
-            producer = session.createProducer(destination);
-            Message message = session.createMessage();
+        try (JMSContext context=createContext(Session.SESSION_TRANSACTED)) {            
+            JMSProducer producer = context.createProducer();
+            Message message = context.createMessage();
             
-            catcher1.clearMessages();
-            catcher2.clearMessages();
-            producer.send(message);
+            //topics will only deliver messages to subscribers that are 
+            //successfully registered prior to the message being published. We
+            //need to wait for the catcher to start so it doesn't miss any 
+            //messages.
+            startCatcher(catcher1, context);
+            startCatcher(catcher2, context);
+            producer.send(destination, message);
             logger.info("sent msgId={}", message.getJMSMessageID());
             assertEquals(0, catcher1.getMessages().size());
             assertEquals(0, catcher2.getMessages().size());
-            session.commit(); //<!-- COMMITTING SESSION TRANSACTION
+            context.commit(); //<!-- COMMITTING SESSION TRANSACTION
             for(int i=0; i<10 && 
                 (catcher1.getMessages().size() < 1 ||
                 catcher2.getMessages().size() < 1); i++) {
@@ -78,31 +72,23 @@ public class TransactedTopicSessionTest extends JMSTestBase {
             assertEquals(1, catcher1.getMessages().size());
             assertEquals(1, catcher2.getMessages().size());
         }
-        finally {
-            if (producer != null) { producer.close(); }
-            if (session != null)  { session.close(); }
-        }
     }
 
     @Test
     public void testRollbackTransactedTopicSessionSend() throws Exception {
         logger.info("*** testRollbackTransactedTopicSessionSend ***");
-        Session session = null;
-        MessageProducer producer = null;
-        try {
-            connection.stop();
-            session = connection.createSession(
-                    true, Session.AUTO_ACKNOWLEDGE);  //<!-- TRUE=transacted
-            producer = session.createProducer(destination);
-            Message message = session.createMessage();
+        try (JMSContext context = createContext(Session.SESSION_TRANSACTED)) {
+            JMSProducer producer = context.createProducer();
+            Message message = context.createMessage();
             
-            catcher1.clearMessages();
-            catcher2.clearMessages();
-            producer.send(message);
+            startCatcher(catcher1, context);
+            startCatcher(catcher2, context);
+            producer.send(destination, message);
             logger.info("sent msgId={}", message.getJMSMessageID());
             assertEquals(0, catcher1.getMessages().size());
             assertEquals(0, catcher2.getMessages().size());
-            session.rollback(); //<!-- ROLLING BACK SESSION TRANSACTION
+            context.rollback(); //<!-- ROLLING BACK SESSION TRANSACTION
+            
             for(int i=0; i<10 && 
                 (catcher1.getMessages().size() < 1 ||
                 catcher2.getMessages().size() < 1); i++) {
@@ -112,33 +98,24 @@ public class TransactedTopicSessionTest extends JMSTestBase {
             assertEquals(0, catcher1.getMessages().size());
             assertEquals(0, catcher2.getMessages().size());
         }
-        finally {
-            if (producer != null) { producer.close(); }
-            if (session != null)  { session.close(); }
-        }
     }
     
     @Test
     public void testTransactedTopicSessionMultiSend() throws Exception {
         logger.info("*** testTransactedTopicSessionMultiSend ***");
-        Session session = null;
-        MessageProducer producer = null;
-        try {
-            connection.stop();
-            session = connection.createSession(
-                    true, Session.AUTO_ACKNOWLEDGE); //<!-- TRUE=transacted
-            producer = session.createProducer(destination);
-            Message message = session.createMessage();
+        try (JMSContext context=createContext(Session.SESSION_TRANSACTED)) {
+            JMSProducer producer = context.createProducer();
+            Message message = context.createMessage();
             
-            catcher1.clearMessages();
-            catcher2.clearMessages();
+            startCatcher(catcher1, context);
+            startCatcher(catcher2, context);
             for(int i=0; i<msgCount; i++) {
-                producer.send(message);
+                producer.send(destination, message);
                 logger.info("sent msgId={}", message.getJMSMessageID());
             }
             assertEquals(0, catcher1.getMessages().size());
             assertEquals(0, catcher2.getMessages().size());
-            session.commit(); //<!-- COMMITTING SESSION TRANSACTION
+            context.commit(); //<!-- COMMITTING SESSION TRANSACTION
             for(int i=0; i<10 && 
                 (catcher1.getMessages().size() < msgCount ||
                 catcher2.getMessages().size() < msgCount); i++) {
@@ -148,33 +125,24 @@ public class TransactedTopicSessionTest extends JMSTestBase {
             assertEquals(msgCount, catcher1.getMessages().size());
             assertEquals(msgCount, catcher2.getMessages().size());
         }
-        finally {
-            if (producer != null) { producer.close(); }
-            if (session != null)  { session.close(); }
-        }
     }
 
     @Test
     public void testRolledbackTransactedTopicSessionMultiSend() throws Exception {
         logger.info("*** testRolledbackTransactedTopicSessionMultiSend ***");
-        Session session = null;
-        MessageProducer producer = null;
-        try {
-            connection.stop();
-            session = connection.createSession(
-                    true, Session.AUTO_ACKNOWLEDGE); //<!-- TRUE=transacted
-            producer = session.createProducer(destination);
-            Message message = session.createMessage();
+        try (JMSContext context=createContext(Session.SESSION_TRANSACTED)) {
+            JMSProducer producer = context.createProducer();
+            Message message = context.createMessage();
             
-            catcher1.clearMessages();
-            catcher2.clearMessages();
+            startCatcher(catcher1, context);
+            startCatcher(catcher2, context);
             for(int i=0; i<msgCount; i++) {
-                producer.send(message);
+                producer.send(destination, message);
                 logger.info("sent msgId={}", message.getJMSMessageID());
             }
             assertEquals(0, catcher1.getMessages().size());
             assertEquals(0, catcher2.getMessages().size());
-            session.rollback(); //<!-- ROLLBACK SESSION TRANSACTION
+            context.rollback(); //<!-- ROLLBACK SESSION TRANSACTION
             for(int i=0; i<10 && 
                 (catcher1.getMessages().size() < msgCount ||
                 catcher2.getMessages().size() < msgCount); i++) {
@@ -183,10 +151,6 @@ public class TransactedTopicSessionTest extends JMSTestBase {
             }
             assertEquals(0, catcher1.getMessages().size());
             assertEquals(0, catcher2.getMessages().size());
-        }
-        finally {
-            if (producer != null) { producer.close(); }
-            if (session != null)  { session.close(); }
         }
     }
 }

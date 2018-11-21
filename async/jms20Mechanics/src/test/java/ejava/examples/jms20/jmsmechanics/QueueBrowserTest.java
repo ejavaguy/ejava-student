@@ -6,6 +6,8 @@ import static org.junit.Assert.*;
 import java.util.Enumeration;
 
 import javax.jms.Destination;
+import javax.jms.JMSContext;
+import javax.jms.JMSProducer;
 import javax.jms.Message;
 import javax.jms.MessageProducer;
 import javax.jms.Queue;
@@ -44,50 +46,39 @@ public class QueueBrowserTest extends JMSTestBase {
     
     @After
     public void tearDown() throws Exception {
-    	shutdownCatcher(catcher1);
-    	shutdownCatcher(catcher2);
+        	shutdownCatcher(catcher1);
+        	shutdownCatcher(catcher2);
     }
 
     @Test
     public void testQueueBrowser() throws Exception {
         logger.info("*** testQueueBrowser ***");
-        Session session = null;
-        MessageProducer producer = null;
-        try {
-            connection.stop();
-            session = connection.createSession(
-                    false, Session.AUTO_ACKNOWLEDGE);
-            producer = session.createProducer(destination);
-            Message message = session.createMessage();
+        try (JMSContext context=createContext()) {
+            context.stop();
             
-            catcher1.clearMessages();
+            JMSProducer producer = context.createProducer();
+            Message message = context.createMessage();
             for(int i=0; i<msgCount; i++) {
-                producer.send(message);
+                producer.send(destination, message);
                 logger.info("sent msgId={}", message.getJMSMessageID());
             }
             
-            QueueBrowser qbrowser = session.createBrowser((Queue)destination);
-            int msgs=0;
-            //pause here in case server is running a bit slow
-            for(int tries=0;tries<3;tries++) {
-	            for (Enumeration<?> e = qbrowser.getEnumeration(); e.hasMoreElements(); ) {
-	                Message m = (Message) e.nextElement();
-	                msgs += 1;
-	                logger.debug("browsing message ({})={}", msgs, m.getJMSMessageID());
-	            }
-	            if (msgs==msgCount) { break; }
-	            else { 
-	                logger.debug("retrying queueBrowser, got {} out of {}", msgs, msgCount);
-	            	msgs=0;
-	            	qbrowser.close();
-	            	qbrowser = session.createBrowser((Queue)destination); 
-	            }
+            try (QueueBrowser qbrowser = context.createBrowser((Queue)destination)) {
+                int msgs=0;
+                for(int tries=0;tries<3;tries++) {
+                    for (Enumeration<?> e = qbrowser.getEnumeration(); e.hasMoreElements(); ) {
+                        Message m = (Message) e.nextElement();
+                        msgs += 1;
+                        logger.debug("browsing message ({})={}", msgs, m.getJMSMessageID());
+                    }
+                    if (msgs==msgCount) { break; }
+                }
+                assertEquals("unexpected number nf queue browser messages", msgCount, msgs);
             }
-            assertEquals("unexpected number nf queue browser messages", msgCount, msgs);
             
             //queues will hold messages waiting for delivery
-            new Thread(catcher1).start();
-            new Thread(catcher2).start();
+            startCatcher(catcher1, context);
+            startCatcher(catcher2, context);
             for(int i=0; i<10 && 
                 (catcher1.getMessages().size() +
                  catcher2.getMessages().size()< msgCount); i++) {
@@ -97,10 +88,6 @@ public class QueueBrowserTest extends JMSTestBase {
             assertEquals(msgCount, 
                     catcher1.getMessages().size() +
                     catcher2.getMessages().size());
-        }
-        finally {
-            if (producer != null) { producer.close(); }
-            if (session != null)  { session.close(); }
         }
     }
 }

@@ -1,6 +1,8 @@
 package ejava.examples.jms20.jmsmechanics;
 
 import javax.jms.Destination;
+import javax.jms.JMSContext;
+import javax.jms.JMSProducer;
 import javax.jms.Message;
 import javax.jms.MessageProducer;
 import javax.jms.Session;
@@ -36,35 +38,28 @@ public class JMSTopicBasicsTest extends JMSTestBase {
         
         catcher1 = createCatcher("subscriber1", destination);
         catcher2 = createCatcher("subscriber2", destination);
-
-        //topics will only deliver messages to subscribers that are 
-        //successfully registered prior to the message being published. We
-        //need to wait for the catcher to start so it doesn't miss any 
-        //messages.
-        startCatcher(catcher1);
-        startCatcher(catcher2);
     }
     
     @After
     public void tearDown() throws Exception {
-    	shutdownCatcher(catcher1);
-    	shutdownCatcher(catcher2);
+        	shutdownCatcher(catcher1);
+        	shutdownCatcher(catcher2);
     }
 
     @Test
     public void testTopicSend() throws Exception {
         logger.info("*** testTopicSend ***");
-        Session session = null;
-        MessageProducer producer = null;
-        try {
-            session = connection.createSession(
-                    false, Session.AUTO_ACKNOWLEDGE);
-            producer = session.createProducer(destination);
-            Message message = session.createMessage();
-            
-            catcher1.clearMessages();
-            catcher2.clearMessages();
-            producer.send(message);
+        try (JMSContext context=createContext()) {
+            JMSProducer producer = context.createProducer();
+            Message message = context.createMessage();
+
+            //topics will only deliver messages to subscribers that are 
+            //successfully registered prior to the message being published. We
+            //need to wait for the catcher to start so it doesn't miss any 
+            //messages.
+            startCatcher(catcher1, context);
+            startCatcher(catcher2, context);
+            producer.send(destination, message);
             logger.info("sent msgId={}", message.getJMSMessageID());
             for(int i=0; i<10 && 
                 (catcher1.getMessages().size() < 1 ||
@@ -75,27 +70,23 @@ public class JMSTopicBasicsTest extends JMSTestBase {
             assertEquals(1, catcher1.getMessages().size());
             assertEquals(1, catcher2.getMessages().size());
         }
-        finally {
-            if (producer != null) { producer.close(); }
-            if (session != null)  { session.close(); }
-        }
     }
     
     @Test
     public void testTopicMultiSend() throws Exception {
         logger.info("*** testTopicMultiSend ***");
-        Session session = null;
-        MessageProducer producer = null;
-        try {
-            session = connection.createSession(
-                    false, Session.AUTO_ACKNOWLEDGE);
-            producer = session.createProducer(destination);
-            Message message = session.createMessage();
+        try (JMSContext context = createContext()) {
+            JMSProducer producer = context.createProducer();
+            Message message = context.createMessage();
             
-            catcher1.clearMessages();
-            catcher2.clearMessages();
+            //topics will only deliver messages to subscribers that are 
+            //successfully registered prior to the message being published. We
+            //need to wait for the catcher to start so it doesn't miss any 
+            //messages.
+            startCatcher(catcher1, context);
+            startCatcher(catcher2, context);
             for(int i=0; i<msgCount; i++) {
-                producer.send(message);
+                producer.send(destination, message);
                 logger.info("sent msgId={}", message.getJMSMessageID());
             }
             for(int i=0; i<10 && 
@@ -106,10 +97,6 @@ public class JMSTopicBasicsTest extends JMSTestBase {
             }
             assertEquals(msgCount, catcher1.getMessages().size());
             assertEquals(msgCount, catcher2.getMessages().size());
-        }
-        finally {
-            if (producer != null) { producer.close(); }
-            if (session != null)  { session.close(); }
         }
     }
 }

@@ -22,10 +22,11 @@
          <layout class="org.apache.log4j.PatternLayout">
             <!-- The default pattern: Date Priority [Category] Messagen -->
             <!--
-            <param name="ConversionPattern" value="[%c{1}:%L] %m%n"/>
-            <param name="ConversionPattern" value="%d{ABSOLUTE} %-5p [%c{1}] %m%n"/>
-            -->
             <param name="ConversionPattern" value=" -%m%n"/>
+            <param name="ConversionPattern" value="%d{ABSOLUTE} %-5p [%c{1}] %m%n"/>
+            <param name="ConversionPattern" value="[%c{1}:%L] %m%n"/>
+            -->
+            <param name="ConversionPattern" value="%d{HH:mm:ss,SSS} (%F:%M:%L)  -%m%n"/>
          </layout>
    </appender>
 

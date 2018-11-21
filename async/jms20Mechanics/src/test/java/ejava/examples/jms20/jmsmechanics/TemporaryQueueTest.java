@@ -1,21 +1,17 @@
 package ejava.examples.jms20.jmsmechanics;
 
-import static org.junit.Assert.*;
-
+import static org.junit.Assert.assertEquals;
 
 import javax.jms.Destination;
+import javax.jms.JMSContext;
+import javax.jms.JMSProducer;
 import javax.jms.Message;
-import javax.jms.MessageProducer;
-import javax.jms.Session;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import ejava.examples.jms20.jmsmechanics.MessageCatcher;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This test case tests the ability to create and send/receive messages 
@@ -23,7 +19,6 @@ import org.junit.Test;
  */
 public class TemporaryQueueTest extends JMSTestBase {
     static final Logger logger = LoggerFactory.getLogger(TemporaryQueueTest.class);
-    protected Session session = null;
     protected MessageCatcher catcher1;
     protected MessageCatcher catcher2;
     protected int msgCount;
@@ -36,30 +31,28 @@ public class TemporaryQueueTest extends JMSTestBase {
     
     @After
     public void tearDown() throws Exception {
-    	shutdownCatcher(catcher1);
-    	shutdownCatcher(catcher2);
-        if (session != null)  { session.close(); }
+        	shutdownCatcher(catcher1);
+        	shutdownCatcher(catcher2);
     }
 
 
     @Test
     public void testTemporaryQueueSend() throws Exception {
         logger.info("*** testTemporaryQueueSend ***");
-        MessageProducer producer = null;
-        try {
-            session = connection.createSession(
-                    false, Session.AUTO_ACKNOWLEDGE);
-            connection.start();
-            catcher1.setSession(session);
-            catcher2.setSession(session);
-            Destination destination = session.createTemporaryQueue();
+        try (JMSContext context = createContext()) {
+            context.start();
+            catcher1.setContext(context);
+            catcher2.setContext(context);
+            Destination destination = context.createTemporaryQueue();
             catcher1.setDestination(destination);
             catcher2.setDestination(destination);
-            producer = session.createProducer(destination);
-            Message message = session.createMessage();
             
             catcher1.clearMessages();
-            producer.send(message);
+            catcher2.clearMessages();
+            
+            JMSProducer producer = context.createProducer();
+            Message message = context.createMessage();
+            producer.send(destination, message);
             logger.info("sent msgId={}", message.getJMSMessageID());
 
             //queues will hold messages waiting for delivery. We don't have
@@ -79,32 +72,26 @@ public class TemporaryQueueTest extends JMSTestBase {
             else {
                 assertEquals(1, catcher1.getMessages().size());
             }
-        }
-        finally {
-            if (connection != null) { connection.stop(); }
-            if (producer != null) { producer.close(); }
-        }
+        } 
     }
 
     @Test
     public void testTemporaryQueueMultiSend() throws Exception {
         logger.info("*** testTemporaryQueueMultiSend ***");
-        MessageProducer producer = null;
-        try {
-            session = connection.createSession(
-                    false, Session.AUTO_ACKNOWLEDGE);
-            connection.start();
-            catcher1.setSession(session);
-            catcher2.setSession(session);
-            Destination destination = session.createTemporaryQueue();
+        try (JMSContext context = createContext()) {
+            context.start();
+            catcher1.setContext(context);
+            catcher2.setContext(context);
+            Destination destination = context.createTemporaryQueue();
             catcher1.setDestination(destination);
             catcher2.setDestination(destination);
-            producer = session.createProducer(destination);
-            Message message = session.createMessage();
+
+            JMSProducer producer = context.createProducer();
+            Message message = context.createMessage();
             
             catcher1.clearMessages();
             for(int i=0; i<msgCount; i++) {
-                producer.send(message);
+                producer.send(destination, message);
                 logger.info("sent msgId={}", message.getJMSMessageID());
             }
             //queues will hold messages waiting for delivery
@@ -119,10 +106,6 @@ public class TemporaryQueueTest extends JMSTestBase {
             assertEquals(msgCount, 
                     catcher1.getMessages().size() +
                     catcher2.getMessages().size());
-        }
-        finally {
-            if (connection != null) { connection.stop(); }
-            if (producer != null) { producer.close(); }
         }
     }
 }

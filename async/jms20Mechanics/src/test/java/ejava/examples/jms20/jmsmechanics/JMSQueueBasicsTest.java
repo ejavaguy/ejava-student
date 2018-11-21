@@ -1,6 +1,8 @@
 package ejava.examples.jms20.jmsmechanics;
 
 import javax.jms.Destination;
+import javax.jms.JMSContext;
+import javax.jms.JMSProducer;
 import javax.jms.Message;
 import javax.jms.MessageProducer;
 import javax.jms.Queue;
@@ -48,61 +50,48 @@ public class JMSQueueBasicsTest extends JMSTestBase {
     @Test
     public void testQueueSend() throws Exception {
         logger.info("*** testQueueSend ***");
-        Session session = null;
-        MessageProducer producer = null;
-        try {
-            session = connection.createSession(
-                    false, Session.AUTO_ACKNOWLEDGE);
-            producer = session.createProducer(destination);
-            Message message = session.createMessage();
+            //send a message to queue prior to having consumers
+        try (JMSContext context=createContext()) {
+            JMSProducer producer = context.createProducer();
+            Message message = context.createMessage();
             
-            catcher1.clearMessages();
-            producer.send(message);
+            producer.send(destination, message);
             logger.info("sent msgId=" + message.getJMSMessageID());
-
-            //queues will hold messages waiting for delivery. We don't have
-            //to have catcher started prior to sending the message to the 
-            //queue.
-            new Thread(catcher1).start();
-            new Thread(catcher2).start();
+        }
+            //queues will hold messages waiting for delivery
+        
+            //start some consumers to process queue message
+        try (JMSContext context=createContext()) {
+            startCatcher(catcher1, context);
+            startCatcher(catcher2, context);
             for(int i=0; i<10 && 
                 (catcher1.getMessages().size() + 
                  catcher2.getMessages().size()< 1); i++) {
                 logger.debug("waiting for messages...");
                 Thread.sleep(1000);
             }
-            if (catcher1.getMessages().size() == 0) {
-                assertEquals(1, catcher2.getMessages().size());
-            }
-            else {
-                assertEquals(1, catcher1.getMessages().size());
-            }
-        }
-        finally {
-            if (producer != null) { producer.close(); }
-            if (session != null)  { session.close(); }
+            assertEquals("unexpected number of messages consumed", 1, 
+                    catcher1.getMessages().size() + catcher2.getMessages().size());
         }
     }
     
     @Test
     public void testQueueMultiSend() throws Exception {
         logger.info("*** testQueueMultiSend ***");
-        Session session = null;
-        MessageProducer producer = null;
-        try {
-            session = connection.createSession(
-                    false, Session.AUTO_ACKNOWLEDGE);
-            producer = session.createProducer(destination);
-            Message message = session.createMessage();
+        try (JMSContext context=createContext()){
+            JMSProducer producer = context.createProducer();
+            Message message = context.createMessage();
             
-            catcher1.clearMessages();
             for(int i=0; i<msgCount; i++) {
-                producer.send(message);
+                producer.send(destination, message);
                 logger.info("sent msgId={}", message.getJMSMessageID());
             }
+        }
+        
             //queues will hold messages waiting for delivery
-            new Thread(catcher1).start();
-            new Thread(catcher2).start();
+        try (JMSContext context=createContext()){
+            startCatcher(catcher1, context);
+            startCatcher(catcher2, context);
             for(int i=0; i<10 && 
                 (catcher1.getMessages().size() +
                  catcher2.getMessages().size()< msgCount); i++) {
@@ -112,10 +101,6 @@ public class JMSQueueBasicsTest extends JMSTestBase {
             assertEquals(msgCount, 
                     catcher1.getMessages().size() +
                     catcher2.getMessages().size());
-        }
-        finally {
-            if (producer != null) { producer.close(); }
-            if (session != null)  { session.close(); }
         }
     }
 }
