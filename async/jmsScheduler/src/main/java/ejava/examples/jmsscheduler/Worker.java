@@ -1,13 +1,14 @@
 package ejava.examples.jmsscheduler;
 
-import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
 import javax.jms.Destination;
+import javax.jms.JMSConsumer;
+import javax.jms.JMSContext;
 import javax.jms.JMSException;
+import javax.jms.JMSProducer;
+import javax.jms.JMSRuntimeException;
 import javax.jms.MapMessage;
 import javax.jms.Message;
-import javax.jms.MessageConsumer;
-import javax.jms.MessageProducer;
 import javax.jms.Session;
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -71,11 +72,16 @@ public class Worker implements Runnable {
     public void setNoFail(boolean noFail) {
     	this.noFail = noFail;
     }
-    protected Connection createConnection(ConnectionFactory connFactory) 
-        throws Exception {
-        return username==null ? 
-        		connFactory.createConnection() :
-        		connFactory.createConnection(username, password);
+    protected JMSContext createContext(Integer sessionMode) throws Exception {
+        if (sessionMode==null) {
+            return username==null ? 
+                    connFactory.createContext() :
+                    connFactory.createContext(username, password);            
+        } else {
+            return username==null ? 
+                    connFactory.createContext(sessionMode) :
+                    connFactory.createContext(username, password, sessionMode);                        
+        }
     }
     public void setUsername(String username) {
 		this.username = username;
@@ -84,72 +90,60 @@ public class Worker implements Runnable {
 		this.password = password;
 	}
     public void execute() throws Exception {
-        Connection connection = null;
-        Session session = null;
-        MessageConsumer consumer = null;
-        MessageProducer producer = null;
-        MessageProducer dlqProducer = null;
-        try {
-            connection = createConnection(connFactory);
+        try (JMSContext context=createContext(Session.SESSION_TRANSACTED)) {
             //use a transacted session to join request/response in single Tx
-            session = connection.createSession(true, Session.AUTO_ACKNOWLEDGE);
-            consumer = session.createConsumer(requestQueue);
-            producer = session.createProducer(null);
-            dlqProducer = session.createProducer(dlq);
-            connection.start();
-
-            stopped = stop = false;
-            logger.info("worker " + name + " starting");
-            started = true;
-            while (!stop && (maxCount==0 || count < maxCount)) {
-                Message message = consumer.receive(3000);
-                if (message != null) {
-                    count += 1;                     
-                    try {
-                        MapMessage request = (MapMessage)message;
-                        int difficulty = request.getInt("difficulty");
-                        long sleepTime = delay[difficulty];
-                        int requestCounter = request.getIntProperty("count");
-                        Destination replyTo = request.getJMSReplyTo();
-                        logger.debug(name + " received message #{}, req={}, replyTo={}, delay={}", 
-                                count, requestCounter, replyTo, sleepTime);
-                        Thread.sleep(sleepTime);
-                        if (count < maxCount || maxCount==0 || noFail){//fail on last one
-                            Message response = session.createMessage();
-                            response.setJMSCorrelationID(
-                                    request.getJMSMessageID());
-                            response.setStringProperty("worker", name);
-                            try {
-                                producer.send(replyTo, response);
-                            }
-                            catch (JMSException ex) {
-                                logger.error("error sending reply:" + ex);                                
-                                dlqProducer.send(request);
-                            }
-                            finally {
-                                logger.debug("committing session for: {}", request.getJMSMessageID());
-                                session.commit();
+            try (JMSConsumer consumer = context.createConsumer(requestQueue)) {
+                context.start();
+                
+                stopped = stop = false;
+                logger.info("worker " + name + " starting");
+                started = true;
+                
+                JMSProducer producer = context.createProducer();
+                while (!stop && (maxCount==0 || count < maxCount)) {
+                    Message message = consumer.receive(3000);
+                    if (message != null) {
+                        count += 1;                     
+                        try {
+                            MapMessage request = (MapMessage)message;
+                            int difficulty = request.getInt("difficulty");
+                            long sleepTime = delay[difficulty];
+                            int requestCounter = request.getIntProperty("count");
+                            Destination replyTo = request.getJMSReplyTo();
+                            logger.debug(name + " received message #{}, req={}, replyTo={}, delay={}", 
+                                    count, requestCounter, replyTo, sleepTime);
+                            Thread.sleep(sleepTime);
+                            if (count < maxCount || maxCount==0 || noFail){//fail on last one
+                                Message response = context.createMessage();
+                                response.setJMSCorrelationID(request.getJMSMessageID());
+                                response.setStringProperty("worker", name);
+                                try {
+                                    producer.send(replyTo, response);
+                                } catch (JMSRuntimeException ex) {
+                                    logger.error("error sending reply:" + ex);                                
+                                    producer.send(dlq, request);
+                                } finally {
+                                    logger.debug("committing session for: {}", request.getJMSMessageID());
+                                    context.commit();
+                                }
                             }
                         }
-                    }
-                    catch (Exception ex) {
-                        logger.error("error processing request:" + ex);
-                        dlqProducer.send(message);
-                        logger.debug("committing session");
-                        session.commit();
-                    }
-                    Thread.yield();
-                }      
+                        catch (Exception ex) {
+                            logger.error("error processing request:", ex);
+                            producer.send(dlq, message);
+                            logger.debug("committing session");
+                            context.commit();
+                        }
+                        Thread.yield();
+                    }      
+                }
             }
             logger.info("worker {} stopping", name);
-            connection.stop();
+            context.stop();
         }
         finally {
             stopped = true;
             started = false;
-            if (consumer != null)   { consumer.close(); }
-            if (session!=null){ session.close();}
-            if (connection != null) { connection.close(); }
         }
     }
     

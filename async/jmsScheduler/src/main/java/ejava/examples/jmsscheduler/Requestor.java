@@ -3,14 +3,14 @@ package ejava.examples.jmsscheduler;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
 import javax.jms.Destination;
+import javax.jms.JMSConsumer;
+import javax.jms.JMSContext;
+import javax.jms.JMSProducer;
 import javax.jms.MapMessage;
 import javax.jms.Message;
-import javax.jms.MessageConsumer;
 import javax.jms.MessageListener;
-import javax.jms.MessageProducer;
 import javax.jms.Session;
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -69,14 +69,16 @@ public class Requestor implements Runnable, MessageListener {
     public boolean isStarted() {
         return started;
     }
-    protected Connection createConnection(ConnectionFactory connFactory) 
-        throws Exception {
-        return username==null ? 
-        		connFactory.createConnection() :
-        		connFactory.createConnection(username, password);
-    }
-    protected Destination getReplyTo(Session session) throws Exception {
-        return session.createTemporaryQueue();
+    protected JMSContext createContext(Integer sessionMode) throws Exception {
+        if (sessionMode==null) {
+            return username==null ? 
+            		connFactory.createContext() :
+            		connFactory.createContext(username, password);
+        } else {
+            return username==null ? 
+                    connFactory.createContext(sessionMode) :
+                    connFactory.createContext(username, password, sessionMode);            
+        }
     }
     public void setUsername(String username) {
 		this.username = username;
@@ -85,52 +87,49 @@ public class Requestor implements Runnable, MessageListener {
 		this.password = password;
 	}
     public void execute() throws Exception {
-        Connection connection = null;
-        Session session = null;
-        MessageProducer producer = null;
-        try {
-            connection = createConnection(connFactory);
-            session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
-            producer = session.createProducer(requestQueue);
-            Destination replyTo = getReplyTo(session);
-            MessageConsumer consumer = session.createConsumer(replyTo);
-            consumer.setMessageListener(this);
-            connection.start();
-            stopped = stop = false;
+        try (JMSContext context=createContext(Session.AUTO_ACKNOWLEDGE)) {
+            JMSProducer producer = context.createProducer();
+            Destination replyTo = context.createTemporaryQueue();
+            
+            try (JMSConsumer consumer = context.createConsumer(replyTo)) {
+                consumer.setMessageListener(this);
+                context.start();
+                stopped = stop = false;
+                
+                logger.info("requester {} starting: maxCount={}, sleepTime {}", name, maxCount, sleepTime);
+                started = true;
+                startTime=System.currentTimeMillis();
+                
+                while (!stop && (maxCount==0 || count < maxCount)) {
+                    MapMessage message = context.createMapMessage();
+                    message.setIntProperty("count", ++count);
+                    message.setInt("difficulty", count % 10);
+                    message.setJMSReplyTo(replyTo);
+                    synchronized (requests) {
+                        producer.send(requestQueue, message);
+                        requests.put(message.getJMSMessageID(), message);
+                    }
+                    if (sleepTime>=1000 || (count % 100==0)) {
+                        logger.debug("published message(" + count + "):" + 
+                                message.getJMSMessageID());
+                        logger.debug("outstanding requests=" + requests.size());
+                    }
+                    Thread.sleep(sleepTime);
+                }
+                
+                logger.info("requester {} stopping, count={}", name, count);
+                while (requests.size() > 0) {
+                    logger.debug("waiting for {} outstanding responses", requests.size());
+                    logger.trace("requests={}", requests);
+                    Thread.sleep(3000);
+                }
+                context.stop();
+            }
 
-            logger.info("requester {} starting: maxCount={}, sleepTime {}", name, maxCount, sleepTime);
-            started = true;
-            startTime=System.currentTimeMillis();
-            while (!stop && (maxCount==0 || count < maxCount)) {
-                MapMessage message = session.createMapMessage();
-                message.setIntProperty("count", ++count);
-                message.setInt("difficulty", count % 10);
-                message.setJMSReplyTo(replyTo);
-                synchronized (requests) {
-                	producer.send(message);
-                    requests.put(message.getJMSMessageID(), message);
-                }
-                if (sleepTime>=1000 || (count % 100==0)) {
-                    logger.debug("published message(" + count + "):" + 
-                            message.getJMSMessageID());
-                    logger.debug("outstanding requests=" + requests.size());
-                }
-                Thread.sleep(sleepTime);
-            }
-            logger.info("requester {} stopping, count={}", name, count);
-            while (requests.size() > 0) {
-                logger.debug("waiting for {} outstanding responses", requests.size());
-                logger.trace("requests={}", requests);
-                Thread.sleep(3000);
-            }
-            connection.stop();
         }
         finally {
             stopped = true;
             started = false;
-            if (producer != null)   { producer.close(); }
-            if (session!=null){ session.close();}
-            if (connection != null) { connection.close(); }
         }
     }
     
