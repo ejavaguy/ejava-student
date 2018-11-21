@@ -98,6 +98,12 @@
             <artifactId>artemis-jms-server</artifactId>
             <scope>runtime</scope>
         </dependency>
+        <dependency>
+            <groupId>org.wildfly</groupId>
+            <artifactId>wildfly-naming-client</artifactId>
+            <version>1.0.9.Final</version>
+            <scope>runtime</scope>
+        </dependency>
     </dependencies>
 
     <build>

@@ -1,11 +1,11 @@
 package ejava.examples.jmsnotifier;
 
-import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
 import javax.jms.Destination;
-import javax.jms.JMSException;
+import javax.jms.InvalidDestinationRuntimeException;
+import javax.jms.JMSConsumer;
+import javax.jms.JMSContext;
 import javax.jms.Message;
-import javax.jms.MessageConsumer;
 import javax.jms.Session;
 import javax.jms.TextMessage;
 import javax.jms.Topic;
@@ -78,62 +78,70 @@ public class Subscriber implements Runnable {
 		this.password = password;
 	}
 
-    public void execute() throws Exception {
-        Connection connection = null;
-        Session session = null;
-        MessageConsumer consumer = null;
-        try {
-            connection = username==null ?
-            		connFactory.createConnection() :
-            		connFactory.createConnection(username, password);
-            connection.setClientID(name);
-            session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
-            if (durable == false) {                
-                try { session.unsubscribe(name); } 
-                catch (JMSException ignored) {}
-                consumer = session.createConsumer(destination, selector);                
-            }
-            else {
-                consumer = session.createDurableSubscriber((Topic)destination, 
-                                                         name, selector, false);
-            }            
-            connection.start();
+    private JMSContext createContext(Integer sessionMode) {
+        if (sessionMode!=null) {
+            return username==null ?
+                    connFactory.createContext(sessionMode) :
+                    connFactory.createContext(username, password, sessionMode);            
+        } else {
+            return username==null ?
+                    connFactory.createContext() :
+                    connFactory.createContext(username, password);
+        }
+    }
+    
+    private JMSConsumer createConsumer(JMSContext context) {
+        if (durable == false) {                
+            try { context.unsubscribe(name); }
+            catch (InvalidDestinationRuntimeException ex) {}
+            return context.createConsumer(destination, selector);                
+        }
+        else {
+            return context.createDurableConsumer((Topic)destination, 
+                                                     name, selector, false);
+        }                    
+    }
 
-            stopped = stop = false;
-            logger.info("subscriber " + name + " starting:" +
-                    "durable=" + durable +
-                    ", selector=" + selector);
-            started = true;
-            while (!stop && (maxCount==0 || limitCount < maxCount)) {
-                Message message = consumer.receive(3000);
-                if (message != null) {
-                    limitCount += 1;
-                    Object countProp = message.getObjectProperty("count");
-                    StringBuilder text = new StringBuilder();
-                    text.append(name + " received message #" + limitCount +
-                            ", msgId=" + message.getJMSMessageID() +
-                            ", count property=" + countProp);
-                    if (message instanceof TextMessage) {
-                        text.append(", body=" 
-                                +((TextMessage)message).getText());
+    public void execute() throws Exception {
+        try (JMSContext context=createContext(Session.AUTO_ACKNOWLEDGE)) {
+            context.setClientID(name);
+            
+            try (JMSConsumer consumer=createConsumer(context)) {
+                context.start();
+                stopped = stop = false;
+                logger.info("subscriber {} starting: durable={}, selector={}", 
+                        name, durable, selector);
+                started = true;
+                
+                while (!stop && (maxCount==0 || limitCount < maxCount)) {
+                    Message message = consumer.receive(3000);
+                    if (message != null) {
+                        limitCount += 1;
+                        Object countProp = message.getObjectProperty("count");
+                        StringBuilder text = new StringBuilder();
+                        text.append(name + " received message #" + limitCount +
+                                ", msgId=" + message.getJMSMessageID() +
+                                ", count property=" + countProp);
+                        if (message instanceof TextMessage) {
+                            text.append(", body=" 
+                                    +((TextMessage)message).getText());
+                        }
+                        logger.debug(text.toString());
+                        Thread.yield();
+                    }      
+                    if (sleepTime > 0) {
+                        logger.debug("processing message for {}msecs", sleepTime);
+                        Thread.sleep(sleepTime);
                     }
-                    logger.debug(text.toString());
-                    Thread.yield();
-                }      
-                if (sleepTime > 0) {
-                    logger.debug("processing message for " + sleepTime + "msecs");
-                    Thread.sleep(sleepTime);
                 }
             }
+
             logger.info("subscriber " + name + " stopping");
-            connection.stop();
+            context.stop();
         }
         finally {
             stopped = true;
             started = false;
-            if (consumer != null)   { consumer.close(); }
-            if (session!=null){ session.close();}
-            if (connection != null) { connection.close(); }
         }
     }
     

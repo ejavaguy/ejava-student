@@ -1,9 +1,9 @@
 package ejava.examples.jmsnotifier;
 
-import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
 import javax.jms.Destination;
-import javax.jms.MessageProducer;
+import javax.jms.JMSContext;
+import javax.jms.JMSProducer;
 import javax.jms.Session;
 import javax.jms.TextMessage;
 import javax.naming.Context;
@@ -17,7 +17,7 @@ import org.slf4j.LoggerFactory;
  * properties to control the content of the message.
  */
 public class Publisher implements Runnable {
-    private static final Logger log = LoggerFactory.getLogger(Publisher.class);
+    private static final Logger logger = LoggerFactory.getLogger(Publisher.class);
     protected ConnectionFactory connFactory;
     protected Destination destination;
     protected boolean stop = false;
@@ -67,40 +67,41 @@ public class Publisher implements Runnable {
 		this.password = password;
 	}
     
+    private JMSContext createContext(Integer sessionMode) {
+        if (sessionMode!=null) {
+            return username==null ?
+                    connFactory.createContext(sessionMode) :
+                    connFactory.createContext(username, password, sessionMode);            
+        } else {
+            return username==null ?
+                    connFactory.createContext() :
+                    connFactory.createContext(username, password);
+        }
+    }
+    
     public void execute() throws Exception {
-        Connection connection = null;
-        Session session = null;
-        MessageProducer producer = null;
-        try {
-            connection = username==null ?
-            		connFactory.createConnection() :
-            		connFactory.createConnection(username, password);
-            session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
-            producer = session.createProducer(destination);
+        try (JMSContext context = createContext(Session.AUTO_ACKNOWLEDGE)) {
+            JMSProducer producer = context.createProducer();
             stopped = stop = false;
 
-            log.info("publisher " + name + " starting: " +
-                    "maxCount=" + maxCount +
-                    ", sleepTime" + sleepTime);
+            logger.info("publisher {} starting: maxCount={}, sleepTime {}", 
+                    name, maxCount, sleepTime);
             started = true;
             while (!stop && (maxCount==0 || count < maxCount)) {
-                TextMessage message = session.createTextMessage();
+                TextMessage message = context.createTextMessage();
                 message.setIntProperty("count", ++count%4);
                 message.setText("count = " + count);
-                producer.send(message);
-                log.debug("published message(" + count + "):" + 
+                producer.send(destination, message);
+                logger.debug("published message(" + count + "):" + 
                         message.getJMSMessageID());
                 Thread.sleep(sleepTime);
             }
-            log.info("publisher " + name + " stopping, limitCount=" + count);
-            connection.stop();
+            logger.info("publisher {} stopping, limitCount={}", name, count);
+            context.stop();
         }
         finally {
             stopped = true;
             started = false;
-            if (producer != null)   { producer.close(); }
-            if (session!=null){ session.close();}
-            if (connection != null) { connection.close(); }
         }
     }
     
@@ -109,7 +110,7 @@ public class Publisher implements Runnable {
             execute();
         }
         catch (Exception ex) {
-            log.error("error running " + name, ex);
+            logger.error("error running " + name, ex);
         }
     }    
 
@@ -176,7 +177,7 @@ public class Publisher implements Runnable {
             publisher.execute();
         }
         catch (Exception ex) {
-            log.error("",ex);
+            logger.error("",ex);
             if (noExit) {
             	throw new RuntimeException("error in publisher", ex);
             }

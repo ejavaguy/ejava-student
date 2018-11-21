@@ -122,6 +122,7 @@
         <weld-servlet.version>2.2.6.Final</weld-servlet.version>
         <wildfly.version>13.0.0.Final</wildfly.version>
         <wildfly-controller-client.version>8.2.1.Final</wildfly-controller-client.version>
+        <wildfly-naming-client.version>1.0.9.Final</wildfly-naming-client.version>
         <xercesImpl.version>2.9.1</xercesImpl.version>
         <yasson.version>1.0.1</yasson.version>
 
@@ -608,6 +609,12 @@
                 <groupId>com.ibm.icu</groupId>
                 <artifactId>icu4j</artifactId>
                 <version>${icu4j.version}</version>
+            </dependency>
+            
+            <dependency>
+                <groupId>org.wildfly</groupId>
+                <artifactId>wildfly-naming-client</artifactId>
+                <version>${wildfly-naming-client.version}</version>
             </dependency>
          </dependencies>
     </dependencyManagement>

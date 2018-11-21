@@ -467,7 +467,10 @@
                 </security-setting>
                 <security-setting name="jms.topic.jmsNotifier-testTopic1">
                     <role name="publisher" send="true"/>
-                    <role name="subscriber" consume="true" create-non-durable-queue="true"/>
+                    <role name="subscriber" consume="true" 
+                                            create-non-durable-queue="true" i
+                                            create-durable-queue="true"
+                                            delete-durable-queue="true"/>
                 </security-setting>
                 <security-setting name="jms.queue.jmsScheduler-requestQueue">
                     <role name="requestor" send="true"/>
