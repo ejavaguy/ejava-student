@@ -41,7 +41,6 @@ public class JMSTestBase {
     private static ArtemisServer server; //used when JMS server embedded in JVM
     private static Context jndi;     //used when JMS server remote in JBoss
     protected static ConnectionFactory connFactory;
-    protected static Connection connection;    
 
     @BeforeClass
 	public static final void setUpClass() throws Exception {
@@ -60,17 +59,10 @@ public class JMSTestBase {
 		}
         connFactory=(ConnectionFactory) jndi.lookup(connFactoryJNDI);
         assertNotNull("connFactory not found:" + connFactoryJNDI, connFactory);
- 		connection = createConnection();
-		connection.start();
 	}
 	
 	@AfterClass
 	public static final void tearDownClass() throws Exception {
-		if (connection != null) {
-			connection.stop();
-			connection.close();
-			connection = null;
-		}
 		if (server != null) {
 			server.stop();
 			server=null;

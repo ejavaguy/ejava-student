@@ -113,7 +113,7 @@ public class MessagePriorityTest extends JMSTestBase {
                     }
                 }
                 
-                connection.start();
+                context.start();
                 int receivedCount=0;
                 int prevPriority = 9;
                 Set<Integer> remainingPriorities = new HashSet<>(Arrays.asList(priorities));

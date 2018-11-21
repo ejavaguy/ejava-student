@@ -62,13 +62,13 @@ public class MessageTest extends JMSTestBase {
         producer = context.createProducer();            
         replyDestination = context.createTemporaryQueue();
         replyConsumer = context.createConsumer(replyDestination);
-        connection.start();
+        context.start();
     }
     
     @After
     public void tearDown() throws Exception {
         if (client != null) { client.close(); }
-        if (connection != null) { connection.stop(); }
+        if (context != null) { context.stop(); }
         if (replyConsumer != null) { replyConsumer.close(); }
         if (consumer != null) { consumer.close(); }
         if (context != null)  { context.close(); }

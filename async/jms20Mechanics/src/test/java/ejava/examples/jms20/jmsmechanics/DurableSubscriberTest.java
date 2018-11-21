@@ -1,29 +1,22 @@
 package ejava.examples.jms20.jmsmechanics;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
 
-import javax.jms.Connection;
 import javax.jms.Destination;
 import javax.jms.JMSConsumer;
 import javax.jms.JMSContext;
-import javax.jms.JMSException;
 import javax.jms.JMSProducer;
 import javax.jms.Message;
-import javax.jms.MessageConsumer;
-import javax.jms.MessageListener;
-import javax.jms.MessageProducer;
 import javax.jms.Session;
 import javax.jms.Topic;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.junit.Before;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This test case performs a demonstration of durable topic subscriptions. 
@@ -113,9 +106,7 @@ public class DurableSubscriberTest extends JMSTestBase {
         }
 
         //now lets go away for a while
-        connection.close(); connection=null;
         //come back and receive the messages
-        connection = createConnection();
         
         //start the consumers to process messages waiting with their durable subscription
         try (JMSContext context = createContext()) {

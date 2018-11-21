@@ -99,7 +99,7 @@ public class MessageConsumerTopicTest extends JMSTestBase {
                 }
 
                 //collection messages from subscribers
-                connection.start();
+                context.start();
                 int receivedCount=0;
                 for(int i=0; i<10 || i<msgCount; i++) {
                     for(MyClient client: Arrays.asList(asyncClient, syncClient)) {
