@@ -9,23 +9,18 @@ import javax.ejb.ActivationConfigProperty;
 import javax.ejb.EJB;
 import javax.ejb.MessageDriven;
 import javax.ejb.MessageDrivenContext;
+import javax.inject.Inject;
 import javax.jms.MapMessage;
 import javax.jms.Message;
 import javax.jms.MessageListener;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import ejava.examples.asyncmarket.MarketException;
 import ejava.examples.asyncmarket.bo.AuctionItem;
 import ejava.examples.asyncmarket.bo.Bid;
 import ejava.examples.asyncmarket.bo.Order;
-import ejava.examples.asyncmarket.dao.AuctionItemDAO;
 import ejava.examples.asyncmarket.dao.OrderDAO;
-import ejava.examples.asyncmarket.jpa.JPAAuctionItemDAO;
-import ejava.examples.asyncmarket.jpa.JPAOrderDAO;
 
 
 /**
@@ -58,16 +53,14 @@ import ejava.examples.asyncmarket.jpa.JPAOrderDAO;
                 propertyValue="Auto-acknowledge")            
 })
 public class BuyerMDB implements MessageListener {
-    private static final Logger log = LoggerFactory.getLogger(BuyerMDB.class);
+    private static final Logger logger = LoggerFactory.getLogger(BuyerMDB.class);
     
     @EJB
     private BuyerLocal buyer;
     @EJB
     private AuctionMgmtLocal auctionMgmt;     
-    @PersistenceContext(unitName="asyncMarket")
-    private EntityManager em;
     
-    private AuctionItemDAO auctionItemDAO;
+    @Inject
     private OrderDAO orderDAO;
     
     @Resource
@@ -75,29 +68,22 @@ public class BuyerMDB implements MessageListener {
     
     @PostConstruct
     public void init() {
-        log.info("*** BuyerMDB init() ***");
-        log.debug("ctx=" + ctx);
-        log.debug("buyer=" + buyer);
-        log.debug("auctionMgmt=" + auctionMgmt);
-        log.debug("em=" + em);
-        
-        orderDAO = new JPAOrderDAO();
-        ((JPAOrderDAO)orderDAO).setEntityManager(em);
-        
-        auctionItemDAO = new JPAAuctionItemDAO();
-        ((JPAAuctionItemDAO)auctionItemDAO).setEntityManager(em);        
+        logger.info("*** BuyerMDB init() ***");
+        logger.debug("ctx=" + ctx);
+        logger.debug("buyer=" + buyer);
+        logger.debug("auctionMgmt=" + auctionMgmt);
     }
 
     @PermitAll
     public void onMessage(Message message) {
         try {
-            log.debug("onMessage:" + message.getJMSMessageID());
+            logger.debug("onMessage:" + message.getJMSMessageID());
             MapMessage auctionMsg = (MapMessage)message;
             long itemId = auctionMsg.getLong("id");
             processAuctionItem(itemId);
         }
         catch (Exception ex) {
-            log.error("error processing message", ex);
+            logger.error("error processing message", ex);
         }
     }
     
@@ -114,7 +100,7 @@ public class BuyerMDB implements MessageListener {
     }
 
     protected void processOrder(Order order) {
-        log.debug("processing order:" + order);
+        logger.debug("processing order:" + order);
         try {
             AuctionItem item = order.getItem();
             Bid highestBid = item.getHighestBid();
@@ -123,7 +109,7 @@ public class BuyerMDB implements MessageListener {
                     buyer.bidProduct(item.getId(), 
                                      order.getBuyer().getUserId(), 
                                      item.getMinBid());
-                    log.debug("placed initial bid for order:" + order);
+                    logger.debug("placed initial bid for order: {}", order);
                 }
             }
             else if (highestBid.getAmount() < order.getMaxBid()
@@ -133,11 +119,12 @@ public class BuyerMDB implements MessageListener {
                 buyer.bidProduct(item.getId(), 
                                  order.getBuyer().getUserId(), 
                                  item.getHighestBid().getAmount() + 1.00);
-                log.debug("placed new bid for order:" + order);
+                logger.debug("placed new bid for order: {}", order);
             }
-        }
-        catch (MarketException ex) {
-            log.error("error processing order:" + order, ex);
-        }
+        } catch (ResourceNotFoundException ex) {
+          logger.error("error processing order:" + order, ex);
+        } catch (InvalidRequestException ex) {
+            logger.error("error processing order:" + order, ex);
+        } finally {}
     }
 }

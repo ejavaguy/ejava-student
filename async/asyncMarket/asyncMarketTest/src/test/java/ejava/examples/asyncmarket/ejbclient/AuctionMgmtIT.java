@@ -1,15 +1,12 @@
 package ejava.examples.asyncmarket.ejbclient;
 
 import java.lang.reflect.UndeclaredThrowableException;
-
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-
+import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.junit.After;
-import org.junit.Test;
 
 import ejava.examples.asyncmarket.bo.AuctionItem;
 import ejava.examples.asyncmarket.bo.Bid;

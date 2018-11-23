@@ -1,8 +1,5 @@
 package ejava.examples.asyncmarket.ejb;
 
-import java.util.Date;
-import java.util.concurrent.Future;
-
 import javax.ejb.Remote;
 
 import ejava.examples.asyncmarket.AuctionMgmt;

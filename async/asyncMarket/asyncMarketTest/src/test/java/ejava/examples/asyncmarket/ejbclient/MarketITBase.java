@@ -1,18 +1,16 @@
 package ejava.examples.asyncmarket.ejbclient;
 
 import java.lang.reflect.UndeclaredThrowableException;
-
 import java.util.List;
 
 import javax.naming.InitialContext;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import ejava.examples.asyncmarket.AuctionMgmt;
 import ejava.examples.asyncmarket.Buyer;
 import ejava.examples.asyncmarket.Seller;
 import ejava.examples.asyncmarket.UserMgmt;

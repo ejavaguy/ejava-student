@@ -32,7 +32,6 @@ import javax.jms.Topic;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import ejava.examples.asyncmarket.MarketException;
 import ejava.examples.asyncmarket.bo.AuctionItem;
 import ejava.examples.asyncmarket.bo.Bid;
 import ejava.examples.asyncmarket.dao.AuctionItemDAO;
@@ -85,10 +84,10 @@ public class AuctionMgmtEJB implements AuctionMgmtRemote, AuctionMgmtLocal {
     	    timerService.createCalendarTimer(schedule);
     }
     
-    public void closeBidding(long itemId) throws MarketException {
+    public void closeBidding(long itemId) throws ResourceNotFoundException {
         AuctionItem item = auctionItemDAO.getItem(itemId);
         if (item == null) {
-            throw new MarketException("itemId not found:" + itemId);
+            throw new ResourceNotFoundException("itemId[%s] not found", itemId);
         }
 
         try {
@@ -97,24 +96,22 @@ public class AuctionMgmtEJB implements AuctionMgmtRemote, AuctionMgmtLocal {
         }
         catch (Exception ex) {
             logger.error("error closing bid", ex);
-            throw new MarketException("error closing bid:" + ex);
+            throw new InternalErrorException("error closing bid:" + ex);
         }
     }
 
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
-    public Bid getWinningBid(long itemId) throws MarketException {
-        AuctionItem item=null;
+    public Bid getWinningBid(long itemId) throws ResourceNotFoundException {
+        AuctionItem item=auctionItemDAO.getItem(itemId);
+        if (item==null) {
+            throw new ResourceNotFoundException("bid[%s] not found", itemId);
+        }
+        
         try {
-            item = auctionItemDAO.getItem(itemId);
-            if (item != null) {
-               return dtoMapper.toDTO(item.getWinningBid());
-            }
+            return dtoMapper.toDTO(item.getWinningBid());
+        } catch (Exception ex) {
+            throw new InternalErrorException("error returning winning bid:%s", ex.toString());
         }
-        catch (Exception ex) {
-            logger.error("error closing bid", ex);
-            throw new MarketException("error closing bid:" + ex);
-        }
-        throw new MarketException("itemId not found:" + itemId);
     }
 
     
@@ -132,7 +129,7 @@ public class AuctionMgmtEJB implements AuctionMgmtRemote, AuctionMgmtLocal {
     }
     
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
-    public int checkAuction() throws MarketException {
+    public int checkAuction() {
         logger.info("checking auctions");
         int index = 0;            
         try {
@@ -171,35 +168,38 @@ public class AuctionMgmtEJB implements AuctionMgmtRemote, AuctionMgmtLocal {
     }
 
     
-    public void removeBid(long bidId) throws MarketException {
+    public void removeBid(long bidId) throws ResourceNotFoundException {
+        Bid bid = auctionItemDAO.getBid(bidId);
+        if (bid==null) {
+            throw new ResourceNotFoundException("bidId[%s] not found", bidId);
+        }
+        
         try {
-            Bid bid = auctionItemDAO.getBid(bidId);
             auctionItemDAO.removeBid(bid);        }
         catch (Exception ex) {
             logger.error("error removing bid", ex);
-            throw new MarketException("error removing bid:" + ex);
+            throw new InternalErrorException("error removing bid[%d]:%s", bidId, ex.toString());
         }
     }
     
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
-    public List<AuctionItem> getItems(int index, int count) 
-        throws MarketException {
+    public List<AuctionItem> getItems(int index, int count) {
         try {
             return dtoMapper.toDTO(auctionItemDAO.getItems(index, count));
         }
         catch (Exception ex) {
             logger.error("error getting auction items", ex);
-            throw new MarketException("error getting auction items" + ex);
+            throw new InternalErrorException("error getting auction items: %s", ex.toString());
         }
     }
 
-    public void removeItem(long id) throws MarketException {
+    public void removeItem(long itemId) {
         try {
-            auctionItemDAO.removeItem(id);
+            auctionItemDAO.removeItem(itemId);
         }
         catch (Exception ex) {
             logger.error("error removing auction items", ex);
-            throw new MarketException("error removing auction items" + ex);
+            throw new InternalErrorException("error removing auction item[%d]: %s", itemId, ex.toString());
         }
     }
 

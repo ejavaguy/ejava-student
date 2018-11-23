@@ -12,7 +12,6 @@ import javax.persistence.EntityManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import ejava.examples.asyncmarket.MarketException;
 import ejava.examples.asyncmarket.bo.AuctionItem;
 import ejava.examples.asyncmarket.bo.Bid;
 import ejava.examples.asyncmarket.bo.Order;
@@ -43,80 +42,103 @@ public class BuyerEJB implements BuyerRemote, BuyerLocal {
     }
 
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
-    public long bidProduct(long itemId, String userId, double amount)
-            throws MarketException {
+    public long bidProduct(long itemId, String userId, double amount) 
+            throws ResourceNotFoundException, InvalidRequestException {
+        logger.debug("bidProduct(itemId={}, userId={}, amount={}", itemId, userId, amount);
+        
+        AuctionItem item = auctionItemDAO.getItem(itemId);
+        if (item==null) {
+            throw new ResourceNotFoundException("itemId[%d] not found", itemId);            
+        }
+        logger.debug("found item for bid: {}", item);
+        
+        Person bidder = userDAO.getPersonByUserId(userId);
+        if (bidder==null) {
+            throw new ResourceNotFoundException("bidderId[%d] not found", userId);                        
+        }
+        logger.info("found bidder for bid: {}", bidder);
+        
+        
         try {
-            logger.debug("bidProduct(itemId={}, userId={}, amount={}", itemId, userId, amount);
             Bid bid = new Bid();
             bid.setAmount(amount);
-            
-            AuctionItem item = auctionItemDAO.getItem(itemId);
-            logger.debug("found item for bid: {}", item);
             bid.setItem(item);
-            
-            Person bidder = userDAO.getPersonByUserId(userId);
-            bid.setBidder(bidder);
-            logger.info("found bidder for bid: {}", bidder);
-            
             item.addBid(bid); //can fail if too low
+            bid.setBidder(bidder);
             bidder.getBids().add(bid);
 
             auctionItemDAO.createItem(item);
-            logger.info("added bid: {}", bid);
-            em.flush();
+            logger.debug("added bid: {}", bid);
             return bid.getId();            
-        }
-        catch (Exception ex) {
+        } catch (IllegalArgumentException ex) {
+            throw new InvalidRequestException("invalid bid:%s", ex);
+        } catch (Exception ex) {
             logger.error("error bidding product", ex);
-            throw new MarketException("error bidding product:" + ex);
+            throw new InternalErrorException("error bidding product:%s", ex);
         }
     }
 
-    public List<AuctionItem> getAvailableItems(int index, int count) 
-        throws MarketException {
+    public List<AuctionItem> getAvailableItems(int index, int count) {
         try {
             return dtoMapper.toDTO(
                 auctionItemDAO.getAvailableItems(index, count));
         }
         catch (Exception ex) {
             logger.error("error getting available items", ex);
-            throw new MarketException("error getting available items:" + ex);
+            throw new InternalErrorException("error getting available items: %s", ex);
         }
     }
 
-    public AuctionItem getItem(long itemId) throws MarketException {
+    public AuctionItem getItem(long itemId) throws ResourceNotFoundException {
+        AuctionItem item = auctionItemDAO.getItem(itemId);
+        if (item==null) {
+            throw new ResourceNotFoundException("itemId[%d] not found", itemId);
+        }
+        
         try {
-            return dtoMapper.toDTO(auctionItemDAO.getItem(itemId));    
+            return dtoMapper.toDTO(item);    
         }
         catch (Exception ex) {
             logger.error("error getting item", ex);
-            throw new MarketException("error getting item:" + ex);
+            throw new InternalErrorException("error getting item: %s", ex);
         }
     }
 
-    public Order getOrder(long orderId) throws MarketException {
+    public Order getOrder(long orderId) throws ResourceNotFoundException {
+        logger.debug("getOrder(id={})", orderId);
+        Order daoOrder = orderDAO.getOrder(orderId);
+        if (daoOrder==null) {
+            throw new ResourceNotFoundException("orderId[%d] not found", orderId);
+        }
+        logger.debug("daoOrder={}", daoOrder);
+
         try {
-            logger.debug("getOrder(id=" + orderId + ")");
-            Order daoOrder = orderDAO.getOrder(orderId);
             Order dtoOrder = dtoMapper.toDTO(daoOrder);
-            logger.debug("daoOrder=" + daoOrder);
-            logger.debug("dtoOrder=" + dtoOrder);
+            logger.debug("dtoOrder={}", dtoOrder);
             return dtoOrder;
         }
         catch (Exception ex) {
             logger.error("error getting item", ex);
-            throw new MarketException("error getting item:" + ex);
+            throw new InternalErrorException("error getting order[%d]:%s", orderId, ex);
         }
     }
 
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public long placeOrder(long productId, String userId, double maxAmount) 
-        throws MarketException {
+        throws ResourceNotFoundException, InvalidRequestException {
+        AuctionItem item = auctionItemDAO.getItem(productId);
+        if (item==null) {
+            throw new ResourceNotFoundException("itemId[%d] not found", productId);
+        }
+        
+        Person buyer = userDAO.getPersonByUserId(userId);
+        if (buyer==null) {
+            throw new ResourceNotFoundException("userId[%d] not found", userId);
+        }
+        
         try {
             Order order = new Order();
-            AuctionItem item = auctionItemDAO.getItem(productId);
             order.setItem(item);
-            Person buyer = userDAO.getPersonByUserId(userId);
             order.setBuyer(buyer);
             order.setMaxBid(maxAmount);
             orderDAO.createOrder(order);
@@ -124,7 +146,7 @@ public class BuyerEJB implements BuyerRemote, BuyerLocal {
         }
         catch (Exception ex) {
             logger.error("error placing order", ex);
-            throw new MarketException("error placing order:" + ex);
+            throw new InternalErrorException("error placing order: %s", ex);
         }
     }
 }

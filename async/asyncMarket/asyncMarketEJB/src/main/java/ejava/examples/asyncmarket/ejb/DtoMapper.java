@@ -1,6 +1,7 @@
 package ejava.examples.asyncmarket.ejb;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -121,4 +122,74 @@ public class DtoMapper {
         item.setOwner(dto);
         return dto;
     }
+    
+    public List<Person> toDTOPeople(List<Person> people) {
+        List<Person> dtos = new ArrayList<Person>();
+        for (Person person : people) {
+            dtos.add(toDTO(person));
+        }
+        return dtos;
+    }
+
+    public Person toDTO(Person user) {
+        Person dto = new Person(user.getId());
+        dto.setUserId(user.getUserId());
+        dto.setName(user.getName());
+        dto.setVersion(user.getVersion());
+        dto.setItems(toDTO(user.getItems(), dto));
+        return dto;
+    }
+
+    public Collection<AuctionItem> toDTO(
+            Collection<AuctionItem> items, Person owner) {
+        Collection<AuctionItem> dtos = new ArrayList<AuctionItem>();
+        for(AuctionItem item : items) {
+            AuctionItem dto = new AuctionItem(item.getId());
+            dto.setVersion(item.getVersion());
+            dto.setName(item.getName());
+            dto.setOwner(owner);
+            owner.getItems().add(dto);
+            dto.setMinBid(item.getMinBid());
+            dto.setProductId(item.getProductId());
+            dto.setStartDate(item.getStartDate());
+            dto.setEndDate(item.getEndDate());
+            dto.setBids(toDTO(item.getBids(), dto));            
+            if (item.getWinningBid() != null) {
+                for(Bid bid : dto.getBids()) {
+                    if (bid.getId() == item.getWinningBid().getId()) {
+                        dto.setWinningBid(bid);
+                    }
+                }
+            }
+            dto.setClosed(item.isClosed());
+            dtos.add(dto);
+        }        
+        return dtos;
+    }
+    
+//    private List<Bid> toDTO(List<Bid> bids, AuctionItem item) {
+//        List<Bid> dtos = new ArrayList<Bid>();
+//        for(Bid bid : bids) {
+//            dtos.add(toDTO(bid, item));    
+//        }
+//        return dtos;
+//    }
+
+    public Bid toDTO(Bid bid, AuctionItem item) {
+        Bid dto = new Bid(bid.getId());
+        dto.setAmount(bid.getAmount());
+        dto.setItem(item);
+        item.getBids().add(dto);
+        dto.setBidder(toDTO(bid.getBidder(), dto));
+        return dto;
+    }
+
+//    private Person toDTO(Person bidder, Bid bid) {
+//        Person dto = new Person(bidder.getId());
+//        dto.setUserId(bidder.getUserId());
+//        dto.setVersion(bidder.getVersion());
+//        bid.setBidder(dto);
+//        dto.getBids().add(bid);
+//        return dto;
+//    }
 }
