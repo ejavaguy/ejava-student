@@ -48,52 +48,53 @@ public class JNDIHelper {
 
     private Context jndi;
     
-    public JNDIHelper(ServletContext context) throws NamingException {
-    	jndi=getInitialContext(context);
+    public JNDIHelper() throws NamingException {
+    	    jndi=new InitialContext();
     }
+    
     public void close() {
-    	try {
-    		jndi.close();
-    	} catch (NamingException ex) {
-    		throw new RuntimeException("unexpected error during JNDI.close()", ex);
-    	}
+        	try {
+        		jndi.close();
+        	} catch (NamingException ex) {
+        		throw new RuntimeException("unexpected error during JNDI.close()", ex);
+        	}
     }
     
     public AuctionMgmt getAuctionMgmt() throws NamingException {
-    	return lookup(AuctionMgmt.class, jndi, AUCTION_MGMT_REMOTE_JNDI);
+    	    return lookup(AuctionMgmt.class, jndi, AUCTION_MGMT_REMOTE_JNDI);
     }
     
     public UserMgmt getUserMgmt() throws NamingException {
-    	return lookup(UserMgmt.class, jndi, USER_MGMT_REMOTE_JNDI);
+    	    return lookup(UserMgmt.class, jndi, USER_MGMT_REMOTE_JNDI);
     }
 
     public Seller getSeller() throws NamingException {
-    	return lookup(Seller.class, jndi, SELLER_REMOTE_JNDI);
+        return lookup(Seller.class, jndi, SELLER_REMOTE_JNDI);
     }
     
     public Buyer getBuyer() throws NamingException {
-    	return lookup(Buyer.class, jndi, BUYER_REMOTE_JNDI);
+    	    return lookup(Buyer.class, jndi, BUYER_REMOTE_JNDI);
     }
 
     
-    private Context getInitialContext(ServletContext context) 
-        throws NamingException {
-        
-        //build an InitialContext from Servlet.init properties in web.xml
-        Properties jndiProperties = new Properties();
-        for(Enumeration<?> e=context.getInitParameterNames();
-            e.hasMoreElements(); ) {
-            String key = (String)e.nextElement();
-            String value=(String)context.getInitParameter(key);
-            if (key.startsWith("java.naming")) {
-                jndiProperties.put(key, value);
-            }                    
-        }
-        log.debug("jndiProperties=" + jndiProperties);
-        InitialContext jndi = new InitialContext(jndiProperties);
-        log.debug("jndi=" + jndiProperties);
-        return jndi;
-    }
+//    private Context getInitialContext(ServletContext context) 
+//        throws NamingException {
+//        
+//        //build an InitialContext from Servlet.init properties in web.xml
+//        Properties jndiProperties = new Properties();
+//        for(Enumeration<?> e=context.getInitParameterNames();
+//            e.hasMoreElements(); ) {
+//            String key = (String)e.nextElement();
+//            String value=(String)context.getInitParameter(key);
+//            if (key.startsWith("java.naming")) {
+//                jndiProperties.put(key, value);
+//            }                    
+//        }
+//        log.debug("jndiProperties=" + jndiProperties);
+//        InitialContext jndi = new InitialContext(jndiProperties);
+//        log.debug("jndi=" + jndiProperties);
+//        return jndi;
+//    }
 
     @SuppressWarnings("unchecked")
 	private <T> T lookup(Class<T> lazz, Context jndi, String remoteJNDI) 

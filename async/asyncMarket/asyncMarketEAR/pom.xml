@@ -37,7 +37,7 @@
             <groupId>info.ejava.examples.common</groupId>
             <artifactId>ejava-util</artifactId>
             <version>${project.version}</version>
-            <scope>test</scope>
+            <scope>compile</scope>
         </dependency>    
     </dependencies>
 

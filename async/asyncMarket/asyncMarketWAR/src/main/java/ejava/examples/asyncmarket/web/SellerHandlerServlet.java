@@ -49,7 +49,7 @@ public class SellerHandlerServlet extends HttpServlet {
 
     public void init() throws ServletException {
         log.debug("init() called, seller=" + seller + ", userMgmt=" + userMgmt);
-        JNDIHelper jndi = null;;
+        JNDIHelper jndi = null;
         try {
             //build a list of handlers for individual commands
             handlers.put(MAINMENU_COMMAND, new AdminMenu());
@@ -59,8 +59,7 @@ public class SellerHandlerServlet extends HttpServlet {
             handlers.put(LOGOUT_COMMAND, new Logout());
 
             //verify local injected or replace with remote
-            ServletContext ctx = getServletContext();
-            //TODO: jndi = new JNDIHelper(ctx);
+            jndi = new JNDIHelper();
             if (seller == null) {
                 seller = jndi.getSeller();
             }        
@@ -73,9 +72,9 @@ public class SellerHandlerServlet extends HttpServlet {
             throw new ServletException("error initializing handler", ex);
         }
         finally {
-        	if (jndi != null) {
-        		jndi.close();
-        	}
+            	if (jndi != null) {
+            		jndi.close();
+            	}
         }
     }
 

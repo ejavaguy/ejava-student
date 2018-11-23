@@ -148,6 +148,9 @@ public class SellerEJB
             long itemId = ((Long)timer.getInfo()).longValue();
             endAuction(itemId);
         }
+        catch (ResourceNotFoundException ex) {
+            //ignored
+        }
         catch (Exception ex) {
             logger.error("error ending auction for:" + timer.getInfo(), ex);
         }
