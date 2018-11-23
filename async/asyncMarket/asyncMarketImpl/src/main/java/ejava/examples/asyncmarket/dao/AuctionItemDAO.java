@@ -10,7 +10,6 @@ public interface AuctionItemDAO {
     AuctionItem getItem(long itemId);
     AuctionItem createItem(AuctionItem item);
     AuctionItem updateItem(AuctionItem item);
-    Bid addBid(long itemId, Bid bid);
     Bid getBid(long bidId);
     void removeBid(Bid bid);
     void removeItem(long id);

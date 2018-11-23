@@ -14,23 +14,31 @@ import javax.persistence.*;
 })
 public class Order implements Serializable {
     private static final long serialVersionUID = 1L;
+    
+    @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
     private long id;
+    
+    @Version
     private long version;
+    
+    @ManyToOne(optional=false, fetch=FetchType.EAGER)
     private Person buyer;
+    
+    @ManyToOne(optional=false, fetch=FetchType.EAGER)
     private AuctionItem item;
+    
     private double maxBid;
     
     public Order() {}
     public Order(long id) { setId(id); }
 
-    @Id @GeneratedValue
     public long getId() {
         return id;
     }
     public void setId(long id) {
         this.id = id;
     }
-    @Version
+    
     public long getVersion() {
         return version;
     }
@@ -38,7 +46,6 @@ public class Order implements Serializable {
         this.version = version;
     }
 
-    @ManyToOne
     public Person getBuyer() {
         return buyer;
     }
@@ -46,7 +53,6 @@ public class Order implements Serializable {
         this.buyer = buyer;
     }
     
-    @OneToOne
     public AuctionItem getItem() {
         return item;
     }

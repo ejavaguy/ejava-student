@@ -17,29 +17,49 @@ import javax.persistence.*;
 @Entity @Table(name="ASYNCMARKET_AUCTIONITEM")
 public class AuctionItem implements Serializable {
     private static final long serialVersionUID = 1L;
+    
+    @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
     private long id;
+    
+    @Version
     private long version;
+    
+    @Column(length=32)
     private String name;
+    @Column(length=32)
     private String productId;
+    
+    @Temporal(TemporalType.TIMESTAMP)
     private Date startDate;
-    private Date endDate;    
+    
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date endDate;
+    
     private double minBid;
+    
+    @ManyToOne(optional=false, fetch=FetchType.LAZY)
     private Person owner;
+    
+    @OneToMany(mappedBy="item",
+               fetch=FetchType.LAZY,
+               cascade= {CascadeType.PERSIST,
+                         CascadeType.REMOVE})
     private List<Bid> bids = new ArrayList<Bid>();
     private boolean closed=false;
+    
+    @OneToOne(fetch=FetchType.EAGER)
     private Bid winningBid;
     
     public AuctionItem() {}
     public AuctionItem(long id) { setId(id); }
     
-    @Id @GeneratedValue
     public long getId() {
         return id;
     }
     private void setId(long id) {
         this.id = id;
     }
-    @Version
+    
     public long getVersion() {
         return version;
     }
@@ -53,6 +73,7 @@ public class AuctionItem implements Serializable {
     public void setName(String name) {
         this.name = name;
     }
+    
     public String getProductId() {
         return productId;
     }
@@ -67,14 +88,13 @@ public class AuctionItem implements Serializable {
         this.minBid = minBid;
     }
     
-    @Temporal(TemporalType.TIMESTAMP)
     public Date getEndDate() {
         return endDate;
     }
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }
-    @Temporal(TemporalType.TIMESTAMP)
+    
     public Date getStartDate() {
         return startDate;
     }
@@ -82,17 +102,18 @@ public class AuctionItem implements Serializable {
         this.startDate = startDate;
     }
 
-    @ManyToOne
     public Person getOwner() {
         return owner;
     }
     public void setOwner(Person owner) {
         this.owner = owner;
     }
+    
     public void closeBids() {
         closed=true;
         setWinningBid(getHighestBid());        
     }
+    
     public void setClosed(boolean closed) {
         this.closed = closed;
     }
@@ -100,13 +121,13 @@ public class AuctionItem implements Serializable {
         return closed;
     }
     
-    @OneToMany(mappedBy="item")
     public List<Bid> getBids() {
         return bids;
     }
     public void setBids(List<Bid> bids) {        
         this.bids = bids;
     }
+    
     public void addBid(Bid bid) throws IllegalArgumentException {
         Bid highest = getHighestBid();
         if (highest == null || bid.getAmount() > highest.getAmount()) {
@@ -125,7 +146,6 @@ public class AuctionItem implements Serializable {
         return highest;
     }
     
-    @OneToOne
     public Bid getWinningBid() {
         return winningBid;
     }

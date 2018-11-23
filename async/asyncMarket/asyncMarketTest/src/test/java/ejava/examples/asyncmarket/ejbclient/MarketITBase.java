@@ -26,7 +26,7 @@ import ejava.util.ejb.EJBClient;
 import junit.framework.TestCase;
 
 public abstract class MarketITBase extends TestCase {
-	private static final Logger log = LoggerFactory.getLogger(MarketITBase.class);
+	private static final Logger logger = LoggerFactory.getLogger(MarketITBase.class);
 	protected static String auctionmgmtJNDI = System.getProperty("jndi.name.auctionmgmt",
 		EJBClient.getRemoteLookupName("asyncMarketEAR", "asyncMarketEJB", 
 				"AuctionMgmtEJB", AuctionMgmtRemote.class.getName()));
@@ -47,46 +47,47 @@ public abstract class MarketITBase extends TestCase {
 	
 	@BeforeClass
 	public static void setUpClass() throws Exception {
-    	log.info("*** setUpClass() ***");
+    	logger.info("*** setUpClass() ***");
 		//give application time to fully deploy
 		if (Boolean.parseBoolean(System.getProperty("cargo.startstop", "false"))) {
 			long waitTime=15000;
-	    	log.info(String.format("pausing %d secs for server deployment to complete", waitTime/1000));
-	    	Thread.sleep(waitTime);
+	    	    logger.info("pausing {} secs for server deployment to complete", waitTime/1000);
+	    	    Thread.sleep(waitTime);
 		}
 		else {
-	    	log.info(String.format("startstop not set"));
+	    	    logger.info(String.format("startstop not set"));
 		}
 	}
 
 	@Before
     public void setUp() throws Exception {
-        log.debug("getting jndi initial context");
+        logger.debug("getting jndi initial context");
         jndi = new InitialContext();    
-        log.debug("jndi=" + jndi.getEnvironment());
+        logger.debug("jndi=" + jndi.getEnvironment());
         
-        log.debug("looking up:" + auctionmgmtJNDI);
+        logger.debug("looking up:" + auctionmgmtJNDI);
         auctionmgmt = (AuctionMgmtRemote)jndi.lookup(auctionmgmtJNDI);
 
-        log.debug("looking up:" + usermgmtJNDI);
+        logger.debug("looking up:" + usermgmtJNDI);
         usermgmt = (UserMgmtRemote)jndi.lookup(usermgmtJNDI);
 
-        log.debug("looking up:" + sellerJNDI);
+        logger.debug("looking up:" + sellerJNDI);
         seller = (SellerRemote)jndi.lookup(sellerJNDI);
         
-        log.debug("looking up:" + buyerJNDI);
+        logger.debug("looking up:" + buyerJNDI);
         buyer = (BuyerRemote)jndi.lookup(buyerJNDI);
         
         try {
             cleanup();
         } catch (UndeclaredThrowableException ue) {
-            log.error("error in cleanup:", ue.getUndeclaredThrowable());
+            logger.error("error in cleanup:", ue.getUndeclaredThrowable());
             fail("" + ue.getUndeclaredThrowable());
         }
     }
 	
 	@After
 	public void tearDown() throws Exception {
+        auctionmgmt.cancelTimers();
 		if (jndi!=null) {
 			jndi.close();
 			jndi=null;
@@ -105,7 +106,7 @@ public abstract class MarketITBase extends TestCase {
         do {
             items = auctionmgmt.getItems(index, 10);
             for (AuctionItem item : items) {
-                log.debug("removing item:" + item);
+                logger.debug("removing item:" + item);
                 auctionmgmt.removeItem(item.getId());
             }
             
@@ -116,7 +117,7 @@ public abstract class MarketITBase extends TestCase {
         do {
             users = usermgmt.getUsers(index, 10);
             for (Person user : users) {
-                log.debug("removing user:" + user.getUserId());
+                logger.debug("removing user:" + user.getUserId());
                 usermgmt.removeUser(user.getUserId());
             }
             index += users.size();
@@ -124,3 +125,4 @@ public abstract class MarketITBase extends TestCase {
     }
 	
 }
+ 

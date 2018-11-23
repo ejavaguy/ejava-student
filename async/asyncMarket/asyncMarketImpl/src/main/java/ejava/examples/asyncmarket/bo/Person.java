@@ -16,24 +16,41 @@ import javax.persistence.*;
 })
 public class Person implements Serializable {
     private static final long serialVersionUID = 1L;
+    
+    @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
     private long id;
+    
+    @Version
     private long version;
+    
+    @Column(length=32, nullable=false, unique=true, updatable=false)
     private String userId;
+    
+    @Column(length=32)
     private String name;
-    private Collection<Bid> bids = new ArrayList<Bid>();
-    private Collection<AuctionItem> items = new ArrayList<AuctionItem>();
+    
+    @OneToMany(mappedBy="bidder",
+               fetch=FetchType.LAZY,
+               cascade={CascadeType.PERSIST,
+                        CascadeType.REMOVE})
+    private Collection<Bid> bids = new ArrayList<>();
+    
+    @OneToMany(mappedBy="owner", 
+               fetch=FetchType.LAZY,
+               cascade={CascadeType.PERSIST,
+                        CascadeType.REMOVE})
+    private Collection<AuctionItem> items = new ArrayList<>();
     
     public Person() {}
     public Person(long id) { setId(id); }
 
-    @Id @GeneratedValue
     public long getId() {
         return id;
     }
     private void setId(long id) {
         this.id = id;
     }
-    @Version
+    
     public long getVersion() {
         return version;
     }
@@ -41,13 +58,13 @@ public class Person implements Serializable {
         this.version = version;
     }
 
-    @Column(nullable=false, unique=true, updatable=false)
     public String getUserId() {
         return userId;
     }
     public void setUserId(String userId) {
         this.userId = userId;
     }
+    
     public String getName() {
         return name;
     }
@@ -55,7 +72,6 @@ public class Person implements Serializable {
         this.name = name;
     }
 
-    @OneToMany(mappedBy="bidder")
     public Collection<Bid> getBids() {
         return bids;
     }
@@ -63,7 +79,6 @@ public class Person implements Serializable {
         this.bids = bids;
     }
     
-    @OneToMany(mappedBy="owner")
     public Collection<AuctionItem> getItems() {
         return items;
     }

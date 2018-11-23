@@ -61,7 +61,8 @@ public class AuctionItemTest extends MarketTestBase {
             bid.setBidder(p);
             bid.setItem(item);            
             bid.setAmount(highest == null ? 5.00 : highest.getAmount() + 1);
-            auctionItemDAO.addBid(item.getId(), bid);
+            item.addBid(bid);            
+            auctionItemDAO.createItem(item); //trigger item.bids cascade
             em.refresh(p);
         }        
         

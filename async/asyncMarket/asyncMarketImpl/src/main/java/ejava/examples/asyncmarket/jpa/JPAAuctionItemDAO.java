@@ -31,14 +31,6 @@ public class JPAAuctionItemDAO implements AuctionItemDAO {
         return em.merge(item);
     }
 
-    public Bid addBid(long itemId, Bid bid) {
-        AuctionItem item = em.find(AuctionItem.class, itemId);
-        bid.setItem(item);
-        item.getBids().add(bid);
-        em.persist(bid);
-        return bid;
-    }
-    
     @SuppressWarnings("unchecked")
     public List<AuctionItem> getItems(int index, int count) {
         Query query = em.createNamedQuery("AsyncMarket_getAuctionItems")
