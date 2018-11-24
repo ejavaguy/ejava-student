@@ -149,7 +149,7 @@ public class SellerEJB
             endAuction(itemId);
         }
         catch (ResourceNotFoundException ex) {
-            //ignored
+            //ignored -- application may be shutting down
         }
         catch (Exception ex) {
             logger.error("error ending auction for:" + timer.getInfo(), ex);
