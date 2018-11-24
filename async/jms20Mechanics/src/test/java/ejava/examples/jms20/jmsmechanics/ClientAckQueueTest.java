@@ -8,7 +8,6 @@ import javax.jms.JMSContext;
 import javax.jms.JMSProducer;
 import javax.jms.Message;
 import javax.jms.Queue;
-import javax.jms.Session;
 
 import org.junit.After;
 import org.junit.Before;
@@ -32,8 +31,10 @@ public class ClientAckQueueTest extends JMSTestBase {
         destination = (Queue) lookup(queueJNDI);
         assertNotNull("destination null:" + queueJNDI, destination);
         
-        catcher1 = createCatcher("receiver1", destination).setAckMode(Session.CLIENT_ACKNOWLEDGE);
-        catcher2 = createCatcher("receiver2", destination).setAckMode(Session.CLIENT_ACKNOWLEDGE);
+        catcher1 = createCatcher("receiver1", destination).setAckMode(JMSContext.CLIENT_ACKNOWLEDGE
+);
+        catcher2 = createCatcher("receiver2", destination).setAckMode(JMSContext.CLIENT_ACKNOWLEDGE
+);
     }
     
     @After

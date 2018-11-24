@@ -76,8 +76,10 @@ public class MessageConsumerTopicTest extends JMSTestBase {
     @Test
     public void testMessageConsumerMulti() throws Exception {
         logger.info("*** testMessageConsumerMulti ***");
-        try (JMSContext context=createContext(Session.CLIENT_ACKNOWLEDGE);
-             JMSContext context2=context.createContext(Session.CLIENT_ACKNOWLEDGE)) {
+        try (JMSContext context=createContext(JMSContext.CLIENT_ACKNOWLEDGE
+);
+             JMSContext context2=context.createContext(JMSContext.CLIENT_ACKNOWLEDGE
+)) {
             context.stop();
             
             try (JMSConsumer syncConsumer = context.createConsumer(destination);

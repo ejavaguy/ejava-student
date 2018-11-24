@@ -81,7 +81,8 @@ public class MessageCatcher implements Runnable {
             }
             
             logger.info("catcher {} stopping (ackMode={})", name, ackMode);
-            if (ackMode == Session.CLIENT_ACKNOWLEDGE && messages.size() > 0) {
+            if (ackMode == JMSContext.CLIENT_ACKNOWLEDGE
+ && messages.size() > 0) {
                 logger.debug("catcher {} acknowledging messages", name);
                 messages.get(messages.size()-1).acknowledge();
             }

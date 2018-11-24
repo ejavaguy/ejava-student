@@ -11,7 +11,6 @@ import javax.jms.JMSContext;
 import javax.jms.JMSProducer;
 import javax.jms.Message;
 import javax.jms.Queue;
-import javax.jms.Session;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -39,8 +38,8 @@ public class MessageSelectorQueueTest extends JMSTestBase {
     public void testMessageSelector() throws Exception {
         logger.info("*** testMessageSelector ***");
             //need to use CLIENT_ACK to avoid race condition within this app
-        try (JMSContext context=createContext(Session.CLIENT_ACKNOWLEDGE);
-             JMSContext context2=context.createContext(Session.CLIENT_ACKNOWLEDGE)) {
+        try (JMSContext context=createContext(JMSContext.CLIENT_ACKNOWLEDGE);
+             JMSContext context2=context.createContext(JMSContext.CLIENT_ACKNOWLEDGE)) {
             context.stop();
             
             String selector1 = "level in ('warn', 'fatal')";
@@ -89,8 +88,10 @@ public class MessageSelectorQueueTest extends JMSTestBase {
     @Test
     public void testMessageSelectorMulti() throws Exception {
         logger.info("*** testMessageSelectorMulti ***");
-        try (JMSContext context=createContext(Session.CLIENT_ACKNOWLEDGE);
-             JMSContext context2=context.createContext(Session.CLIENT_ACKNOWLEDGE)) {
+        try (JMSContext context=createContext(JMSContext.CLIENT_ACKNOWLEDGE
+);
+             JMSContext context2=context.createContext(JMSContext.CLIENT_ACKNOWLEDGE
+)) {
             context.stop();
             
             String selector1 = "level in ('warn', 'fatal')";

@@ -17,7 +17,6 @@ import javax.jms.JMSProducer;
 import javax.jms.Message;
 import javax.jms.MessageListener;
 import javax.jms.Queue;
-import javax.jms.Session;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -65,8 +64,10 @@ public class MessageReplyToTest extends JMSTestBase {
     @Test
     public void testReplyTo() throws Exception {
         logger.info("*** testReplyTo ***");
-        try (JMSContext context=createContext(Session.CLIENT_ACKNOWLEDGE);
-             JMSContext context2=context.createContext(Session.CLIENT_ACKNOWLEDGE)) {
+        try (JMSContext context=createContext(JMSContext.CLIENT_ACKNOWLEDGE
+);
+             JMSContext context2=context.createContext(JMSContext.CLIENT_ACKNOWLEDGE
+)) {
             context.stop();
             
             List<JMSConsumer> replyConsumers = new ArrayList<>();
@@ -143,8 +144,10 @@ public class MessageReplyToTest extends JMSTestBase {
     @Test
     public void testReplyToMulti() throws Exception {
         logger.info("*** testReplyToMulti ***");
-        try (JMSContext context=createContext(Session.CLIENT_ACKNOWLEDGE);
-             JMSContext context2=context.createContext(Session.CLIENT_ACKNOWLEDGE)) {
+        try (JMSContext context=createContext(JMSContext.CLIENT_ACKNOWLEDGE
+);
+             JMSContext context2=context.createContext(JMSContext.CLIENT_ACKNOWLEDGE
+)) {
             context.stop();
 
             List<JMSConsumer> replyConsumers = new ArrayList<>();

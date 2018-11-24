@@ -7,7 +7,6 @@ import javax.jms.Destination;
 import javax.jms.JMSContext;
 import javax.jms.JMSProducer;
 import javax.jms.Message;
-import javax.jms.Session;
 import javax.jms.Topic;
 
 import org.junit.After;
@@ -32,8 +31,10 @@ public class ClientAckTopicTest extends JMSTestBase {
         destination = (Topic) lookup(topicJNDI);
         assertNotNull("destination null:" + topicJNDI, destination);
         
-        catcher1 = createCatcher("subscriber1", destination).setAckMode(Session.CLIENT_ACKNOWLEDGE);
-        catcher2 = createCatcher("subscriber2", destination).setAckMode(Session.CLIENT_ACKNOWLEDGE);
+        catcher1 = createCatcher("subscriber1", destination).setAckMode(JMSContext.CLIENT_ACKNOWLEDGE
+);
+        catcher2 = createCatcher("subscriber2", destination).setAckMode(JMSContext.CLIENT_ACKNOWLEDGE
+);
         
         //topics will only deliver messages to subscribers that are 
         //successfully registered prior to the message being published. We

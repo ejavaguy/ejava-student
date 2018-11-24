@@ -10,7 +10,6 @@ import javax.jms.JMSConsumer;
 import javax.jms.JMSContext;
 import javax.jms.JMSProducer;
 import javax.jms.Message;
-import javax.jms.Session;
 import javax.jms.Topic;
 
 import org.junit.Before;
@@ -37,8 +36,8 @@ public class MessageSelectorTopicTest extends JMSTestBase {
     @Test
     public void testMessageSelector() throws Exception {
         logger.info("*** testMessageSelector ***");
-        try (JMSContext context=createContext(Session.CLIENT_ACKNOWLEDGE);
-             JMSContext context2=context.createContext(Session.CLIENT_ACKNOWLEDGE)) {
+        try (JMSContext context=createContext(JMSContext.CLIENT_ACKNOWLEDGE);
+             JMSContext context2=context.createContext(JMSContext.CLIENT_ACKNOWLEDGE)) {
             context.stop();
             
             String selector1 = "level in ('warn', 'fatal')";
@@ -87,8 +86,10 @@ public class MessageSelectorTopicTest extends JMSTestBase {
     @Test
     public void testMessageSelectorMulti() throws Exception {
         logger.info("*** testMessageSelectorMulti ***");
-        try (JMSContext context=createContext(Session.CLIENT_ACKNOWLEDGE);
-             JMSContext context2=context.createContext(Session.CLIENT_ACKNOWLEDGE)) {
+        try (JMSContext context=createContext(JMSContext.CLIENT_ACKNOWLEDGE
+);
+             JMSContext context2=context.createContext(JMSContext.CLIENT_ACKNOWLEDGE
+)) {
             context.stop();
             
             String selector1 = "level in ('warn', 'fatal')";

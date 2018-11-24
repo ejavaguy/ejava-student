@@ -11,7 +11,6 @@ import javax.jms.JMSContext;
 import javax.jms.JMSProducer;
 import javax.jms.Message;
 import javax.jms.Queue;
-import javax.jms.Session;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -37,8 +36,8 @@ public class MessageConsumerQueueTest extends JMSTestBase {
     public void testMessageConsumer() throws Exception {
         logger.info("*** testMessageConsumer ***");
         //need to use CLIENT_ACK to avoid race condition within this app
-        try (JMSContext context=createContext(Session.CLIENT_ACKNOWLEDGE);
-             JMSContext context2=context.createContext(Session.CLIENT_ACKNOWLEDGE)) {
+        try (JMSContext context=createContext(JMSContext.CLIENT_ACKNOWLEDGE);
+             JMSContext context2=context.createContext(JMSContext.CLIENT_ACKNOWLEDGE)) {
             context.stop();
 
                 //send a message
@@ -77,8 +76,10 @@ public class MessageConsumerQueueTest extends JMSTestBase {
     @Test
     public void testMessageConsumerMulti() throws Exception {
         //need to use CLIENT_ACK to avoid race condition within this app
-        try (JMSContext context=createContext(Session.CLIENT_ACKNOWLEDGE);
-             JMSContext context2=context.createContext(Session.CLIENT_ACKNOWLEDGE)) {
+        try (JMSContext context=createContext(JMSContext.CLIENT_ACKNOWLEDGE
+);
+             JMSContext context2=context.createContext(JMSContext.CLIENT_ACKNOWLEDGE
+)) {
             context.stop();
             
             //send some messages
