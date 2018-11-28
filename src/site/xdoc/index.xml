@@ -28,8 +28,9 @@
       <ul>
       <!--
           <li>2018-12-05: Posted Async TODOs</li>
-          <li>2018-11-28: Posted JMS TODOs</li>
           -->
+          <li>2018-11-25: Posted JMS Notes and TODOs</li>
+          <li>2018-11-25: Activated Async Example Modules</li>
           <li>2018-11-14: Posted Security TODOs</li>
           <li>2018-11-07: Posted Web Tier JAX-RS TODOs</li>
           <li>2018-10-31: Posted Transaction TODOs</li>
@@ -52,21 +53,14 @@
 
       <!-- week 13: Async 
       <li><ul>
-          <li>Setup and deploy your JMS publisher code to eSales. All
-          resources should be injected by the container.</li>
-          <li>Setup and implement a JMS MDB in the eBidbot to receive 
-          updates published by eSales.</li>
-          <li>Setup and deploy your JMS publisher code to eBidbot.
-          Again - all resources should be injected by the container.</li>
-          <li>Verify that the JMS JSE Subscriber from last
-          week receives published messages from EJB tier</li>
           <li>Implement an EJBTimer to perform scheduled work</li>
           <li>Test, cleanup, document, and turn in project 3</li> 
       </ul></li>
       -->
 
       <!-- week 12: JMS 
-      <li><ul> 
+      -->
+      <li>JMS<ul> 
           <li>Security
               <ul>
                   <li>Finish security configuration, implementation, and testing</li>
@@ -75,32 +69,37 @@
 
           <li>JMS Message Design
               <ul>
-                  <li>Design your JMS message type(s)</li>
+                  <li>Design your JMS message type(s) to ideally publish
+                  instances of one or more of your DTO classes.</li>
+              </ul>
+          </li>
 
-                  <li>Write a utility class that publishes the messages.
-                  This class ideally would be placed in with the BLImpl
-                  classes.  However, if it publishes DTO classes, the
-                  DTOs may have to get moved in with the BO module to
-                  satisfy dependency constraints.</li>
-
+          <li>EJB JMS Message Handling
+              <ul>
+                  <li>Setup and deploy your JMS publisher code within eLeague. All
+                  resources should be injected by the container.</li>
+                  <li>Setup and implement a JMS MDB in eClub to receive 
+                  updates published by eLeague.</li>
                   <li>Write an integration-test for the publishing and 
                   subscribing of the message types designed above. The
                   integration-test should use the topic(s) pre-configured
                   in the class server.</li>
-              </ul>
-          </li>
-
-          <li>JavaSE JMS Client
-              <ul>
-                  <li>Implement a Java SE Client to receive and log the JMS
-                  messages. This client can be placed in BLImpl, must use a
-                  selector, and be launchable by the grader using an Ant script.
-                  The Ant script can be part of either the BLImpl or RMI Test
-                  project. See class examples on how write the Ant script.</li>
+                  <li>Suggest that you make it so that a pure publish can be 
+                  triggered by a @Remote method call from your IT test to aid
+                  in testing.</li>
+                  <li>Suggest that whatever your MDB onMessage() will do with 
+                  a message be also callable from a @Remote method call from
+                  your IT test to aid in testing.</li>
               </ul>
           </li>
       </ul></li> 
-      -->
+
+
+      </ul>
+      </subsection>
+
+      <subsection name="Things you should have finished!" id="completed">
+      <ul>
 
       <!-- week 11: Security 
       -->
@@ -152,12 +151,6 @@
           </li>
       </ul></li>
 
-
-      </ul>
-      </subsection>
-
-      <subsection name="Things you should have finished!" id="completed">
-      <ul>
 
       <!-- week 10: Web 
       -->

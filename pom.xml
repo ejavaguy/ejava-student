@@ -27,9 +27,7 @@
         <module>projects</module>
         <module>jpa</module>
         <module>ejb</module>
-        <!--
         <module>async</module>
-        -->
         <module>coursedocs</module>
     </modules>
 
