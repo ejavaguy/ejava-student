@@ -43,8 +43,6 @@ public class SellerEJB
     private TimerService timerService;
     @Resource
     private SessionContext ctx;
-//    @PersistenceContext(unitName="asyncMarket")
-//    private EntityManager em;
 
     @Inject
     private PersonDAO sellerDAO;
