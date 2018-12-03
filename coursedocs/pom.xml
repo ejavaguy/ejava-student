@@ -235,6 +235,13 @@
             <type>war</type>
             <scope>runtime</scope>
         </dependency>
+        <dependency>
+            <groupId>info.ejava.docs.async</groupId>
+            <artifactId>async-methods-notes</artifactId>
+            <version>${project.version}</version>
+            <type>war</type>
+            <scope>runtime</scope>
+        </dependency>
         <!--
         <dependency>
             <groupId>info.ejava.docs.async</groupId>
@@ -535,6 +542,12 @@
                 <overlay>
                     <groupId>info.ejava.docs.async</groupId>
                     <artifactId>async-jms20-notes</artifactId>
+                    <type>war</type>
+                    <targetPath>../site/docs/content</targetPath>
+                </overlay>
+                <overlay>
+                    <groupId>info.ejava.docs.async</groupId>
+                    <artifactId>async-methods-notes</artifactId>
                     <type>war</type>
                     <targetPath>../site/docs/content</targetPath>
                 </overlay>
