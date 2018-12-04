@@ -37,7 +37,7 @@ public class AuctionMgmtActionEJB {
 	}    
 
 	/**
-	 * Perform action async from caller.
+	 * Perform action async from caller
 	 */
 	@Asynchronous
 	public Future<Date> doWorkAsync(long delay) {

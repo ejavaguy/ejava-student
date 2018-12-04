@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 import javax.annotation.PostConstruct;
@@ -204,7 +205,7 @@ public class AuctionMgmtEJB implements AuctionMgmtRemote, AuctionMgmtLocal {
     }
 
     /**
-     * Perform action synchronously while caller waits.
+     * Perform action synchronously while this caller waits
      */
 	@Override
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
@@ -215,7 +216,7 @@ public class AuctionMgmtEJB implements AuctionMgmtRemote, AuctionMgmtLocal {
         for (int i=0; i<count; i++) {
             logger.info("{} issuing sync request, delay={}", df.format(new Date()), delay);
             	@SuppressWarnings("unused")
-            	Date date= actions.doWorkSync(delay);
+            	Date date = actions.doWorkSync(delay);
             	logger.info("sync waitTime={} msecs", System.currentTimeMillis()-startTime);
         }
         	long syncTime = System.currentTimeMillis() - startTime;
@@ -223,27 +224,30 @@ public class AuctionMgmtEJB implements AuctionMgmtRemote, AuctionMgmtLocal {
 	}    
 
 	/**
-	 * Perform action async from caller.
+	 * Perform action async from this caller
 	 */
 	@Override
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 	public void workAsync(int count, long delay) {
         DateFormat df = new SimpleDateFormat("HH:mm:ss.SSS");
         
-        long startTime = System.currentTimeMillis();
         List<Future<Date>> results = new ArrayList<Future<Date>>();
+            //issue requests
+        long startTime = System.currentTimeMillis();
         for (int i=0; i<count; i++) {
             	logger.info("{} issuing async request, delay={}", df.format(new Date()), delay);
             	Future<Date> date = actions.doWorkAsync(delay);
             	results.add(date);
             	logger.info("async waitTime={} msecs", System.currentTimeMillis()-startTime);
         }
+        
+            //process results
         for (Future<Date> f: results) {
             	logger.info("{} getting async response", df.format(new Date()));
             	try {
     				@SuppressWarnings("unused")
     				Date date = f.get();
-    			} catch (Exception ex) {
+    			} catch (ExecutionException | InterruptedException ex) {
     				logger.error("unexpected error on future.get()", ex);
     				throw new EJBException("unexpected error during future.get():"+ex);
     			}

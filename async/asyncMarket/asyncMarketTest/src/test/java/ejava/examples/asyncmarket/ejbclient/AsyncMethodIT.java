@@ -9,24 +9,24 @@ import org.junit.Test;
  * beans.
  */
 public class AsyncMethodIT extends MarketITBase {
-    Logger log = LoggerFactory.getLogger(AsyncMethodIT.class);
+    Logger logger = LoggerFactory.getLogger(AsyncMethodIT.class);
     
     @Test
     public void testAsync() throws Exception {
-        log.info("*** demoAsync ***");
+        logger.info("*** demoAsync ***");
         int count=3;
         long delay=3000;
         
         long startTime = System.currentTimeMillis();
         auctionmgmt.workSync(count, delay);
-    	long syncTime = System.currentTimeMillis() - startTime;
+    	    long syncTime = System.currentTimeMillis() - startTime;
 
         
         startTime = System.currentTimeMillis();
         auctionmgmt.workAsync(count, delay);
-    	long asyncTime = System.currentTimeMillis() - startTime;
+    	    long asyncTime = System.currentTimeMillis() - startTime;
 
-    	log.info(String.format("count=%d, delay=%d, syncTime=%d msecs", count, delay, syncTime));
-    	log.info(String.format("count=%d, delay=%d, asyncTime=%d msecs", count, delay, asyncTime));
+    	    logger.info("count={}, delay={}, syncTime={} msecs", count, delay, syncTime);
+    	    logger.info("count={}, delay={}, asyncTime={} msecs", count, delay, asyncTime);
     }
 }
