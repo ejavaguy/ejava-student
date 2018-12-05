@@ -7,6 +7,7 @@ import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
 import javax.ejb.Timeout;
 import javax.ejb.Timer;
+import javax.ejb.TimerConfig;
 import javax.ejb.TimerService;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -75,7 +76,8 @@ public class SellerEJB
             auctionItemDAO.createItem(item);
             
             publishForSale(item);
-            timerService.createTimer(item.getEndDate(), new Long(item.getId()));
+            timerService.createSingleActionTimer(item.getEndDate(), 
+                                                 new TimerConfig(new Long(item.getId()), false));
             return item.getId();
         }
         catch (JMSException ex) {

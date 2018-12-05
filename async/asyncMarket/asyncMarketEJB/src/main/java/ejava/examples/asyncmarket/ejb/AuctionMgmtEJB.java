@@ -18,6 +18,7 @@ import javax.ejb.ScheduleExpression;
 import javax.ejb.Stateless;
 import javax.ejb.Timeout;
 import javax.ejb.Timer;
+import javax.ejb.TimerConfig;
 import javax.ejb.TimerService;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -77,12 +78,12 @@ public class AuctionMgmtEJB implements AuctionMgmtRemote, AuctionMgmtLocal {
     public void initTimers(long delay) {
         cancelTimers();
         logger.debug("initializing timers, checkItemInterval={}", delay);
-        timerService.createTimer(0,delay, "checkAuctionTimer");
+        timerService.createIntervalTimer(0L, delay, new TimerConfig("checkAuctionTimer", false));
     }
     public void initTimers(ScheduleExpression schedule) {
     	    cancelTimers();
         logger.debug("initializing timers, schedule={}", schedule);
-    	    timerService.createCalendarTimer(schedule);
+    	    timerService.createCalendarTimer(schedule, new TimerConfig("checkAuctionTimer", false));
     }
     
     public void closeBidding(long itemId) throws ResourceNotFoundException {
