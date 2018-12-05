@@ -26,9 +26,7 @@
       </p>
       <subsection name="What's New" id="whatsnew">
       <ul>
-      <!--
           <li>2018-12-05: Posted Async TODOs</li>
-          -->
           <li>2018-11-25: Posted JMS Notes and TODOs</li>
           <li>2018-11-25: Activated Async Example Modules</li>
           <li>2018-11-14: Posted Security TODOs</li>
@@ -52,15 +50,23 @@
       <ul>
 
       <!-- week 13: Async 
+      -->
       <li><ul>
-          <li>Implement an EJBTimer to perform scheduled work</li>
+          <li>Implement an EJB Timer to perform scheduled work</li>
+          <li>Implement an JavaEE Interceptor to perform validation work</li>
           <li>Test, cleanup, document, and turn in project 3</li> 
       </ul></li>
-      -->
+
+
+      </ul>
+      </subsection>
+
+      <subsection name="Things you should have finished!" id="completed">
+      <ul>
 
       <!-- week 12: JMS 
       -->
-      <li>JMS<ul> 
+      <li><ul> 
           <li>Security
               <ul>
                   <li>Finish security configuration, implementation, and testing</li>
@@ -93,13 +99,6 @@
               </ul>
           </li>
       </ul></li> 
-
-
-      </ul>
-      </subsection>
-
-      <subsection name="Things you should have finished!" id="completed">
-      <ul>
 
       <!-- week 11: Security 
       -->
