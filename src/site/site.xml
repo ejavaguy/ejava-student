@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<project name="${project.name}">
+<project name="${this.name}">
     <publishDate position="navigation-bottom" format="MMM-dd-yyyy"/>
     <bannerLeft>
         <name>Enterprise Java (605.784.31)</name>
-        <src>${project.url}/coursedocs/content/html/images/jhu784-white.png</src>
-        <href>${project.url}/index.html</href>
+        <src>${this.url}/coursedocs/content/html/images/jhu784-white.png</src>
+        <href>${this.url}/index.html</href>
     </bannerLeft>
     <bannerRight>
         <name>Fall 2018</name>
-        <src>${project.url}/coursedocs/content/html/images/semester-white.png</src>
+        <src>${this.url}/coursedocs/content/html/images/semester-white.png</src>
         <href>http://ep.jhu.edu/</href>
     </bannerRight>
 
@@ -27,12 +27,12 @@
     </breadcrumbs>
 
     <menu name="Quick Links" inherit="top">
-        <item name="Docs" href="${project.url}/coursedocs/content"/>
-        <item name="Course Description" href="${project.url}/coursedocs/content/html/jhu784-syllabus-intro.html"/>
-        <item name="Syllabus (Paged)" href="${project.url}/coursedocs/content/html/jhu784-syllabus-schedule.html"/>
-        <item name="Syllabus (Book)" href="${project.url}/coursedocs/content/html_single/jhu784-notes-book.html#jhu784-syllabus-schedule"/>
-        <item name="Exercises (Paged)" href="${project.url}/coursedocs/content/html/jhu784-lab-labs.html"/>
-        <item name="Exercises (Book)" href="${project.url}/coursedocs/content/html_single/jhu784-lab-book.html#jhu784-lab-labs"/>
+        <item name="Docs" href="${this.url}/coursedocs/content"/>
+        <item name="Course Description" href="${this.url}/coursedocs/content/html/jhu784-syllabus-intro.html"/>
+        <item name="Syllabus (Paged)" href="${this.url}/coursedocs/content/html/jhu784-syllabus-schedule.html"/>
+        <item name="Syllabus (Book)" href="${this.url}/coursedocs/content/html_single/jhu784-notes-book.html#jhu784-syllabus-schedule"/>
+        <item name="Exercises (Paged)" href="${this.url}/coursedocs/content/html/jhu784-lab-labs.html"/>
+        <item name="Exercises (Book)" href="${this.url}/coursedocs/content/html_single/jhu784-lab-book.html#jhu784-lab-labs"/>
     </menu>
 
     <menu ref="modules" inherit="bottom"/>

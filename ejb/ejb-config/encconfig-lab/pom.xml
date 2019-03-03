@@ -4,7 +4,7 @@
     <parent>
         <groupId>info.ejava.examples.ejb</groupId>
         <artifactId>ejb-config</artifactId>
-        <version>5.0.0-SNAPSHOT</version>
+        <version>5.1.0-SNAPSHOT</version>
     </parent>
 
     <artifactId>encconfig-lab</artifactId>
@@ -16,4 +16,18 @@
         <module>encconfig-labsol</module>
         <module>encconfig-labex</module>
     </modules>
+
+    <build>
+        <plugins>
+            <!-- this is not configured to work with the site plugin - inject this into all child modules -->
+            <plugin> 
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-site-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                    <skipDeploy>true</skipDeploy>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>

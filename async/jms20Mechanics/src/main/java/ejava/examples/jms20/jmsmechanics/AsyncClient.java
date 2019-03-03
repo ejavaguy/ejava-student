@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory;
 public class AsyncClient implements MessageListener, MyClient {
     private static final Logger logger = LoggerFactory.getLogger(AsyncClient.class);
     private int count=0;
-    LinkedList<Message> messages = new LinkedList<>();
+    private LinkedList<Message> messages = new LinkedList<>();
     
     public void onMessage(Message message) {
         try {
@@ -26,8 +26,10 @@ public class AsyncClient implements MessageListener, MyClient {
                     message.getJMSPriority(),
                     (level==null?"":", level="+level),
                     message.getJMSMessageID());
-            messages.add(message);
             message.acknowledge();
+            synchronized(messages) {
+                messages.add(message);
+            }
         } catch (JMSException ex) {
             logger.error("error handling message", ex);
         }
@@ -36,6 +38,8 @@ public class AsyncClient implements MessageListener, MyClient {
     public int getCount() { return count; }
     
     public Message getMessage() {
-        return (messages.isEmpty() ? null : messages.remove());
+        synchronized(messages) {
+            return (messages.isEmpty() ? null : messages.remove());
+        }
     }
 }

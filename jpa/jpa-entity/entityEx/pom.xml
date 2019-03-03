@@ -4,7 +4,7 @@
     <parent>
         <groupId>info.ejava.examples.jpa</groupId>
         <artifactId>jpa-parent</artifactId>
-        <version>5.0.0-SNAPSHOT</version>
+        <version>5.1.0-SNAPSHOT</version>
         <relativePath />
     </parent>
 
@@ -69,16 +69,6 @@
         </testResources>
 
         <plugins>
-            <!-- exclude this modules from site generation -->
-            <plugin> 
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-site-plugin</artifactId>
-                <configuration>
-                    <skip>true</skip>
-                    <skipDeploy>true</skipDeploy>
-                </configuration>
-            </plugin>
-
             <!-- extends the pluginManagement definition in the parent pom
                  to generate DDL files for persistence unit.
                  See effective-pom for full configuration -->
@@ -109,6 +99,16 @@
                         </configuration>
                     </execution>
                 </executions>
+            </plugin>
+
+            <!-- exclude this module from site generation -->
+            <plugin> 
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-site-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                    <skipDeploy>true</skipDeploy>
+                </configuration>
             </plugin>
         </plugins>
     </build>

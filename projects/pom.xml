@@ -4,12 +4,12 @@
     <parent>
         <groupId>info.ejava.examples</groupId>
         <artifactId>examples-root</artifactId>
-        <version>5.0.0-SNAPSHOT</version>
+        <version>5.1.0-SNAPSHOT</version>
     </parent>
 
     <groupId>info.ejava.examples.projects</groupId>
     <artifactId>projects</artifactId>
-    <version>5.0.0-SNAPSHOT</version>
+    <version>5.1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>Class Projects Root</name>

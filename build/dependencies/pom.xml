@@ -3,7 +3,7 @@
 
     <groupId>info.ejava.examples.build</groupId>
     <artifactId>dependencies</artifactId>
-    <version>5.0.0-SNAPSHOT</version>
+    <version>5.1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>Dependencies POM</name>
@@ -27,11 +27,11 @@
         <maven-clean-plugin.version>3.1.0</maven-clean-plugin.version>
         <maven-compiler-plugin.version>3.7.0</maven-compiler-plugin.version>
         <maven-deploy-plugin.version>2.8.2</maven-deploy-plugin.version>
-        <maven-failsafe-plugin.version>2.22.0</maven-failsafe-plugin.version>
+        <maven-failsafe-plugin.version>3.0.0-M3</maven-failsafe-plugin.version>
         <maven-install-plugin.version>2.5.2</maven-install-plugin.version>
         <maven-resources-plugin.version>3.1.0</maven-resources-plugin.version>
-        <maven-site-plugin.version>3.4</maven-site-plugin.version>
-        <maven-surefire-plugin.version>2.22.0</maven-surefire-plugin.version>
+        <maven-site-plugin.version>3.7.1</maven-site-plugin.version>
+        <maven-surefire-plugin.version>3.0.0-M3</maven-surefire-plugin.version>
         <maven-verifier-plugin.version>1.1</maven-verifier-plugin.version>
 
         <!-- packaging plugins -->
@@ -47,7 +47,7 @@
         <maven-javadoc-plugin.version>3.0.1</maven-javadoc-plugin.version>
         <maven-jxr-plugin.version>2.5</maven-jxr-plugin.version>
         <maven-pmd-plugin.version>3.10.0</maven-pmd-plugin.version>
-        <maven-project-info-reports-plugin.version>2.8</maven-project-info-reports-plugin.version>
+        <maven-project-info-reports-plugin.version>3.0.0</maven-project-info-reports-plugin.version>
         <maven-surefire-report-plugin.version>2.22.0</maven-surefire-report-plugin.version>
         <javancss-maven-plugin.version>2.1</javancss-maven-plugin.version>
         <taglist-maven-plugin.version>2.4</taglist-maven-plugin.version>
@@ -69,7 +69,7 @@
         <cargo-maven2-plugin.version>1.4.15</cargo-maven2-plugin.version>
         <cobertura-maven-plugin.version>2.7</cobertura-maven-plugin.version>
         <exec-maven-plugin.version>1.4.0</exec-maven-plugin.version>
-        <findbugs-maven-plugin.version>3.0.2</findbugs-maven-plugin.version>
+        <findbugs-maven-plugin.version>3.0.4</findbugs-maven-plugin.version>
         <jetty-maven-plugin.version>9.4.2.v20170220</jetty-maven-plugin.version>
         <maven-jdocbook-plugin.version>2.3.4</maven-jdocbook-plugin.version>
         <maven-jaxb2-plugin.version>0.7.5</maven-jaxb2-plugin.version>
@@ -108,7 +108,6 @@
         <jnpserver.version>5.0.3.GA</jnpserver.version>
         <jsr250-api.version>1.0</jsr250-api.version>
         <jstl.version>1.2</jstl.version>
-        <jta.version>1.0.1B</jta.version>
         <junit.version>4.12</junit.version>
         <maven-jaxb2-plugin.version>0.14.0</maven-jaxb2-plugin.version>
         <mysql-connector-java.version>5.0.5</mysql-connector-java.version>
@@ -116,6 +115,7 @@
         <ojdbc6.version>11.2.0.3</ojdbc6.version>        
         <resteasy.version>3.5.1.Final</resteasy.version>
         <servlet-api.version>4.0.1</servlet-api.version>
+        <sisu.plexus.version>0.3.3</sisu.plexus.version>
         <slf4j.version>1.7.25</slf4j.version>
         <sql-maven-plugin.version>1.5</sql-maven-plugin.version>
         <validation-api.version>2.0.1.Final</validation-api.version>
@@ -130,6 +130,8 @@
         <jboss.host>localhost</jboss.host>
         <jboss.mgmt.host>${jboss.host}</jboss.mgmt.host>
         <jboss.mgmt.port>9990</jboss.mgmt.port>
+        <jboss.mgmt.user>admin</jboss.mgmt.user>
+        <jboss.mgmt.password>password1!</jboss.mgmt.password>
         <jboss.protocol>http</jboss.protocol>
         <jboss.http.port>8080</jboss.http.port>
         <jboss.https.port>8443</jboss.https.port>
@@ -161,6 +163,9 @@
         <java.naming.factory.url.pkgs>${jboss.remoting.java.naming.factory.url.pkgs}</java.naming.factory.url.pkgs>
         
         <java.truststore>${jboss.home}/standalone/configuration/application.keystore</java.truststore>
+        
+        <surefire.jvm.options>-Xmx1024m</surefire.jvm.options>
+        <surefire.argLine></surefire.argLine>
     </properties>
 
 
@@ -388,11 +393,6 @@
                 <version>${javax.transaction-api.version}</version>
             </dependency>
             <dependency>
-                <groupId>javax.transaction</groupId>
-                <artifactId>jta</artifactId>
-                <version>${jta.version}</version>
-            </dependency>
-            <dependency>
                 <groupId>javax.inject</groupId>
                 <artifactId>javax.inject</artifactId>
                 <version>${inject.version}</version>
@@ -599,6 +599,12 @@
                 <version>${glassfish-json.version}</version>
             </dependency>
 
+            <!-- mvn site -->
+            <dependency>
+               <groupId>org.eclipse.sisu</groupId>
+               <artifactId>org.eclipse.sisu.plexus</artifactId>
+               <version>${sisu.plexus.version}</version>
+            </dependency>
 
             <dependency>
                 <groupId>net.sourceforge.cobertura</groupId>
@@ -684,7 +690,7 @@
                     <artifactId>maven-failsafe-plugin</artifactId>
                     <version>${maven-failsafe-plugin.version}</version>
                     <configuration>
-                        <argLine>${surefire.argLine}</argLine>
+                        <argLine>${surefire.jvm.options} ${surefire.argLine}</argLine>
                         <systemPropertyVariables>
                             <javax.net.ssl.trustStore>${java.truststore}</javax.net.ssl.trustStore>
                         </systemPropertyVariables>
@@ -779,7 +785,7 @@
                     <artifactId>maven-surefire-plugin</artifactId>
                     <version>${maven-surefire-plugin.version}</version>
                     <configuration>
-                        <argLine>${surefire.argLine}</argLine>
+                        <argLine>${surefire.jvm.options} ${surefire.argLine}</argLine>
                     </configuration>
                 </plugin>
                 <plugin>
@@ -1100,6 +1106,8 @@
                                     <properties>
                                         <cargo.hostname>${jboss.mgmt.host}</cargo.hostname>
                                         <cargo.jboss.management.port>${jboss.mgmt.port}</cargo.jboss.management.port>
+                                        <cargo.remote.username>${jboss.mgmt.user}</cargo.remote.username>
+                                        <cargo.remote.password>${jboss.mgmt.password}</cargo.remote.password>
                                     </properties>
                                 </configuration>
                             </configuration>

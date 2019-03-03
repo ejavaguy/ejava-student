@@ -1,0 +1,53 @@
+pipeline {
+	agent {
+		kubernetes {
+			cloud 'rancher'
+			label 'ejava-build-all'
+			yaml """
+apiVersion: v1
+kind: Pod
+metadata:
+  name: ejava-examples
+spec:
+  volumes:
+  - name: secret-volume
+    secret:
+      secretName: jenkins-ssh-key      
+
+  containers:
+  - name: maven
+    image: maven:3.6.1-jdk-8
+    namespace: jenkins
+    resources:
+      limits: 
+        memory: "8Gi"
+      requests:
+        memory: "1Gi" 
+    command:
+    - cat
+    tty: true
+    volumeMounts:
+    - name: secret-volume
+      mountPath: /etc/secret-volume
+"""
+		}
+	}
+    
+    options {
+        timestamps()
+    }
+    triggers {
+        cron('H H(10-19) * * *')
+    }
+    
+	stages {
+		stage ('Build All Examples') {
+			steps {
+                build job: 'ejava/ejava-class/jenkins', parameters: [
+                    string(name:'END_GOAL', value:'install'),
+                    string(name:'TEST_PROFILES', value:'-Pall-modules')
+                    ]
+			}
+        }
+	}
+}

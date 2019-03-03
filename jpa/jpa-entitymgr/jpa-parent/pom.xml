@@ -35,13 +35,13 @@
 
         <maven-compiler-plugin.version>3.7.0</maven-compiler-plugin.version>
         <maven-jar-plugin.version>3.1.0</maven-jar-plugin.version>
-        <maven-surefire-plugin.version>2.22.0</maven-surefire-plugin.version>
+        <maven-surefire-plugin.version>3.0.0-M3</maven-surefire-plugin.version>
         <sql-maven-plugin.version>1.5</sql-maven-plugin.version>        
 
         <h2db.version>1.4.197</h2db.version>
         <javax.persistence-api.version>2.2</javax.persistence-api.version>
         <hibernate-entitymanager.version>5.3.1.Final</hibernate-entitymanager.version>
-        <jpa-schemagen-maven-plugin.version>5.0.0-SNAPSHOT</jpa-schemagen-maven-plugin.version>
+        <jpa-schemagen-maven-plugin.version>5.1.0-SNAPSHOT</jpa-schemagen-maven-plugin.version>
         <junit.version>4.12</junit.version>
         <log4j.version>1.2.17</log4j.version>
         <slf4j.version>1.7.25</slf4j.version>

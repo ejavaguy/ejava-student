@@ -3,7 +3,7 @@
 
     <groupId>info.ejava.examples.jpa</groupId>
     <artifactId>jpa-parent</artifactId>
-    <version>5.0.0-SNAPSHOT</version>
+    <version>5.1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>JPA Parent POM</name>
@@ -28,7 +28,7 @@
     </prerequisites>
 
     <properties>
-        <ejava.version>5.0.0-SNAPSHOT</ejava.version>
+        <ejava.version>5.1.0-SNAPSHOT</ejava.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.source.version>1.8</java.source.version>
         <java.target.version>1.8</java.target.version>
@@ -38,7 +38,7 @@
 
         <maven-compiler-plugin.version>3.7.0</maven-compiler-plugin.version>
         <maven-jar-plugin.version>3.1.0</maven-jar-plugin.version>
-        <maven-surefire-plugin.version>2.22.0</maven-surefire-plugin.version>
+        <maven-surefire-plugin.version>3.0.0-M3</maven-surefire-plugin.version>
         <sql-maven-plugin.version>1.5</sql-maven-plugin.version>
         <antrun-plugin.version>1.8</antrun-plugin.version>        
 

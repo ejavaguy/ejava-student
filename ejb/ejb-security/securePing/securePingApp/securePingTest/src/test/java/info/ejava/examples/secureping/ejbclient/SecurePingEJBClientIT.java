@@ -85,8 +85,8 @@ public class SecurePingEJBClientIT extends SecurePingTestBase {
     public void testLogin() throws Exception {
         logger.info("*** testLogin ***");
 
-        runAs(null);
         try {
+            runAs(null);
             String name = securePing.whoAmI();
             logger.debug("anonymous user whoAmI=", name);
         } catch (Exception ex) {

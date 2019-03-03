@@ -28,7 +28,7 @@
       <level value="debug"/>
    </logger>
    <root>
-      <priority value="fatal"/>    
+      <priority value="info"/>    
       <appender-ref ref="CONSOLE"/>  
    </root>   
    

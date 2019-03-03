@@ -1,0 +1,184 @@
+@Library('ejava-jenkinsfile') _
+
+pipeline {
+	agent {
+		kubernetes {
+			cloud 'rancher'
+			label 'ejava-class'
+			yaml """
+apiVersion: v1
+kind: Pod
+metadata:
+  name: ejava-examples
+spec:
+  volumes:
+  - name: secret-volume
+    secret:
+      secretName: jenkins-ssh-key      
+
+  containers:
+  - name: maven
+    image: maven:3.6.1-jdk-8
+    namespace: jenkins
+    resources:
+      limits: 
+        memory: "8Gi"
+      requests:
+        memory: "1Gi" 
+    command:
+    - cat
+    tty: true
+    volumeMounts:
+    - name: secret-volume
+      mountPath: /etc/secret-volume
+
+  - name: wildfly
+    image: ejavaguy/wildfly13
+    namespace: jenkins
+    resources:
+      limits: 
+        memory: "2Gi"
+      requests:
+        memory: "512Mi"
+    ports:
+    - containerPort: 8080
+      name: http
+    - containerPort: 9990
+      name: admin 
+"""
+		}
+	}
+    
+    parameters {
+        string(name:'END_GOAL', defaultValue:'deploy', description:'')
+        string(name:'CLASS_PROFILES', defaultValue:'', description:'')
+        string(name:'TEST_PROFILES', defaultValue:'', description:'')
+    }
+	
+    options {
+        timestamps()
+    }
+    triggers {
+        upstream(upstreamProjects: 'ejava-docs-deploy', threshold: hudson.model.Result.SUCCESS)
+        pollSCM('H/5 * * * *')
+    }
+    
+    environment {
+        DOCS_REPO = 'https://github.com/ejavaguy/ejava-instructor.git'
+		SETTINGS_XML = 'ejava-settings.xml'
+		MAVEN_OPTS='-Xmx1024m \
+                    -Dmaven.wagon.http.ssl.allowall=true \
+					-Dmaven.wagon.http.ssl.insecure=true \
+                    -Djdk.net.URLClassPath.disableClassPathURLCheck=true'
+        IMPL_PROFILES='-Ph2db \
+                    -Pwildfly13'
+	}
+	
+	stages {
+		stage ('Setup Environment') {
+			steps {
+                script {
+                    ifBranch('master', {
+                       env.MAVEN_PROFILES="-Pwebdev"
+                       env.SITE_DEPLOY="site:deploy"
+                       env.MODULE_PROFILES=params.CLASS_PROFILES
+                    }, {
+                       env.MAVEN_PROFILES="-Ptest-deploy"                    
+                       env.SITE_DEPLOY="site:stage-deploy"
+                       env.MODULE_PROFILES=params.CLASS_PROFILES + ' ' + params.TEST_PROFILES
+                    })
+                    env.SIBLING_DOCS_BRANCH=sh(returnStdout: true, script: 'git ls-remote --heads ${DOCS_REPO} ${GIT_BRANCH}')
+                    sh 'printenv'
+                    echo "branch=${BRANCH_NAME}, profiles=${MAVEN_PROFILES}"
+                }
+			}
+		}
+
+		stage ("Check out") {
+			steps {
+				checkout scm
+			}
+		}
+		
+		stage ('Install Parent Poms') {
+			steps {
+				mavenContainer {
+				   sh 'mvn install -f build/dependencies/pom.xml -s $MAVEN_SETTINGS_XML $IMPL_PROFILES $MAVEN_PROFILES'
+				   sh 'mvn install -f jpa/jpa-parent/pom.xml -s $MAVEN_SETTINGS_XML $IMPL_PROFILES $MAVEN_PROFILES'
+				   sh 'mvn install -f ejb/ejb-parent/pom.xml -s $MAVEN_SETTINGS_XML $IMPL_PROFILES $MAVEN_PROFILES'
+				}
+			}
+		}
+		
+		stage ('Build') {
+            parallel {
+                stage ('Build:Examples') {
+                    steps {
+                        mavenContainer {
+                           sh 'mvn clean install -s $MAVEN_SETTINGS_XML $IMPL_PROFILES $MAVEN_PROFILES \
+                            -Djava.truststore=`pwd`/servers/ejava-wildfly1300/src/main/resources/standalone/configuration/application.keystore'
+                        }
+                    }
+                    post {
+                        always {
+                            junit allowEmptyResults:true, testResults:'**/target/*-reports/TEST-*.xml'
+                        }
+                    }
+                }
+                
+                stage ('Build:Docs') {
+                    when {
+                        expression {
+                            env.SIBLING_DOCS_BRANCH!=null 
+                            params.END_GOAL=='deploy' 
+                        }
+                    }
+                    steps {
+                        echo "checking out docs repo"
+                        dir ('ejava-docs') {
+                            git url: env.DOCS_REPO, branch: env.BRANCH_NAME
+                        }
+                        echo "docs checked out, starting container build"
+                        mavenContainer {
+                            echo "starting docs build inside container"
+                            sh 'mvn clean install -s $MAVEN_SETTINGS_XML $MAVEN_PROFILES -f ejava-docs/pom.xml'
+                        }
+                    }
+        
+                }
+            }
+		}
+        
+        stage ('Generate Site') {
+            when {
+                expression { params.END_GOAL=='deploy' }
+            }
+            steps {
+                mavenContainer {
+                   sh 'mvn verify site -s $MAVEN_SETTINGS_XML $IMPL_PROFILES $MAVEN_PROFILES -Preports -DskipITs'
+                }
+            }
+        }
+
+        stage ('Deploy Modules and Site') {
+            when {
+                expression { params.END_GOAL=='deploy' }
+            }
+            steps {
+                sshSetup()
+                mavenContainer {
+                    sh 'mvn deploy -f build/dependencies/pom.xml -s $MAVEN_SETTINGS_XML $IMPL_PROFILES $MAVEN_PROFILES'
+                    sh 'mvn deploy -f jpa/jpa-parent/pom.xml -s $MAVEN_SETTINGS_XML $IMPL_PROFILES $MAVEN_PROFILES'
+                    sh 'mvn deploy -f ejb/ejb-parent/pom.xml -s $MAVEN_SETTINGS_XML $IMPL_PROFILES $MAVEN_PROFILES'
+                    sh 'mvn deploy $SITE_DEPLOY -s $MAVEN_SETTINGS_XML $IMPL_PROFILES $MAVEN_PROFILES -PskipTests -PskipITs '
+                }
+            }
+//            post {
+//                failure {
+//                    echo 'keeping VM alive in case you want to execute a shell and take a look'
+//                    sh 'sleep 600'
+//                }
+//            }
+        }
+	}
+}

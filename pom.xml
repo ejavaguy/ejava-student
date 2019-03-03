@@ -4,13 +4,13 @@
     <parent>
         <groupId>info.ejava.examples.build</groupId>
         <artifactId>dependencies</artifactId>
-        <version>5.0.0-SNAPSHOT</version>
+        <version>5.1.0-SNAPSHOT</version>
         <relativePath>build/dependencies/pom.xml</relativePath>
     </parent>
 
     <groupId>info.ejava.examples</groupId>
     <artifactId>examples-root</artifactId>
-    <version>5.0.0-SNAPSHOT</version>
+    <version>5.1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>Student Root</name>
@@ -24,14 +24,16 @@
         <module>common</module>
         <module>javase</module>
         <module>servers</module>
+        <!--
         <module>projects</module>
         <module>jpa</module>
         <module>ejb</module>
         <module>async</module>
+        -->
         <module>coursedocs</module>
     </modules>
 
-    <url>http://webdev.jhuep.com/ejava-javaee</url>
+    <url>https://webdev.jhuep.com/~jcs/ejava-javaee</url>
     <organization>
         <name>
             John's Hopkins University, Engineering Programs for Professionals 
@@ -424,6 +426,18 @@
             </reporting>
         </profile>
 
+        <profile>
+            <id>jpa-modules</id>
+            <modules>
+                <module>jpa</module>
+            </modules>
+        </profile>
+        <profile>
+            <id>ejb-modules</id>
+            <modules>
+                <module>ejb</module>
+            </modules>
+        </profile>
 
         <profile>
             <id>all-modules</id>
@@ -481,7 +495,7 @@
                 <site>
                     <id>webdev.website</id>
                     <name>ejava JHU webdev website</name>
-                    <url>scpexe://webdev.jhuep.com/home/jcs/public_html/ejava-javaee</url>
+                    <url>scpexe://webdev.jhuep.com/home/jcs/public_html/2019-draft-ejava-javaee</url>
                 </site>
             </distributionManagement>
         </profile>

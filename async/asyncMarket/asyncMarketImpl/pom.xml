@@ -2,7 +2,7 @@
     <parent>
         <groupId>info.ejava.examples.async</groupId>
         <artifactId>asyncMarket</artifactId>
-        <version>5.0.0-SNAPSHOT</version>
+        <version>5.1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -29,11 +29,6 @@
             <artifactId>javax.persistence-api</artifactId>
             <scope>provided</scope>
         </dependency>        
-        <dependency>
-            <groupId>javax.transaction</groupId>
-            <artifactId>jta</artifactId>
-            <scope>provided</scope>
-        </dependency>
 
         <!-- src/test and runtime classpaths -->
         <dependency>

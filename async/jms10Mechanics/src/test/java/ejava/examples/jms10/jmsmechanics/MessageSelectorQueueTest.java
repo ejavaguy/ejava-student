@@ -44,20 +44,24 @@ public class MessageSelectorQueueTest extends JMSTestBase {
     }
     private class AsyncClient implements MessageListener, MyClient {
         private int count=0;
-        LinkedList<Message> messages = new LinkedList<Message>();
+        private LinkedList<Message> messages = new LinkedList<Message>();
         public void onMessage(Message message) {
             try {
                 logger.debug("onMessage received ({}):{}, level={}", 
                         ++count , message.getJMSMessageID(),  message.getStringProperty("level"));
-                messages.add(message);
                 message.acknowledge();
+                synchronized(messages) {
+                    messages.add(message);
+                }
             } catch (JMSException ex) {
                 logger.error("error handling message", ex);
             }
         }        
         public int getCount() { return count; }
         public Message getMessage() {
-            return (messages.isEmpty() ? null : messages.remove());
+            synchronized(messages) {
+                return (messages.isEmpty() ? null : messages.remove());
+            }
         }
     }
     
@@ -83,6 +87,7 @@ public class MessageSelectorQueueTest extends JMSTestBase {
     public void testMessageSelector() throws Exception {
         logger.info("*** testMessageSelector ***");
         Session session = null;
+        Session asyncSession = null;
         MessageProducer producer = null;
         MessageConsumer asyncConsumer = null;
         MessageConsumer syncConsumer = null;
@@ -91,12 +96,15 @@ public class MessageSelectorQueueTest extends JMSTestBase {
             //need to use CLIENT_ACK to avoid race condition within this app
             session = connection.createSession(
                     false, Session.CLIENT_ACKNOWLEDGE);
+            //each session must operate in one thread only
+            asyncSession = connection.createSession(
+                    false, Session.CLIENT_ACKNOWLEDGE);
             List<MyClient> clients = new ArrayList<MyClient>();
 
             //create a client to asynchronous receive messages through 
             //onMessage() callbacks
             String selector1 = "level in ('warn', 'fatal')";
-            asyncConsumer = session.createConsumer(destination, selector1);
+            asyncConsumer = asyncSession.createConsumer(destination, selector1);
             AsyncClient asyncClient = new AsyncClient();
             asyncConsumer.setMessageListener(asyncClient);
             clients.add(asyncClient);
@@ -139,6 +147,7 @@ public class MessageSelectorQueueTest extends JMSTestBase {
             if (syncConsumer != null) { syncConsumer.close(); }
             if (producer != null) { producer.close(); }
             if (session != null)  { session.close(); }
+            if (asyncSession != null)  { asyncSession.close(); }
         }
     }
     
@@ -146,6 +155,7 @@ public class MessageSelectorQueueTest extends JMSTestBase {
     public void testMessageSelectorMulti() throws Exception {
         logger.info("*** testMessageSelectorMulti ***");
         Session session = null;
+        Session asyncSession = null;
         MessageProducer producer = null;
         MessageConsumer asyncConsumer = null;
         MessageConsumer syncConsumer = null;
@@ -154,12 +164,15 @@ public class MessageSelectorQueueTest extends JMSTestBase {
             //need to use CLIENT_ACK to avoid race condition within this app
             session = connection.createSession(
                     false, Session.CLIENT_ACKNOWLEDGE);
+            //each session must operate in one thread only
+            asyncSession = connection.createSession(
+                    false, Session.CLIENT_ACKNOWLEDGE);
             List<MyClient> clients = new ArrayList<MyClient>();
 
             //create a client to asynchronous receive messages through 
             //onMessage() callbacks
             String selector1 = "level in ('warn', 'fatal')";
-            asyncConsumer = session.createConsumer(destination, selector1);
+            asyncConsumer = asyncSession.createConsumer(destination, selector1);
             AsyncClient asyncClient = new AsyncClient();
             asyncConsumer.setMessageListener(asyncClient);
             clients.add(asyncClient);
@@ -208,6 +221,7 @@ public class MessageSelectorQueueTest extends JMSTestBase {
             if (syncConsumer != null) { syncConsumer.close(); }
             if (producer != null) { producer.close(); }
             if (session != null)  { session.close(); }
+            if (asyncSession != null)  { asyncSession.close(); }
         }
     }    
     

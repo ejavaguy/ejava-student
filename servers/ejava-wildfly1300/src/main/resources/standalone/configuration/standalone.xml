@@ -251,7 +251,7 @@
             </thread-pools>
             <iiop enable-by-default="false" use-qualified-name="false"/>
             <default-security-domain value="other"/>
-            <default-missing-method-permissions-deny-access value="true"/>
+            <default-missing-method-permissions-deny-access value="false"/>
             <log-system-exceptions value="true"/>
         </subsystem>
         <subsystem xmlns="urn:wildfly:elytron:3.0" final-providers="combined-providers" disallowed-providers="OracleUcrypto">

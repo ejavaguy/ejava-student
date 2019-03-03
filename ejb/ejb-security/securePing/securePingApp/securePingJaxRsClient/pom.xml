@@ -3,7 +3,7 @@
   <parent>
     <groupId>info.ejava.examples.ejb</groupId>
     <artifactId>securePingApp</artifactId>
-    <version>5.0.0-SNAPSHOT</version>
+    <version>5.1.0-SNAPSHOT</version>
   </parent>
   <artifactId>securePingJaxRsClient</artifactId>
   <name>EJB::Security::Secure Ping::JaxRS Client</name>

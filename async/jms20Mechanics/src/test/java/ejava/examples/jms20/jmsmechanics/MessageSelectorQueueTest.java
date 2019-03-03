@@ -88,10 +88,8 @@ public class MessageSelectorQueueTest extends JMSTestBase {
     @Test
     public void testMessageSelectorMulti() throws Exception {
         logger.info("*** testMessageSelectorMulti ***");
-        try (JMSContext context=createContext(JMSContext.CLIENT_ACKNOWLEDGE
-);
-             JMSContext context2=context.createContext(JMSContext.CLIENT_ACKNOWLEDGE
-)) {
+        try (JMSContext context=createContext(JMSContext.CLIENT_ACKNOWLEDGE);
+             JMSContext context2=context.createContext(JMSContext.CLIENT_ACKNOWLEDGE)) {
             context.stop();
             
             String selector1 = "level in ('warn', 'fatal')";

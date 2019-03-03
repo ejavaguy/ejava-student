@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>myorg.basicejb</groupId>
     <artifactId>basicejbEx</artifactId>
     <packaging>pom</packaging>
     <name>Basic EJB Exercise</name>
-    <version>1.0-SNAPSHOT</version>
+    <version>5.1.0-SNAPSHOT</version>
     <description>
         This project is the root project for the example Java EE
         Application.
@@ -26,7 +24,7 @@
         <java.source.version>1.8</java.source.version>
         <java.target.version>1.8</java.target.version>
 
-        <ejava.version>5.0.0-SNAPSHOT</ejava.version>
+        <ejava.version>5.1.0-SNAPSHOT</ejava.version>
         <javax.ejb-api.version>3.2.2</javax.ejb-api.version>
         <junit.version>4.12</junit.version>
         <slf4j.version>1.7.25</slf4j.version>
@@ -37,7 +35,8 @@
         <maven-compiler-plugin.version>3.7.0</maven-compiler-plugin.version>
         <maven-ear-plugin.version>3.0.1</maven-ear-plugin.version>
         <maven-ejb-plugin.version>3.0.1</maven-ejb-plugin.version>
-        <maven-failsafe-plugin.version>2.22.0</maven-failsafe-plugin.version>
+        <maven-failsafe-plugin.version>3.0.0-M3</maven-failsafe-plugin.version>
+        <maven-surefire-plugin.version>3.0.0-M3</maven-surefire-plugin.version>
         <maven-war-plugin.version>3.2.2</maven-war-plugin.version>
 
         <cargo.containerId>wildfly9x</cargo.containerId>
@@ -48,7 +47,9 @@
 
         <java.naming.factory.initial>org.wildfly.naming.client.WildFlyInitialContextFactory</java.naming.factory.initial>
         <java.naming.provider.url>http-remoting://${jboss.host}:${jboss.http.port}</java.naming.provider.url>
-        <java.naming.factory.url.pkgs/>
+        <java.naming.factory.url.pkgs />
+        <jboss.mgmt.user>admin</jboss.mgmt.user>
+        <jboss.mgmt.password>password1!</jboss.mgmt.password>
         <jndi.user>known</jndi.user>
         <jndi.password>password1!</jndi.password>
 
@@ -123,6 +124,11 @@
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>${maven-surefire-plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-ejb-plugin</artifactId>
                     <version>${maven-ejb-plugin.version}</version>
                     <configuration>
@@ -182,6 +188,8 @@
                             <properties>
                                 <cargo.hostname>${jboss.mgmt.host}</cargo.hostname>
                                 <cargo.jboss.management.port>${jboss.mgmt.port}</cargo.jboss.management.port>
+                                <cargo.remote.username>${jboss.mgmt.user}</cargo.remote.username>
+                                <cargo.remote.password>${jboss.mgmt.password}</cargo.remote.password>
                             </properties>
                         </configuration>
                     </configuration>
@@ -211,6 +219,18 @@
                 </plugin>
             </plugins>
     	</pluginManagement>
+
+        <plugins>
+            <!-- this is not configured to work with the site plugin - inject this into all child modules -->
+            <plugin> 
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-site-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                    <skipDeploy>true</skipDeploy>
+                </configuration>
+            </plugin>
+        </plugins>
     </build>
 
     <profiles>

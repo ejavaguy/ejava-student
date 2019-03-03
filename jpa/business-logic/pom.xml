@@ -4,7 +4,7 @@
    <parent>
         <groupId>info.ejava.examples.jpa</groupId>
         <artifactId>jpa</artifactId>
-        <version>5.0.0-SNAPSHOT</version>
+        <version>5.1.0-SNAPSHOT</version>
     </parent>
 
     <artifactId>business-logic</artifactId>

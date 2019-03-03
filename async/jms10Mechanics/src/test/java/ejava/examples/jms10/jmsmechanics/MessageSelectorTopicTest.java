@@ -42,20 +42,24 @@ public class MessageSelectorTopicTest extends JMSTestBase {
     }
     private class AsyncClient implements MessageListener, MyClient {
         private int count=0;
-        LinkedList<Message> messages = new LinkedList<Message>();
+        private LinkedList<Message> messages = new LinkedList<Message>();
         public void onMessage(Message message) {
             try {
                 logger.debug("onMessage received ({}):{}, level={}", 
                         ++count, message.getJMSMessageID(), message.getStringProperty("level"));
-                messages.add(message);
                 message.acknowledge();
+                synchronized(messages) {
+                    messages.add(message);
+                }
             } catch (JMSException ex) {
                 logger.error("error handling message", ex);
             }
         }        
         public int getCount() { return count; }
         public Message getMessage() {
-            return (messages.isEmpty() ? null : messages.remove());
+            synchronized(messages) {
+                return (messages.isEmpty() ? null : messages.remove());
+            }
         }
     }
     

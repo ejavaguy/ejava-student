@@ -3,7 +3,7 @@
     <parent>
         <groupId>info.ejava.examples.ejb.jpa</groupId>
         <artifactId>ejb-jpa-example</artifactId>
-        <version>5.0.0-SNAPSHOT</version>
+        <version>5.1.0-SNAPSHOT</version>
     </parent>
 
     <artifactId>ejb-jpa-example-blimpl</artifactId>

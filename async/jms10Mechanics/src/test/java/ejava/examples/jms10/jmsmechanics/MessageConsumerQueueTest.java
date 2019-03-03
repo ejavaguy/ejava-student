@@ -41,12 +41,14 @@ public class MessageConsumerQueueTest extends JMSTestBase {
     }
     private class AsyncClient implements MessageListener, MyClient {
         private int count=0;
-        LinkedList<Message> messages = new LinkedList<Message>();
+        private LinkedList<Message> messages = new LinkedList<Message>();
         public void onMessage(Message message) {
             try {
                 logger.debug("onMessage received ({}):{}", ++count, message.getJMSMessageID());
-                messages.add(message);
                 message.acknowledge();
+                synchronized (messages) {
+                    messages.add(message);
+                }
             } catch (JMSException ex) {
                 logger.error("error handling message", ex);
             }

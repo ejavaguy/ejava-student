@@ -4,7 +4,7 @@
     <parent>
         <groupId>info.ejava.examples.jpa</groupId>
         <artifactId>jpa-parent</artifactId>
-        <version>5.0.0-SNAPSHOT</version>
+        <version>5.1.0-SNAPSHOT</version>
         <relativePath/>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -34,7 +34,7 @@
         <cargo-maven2-plugin.version>1.4.15</cargo-maven2-plugin.version>
         <maven-ear-plugin.version>3.0.1</maven-ear-plugin.version>
         <maven-ejb-plugin.version>3.0.1</maven-ejb-plugin.version>
-        <maven-failsafe-plugin.version>2.22.0</maven-failsafe-plugin.version>
+        <maven-failsafe-plugin.version>3.0.0-M3</maven-failsafe-plugin.version>
         <maven-war-plugin.version>3.2.2</maven-war-plugin.version>
 
         <cargo.containerId>wildfly9x</cargo.containerId>
@@ -42,6 +42,8 @@
         <jboss.http.port>8080</jboss.http.port>
         <jboss.mgmt.host>${jboss.host}</jboss.mgmt.host>
         <jboss.mgmt.port>9990</jboss.mgmt.port>
+        <jboss.mgmt.user>admin</jboss.mgmt.user>
+        <jboss.mgmt.password>password1!</jboss.mgmt.password>
 
         <java.naming.factory.initial>org.wildfly.naming.client.WildFlyInitialContextFactory</java.naming.factory.initial>
         <java.naming.provider.url>http-remoting://${jboss.host}:${jboss.http.port}</java.naming.provider.url>
@@ -148,6 +150,8 @@
                             <properties>
                                 <cargo.hostname>${jboss.mgmt.host}</cargo.hostname>
                                 <cargo.jboss.management.port>${jboss.mgmt.port}</cargo.jboss.management.port>
+                                <cargo.remote.username>${jboss.mgmt.user}</cargo.remote.username>
+                                <cargo.remote.password>${jboss.mgmt.password}</cargo.remote.password>
                             </properties>
                         </configuration>
                     </configuration>

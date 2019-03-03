@@ -1,13 +1,10 @@
 <?xml version="1.0"?>
-<project
-    xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>myorg.jpa</groupId>
     <artifactId>entityMgrEx</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>5.1.0-SNAPSHOT</version>
 
     <name>EntityManager Exercise</name>
 
@@ -21,7 +18,7 @@
     </repositories>
 
     <properties>
-        <ejava.version>5.0.0-SNAPSHOT</ejava.version>
+        <ejava.version>5.1.0-SNAPSHOT</ejava.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.source.version>1.8</java.source.version>
         <java.target.version>1.8</java.target.version>
@@ -31,7 +28,7 @@
 
         <maven-compiler-plugin.version>3.7.0</maven-compiler-plugin.version>
         <maven-jar-plugin.version>3.1.0</maven-jar-plugin.version>
-        <maven-surefire-plugin.version>2.22.0</maven-surefire-plugin.version>
+        <maven-surefire-plugin.version>3.0.0-M3</maven-surefire-plugin.version>
         <sql-maven-plugin.version>1.5</sql-maven-plugin.version>        
 
         <h2db.version>1.4.197</h2db.version>
@@ -153,7 +150,16 @@
                         <url>${jdbc.url}</url>          
                     </configuration>
                 </plugin>
-                      
+
+                <!-- exclude this module from site generation -->
+                <plugin> 
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-site-plugin</artifactId>
+                    <configuration>
+                        <skip>true</skip>
+                        <skipDeploy>true</skipDeploy>
+                    </configuration>
+                </plugin>
             </plugins>    
         </pluginManagement>
 
@@ -211,7 +217,7 @@
                   <jdbc.driver>org.h2.Driver</jdbc.driver>
                   <jdbc.url>jdbc:h2:tcp://${db.host}:9092/./h2db/ejava</jdbc.url>
                   <jdbc.user>sa</jdbc.user>
-                  <jdbc.password/>
+                  <jdbc.password />
                   <hibernate.dialect>org.hibernate.dialect.H2Dialect</hibernate.dialect>
             </properties>
             <dependencies>
@@ -235,7 +241,7 @@
                   <jdbc.driver>org.h2.Driver</jdbc.driver>
                   <jdbc.url>jdbc:h2:${basedir}/target/h2db/ejava</jdbc.url>
                   <jdbc.user>sa</jdbc.user>
-                  <jdbc.password/>
+                  <jdbc.password />
                   <hibernate.dialect>org.hibernate.dialect.H2Dialect</hibernate.dialect>
             </properties>
             <dependencies>
@@ -391,7 +397,7 @@
                                 </goals>
                               </pluginExecutionFilter>
                               <action>
-                                <ignore/>
+                                <ignore />
                               </action>
                             </pluginExecution>
 

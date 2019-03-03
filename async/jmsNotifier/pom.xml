@@ -2,7 +2,7 @@
     <parent>
         <groupId>info.ejava.examples.async</groupId>
         <artifactId>async</artifactId>
-        <version>5.0.0-SNAPSHOT</version>
+        <version>5.1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -31,7 +31,7 @@
         <jms.classpath>build-classpath</jms.classpath>
         <java.naming.factory.initial>org.apache.activemq.artemis.jndi.ActiveMQInitialContextFactory</java.naming.factory.initial>
         <java.naming.provider.url>tcp://${artemis.remoting.netty.host}:${artemis.remoting.netty.port}</java.naming.provider.url>
-        <java.naming.factory.url.pkgs></java.naming.factory.url.pkgs>
+        <java.naming.factory.url.pkgs />
     </properties>
 
 
@@ -65,13 +65,13 @@
         <!-- test dependencies -->
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>jms10Mechanics</artifactId>
+            <artifactId>jms20Mechanics</artifactId>
             <version>${project.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>jmsMechanics</artifactId>
+            <artifactId>jms20Mechanics</artifactId>
             <version>${project.version}</version>
             <classifier>tests</classifier>
             <scope>test</scope>
@@ -218,7 +218,7 @@
                                 </goals>
                                 <configuration>
                                     <target>
-                                        <java classname="ejava.examples.jmsmechanics.ArtemisServer" fork="true" spawn="${jms.spawn}">
+                                        <java classname="ejava.examples.jms20.jmsmechanics.ArtemisServer" fork="true" spawn="${jms.spawn}">
                                              <classpath>
                                                  <path refid="maven.test.classpath" />
                                                  <path refid="maven.runtime.classpath" />

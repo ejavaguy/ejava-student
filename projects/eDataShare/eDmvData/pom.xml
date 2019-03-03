@@ -2,7 +2,7 @@
     <parent>
         <groupId>info.ejava.examples.projects.eDataShare</groupId>
         <artifactId>eDataShare</artifactId>
-        <version>5.0.0-SNAPSHOT</version>
+        <version>5.1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -24,7 +24,7 @@
     </modules>
 
     <properties>
-        <ejava.version>5.0.0-SNAPSHOT</ejava.version>
+        <ejava.version>5.1.0-SNAPSHOT</ejava.version>
     </properties>
     <dependencyManagement>
         <dependencies>
