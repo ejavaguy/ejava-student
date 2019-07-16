@@ -9,6 +9,7 @@ import javax.naming.NamingException;
 
 import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.BeforeClass;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,6 +42,11 @@ public class JNDIVerifierITBase  {
 		object = reader.lookupSessionContext(name);
 		log.info("{}={}", name, object);
 		assertNotNull(name + " not found", object);
+	}
+	
+	@BeforeClass
+	public static void setUpClass() {
+	    try { Thread.sleep(1000); } catch (Exception ex) {}
 	}
 
 	@Test

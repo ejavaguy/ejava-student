@@ -26,7 +26,10 @@ public class AnnotatedEJB extends JNDIReader
 	implements JNDIReaderRemote {
 	private static final Logger log = LoggerFactory.getLogger(AnnotatedEJB.class);
 	private @Resource SessionContext ctx;
-	
+
+	//Note that java:com/env provided have been commented out here
+	//Later versions of wildfly deployment caused them to not be in place for @Annotations during deployment
+	//but later in place at runtime
 	private static final int DEFAULT_VALUE=1;
 	@Resource(name="val/value1")
 	private Integer value1=DEFAULT_VALUE; //default value that is not overridden
@@ -46,14 +49,14 @@ public class AnnotatedEJB extends JNDIReader
 	private Queue queue1;
 	@Resource(lookup="java:/queue/test", name="jms/queue2")
 	private Queue queue2;
-	@Resource(name="jms/queue3")
+	//@Resource(name="jms/queue3")
 	private Queue queue3;
 	
 	@Resource(lookup="java:/topic/test")
 	private Topic topic1;
 	@Resource(lookup="java:/topic/test", name="jms/topic2")
 	private Topic topic2;
-	@Resource(name="jms/topic3")
+	//@Resource(name="jms/topic3")
 	private Topic topic3;
 	
 	@Resource(lookup="java:/JmsXA")

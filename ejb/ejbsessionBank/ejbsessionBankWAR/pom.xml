@@ -15,6 +15,10 @@
         and is deployed as part of an EAR.
     </description>
 
+    <properties>
+        <hibernate-entitymanager.version>5.3.1.Final</hibernate-entitymanager.version>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -83,7 +87,7 @@
                         </systemProperty>
                         <systemProperty>
                             <name>log4j.configuration</name>
-                            <value>file:./target/test-classes/log4j.xml</value>
+                            <value>file:${project.build.directory}/test-classes/log4j.xml</value>
                         </systemProperty>
                     </systemProperties>
                 </configuration>
@@ -109,6 +113,11 @@
                         <version>${project.version}</version>
                         <type>pom</type>
                     </dependency>    
+                    <dependency>
+                        <groupId>org.hibernate</groupId>
+                        <artifactId>hibernate-core</artifactId>
+                        <version>${hibernate-entitymanager.version}</version>
+                    </dependency>
                     <dependency>
                         <groupId>log4j</groupId>
                         <artifactId>log4j</artifactId>

@@ -3,9 +3,9 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>info.ejava.examples.build</groupId>
-        <artifactId>dependencies</artifactId>
+        <artifactId>ejava-build-parent</artifactId>
         <version>5.1.0-SNAPSHOT</version>
-        <relativePath>build/dependencies/pom.xml</relativePath>
+        <relativePath>build/ejava-build-parent/pom.xml</relativePath>
     </parent>
 
     <groupId>info.ejava.examples</groupId>
@@ -62,6 +62,7 @@
                     <groupId>com.ibm.icu</groupId>
                     <artifactId>icu4j</artifactId>
                     <version>53.1</version>
+                    <type>pom</type>
                     <scope>runtime</scope>
                 </dependency>
             </dependencies>
@@ -219,20 +220,8 @@
                     </plugin>
 
                     <plugin>
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>findbugs-maven-plugin</artifactId>
-                        <configuration>
-                            <xmlOutput>true</xmlOutput>
-                            <effort>Max</effort>
-                        </configuration>
-                        <reportSets>
-                            <reportSet>
-                                <id>findbugs-report</id>
-                                <reports>
-                                    <report>findbugs</report>
-                                </reports>
-                            </reportSet>
-                        </reportSets>
+                        <groupId>com.github.spotbugs</groupId>
+                        <artifactId>spotbugs-maven-plugin</artifactId>
                     </plugin>
 
                     <plugin>
@@ -438,6 +427,12 @@
                 <module>ejb</module>
             </modules>
         </profile>
+        <profile>
+            <id>async-modules</id>
+            <modules>
+                <module>async</module>
+            </modules>
+        </profile>
 
         <profile>
             <id>all-modules</id>
@@ -455,6 +450,50 @@
         </profile>
 
         <profile>
+            <id>test-deploy</id>
+            <distributionManagement>
+                <site>
+                    <id>webdev.website</id>
+                    <name>Test Site</name>
+                    <url>scpexe://webdev.jhuep.com/home/jcs/public_html/test-deploy/sites/ejava-javaee</url>
+                </site>
+            </distributionManagement>
+            <build>
+               <pluginManagement>
+                   <plugins>
+                       <plugin>
+                           <groupId>org.apache.maven.plugins</groupId>
+                           <artifactId>maven-site-plugin</artifactId>
+                           <configuration>
+                               <skipDeploy>false</skipDeploy>
+                           </configuration>
+                       </plugin>
+                   </plugins>
+               </pluginManagement>
+            </build>
+        </profile>
+        <profile>
+            <id>webdev</id>
+            <distributionManagement>
+                <repository>
+                    <id>webdev.repository</id>
+                    <name>ejava JHU repository</name>
+                    <url>scpexe://webdev.jhuep.com/home/jcs/public_html/maven2</url>
+                </repository>
+                <snapshotRepository>
+                    <id>webdev.snapshot.repo</id>
+                    <name>ejava JHU snapshot repository</name>
+                    <url>scpexe://webdev.jhuep.com/home/jcs/public_html/maven2-snapshot</url>
+                    <uniqueVersion>false</uniqueVersion>
+                </snapshotRepository>
+                <site>
+                    <id>webdev.website</id>
+                    <name>ejava JHU webdev website</name>
+                    <url>scpexe://webdev.jhuep.com/home/jcs/public_html/2019-draft-ejava-javaee</url>
+                </site>
+            </distributionManagement>
+        </profile>
+        <profile>
             <id>local-deploy</id>
             <activation>
                 <property>
@@ -468,36 +507,19 @@
                     <url>file:///tmp/ejava-javaee</url>
                 </site>
             </distributionManagement>
-        </profile>
-        <profile>
-            <id>dev5</id>
-            <distributionManagement>
-                <site>
-                    <id>dev5.website</id>
-                    <name>Test Site</name>
-                    <url>scpexe://dev5.ejava.info/var/www/ejava.info/html/sites/ejava-javaee</url>
-                </site>
-            </distributionManagement>
-        </profile>
-        <profile>
-            <id>test-deploy</id>
-            <distributionManagement>
-                <site>
-                    <id>webdev.website</id>
-                    <name>Test Site</name>
-                    <url>scpexe://webdev.jhuep.com/home/jcs/public_html/test-deploy/sites/ejava-javaee</url>
-                </site>
-            </distributionManagement>
-        </profile>
-        <profile>
-            <id>webdev</id>
-            <distributionManagement>
-                <site>
-                    <id>webdev.website</id>
-                    <name>ejava JHU webdev website</name>
-                    <url>scpexe://webdev.jhuep.com/home/jcs/public_html/2019-draft-ejava-javaee</url>
-                </site>
-            </distributionManagement>
+            <build>
+               <pluginManagement>
+                   <plugins>
+                       <plugin>
+                           <groupId>org.apache.maven.plugins</groupId>
+                           <artifactId>maven-site-plugin</artifactId>
+                           <configuration>
+                               <skipDeploy>false</skipDeploy>
+                           </configuration>
+                       </plugin>
+                   </plugins>
+               </pluginManagement>
+            </build>
         </profile>
     </profiles>
 </project>

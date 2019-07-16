@@ -16,6 +16,7 @@
         This project is the root project for EJB materials.
     </description>
     <modules>
+        <module>ejb-build</module>
         <module>ejb-intro</module>
         <module>ejb-config</module>
         <module>ejbsessionBank</module>

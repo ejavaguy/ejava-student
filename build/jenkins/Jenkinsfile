@@ -52,31 +52,30 @@ spec:
     parameters {
         string(name:'END_GOAL', defaultValue:'deploy', description:'')
         string(name:'CLASS_PROFILES', defaultValue:'', description:'')
-        string(name:'TEST_PROFILES', defaultValue:'', description:'')
+        string(name:'TEST_PROFILES', defaultValue:'-Pall-modules --fail-at-end', description:'')
     }
 	
     options {
         timestamps()
     }
     triggers {
-        upstream(upstreamProjects: 'ejava-docs-deploy', threshold: hudson.model.Result.SUCCESS)
         pollSCM('H/5 * * * *')
     }
     
     environment {
         DOCS_REPO = 'https://github.com/ejavaguy/ejava-instructor.git'
-		SETTINGS_XML = 'ejava-settings.xml'
-		MAVEN_OPTS='-Xmx1024m \
+        SETTINGS_XML = 'ejava-settings.xml'
+        MAVEN_OPTS='-Xmx1024m \
                     -Dmaven.wagon.http.ssl.allowall=true \
-					-Dmaven.wagon.http.ssl.insecure=true \
+                    -Dmaven.wagon.http.ssl.insecure=true \
                     -Djdk.net.URLClassPath.disableClassPathURLCheck=true'
         IMPL_PROFILES='-Ph2db \
                     -Pwildfly13'
 	}
 	
-	stages {
-		stage ('Setup Environment') {
-			steps {
+    stages {
+        stage ('Setup Environment') {
+            steps {
                 script {
                     ifBranch('master', {
                        env.MAVEN_PROFILES="-Pwebdev"
@@ -89,33 +88,35 @@ spec:
                     })
                     env.SIBLING_DOCS_BRANCH=sh(returnStdout: true, script: 'git ls-remote --heads ${DOCS_REPO} ${GIT_BRANCH}')
                     sh 'printenv'
-                    echo "branch=${BRANCH_NAME}, profiles=${MAVEN_PROFILES}"
+                    echo "branch=${BRANCH_NAME}, profiles=${IMPL_PROFILES} ${MAVEN_PROFILES} ${MODULE_PROFILES}"
+                    sh 'df -h'
                 }
-			}
-		}
+            }
+        }
 
-		stage ("Check out") {
-			steps {
-				checkout scm
-			}
-		}
-		
-		stage ('Install Parent Poms') {
-			steps {
-				mavenContainer {
-				   sh 'mvn install -f build/dependencies/pom.xml -s $MAVEN_SETTINGS_XML $IMPL_PROFILES $MAVEN_PROFILES'
-				   sh 'mvn install -f jpa/jpa-parent/pom.xml -s $MAVEN_SETTINGS_XML $IMPL_PROFILES $MAVEN_PROFILES'
-				   sh 'mvn install -f ejb/ejb-parent/pom.xml -s $MAVEN_SETTINGS_XML $IMPL_PROFILES $MAVEN_PROFILES'
-				}
-			}
-		}
-		
-		stage ('Build') {
+    stage ("Check out") {
+        steps {
+            checkout scm
+            }
+        }
+
+        stage ('Install Parent Poms') {
+            steps {
+                sshSetup()
+                mavenContainer {
+                   sh 'mvn deploy -f build -s $MAVEN_SETTINGS_XML $IMPL_PROFILES $MAVEN_PROFILES $MODULE_PROFILES'
+                   sh 'mvn deploy -f jpa/jpa-build -s $MAVEN_SETTINGS_XML $IMPL_PROFILES $MAVEN_PROFILES $MODULE_PROFILES'
+                   sh 'mvn deploy -f ejb/ejb-build -s $MAVEN_SETTINGS_XML $IMPL_PROFILES $MAVEN_PROFILES $MODULE_PROFILES'
+                }
+            }
+        }
+
+        stage ('Build') {
             parallel {
                 stage ('Build:Examples') {
                     steps {
                         mavenContainer {
-                           sh 'mvn clean install -s $MAVEN_SETTINGS_XML $IMPL_PROFILES $MAVEN_PROFILES \
+                           sh 'mvn clean install -s $MAVEN_SETTINGS_XML $IMPL_PROFILES $MAVEN_PROFILES $MODULE_PROFILES \
                             -Djava.truststore=`pwd`/servers/ejava-wildfly1300/src/main/resources/standalone/configuration/application.keystore'
                         }
                     }
@@ -128,10 +129,8 @@ spec:
                 
                 stage ('Build:Docs') {
                     when {
-                        expression {
-                            env.SIBLING_DOCS_BRANCH!=null 
-                            params.END_GOAL=='deploy' 
-                        }
+                        expression { env.SIBLING_DOCS_BRANCH }
+                        expression { params.END_GOAL=='deploy' }
                     }
                     steps {
                         echo "checking out docs repo"
@@ -155,8 +154,12 @@ spec:
             }
             steps {
                 mavenContainer {
-                   sh 'mvn verify site -s $MAVEN_SETTINGS_XML $IMPL_PROFILES $MAVEN_PROFILES -Preports -DskipITs'
+                   sh 'mvn site -s $MAVEN_SETTINGS_XML $IMPL_PROFILES $MAVEN_PROFILES $MODULE_PROFILES -Preports \
+                    -Djava.truststore=`pwd`/servers/ejava-wildfly1300/src/main/resources/standalone/configuration/application.keystore'
                 }
+            }
+            post {
+                failure { sh 'df -h' }
             }
         }
 
@@ -167,18 +170,13 @@ spec:
             steps {
                 sshSetup()
                 mavenContainer {
-                    sh 'mvn deploy -f build/dependencies/pom.xml -s $MAVEN_SETTINGS_XML $IMPL_PROFILES $MAVEN_PROFILES'
-                    sh 'mvn deploy -f jpa/jpa-parent/pom.xml -s $MAVEN_SETTINGS_XML $IMPL_PROFILES $MAVEN_PROFILES'
-                    sh 'mvn deploy -f ejb/ejb-parent/pom.xml -s $MAVEN_SETTINGS_XML $IMPL_PROFILES $MAVEN_PROFILES'
-                    sh 'mvn deploy $SITE_DEPLOY -s $MAVEN_SETTINGS_XML $IMPL_PROFILES $MAVEN_PROFILES -PskipTests -PskipITs '
+                    sh 'mvn deploy -f build -s $MAVEN_SETTINGS_XML $IMPL_PROFILES $MAVEN_PROFILES $MODULE_PROFILES'
+                    sh 'mvn deploy -f jpa/jpa-build -s $MAVEN_SETTINGS_XML $IMPL_PROFILES $MAVEN_PROFILES $MODULE_PROFILES'
+                    sh 'mvn deploy -f ejb/ejb-build -s $MAVEN_SETTINGS_XML $IMPL_PROFILES $MAVEN_PROFILES $MODULE_PROFILES'
+                    sh 'mvn deploy $SITE_DEPLOY -s $MAVEN_SETTINGS_XML $IMPL_PROFILES $MAVEN_PROFILES $MODULE_PROFILES -PskipTests -PskipITs \
+                      -Djava.truststore=`pwd`/servers/ejava-wildfly1300/src/main/resources/standalone/configuration/application.keystore'
                 }
             }
-//            post {
-//                failure {
-//                    echo 'keeping VM alive in case you want to execute a shell and take a look'
-//                    sh 'sleep 600'
-//                }
-//            }
         }
-	}
+    }
 }

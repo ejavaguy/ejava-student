@@ -16,7 +16,7 @@
         This project is the root project for JPA materials.
     </description>
     <modules>
-        <module>jpa-parent</module>
+        <module>jpa-build</module>
         <module>jpa-archetype</module>
         <module>business-logic</module>
         <module>jpa-dao</module>

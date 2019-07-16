@@ -64,6 +64,12 @@
             <artifactId>log4j</artifactId>
             <scope>test</scope>
         </dependency>    
+        <dependency>
+            <groupId>info.ejava.examples.common</groupId>
+            <artifactId>ejava-util</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>    
     </dependencies>
 
     <build>
@@ -82,6 +88,8 @@
             <plugin>
                 <groupId>org.codehaus.cargo</groupId>
                 <artifactId>cargo-maven2-plugin</artifactId>
+                  <!-- use a version of CARGO that works for naked EJB deployments -->
+                <version>${cargo-maven2-plugin-ejb.version}</version>
             </plugin>
 
             <!-- run IT tests -->

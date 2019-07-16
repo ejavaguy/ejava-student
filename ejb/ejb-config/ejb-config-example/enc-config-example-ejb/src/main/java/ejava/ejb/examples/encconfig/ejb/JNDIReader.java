@@ -53,13 +53,15 @@ public class JNDIReader implements JNDIReaderRemote {
 	protected void verify(Context jndi, String area, String base, Object...object) 
 			throws NamingException {
 		for (int i=0; i<object.length; i++) {
-			log.info("{}{}={}", new Object[]{base, i+1, object[i]});
+			log.info("{}{}={}", base, i+1, object[i]);
 			assert(object[i] !=null) : String.format("%s%s was null", base,i+1);
 		}
 		String name = String.format("%s/%s2", area, base);
 		String jndiName = "java:comp/env/" + name;
-		Object jndiResult = jndi.lookup(jndiName); 
+		log.info("jndi.lookup({})", jndiName);
+		Object jndiResult = jndi.lookup(jndiName);		
 		log.info("InitialContext().lookup({})={}", jndiName, jndiResult);
+		log.info("ctx.lookup({})", name);
 		Object ctxResult = ctx.lookup(name);
 		log.info("ctx.lookup({})={}", name, ctxResult);
 		assert(jndiResult !=null) : String.format("jndi lookup for %s was null", jndiName);

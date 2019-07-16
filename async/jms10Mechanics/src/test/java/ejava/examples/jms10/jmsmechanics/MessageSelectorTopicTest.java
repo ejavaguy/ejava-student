@@ -74,7 +74,7 @@ public class MessageSelectorTopicTest extends JMSTestBase {
             Message message=consumer.receiveNoWait();
             if (message != null) {
                 logger.debug("receive ({}):{}, level={}", 
-                        ++count, message.getJMSMessageID(), message.getStringProperty("level"));
+                ++count, message.getJMSMessageID(), message.getStringProperty("level"));
                 message.acknowledge();
             }
             return message;
@@ -85,6 +85,7 @@ public class MessageSelectorTopicTest extends JMSTestBase {
     public void testMessageSelector() throws Exception {
         logger.info("*** testMessageSelector ***");
         Session session = null;
+        Session asyncSession = null;
         MessageProducer producer = null;
         MessageConsumer asyncConsumer = null;
         MessageConsumer syncConsumer = null;
@@ -93,12 +94,14 @@ public class MessageSelectorTopicTest extends JMSTestBase {
             //need to use CLIENT_ACK to avoid race condition within this app
             session = connection.createSession(
                     false, Session.CLIENT_ACKNOWLEDGE);
+            asyncSession = connection.createSession(
+                    false, Session.CLIENT_ACKNOWLEDGE);
             List<MyClient> clients = new ArrayList<MyClient>();
 
             //create a client to asynchronous receive messages through 
             //onMessage() callbacks
             String selector1 = "level in ('warn', 'fatal')";
-            asyncConsumer = session.createConsumer(destination, selector1);
+            asyncConsumer = asyncSession.createConsumer(destination, selector1);
             AsyncClient asyncClient = new AsyncClient();
             asyncConsumer.setMessageListener(asyncClient);
             clients.add(asyncClient);
@@ -117,7 +120,7 @@ public class MessageSelectorTopicTest extends JMSTestBase {
                 message.setStringProperty("level", level);
                 producer.send(message);
                 logger.info("sent msgId={}, level={}", 
-                        message.getJMSMessageID(), message.getStringProperty("level"));
+                message.getJMSMessageID(), message.getStringProperty("level"));
             }
             
             connection.start();
@@ -140,6 +143,7 @@ public class MessageSelectorTopicTest extends JMSTestBase {
             if (syncConsumer != null) { syncConsumer.close(); }
             if (producer != null) { producer.close(); }
             if (session != null)  { session.close(); }
+            if (asyncSession != null)  { asyncSession.close(); }
         }
     }
     
@@ -147,6 +151,7 @@ public class MessageSelectorTopicTest extends JMSTestBase {
     public void testMessageSelectorMulti() throws Exception {
         logger.info("*** testMessageSelectorMulti ***");
         Session session = null;
+        Session asyncSession = null;
         MessageProducer producer = null;
         MessageConsumer asyncConsumer = null;
         MessageConsumer syncConsumer = null;
@@ -155,12 +160,14 @@ public class MessageSelectorTopicTest extends JMSTestBase {
             //need to use CLIENT_ACK to avoid race condition within this app
             session = connection.createSession(
                     false, Session.CLIENT_ACKNOWLEDGE);
+            asyncSession = connection.createSession(
+                    false, Session.CLIENT_ACKNOWLEDGE);
             List<MyClient> clients = new ArrayList<MyClient>();
 
             //create a client to asynchronous receive messages through 
             //onMessage() callbacks
             String selector1 = "level in ('warn', 'fatal')";
-            asyncConsumer = session.createConsumer(destination, selector1);
+            asyncConsumer = asyncSession.createConsumer(destination, selector1);
             AsyncClient asyncClient = new AsyncClient();
             asyncConsumer.setMessageListener(asyncClient);
             clients.add(asyncClient);
@@ -172,7 +179,7 @@ public class MessageSelectorTopicTest extends JMSTestBase {
             SyncClient syncClient = new SyncClient(syncConsumer);
             clients.add(syncClient);
             
-            String levels[] = {"info", "warn", "fatal"}; // no "debug",             
+            String levels[] = {"info", "warn", "fatal"}; // no "debug",
             producer = session.createProducer(destination);
             Message message = session.createMessage();
             for (int i=0; i<msgCount; i++) {
@@ -207,6 +214,7 @@ public class MessageSelectorTopicTest extends JMSTestBase {
             if (syncConsumer != null) { syncConsumer.close(); }
             if (producer != null) { producer.close(); }
             if (session != null)  { session.close(); }
+            if (asyncSession != null)  { asyncSession.close(); }
         }
     }        
 }

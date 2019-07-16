@@ -17,12 +17,12 @@
     </description>
 
     <modules>
-    <!--
-        <module>dependencies</module>
-        -->
+        <module>ejava-build-bom</module>
+        <module>ejava-build-parent</module>
     </modules>
 
     <build>
+      <pluginManagement>
         <plugins>
                 <!-- don't need these projects in the site HTML -->
             <plugin> 
@@ -34,5 +34,6 @@
                 </configuration>
             </plugin>
         </plugins>
+      </pluginManagement>
     </build>
 </project>

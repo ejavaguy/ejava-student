@@ -81,6 +81,8 @@
             <plugin>
                 <groupId>org.codehaus.cargo</groupId>
                 <artifactId>cargo-maven2-plugin</artifactId>
+                  <!-- use a version of CARGO that works for naked EJB deployments -->
+                <version>${cargo-maven2-plugin-ejb.version}</version>
             </plugin>
 
             <!-- run IT tests -->

@@ -7,12 +7,13 @@ import javax.ejb.EJBContext;
 import javax.interceptor.AroundConstruct;
 import javax.interceptor.AroundInvoke;
 import javax.interceptor.AroundTimeout;
+import javax.interceptor.Interceptor;
 import javax.interceptor.InvocationContext;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
+@Interceptor //needed for @AroundConstruct and @PostConstruct non-business method interceptors
 public class LifecycleInterceptor {
     private static final Logger logger = LoggerFactory.getLogger(LifecycleInterceptor.class);
     

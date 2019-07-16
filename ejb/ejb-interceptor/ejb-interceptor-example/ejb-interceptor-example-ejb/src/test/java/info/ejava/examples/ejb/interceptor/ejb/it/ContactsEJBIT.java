@@ -22,6 +22,7 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
+import org.apache.activemq.artemis.utils.JNDIUtil;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -37,6 +38,7 @@ public class ContactsEJBIT  {
 	
 	@BeforeClass
 	public static void setUpClass() throws NamingException {
+	    //try { Thread.sleep(250); } catch (InterruptedException e) {} //needs a little time to finish deploying
 	}
 	
 	@Before

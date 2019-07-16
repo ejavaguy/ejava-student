@@ -95,7 +95,7 @@ public class MessageSelectorTopicTest extends JMSTestBase {
             
             //need to use CLIENT_ACK to avoid race condition within this app
             try (JMSConsumer syncConsumer = context.createConsumer(destination, selector1);
-                    JMSConsumer asyncConsumer = context2.createConsumer(destination, selector2))  {
+                 JMSConsumer asyncConsumer = context2.createConsumer(destination, selector2))  {
                
                //create a client to asynchronous receive messages through onMessage() callbacks
                AsyncClient asyncClient = new AsyncClient();
