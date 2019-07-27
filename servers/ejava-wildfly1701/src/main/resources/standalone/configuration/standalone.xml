@@ -514,6 +514,7 @@
 
                 <address-setting name="#" dead-letter-address="jms.queue.DLQ" expiry-address="jms.queue.ExpiryQueue" max-size-bytes="10485760" page-size-bytes="2097152" message-counter-history-day-limit="10"/>
                 <http-connector name="http-connector" socket-binding="http" endpoint="http-acceptor"/>
+                <http-connector name="http-connector-jms" socket-binding="http-remote-jms" endpoint="http-acceptor"/>
                 <http-connector name="http-connector-throughput" socket-binding="http" endpoint="http-acceptor-throughput">
                     <param name="batch-delay" value="50"/>
                 </http-connector>
@@ -550,7 +551,7 @@
                 <jms-topic name="emarket-esales-auction" entries="java:/topic/ejava/projects/emarket/esales-auction java:jboss/exported/topic/ejava/projects/emarket/esales-auction"/>
                 <jms-topic name="esport-eleague-contests" entries="java:/topic/ejava/projects/esport/eleague-contests java:jboss/exported/topic/ejava/projects/esport/eleague-contests"/>
                 <connection-factory name="InVmConnectionFactory" entries="java:/ConnectionFactory" connectors="in-vm"/>
-                <connection-factory name="RemoteConnectionFactory" entries="java:jboss/exported/jms/RemoteConnectionFactory" connectors="http-connector"/>
+                <connection-factory name="RemoteConnectionFactory" entries="java:jboss/exported/jms/RemoteConnectionFactory" connectors="http-connector-jms"/>
                 <pooled-connection-factory name="activemq-ra" entries="java:/JmsXA java:jboss/DefaultJMSConnectionFactory" connectors="in-vm" transaction="xa"/>
             </server>
         </subsystem>
@@ -657,6 +658,10 @@
         <interface name="unsecure">
             <inet-address value="${jboss.bind.address.unsecure:127.0.0.1}"/>
         </interface>
+        <!-- set this to the specific hostname to bind to using -bjms hostname - 0.0.0.0 not allowed -->
+        <interface name="jms">
+            <inet-address value="${jboss.bind.address.jms:127.0.0.1}"/>
+        </interface>
     </interfaces>
     <socket-binding-group name="standard-sockets" default-interface="public" port-offset="${jboss.socket.binding.port-offset:0}">
         <socket-binding name="management-http" interface="management" port="${jboss.management.http.port:9990}"/>
@@ -668,6 +673,7 @@
         <socket-binding name="txn-status-manager" port="4713"/>
         <socket-binding name="iiop" interface="unsecure" port="3528"/>
         <socket-binding name="iiop-ssl" interface="unsecure" port="3529"/>
+        <socket-binding name="http-remote-jms" interface="jms" port="${jboss.http.port:8080}"/>
         <outbound-socket-binding name="mail-smtp">
             <remote-destination host="localhost" port="25"/>
         </outbound-socket-binding>

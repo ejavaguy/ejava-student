@@ -11,5 +11,6 @@ RUN chown -R jboss:0 ${JBOSS_HOME} \
 USER jboss
 
 RUN /opt/jboss/wildfly/bin/add-user.sh admin password1! --silent
+RUN java --version
 
 CMD ["/opt/jboss/wildfly/bin/standalone.sh", "-b", "0.0.0.0", "-bmanagement", "0.0.0.0"]
