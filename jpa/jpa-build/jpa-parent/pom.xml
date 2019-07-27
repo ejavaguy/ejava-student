@@ -23,10 +23,6 @@
         </repository>
     </repositories>
 
-    <prerequisites>
-      <maven>3.2.2</maven>
-    </prerequisites>
-
     <properties>
         <ejava.version>5.1.0-SNAPSHOT</ejava.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

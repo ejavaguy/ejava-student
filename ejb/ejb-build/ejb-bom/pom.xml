@@ -39,10 +39,6 @@
         </repository>
     </repositories>
 
-    <prerequisites>
-      <maven>3.0</maven>
-    </prerequisites>
-
     <dependencyManagement>
         <dependencies>
             <dependency>

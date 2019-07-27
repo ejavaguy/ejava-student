@@ -28,10 +28,6 @@
         <maven-site-plugin.version>3.7.1</maven-site-plugin.version>
     </properties>
 
-    <prerequisites>
-      <maven>3.0</maven>
-    </prerequisites>
-
     <dependencyManagement>
         <dependencies>
             <dependency>

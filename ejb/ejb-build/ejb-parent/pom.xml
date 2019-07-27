@@ -22,10 +22,6 @@
         the jpa-parent module.
     </description>
 
-    <prerequisites>
-      <maven>3.2.2</maven>
-    </prerequisites>
-
     <properties>
         <wildfly.version>13.0.0.Final</wildfly.version>
         <wildfly-controller-client.version>8.2.1.Final</wildfly-controller-client.version>
