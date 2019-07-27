@@ -117,7 +117,7 @@
         <sql-maven-plugin.version>1.5</sql-maven-plugin.version>
         <validation-api.version>2.0.1.Final</validation-api.version>
         <weld-servlet.version>2.2.6.Final</weld-servlet.version>
-        <wildfly.version>13.0.0.Final</wildfly.version>
+        <wildfly.version>17.0.1.Final</wildfly.version>
         <wildfly-controller-client.version>9.0.2.Final</wildfly-controller-client.version>
         <xercesImpl.version>2.9.1</xercesImpl.version>
         <yasson.version>1.0.1</yasson.version>

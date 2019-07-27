@@ -257,7 +257,7 @@ public class TodoListsIT {
                     todosClient.deleteTodoItem(todoList.getName(), item.getName()));
         }
         todoList = getEntity(todosClient.getTodoList(todoList.getName()), TodoListDTO.class);
-        assertTrue("unexpected number of todoItems",
-                todoList.getTodoItems()==null || todoList.getTodoItems().size()==0);
+        assertTrue("todoItems not empty: " + (todoList.getTodoItems()==null?0:todoList.getTodoItems().size()),
+                todoList.getTodoItems()==null || todoList.getTodoItems().isEmpty());
     }
 }

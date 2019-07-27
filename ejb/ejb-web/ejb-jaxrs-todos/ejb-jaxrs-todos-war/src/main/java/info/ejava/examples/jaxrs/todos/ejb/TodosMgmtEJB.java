@@ -199,7 +199,9 @@ public class TodosMgmtEJB implements TodosMgmtRemote {
     
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public void deleteTodoListItem(TodoItem item) {
-        em.remove(item);
+        em.createNamedQuery("TodoItem.deleteTodoItem")
+            .setParameter("id", item.getId())
+            .executeUpdate();
     }
 
     

@@ -16,6 +16,8 @@ import javax.persistence.Table;
 @NamedQuery(name="TodoItem.getTodoItem",
         query="select ti from TodoItem ti where ti.todoList.name=:listName and ti.name=:itemName"
 )
+@NamedQuery(name="TodoItem.deleteTodoItem",
+        query="delete from TodoItem ti where ti.id=:id")
 public class TodoItem {
     @Id @GeneratedValue(strategy=GenerationType.SEQUENCE)
     private int id;

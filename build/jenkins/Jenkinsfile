@@ -33,7 +33,7 @@ spec:
       mountPath: /etc/secret-volume
 
   - name: wildfly
-    image: ejavaguy/wildfly13
+    image: ejavaguy/wildfly17
     namespace: jenkins
     resources:
       limits: 

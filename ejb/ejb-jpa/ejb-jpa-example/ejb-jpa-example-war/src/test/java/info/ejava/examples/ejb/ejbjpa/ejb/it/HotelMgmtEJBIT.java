@@ -111,6 +111,11 @@ public class HotelMgmtEJBIT  {
         assertFalse("floor was not proxy", room.getFloor().getClass().equals(Floor.class));
         
         Guest guest = new Guest("Cosmo Kramer");
+            //clear the room of Floor proxy class before returning
+            //required if not running same version of Hibernate as server -- yuk!
+        Floor floor = new Floor(room.getFloor().getLevel());
+        room = new Room(floor, room.getNumber());
+            //return clean Room POJO
         guest = hotelMgmt.checkIn(guest, room);
         logger.info("final guest: {}:{}", guest.getClass(), guest);
     }
