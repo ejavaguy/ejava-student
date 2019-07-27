@@ -492,6 +492,19 @@
                     <url>scpexe://webdev.jhuep.com/home/jcs/public_html/2019-draft-ejava-javaee</url>
                 </site>
             </distributionManagement>
+            <build>
+               <pluginManagement>
+                   <plugins>
+                       <plugin>
+                           <groupId>org.apache.maven.plugins</groupId>
+                           <artifactId>maven-site-plugin</artifactId>
+                           <configuration>
+                               <skipDeploy>false</skipDeploy>
+                           </configuration>
+                       </plugin>
+                   </plugins>
+               </pluginManagement>
+            </build>
         </profile>
         <profile>
             <id>local-deploy</id>
