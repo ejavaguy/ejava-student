@@ -43,6 +43,8 @@ spec:
     ports:
     - containerPort: 8080
       name: http
+    - containerPort: 8443
+      name: https
     - containerPort: 9990
       name: admin 
 """
@@ -52,7 +54,7 @@ spec:
     parameters {
         string(name:'END_GOAL', defaultValue:'deploy', description:'')
         string(name:'CLASS_PROFILES', defaultValue:'', description:'')
-        string(name:'TEST_PROFILES', defaultValue:'-Pall-modules --fail-at-end', description:'')
+        string(name:'TEST_PROFILES', defaultValue:'-Pall-modules --fail-at-end -Pjms.server', description:'')
     }
 	
     options {
