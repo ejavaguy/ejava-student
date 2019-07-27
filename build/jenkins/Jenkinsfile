@@ -117,7 +117,7 @@ spec:
                     steps {
                         mavenContainer {
                            sh 'mvn clean install -s $MAVEN_SETTINGS_XML $IMPL_PROFILES $MAVEN_PROFILES $MODULE_PROFILES \
-                            -Djava.truststore=`pwd`/servers/ejava-wildfly1300/src/main/resources/standalone/configuration/application.keystore'
+                            -Djava.truststore=`pwd`/servers/ejava-wildfly1701/src/main/resources/standalone/configuration/application.keystore'
                         }
                     }
                     post {
@@ -155,7 +155,7 @@ spec:
             steps {
                 mavenContainer {
                    sh 'mvn site -s $MAVEN_SETTINGS_XML $IMPL_PROFILES $MAVEN_PROFILES $MODULE_PROFILES -Preports \
-                    -Djava.truststore=`pwd`/servers/ejava-wildfly1300/src/main/resources/standalone/configuration/application.keystore'
+                    -Djava.truststore=`pwd`/servers/ejava-wildfly1701/src/main/resources/standalone/configuration/application.keystore'
                 }
             }
             post {
@@ -174,7 +174,7 @@ spec:
                     sh 'mvn deploy -f jpa/jpa-build -s $MAVEN_SETTINGS_XML $IMPL_PROFILES $MAVEN_PROFILES $MODULE_PROFILES'
                     sh 'mvn deploy -f ejb/ejb-build -s $MAVEN_SETTINGS_XML $IMPL_PROFILES $MAVEN_PROFILES $MODULE_PROFILES'
                     sh 'mvn deploy $SITE_DEPLOY -s $MAVEN_SETTINGS_XML $IMPL_PROFILES $MAVEN_PROFILES $MODULE_PROFILES -PskipTests -PskipITs \
-                      -Djava.truststore=`pwd`/servers/ejava-wildfly1300/src/main/resources/standalone/configuration/application.keystore'
+                      -Djava.truststore=`pwd`/servers/ejava-wildfly1701/src/main/resources/standalone/configuration/application.keystore'
                 }
             }
         }
