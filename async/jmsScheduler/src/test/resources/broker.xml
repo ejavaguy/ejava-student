@@ -33,6 +33,8 @@
               <permission type="deleteDurableQueue" roles="admin"/>
               <permission type="createNonDurableQueue" roles="admin"/>
               <permission type="deleteNonDurableQueue" roles="admin"/>
+              <permission type="createAddress" roles="admin"/>
+              <permission type="deleteAddress" roles="admin"/>
           </security-setting>
 
           <security-setting match="jms.queue.jmsScheduler-requestQueue">

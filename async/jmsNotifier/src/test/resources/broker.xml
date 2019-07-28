@@ -28,18 +28,23 @@
           <security-setting match="#">
               <permission type="consume" roles="admin"/>
               <permission type="send" roles="admin"/>
-              <permission type="createDurableQueue" roles="admin"/>
-              <permission type="deleteDurableQueue" roles="admin"/>
               <permission type="createNonDurableQueue" roles="admin"/>
               <permission type="deleteNonDurableQueue" roles="admin"/>
+              <permission type="createDurableQueue" roles="admin"/>
+              <permission type="deleteDurableQueue" roles="admin"/>
+              <permission type="createAddress" roles="admin"/>
+              <permission type="deleteAddress" roles="admin"/>
           </security-setting>
 
           <security-setting match="jms.topic.jmsNotifier-topic1">
               <permission type="consume" roles="subscriber"/>
               <permission type="send" roles="publisher"/>
               <permission type="createNonDurableQueue" roles="subscriber"/>
+              <permission type="deleteNonDurableQueue" roles="subscriber"/>
               <permission type="createDurableQueue" roles="subscriber"/>
               <permission type="deleteDurableQueue" roles="subscriber"/>
+              <permission type="createAddress" roles="subscriber"/>
+              <permission type="deleteAddress" roles="subscriber"/>
           </security-setting>
      </security-settings>
    </core>
