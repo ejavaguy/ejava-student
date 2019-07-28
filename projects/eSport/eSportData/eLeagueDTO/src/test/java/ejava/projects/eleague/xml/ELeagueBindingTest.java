@@ -1,22 +1,22 @@
 package ejava.projects.eleague.xml;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.lang.reflect.Method;
 import java.util.List;
-import java.text.DateFormat;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 
+import org.junit.Before;
+import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import javax.xml.datatype.DatatypeFactory;
-import javax.xml.datatype.XMLGregorianCalendar;
 
 import ejava.projects.eleague.dto.Club;
 import ejava.projects.eleague.dto.Contact;
@@ -30,58 +30,22 @@ import ejava.projects.eleague.dto.Team;
 import ejava.projects.eleague.dto.TeamSeason;
 import ejava.projects.eleague.dto.Venue;
 
-import junit.framework.TestCase;
-
 /**
  * This provides a basic test of a constructed League DTO graph to be 
  * successfully marshalled and de-marshalled to/from an XML steam. 
  */
-public class ELeagueBindingTest extends TestCase {
+public class ELeagueBindingTest {
     private Logger log = LoggerFactory.getLogger(ELeagueBindingTest.class);
     private Marshaller m;
     
+    @Before
     public void setUp() throws Exception {
         JAXBContext jaxbc = JAXBContext.newInstance(ELeague.class);
         m = jaxbc.createMarshaller();
         m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
     }
-    
 
-    public void testCalendar() throws Exception {
-        log.info("*** testCalendar ***");
-        DatatypeFactory dataFactory = DatatypeFactory.newInstance();
-        log.info("DataTypeFactory=" + dataFactory);
-        XMLGregorianCalendar cal = dataFactory.newXMLGregorianCalendar();
-        log.info("XMLGregorianCalendar=" + cal.getClass());
-        cal.setMonth(GregorianCalendar.MARCH);
-        String xml = cal.toXMLFormat();
-        log.debug("cal=" + xml);
-        dataFactory.newXMLGregorianCalendar(xml);
-
-        cal.setTimezone(0);
-
-        Calendar jCal = Calendar.getInstance();
-        jCal.clear();
-        jCal.set(Calendar.MONTH, Calendar.MARCH);
-        DateFormat df = DateFormat.getDateInstance();
-        String dfString = df.format(jCal.getTime());
-        log.debug("calendar=" + dfString);
-
-        String format = "--01";
-        try {
-                XMLGregorianCalendar xCal = dataFactory.newXMLGregorianCalendar(format);
-                log.info("successfully parsed:" + format + ", xCal=" + xCal.toXMLFormat());
-                format = "--01--";
-                xCal = dataFactory.newXMLGregorianCalendar(format);
-                log.info("successfully parsed:" + format + ", xCal=" + xCal.toXMLFormat());
-        }
-        catch (Exception ex) {
-                log.error("failed to parse:" + format);
-                fail("failed to parse:" + format);
-        }
-    }
-
-
+    @Test
     public void testMarshallDemarshall() throws Exception {
         log.info("*** testMarshallDemarshall ***");
         ELeague league = new SampleGen().createLeague();

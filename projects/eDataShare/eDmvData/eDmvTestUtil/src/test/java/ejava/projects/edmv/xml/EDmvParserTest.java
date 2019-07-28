@@ -7,6 +7,11 @@ import gov.ojp.it.jxdm._3_0.ResidenceType;
 import gov.ojp.it.jxdm._3_0.VehicleRegistration;
 import info.ejava.projects.edmv._1.Dmv;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -19,6 +24,8 @@ import java.util.List;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
+import org.junit.Before;
+import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,15 +37,17 @@ import junit.framework.TestCase;
  * to stdout.
  *
  */
-public class EDmvParserTest extends TestCase {
+public class EDmvParserTest {
 	private static final Logger log = LoggerFactory.getLogger(EDmvParserTest.class);
-	private String inputDir = System.getProperty("inputDir");
+	private String inputDir = System.getProperty("inputDir", "target/classes/xml");
 	private List<Person> people = new ArrayList<Person>();
 	
+	@Before
 	public void setUp() {
 		assertNotNull("inputDir not supplied", inputDir);
 	}
 	
+	@Test
 	public void testMonthFormat() throws Exception {
 		log.info("*** testMonthFormat ***");
 		XMLGregorianCalendar cal1 = DatatypeFactory.newInstance().newXMLGregorianCalendar();
@@ -51,7 +60,8 @@ public class EDmvParserTest extends TestCase {
 		log.info("month=" + cal.getMonth());
 		assertEquals("unexpected month", GregorianCalendar.MARCH, cal.getMonth());
 	}
-	
+
+	@Test
     public void testMonthParse() throws Exception {
     	log.info("*** testCalendar ***");
         DatatypeFactory dataFactory = DatatypeFactory.newInstance();
@@ -70,9 +80,6 @@ public class EDmvParserTest extends TestCase {
         try {
 	        XMLGregorianCalendar xCal = dataFactory.newXMLGregorianCalendar(format);
 	        log.info("successfully parsed:" + format + ", xCal=" + xCal.toXMLFormat());
-	        format = "--01--";
-	        xCal = dataFactory.newXMLGregorianCalendar(format);
-	        log.info("successfully parsed:" + format + ", xCal=" + xCal.toXMLFormat());
         }
         catch (Exception ex) {
         	log.error("failed to parse:" + format);
@@ -80,7 +87,7 @@ public class EDmvParserTest extends TestCase {
         }
     }
 
-	
+	@Test
 	public void testParser() throws Exception {
 		File inDir = new File(inputDir);
 		File[] files = inDir.listFiles(new FilenameFilter() {

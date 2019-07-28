@@ -34,33 +34,16 @@
             what implementation to use and could override it if needed. -->
 
         <dependency>
-            <groupId>sun-jaxb</groupId>
+            <groupId>com.sun.xml.bind</groupId>
+            <artifactId>jaxb-core</artifactId>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.sun.xml.bind</groupId>
             <artifactId>jaxb-impl</artifactId>
             <scope>compile</scope>
         </dependency>
         
-
-        <!-- added a dependency on Xerces to hopefully stablize the
-            lexical representation of gMonth formats when changing
-            JRE versions.
-            -->
-        <dependency>
-            <groupId>xerces</groupId>
-            <artifactId>xercesImpl</artifactId>
-            <scope>compile</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>stax</groupId>
-                    <artifactId>stax-api</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>xml-apis</groupId>
-                    <artifactId>xml-apis</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-
-
         <!-- true test dependencies -->
         <dependency>
             <groupId>org.slf4j</groupId>

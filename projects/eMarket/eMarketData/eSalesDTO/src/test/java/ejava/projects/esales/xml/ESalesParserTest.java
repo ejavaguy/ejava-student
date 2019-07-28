@@ -42,41 +42,6 @@ public class ESalesParserTest {
         m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
         
     }
-    
-    @Test
-    public void testCalendar() throws Exception {
-    	log.info("*** testCalendar ***");
-        DatatypeFactory dataFactory = DatatypeFactory.newInstance();
-        log.info("DataTypeFactory=" + dataFactory);
-        XMLGregorianCalendar cal = dataFactory.newXMLGregorianCalendar();
-        log.info("XMLGregorianCalendar=" + cal.getClass());
-        cal.setMonth(GregorianCalendar.MARCH);
-        String xml = cal.toXMLFormat();
-        log.debug("cal=" + xml);
-        dataFactory.newXMLGregorianCalendar(xml);
-        
-        cal.setTimezone(0);
-        
-        Calendar jCal = Calendar.getInstance();
-        jCal.clear();
-        jCal.set(Calendar.MONTH, Calendar.MARCH);
-        DateFormat df = DateFormat.getDateInstance();
-        String dfString = df.format(jCal.getTime()); 
-        log.debug("calendar=" + dfString);
-
-        String format = "--01";
-        try {
-	        XMLGregorianCalendar xCal = dataFactory.newXMLGregorianCalendar(format);
-	        log.info("successfully parsed:" + format + ", xCal=" + xCal.toXMLFormat());
-	        format = "--01--";
-	        xCal = dataFactory.newXMLGregorianCalendar(format);
-	        log.info("successfully parsed:" + format + ", xCal=" + xCal.toXMLFormat());
-        }
-        catch (Exception ex) {
-        	log.error("failed to parse:" + format);
-        	fail("failed to parse:" + format);
-        }
-    }
 
     @Test
     public void testMarshallDemarshall() throws Exception {

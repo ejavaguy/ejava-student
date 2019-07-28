@@ -28,23 +28,17 @@
             <scope>provided</scope>
         </dependency>
         
-        <!--  this is what JBoss AS 5.1.0.GA is using  -->
         <dependency>
-            <groupId>sun-jaxb</groupId>
+            <groupId>com.sun.xml.bind</groupId>
+            <artifactId>jaxb-core</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.sun.xml.bind</groupId>
             <artifactId>jaxb-impl</artifactId>
             <scope>provided</scope>
         </dependency>
         
-        <!-- added a dependency on Xerces to hopefully stablize the
-            lexical representation of gMonth formats when changing
-            JRE versions. 
-            -->
-        <dependency>
-            <groupId>xerces</groupId>
-            <artifactId>xercesImpl</artifactId>
-            <scope>test</scope>
-        </dependency>
-
         <!-- core project testing dependencies -->
         <dependency>
             <groupId>junit</groupId>

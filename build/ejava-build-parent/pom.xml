@@ -99,8 +99,6 @@
         <javax.json.bind-api.version>1.0</javax.json.bind-api.version>
         <javax.transaction-api.version>1.3</javax.transaction-api.version>  
         <javax.ws.rs-api.version>2.1</javax.ws.rs-api.version>
-        <jaxb-api.version>2.2</jaxb-api.version>
-        <jaxb-impl.version>2.1.9-brew</jaxb-impl.version>
         <javax.jms-api.version>2.0.1</javax.jms-api.version>
         <jnpserver.version>5.0.3.GA</jnpserver.version>
         <jsr250-api.version>1.0</jsr250-api.version>
@@ -119,7 +117,6 @@
         <weld-servlet.version>2.2.6.Final</weld-servlet.version>
         <wildfly.version>17.0.1.Final</wildfly.version>
         <wildfly-controller-client.version>9.0.2.Final</wildfly-controller-client.version>
-        <xercesImpl.version>2.9.1</xercesImpl.version>
         <yasson.version>1.0.1</yasson.version>
 
         <jboss.basedir>${jboss.home}/standalone</jboss.basedir>

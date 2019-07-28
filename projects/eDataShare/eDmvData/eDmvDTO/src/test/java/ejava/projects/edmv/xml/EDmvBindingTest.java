@@ -1,10 +1,10 @@
 package ejava.projects.edmv.xml;
 
-import gov.ojp.it.jxdm._3_0.Person;
-import gov.ojp.it.jxdm._3_0.PersonPhysicalDetailsType;
-import gov.ojp.it.jxdm._3_0.ResidenceType;
-import gov.ojp.it.jxdm._3_0.VehicleRegistration;
-import info.ejava.projects.edmv._1.Dmv;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -21,61 +21,70 @@ import javax.xml.bind.Marshaller;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
+import org.junit.Before;
+import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import junit.framework.TestCase;
+import gov.ojp.it.jxdm._3_0.Person;
+import gov.ojp.it.jxdm._3_0.PersonPhysicalDetailsType;
+import gov.ojp.it.jxdm._3_0.ResidenceType;
+import gov.ojp.it.jxdm._3_0.VehicleRegistration;
+import info.ejava.projects.edmv._1.Dmv;
 
 /**
  * This provides a basic test of a constructed DMV DTO graph to be 
  * successfully marshalled and de-marshalled to/from an XML steam. 
  *
  */
-public class EDmvBindingTest extends TestCase {
+public class EDmvBindingTest {
     private Logger log = LoggerFactory.getLogger(EDmvBindingTest.class);
     private Marshaller m;
     
+    @Before
     public void setUp() throws Exception {
         JAXBContext jaxbc = JAXBContext.newInstance(Dmv.class);
         m = jaxbc.createMarshaller();
         m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
         
     }
-    
-    public void testCalendar() throws Exception {
-    	log.info("*** testCalendar ***");
-        DatatypeFactory dataFactory = DatatypeFactory.newInstance();
-        log.info("DataTypeFactory=" + dataFactory);
-        XMLGregorianCalendar cal = dataFactory.newXMLGregorianCalendar();
-        log.info("XMLGregorianCalendar=" + cal.getClass());
-        cal.setMonth(GregorianCalendar.MARCH);
-        String xml = cal.toXMLFormat();
-        log.debug("cal=" + xml);
-        dataFactory.newXMLGregorianCalendar(xml);
-        
-        cal.setTimezone(0);
-        
-        Calendar jCal = Calendar.getInstance();
-        jCal.clear();
-        jCal.set(Calendar.MONTH, Calendar.MARCH);
-        DateFormat df = DateFormat.getDateInstance();
-        String dfString = df.format(jCal.getTime()); 
-        log.debug("calendar=" + dfString);
+//    
+//    @Test
+//    public void testCalendar() throws Exception {
+//    	log.info("*** testCalendar ***");
+//        DatatypeFactory dataFactory = DatatypeFactory.newInstance();
+//        log.info("DataTypeFactory=" + dataFactory);
+//        XMLGregorianCalendar cal = dataFactory.newXMLGregorianCalendar();
+//        log.info("XMLGregorianCalendar=" + cal.getClass());
+//        cal.setMonth(GregorianCalendar.MARCH);
+//        String xml = cal.toXMLFormat();
+//        log.debug("cal=" + xml);
+//        dataFactory.newXMLGregorianCalendar(xml);
+//        
+//        cal.setTimezone(0);
+//        
+//        Calendar jCal = Calendar.getInstance();
+//        jCal.clear();
+//        jCal.set(Calendar.MONTH, Calendar.MARCH);
+//        DateFormat df = DateFormat.getDateInstance();
+//        String dfString = df.format(jCal.getTime()); 
+//        log.debug("calendar=" + dfString);
+//
+//        String format = "--01";
+//        try {
+//	        XMLGregorianCalendar xCal = dataFactory.newXMLGregorianCalendar(format);
+//	        log.info("successfully parsed:" + format + ", xCal=" + xCal.toXMLFormat());
+//	        format = "--01--";
+//	        xCal = dataFactory.newXMLGregorianCalendar(format);
+//	        log.info("successfully parsed:" + format + ", xCal=" + xCal.toXMLFormat());
+//        }
+//        catch (Exception ex) {
+//        	log.error("failed to parse:" + format);
+//        	fail("failed to parse:" + format);
+//        }
+//    }
 
-        String format = "--01";
-        try {
-	        XMLGregorianCalendar xCal = dataFactory.newXMLGregorianCalendar(format);
-	        log.info("successfully parsed:" + format + ", xCal=" + xCal.toXMLFormat());
-	        format = "--01--";
-	        xCal = dataFactory.newXMLGregorianCalendar(format);
-	        log.info("successfully parsed:" + format + ", xCal=" + xCal.toXMLFormat());
-        }
-        catch (Exception ex) {
-        	log.error("failed to parse:" + format);
-        	fail("failed to parse:" + format);
-        }
-    }
-
+    @Test
     public void testMarshallDemarshall() throws Exception {
         log.info("*** testMarshallDemarshall ***");
         Dmv dmv = new SampleGen().createDmv();

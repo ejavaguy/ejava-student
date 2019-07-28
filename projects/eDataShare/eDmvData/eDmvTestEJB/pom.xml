@@ -43,14 +43,6 @@
                     <groupId>stax</groupId>
                     <artifactId>stax</artifactId>
                 </exclusion>
-                <exclusion>
-                    <groupId>javax.xml.bind</groupId>
-                    <artifactId>jaxb-api</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>com.sun.xml.bind</groupId>
-                    <artifactId>jaxb-impl</artifactId>
-                </exclusion>
             </exclusions>
         </dependency>
 
@@ -60,13 +52,6 @@
             <artifactId>junit</artifactId>
             <scope>compile</scope>
         </dependency>
-        <!-- need this excluded API re-added here to allow
-           this component to compile -->
-        <dependency>
-          <groupId>javax.xml.bind</groupId>
-          <artifactId>jaxb-api</artifactId>
-          <scope>provided</scope>
-        </dependency>    
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-log4j12</artifactId>
