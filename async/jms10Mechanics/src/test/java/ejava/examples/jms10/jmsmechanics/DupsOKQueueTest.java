@@ -31,6 +31,7 @@ public class DupsOKQueueTest extends JMSTestBase {
 
     @Before
     public void setUp() throws Exception {
+        setUpClass(); //multiple tests are not playing will with this testcase
         destination = (Queue) lookup(queueJNDI);
         assertNotNull("destination null:" + queueJNDI, destination);
         
@@ -42,6 +43,7 @@ public class DupsOKQueueTest extends JMSTestBase {
     public void tearDown() throws Exception {
     	shutdownCatcher(catcher1);
     	shutdownCatcher(catcher2);
+        tearDownClass();
     }
 
     @Test

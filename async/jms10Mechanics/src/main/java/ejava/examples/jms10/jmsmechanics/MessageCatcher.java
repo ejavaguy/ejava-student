@@ -102,7 +102,7 @@ public class MessageCatcher implements Runnable {
             for (int i=0;!stop; i++) {
                 if (i%30==0) { logger.debug("catcher looking for message"); }
                 Message message = consumer.receive(100);
-                if (message != null) {
+                if (message != null && !message.getJMSRedelivered()) {
                     messages.add(message);
                     logger.debug("{} received message #{}, msgId={}", name, messages.size(), message.getJMSMessageID());
                     Thread.yield();

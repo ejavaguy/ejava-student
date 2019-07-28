@@ -72,7 +72,6 @@
         <maven-jaxb2-plugin.version>0.7.5</maven-jaxb2-plugin.version>
         <wagon-ssh-external.version>3.3.3</wagon-ssh-external.version>
 
-        <artemis-jms.version>1.5.5</artemis-jms.version>
         <annotation-api.version>1.3.2</annotation-api.version>
         <cobertura.version>2.0.3</cobertura.version>
         <commons-io.version>2.6</commons-io.version>

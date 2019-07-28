@@ -29,6 +29,8 @@
               <permission type="deleteDurableQueue" roles="user"/>
               <permission type="createNonDurableQueue" roles="user"/>
               <permission type="deleteNonDurableQueue" roles="user"/>
+              <permission type="createAddress" roles="user"/>
+              <permission type="deleteAddress" roles="user"/>
           </security-setting>
      </security-settings>
    </core>

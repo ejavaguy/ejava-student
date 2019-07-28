@@ -30,6 +30,7 @@ public class ClientAckQueueTest extends JMSTestBase {
 
     @Before
     public void setUp() throws Exception {
+        setUpClass(); //multiple tests are not playing will with this testcase
         destination = (Queue) lookup(queueJNDI);
         assertNotNull("destination null:" + queueJNDI, destination);
         
@@ -39,8 +40,9 @@ public class ClientAckQueueTest extends JMSTestBase {
     
     @After
     public void tearDown() throws Exception {
-        	shutdownCatcher(catcher1);
-        	shutdownCatcher(catcher2);
+    	shutdownCatcher(catcher1);
+    	shutdownCatcher(catcher2);
+    	tearDownClass();
     }
 
     @Test
