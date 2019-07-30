@@ -1,9 +1,4 @@
 <configuration xmlns="urn:activemq" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:activemq /schema/artemis-configuration.xsd">
-
-   <jms xmlns="urn:activemq:jms">
-        <topic name="jmsNotifier-topic1"/>
-   </jms>
-
    <core xmlns="urn:activemq:core">
       <persistence-enabled>false</persistence-enabled>
 
@@ -36,7 +31,7 @@
               <permission type="deleteAddress" roles="admin"/>
           </security-setting>
 
-          <security-setting match="jms.topic.jmsNotifier-topic1">
+          <security-setting match="jmsNotifier-topic1">
               <permission type="consume" roles="subscriber"/>
               <permission type="send" roles="publisher"/>
               <permission type="createNonDurableQueue" roles="subscriber"/>
@@ -47,5 +42,11 @@
               <permission type="deleteAddress" roles="subscriber"/>
           </security-setting>
      </security-settings>
+
+      <addresses>
+         <address name="jmsNotifier-topic1">
+            <multicast/>
+         </address>
+      </addresses>
    </core>
 </configuration>

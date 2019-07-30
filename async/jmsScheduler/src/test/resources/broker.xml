@@ -1,10 +1,5 @@
 <configuration xmlns="urn:activemq" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:activemq /schema/artemis-configuration.xsd">
 
-   <jms xmlns="urn:activemq:jms">
-        <queue name="jmsScheduler-requestQueue"/>
-        <queue name="jmsScheduler-DLQ"/>
-   </jms>
-
    <core xmlns="urn:activemq:core">
       <persistence-enabled>false</persistence-enabled>
 
@@ -35,22 +30,35 @@
               <permission type="deleteNonDurableQueue" roles="admin"/>
               <permission type="createAddress" roles="admin"/>
               <permission type="deleteAddress" roles="admin"/>
+
+              <!-- permissions brought over from jms.tempqueue.# -->
+              <permission type="consume" roles="requestor"/>
+              <permission type="send" roles="worker"/>
+              <permission type="createNonDurableQueue" roles="requestor"/>
+              <permission type="createAddress" roles="requestor"/>
           </security-setting>
 
-          <security-setting match="jms.queue.jmsScheduler-requestQueue">
+          <security-setting match="jmsScheduler-requestQueue">
               <permission type="consume" roles="worker"/>
               <permission type="send" roles="requestor"/>
               <permission type="createNonDurableQueue" roles="requestor"/>
+              <permission type="createDurableQueue" roles="worker"/>
+              <permission type="createAddress" roles="worker"/>
           </security-setting>    
-          <security-setting match="jms.queue.jmsScheduler-DLQ">
+          <security-setting match="jmsScheduler-DLQ">
               <permission type="consume" roles="admin"/>
               <permission type="send" roles="worker"/>
+              <permission type="createNonDurableQueue" roles="admin"/>
+              <permission type="createDurableQueue" roles="admin"/>
+              <permission type="createAddress" roles="admin"/>
           </security-setting>    
-          <security-setting match="jms.tempqueue.#">
+          <!-- Artemis no longer prefixing temp queues with jms.tempqueue 
+          <security-setting match="tempqueue.#">
               <permission type="consume" roles="requestor"/>
               <permission type="send" roles="worker"/>
               <permission type="createNonDurableQueue" roles="requestor"/>
           </security-setting> 
+          -->
      </security-settings>
    </core>
 </configuration>
