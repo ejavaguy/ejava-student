@@ -28,6 +28,11 @@
             <artifactId>javax.persistence-api</artifactId>
             <scope>provided</scope>
         </dependency>        
+        <dependency>
+            <groupId>javax.xml.bind</groupId>
+            <artifactId>jaxb-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
 
         <dependency>
             <groupId>org.hibernate</groupId>
@@ -71,7 +76,7 @@
                         </goals>
                         <configuration>
                             <target>
-                                <java classname="ejava.examples.schemagen.JPASchemaGen">
+                                <java classname="ejava.examples.schemagen.JPASchemaGen" fork="true">
                                     <arg value="${project.artifactId}-test" />
                                     <classpath>
                                         <path refid="maven.test.classpath" />

@@ -26,6 +26,21 @@
         <artifactId>javax.persistence-api</artifactId>
         <scope>provided</scope>
     </dependency>
+    <dependency>
+        <groupId>javax.xml.bind</groupId>
+        <artifactId>jaxb-api</artifactId>
+        <scope>provided</scope>
+    </dependency>
+    <dependency>
+        <groupId>com.sun.xml.bind</groupId>
+        <artifactId>jaxb-core</artifactId>
+        <scope>provided</scope>
+    </dependency>
+    <dependency>
+        <groupId>com.sun.xml.bind</groupId>
+        <artifactId>jaxb-impl</artifactId>
+        <scope>provided</scope>
+    </dependency>
     
  <!-- scope needed for hibernate @Cache annotation -->     
     <dependency>

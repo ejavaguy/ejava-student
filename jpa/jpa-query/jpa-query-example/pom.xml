@@ -27,6 +27,11 @@
             <artifactId>javax.persistence-api</artifactId>
             <scope>provided</scope>
         </dependency>        
+        <dependency>
+            <groupId>javax.xml.bind</groupId>
+            <artifactId>jaxb-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
 
         <!-- generates JPA metadata classes -->
         <dependency>
@@ -34,6 +39,11 @@
             <artifactId>hibernate-jpamodelgen</artifactId>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>javax.annotation</groupId>
+            <artifactId>javax.annotation-api</artifactId>
+            <scope>provided</scope>
+        </dependency>        
 
         <dependency>
             <groupId>org.hibernate</groupId>
@@ -77,8 +87,7 @@
                 <version>${maven-compiler-plugin.version}</version>
                 <configuration>
                     <compilerVersion>${java.target.version}</compilerVersion>
-                    <source>${java.source.version}</source>
-                    <target>${java.target.version}</target>
+                    <release>${java.target.version}</release>
                     <useIncrementalCompilation>false</useIncrementalCompilation>
                 </configuration>	                
             </plugin>
@@ -119,20 +128,6 @@
     </build>
 
     <profiles>
-        <!-- use this in Jenkins -->
-        <profile>
-          <id>jenkins</id>
-          <activation>
-	        <property>
-	            <name>JENKINS_URL</name>
-	        </property>
-          </activation>
-          <build>
-              <plugins>
-              </plugins>
-          </build>
-        </profile>
-
         <!-- don't add this to classpath if we are building on Jenkins -->
         <profile>
             <id>metamodel</id>

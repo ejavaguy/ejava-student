@@ -33,6 +33,7 @@
 
         <h2db.version>1.4.197</h2db.version>
         <javax.persistence-api.version>2.2</javax.persistence-api.version>
+        <jaxb-api.version>2.3.1</jaxb-api.version>
         <hibernate-entitymanager.version>5.3.1.Final</hibernate-entitymanager.version>
         <junit.version>4.12</junit.version>
         <log4j.version>1.2.17</log4j.version>
@@ -48,6 +49,11 @@
                 <artifactId>javax.persistence-api</artifactId>
                 <version>${javax.persistence-api.version}</version>
             </dependency>        
+            <dependency>
+                <groupId>javax.xml.bind</groupId>
+                <artifactId>jaxb-api</artifactId>
+                <version>${jaxb-api.version}</version>
+            </dependency>
             <dependency>
                 <groupId>org.hibernate</groupId>
                 <artifactId>hibernate-core</artifactId>
@@ -186,6 +192,11 @@
             <artifactId>javax.persistence-api</artifactId>
             <scope>provided</scope>
         </dependency>        
+        <dependency>
+            <groupId>javax.xml.bind</groupId>
+            <artifactId>jaxb-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
 
         <dependency>
             <groupId>org.hibernate</groupId>
