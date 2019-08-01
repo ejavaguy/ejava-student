@@ -14,6 +14,10 @@
   <properties>
     <maven.version>3.3.9</maven.version>
   </properties>
+
+  <prerequisites>
+    <maven>3.0</maven>
+  </prerequisites>
   
   <dependencyManagement>
     <dependencies>
@@ -40,6 +44,16 @@
         <artifactId>jaxb-api</artifactId>
         <scope>compile</scope>
      </dependency>
+    <dependency>
+        <groupId>com.sun.xml.bind</groupId>
+        <artifactId>jaxb-core</artifactId>
+        <scope>compile</scope>
+    </dependency>
+    <dependency>
+        <groupId>com.sun.xml.bind</groupId>
+        <artifactId>jaxb-impl</artifactId>
+        <scope>compile</scope>
+    </dependency>
 
     <dependency>
       <groupId>org.apache.maven</groupId>
@@ -134,20 +148,30 @@
       <plugins>
         <plugin>
           <artifactId>maven-clean-plugin</artifactId>
-          <version>3.0.0</version>
+          <version>3.1.0</version>
         </plugin>
         <!-- see http://maven.apache.org/ref/current/maven-core/default-bindings.html#Plugin_bindings_for_maven-plugin_packaging -->
         <plugin>
           <artifactId>maven-resources-plugin</artifactId>
-          <version>3.0.2</version>
+          <version>3.1.0</version>
         </plugin>
         <plugin>
           <artifactId>maven-compiler-plugin</artifactId>
           <version>3.8.1</version>
+          <configuration>
+              <release>11</release>
+          </configuration>
         </plugin>
         <plugin>
           <artifactId>maven-plugin-plugin</artifactId>
-          <version>3.5.1</version>
+          <version>3.6.0</version>
+          <dependencies>
+              <dependency>
+                  <groupId>org.ow2.asm</groupId>
+                  <artifactId>asm</artifactId>
+                  <version>7.1</version>
+              </dependency>
+          </dependencies>
         </plugin>
 <!--         <plugin>
           <artifactId>maven-surefire-plugin</artifactId>
@@ -155,7 +179,7 @@
         </plugin>
  -->        <plugin>
           <artifactId>maven-jar-plugin</artifactId>
-          <version>3.0.2</version>
+          <version>3.1.0</version>
         </plugin>
         <plugin>
           <artifactId>maven-install-plugin</artifactId>
@@ -167,7 +191,7 @@
         </plugin>
         <plugin>
           <artifactId>maven-invoker-plugin</artifactId>
-          <version>3.0.1</version>
+          <version>3.1.0</version>
         </plugin>
       </plugins>
     </pluginManagement>
