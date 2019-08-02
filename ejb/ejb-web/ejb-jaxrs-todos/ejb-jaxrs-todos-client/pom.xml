@@ -32,6 +32,25 @@
             <version>${project.version}</version>
         </dependency>
 
+        <!-- defines JAXB XML interfaces -->
+        <dependency>
+            <groupId>javax.xml.bind</groupId>
+            <artifactId>jaxb-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- JAXB XML implementation -->
+	<dependency>
+            <groupId>com.sun.xml.bind</groupId>
+            <artifactId>jaxb-core</artifactId>
+            <scope>provided</scope>
+	</dependency>
+	<dependency>
+            <groupId>com.sun.xml.bind</groupId>
+            <artifactId>jaxb-impl</artifactId>
+            <scope>provided</scope>
+	</dependency>
+
         <!-- defines JSON-B entry point e.g., Jsonb and @Annotations -->
         <dependency>
             <groupId>javax.json.bind</groupId>
