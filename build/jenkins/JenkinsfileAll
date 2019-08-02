@@ -43,7 +43,7 @@ spec:
 	stages {
 		stage ('Build All Examples') {
 			steps {
-                build job: 'ejava/ejava-class/jenkins', parameters: [
+                build job: 'ejava-env/ejava-class/jenkins', parameters: [
                     string(name:'END_GOAL', value:'install'),
                     string(name:'TEST_PROFILES', value:'-Pall-modules')
                     ]

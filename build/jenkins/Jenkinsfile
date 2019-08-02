@@ -53,7 +53,7 @@ spec:
     
     parameters {
         string(name:'END_GOAL', defaultValue:'deploy', description:'')
-        string(name:'MASTER_PROFILES', defaultValue:'', description:'modules to include as semester progresses for master branch')
+        string(name:'MASTER_PROFILES', defaultValue:'-Pjacoco', description:'modules to include as semester progresses for master branch')
         string(name:'TEST_PROFILES', defaultValue:'-Pall-modules --fail-fast', description:'additional profiles for non-master branch')
     }
 	
@@ -177,5 +177,12 @@ spec:
                 }
             }
         }
+
+        stage ('Code Coverage') {
+            steps {
+                jacoco()
+            }
+        }
+
     }
 }
