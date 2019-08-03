@@ -264,7 +264,7 @@
                     <artifactId>maven-failsafe-plugin</artifactId>
                     <version>${maven-failsafe-plugin.version}</version>
                     <configuration>
-                        <argLine>${surefire.jvm.options} ${surefire.argLine}</argLine>
+                        <argLine>${surefire.jvm.option} ${surefire.jvm.options}</argLine>
                         <systemPropertyVariables>
                             <javax.net.ssl.trustStore>${java.truststore}</javax.net.ssl.trustStore>
                         </systemPropertyVariables>
@@ -362,7 +362,7 @@
                     <artifactId>maven-surefire-plugin</artifactId>
                     <version>${maven-surefire-plugin.version}</version>
                     <configuration>
-                        <argLine>@{argLine} ${surefire.jvm.options} ${surefire.argLine}</argLine>
+                        <argLine>${surefire.argLine} ${surefire.jvm.options}</argLine>
                     </configuration>
                 </plugin>
                 <plugin>
@@ -726,7 +726,7 @@
                 </property>
             </activation>
             <properties>
-                <surefire.argLine>-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=8000 -Xnoagent -Djava.compiler=NONE</surefire.argLine>
+                <maven.surefire.debug>-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=8000 -Xnoagent -Djava.compiler=NONE</maven.surefire.debug>
             </properties>                                  
         </profile>        
 
