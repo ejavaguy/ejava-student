@@ -264,7 +264,7 @@
                     <artifactId>maven-failsafe-plugin</artifactId>
                     <version>${maven-failsafe-plugin.version}</version>
                     <configuration>
-                        <argLine>${surefire.jvm.option} ${surefire.jvm.options}</argLine>
+                        <argLine>${surefire.argLine} ${surefire.jvm.options}</argLine>
                         <systemPropertyVariables>
                             <javax.net.ssl.trustStore>${java.truststore}</javax.net.ssl.trustStore>
                         </systemPropertyVariables>
