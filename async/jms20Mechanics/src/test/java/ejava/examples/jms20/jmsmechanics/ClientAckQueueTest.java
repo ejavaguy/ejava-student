@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import javax.jms.Destination;
+import javax.jms.JMSConsumer;
 import javax.jms.JMSContext;
 import javax.jms.JMSProducer;
 import javax.jms.Message;
@@ -31,10 +32,14 @@ public class ClientAckQueueTest extends JMSTestBase {
         destination = (Queue) lookup(queueJNDI);
         assertNotNull("destination null:" + queueJNDI, destination);
         
-        catcher1 = createCatcher("receiver1", destination).setAckMode(JMSContext.CLIENT_ACKNOWLEDGE
-);
-        catcher2 = createCatcher("receiver2", destination).setAckMode(JMSContext.CLIENT_ACKNOWLEDGE
-);
+        catcher1 = createCatcher("receiver1", destination).setAckMode(JMSContext.CLIENT_ACKNOWLEDGE);
+        catcher2 = createCatcher("receiver2", destination).setAckMode(JMSContext.CLIENT_ACKNOWLEDGE);
+        
+        //make sure the queue is empty
+        try (JMSContext context=createContext();
+             JMSConsumer consumer=context.createConsumer(destination)) {
+            for (SyncClient cleanup = new SyncClient(consumer); cleanup.getMessage()!=null; ) {}            
+        }
     }
     
     @After

@@ -44,12 +44,13 @@
         <jaxb-core.version>2.3.0.1</jaxb-core.version>
         <jaxb-impl.version>2.3.2</jaxb-impl.version>
         <javax.jms-api.version>2.0.1</javax.jms-api.version>
+        <jboss-marshalling.version>2.0.7.Final</jboss-marshalling.version>
         <jsr250-api.version>1.0</jsr250-api.version>
         <jstl.version>1.2</jstl.version>
         <junit.version>4.12</junit.version>
         <maven-jaxb2-plugin.version>0.14.0</maven-jaxb2-plugin.version>
         <mysql-connector-java.version>5.0.5</mysql-connector-java.version>
-        <netty.version>4.1.9.Final</netty.version>
+        <netty.version>4.1.29.Final</netty.version>
         <ojdbc6.version>11.2.0.3</ojdbc6.version>        
         <resteasy.version>3.5.1.Final</resteasy.version>
         <servlet-api.version>4.0.1</servlet-api.version>
@@ -59,7 +60,7 @@
         <validation-api.version>2.0.1.Final</validation-api.version>
         <weld-servlet.version>2.2.6.Final</weld-servlet.version>
         <wildfly-controller-client.version>8.2.1.Final</wildfly-controller-client.version>
-        <wildfly-naming-client.version>1.0.9.Final</wildfly-naming-client.version>
+        <wildfly-naming-client.version>1.0.10.Final</wildfly-naming-client.version>
         <yasson.version>1.0.1</yasson.version>
 
         <wagon-ssh-external.version>3.3.3</wagon-ssh-external.version>
@@ -357,6 +358,16 @@
                 <artifactId>wildfly-naming-client</artifactId>
                 <version>${wildfly-naming-client.version}</version>
             </dependency>
+	    <dependency>
+		<groupId>org.jboss.marshalling</groupId>
+		<artifactId>jboss-marshalling</artifactId>
+		<version>${jboss-marshalling.version}</version>
+	    </dependency>
+	    <dependency>
+		<groupId>org.jboss.marshalling</groupId>
+		<artifactId>jboss-marshalling-river</artifactId>
+		<version>${jboss-marshalling.version}</version>
+	    </dependency>
          </dependencies>
     </dependencyManagement>
 

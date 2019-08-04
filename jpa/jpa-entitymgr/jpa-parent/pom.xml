@@ -23,8 +23,8 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <java.source.version>1.8</java.source.version>
-        <java.target.version>1.8</java.target.version>
+        <java.source.version>11</java.source.version>
+        <java.target.version>11</java.target.version>
 
         <jboss.host>localhost</jboss.host>
         <db.host>${jboss.host}</db.host>
@@ -94,6 +94,7 @@
                     <configuration>
                             <source>${java.source.version}</source>
                             <target>${java.target.version}</target>
+                            <release>${java.target.version}</release>
                     </configuration>	                
                 </plugin>      
 

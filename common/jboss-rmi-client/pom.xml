@@ -21,12 +21,14 @@
             <groupId>org.wildfly</groupId>
             <artifactId>wildfly-ejb-client-bom</artifactId>
             <version>${wildfly.version}</version>
+            <scope>import</scope>
             <type>pom</type>
         </dependency>
         <dependency>
             <groupId>org.wildfly</groupId>
             <artifactId>wildfly-jms-client-bom</artifactId>
             <version>${wildfly.version}</version>
+            <scope>import</scope>
             <type>pom</type>
         </dependency>
         </dependencies>
@@ -37,6 +39,7 @@
         <dependency>
             <groupId>org.wildfly</groupId>
             <artifactId>wildfly-ejb-client-bom</artifactId>
+            <version>${wildfly.version}</version>
             <type>pom</type>
             <scope>compile</scope>
         </dependency>
@@ -44,6 +47,7 @@
         <dependency>
             <groupId>org.wildfly</groupId>
             <artifactId>wildfly-jms-client-bom</artifactId>
+            <version>${wildfly.version}</version>
             <type>pom</type>
             <scope>compile</scope>
         </dependency>
