@@ -92,7 +92,9 @@ public class JPASchemaGenMojo extends AbstractMojo {
     
     protected String resolvePath(String path) {
     		path = path.replace("${persistenceUnit}", persistenceUnit);
-    		return !path.startsWith("/") ? project.getBasedir() + File.separator + path : path;
+    		File f = new File(path);
+    		//return !path.startsWith("/") ? project.getBasedir() + File.separator + path : path;
+            return !f.isAbsolute() ? project.getBasedir() + File.separator + path : path;
     }
     
     protected Map<String, Object> configure() {
