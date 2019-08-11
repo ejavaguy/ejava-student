@@ -21,7 +21,6 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <java.source.version>11</java.source.version>
         <java.target.version>11</java.target.version>
 
         <ejava.version>5.1.0-SNAPSHOT</ejava.version>
@@ -54,7 +53,9 @@
         <jndi.user>known</jndi.user>
         <jndi.password>password1!</jndi.password>
 
-        <maven.deploy.skip>true</maven.deploy.skip> <!-- not part of exercise - for course deploy -->
+        <!-- not part of exercise - for course deploy -->
+        <maven.deploy.skip>true</maven.deploy.skip>
+        <maven-site-plugin.version>3.7.1</maven-site-plugin.version>
     </properties>
 
     <repositories>
@@ -124,8 +125,7 @@
                     <artifactId>maven-compiler-plugin</artifactId>
                     <version>${maven-compiler-plugin.version}</version>
                     <configuration>
-                            <source>${java.source.version}</source>
-                            <target>${java.target.version}</target>
+                            <release>${java.target.version}</release>
                     </configuration>	                
                 </plugin>
                 <plugin>
@@ -231,6 +231,7 @@
             <plugin> 
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-site-plugin</artifactId>
+                <version>${maven-site-plugin.version}</version>
                 <configuration>
                     <skip>true</skip>
                     <skipDeploy>true</skipDeploy>
