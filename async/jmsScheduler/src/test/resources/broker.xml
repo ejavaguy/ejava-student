@@ -43,7 +43,7 @@
               <permission type="send" roles="requestor"/>
               <permission type="createNonDurableQueue" roles="requestor"/>
               <permission type="createDurableQueue" roles="worker"/>
-              <permission type="createAddress" roles="worker"/>
+              <permission type="createAddress" roles="worker,requestor"/>
           </security-setting>    
           <security-setting match="jmsScheduler-DLQ">
               <permission type="consume" roles="admin"/>
