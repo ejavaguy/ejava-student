@@ -126,8 +126,15 @@ public class JPASchemaGenMojo extends AbstractMojo {
 			    String path = (String)properties.get(prop);
 			    if (path!=null && path.toLowerCase().contains("target")) {
 			        File f = new File(path);
-			        getLog().info("removing existing target file:" + f.getPath());
-			        f.delete();
+			        if (f.exists()) {
+    			        getLog().info("removing existing target file:" + f.getPath());
+    			        f.delete();
+			        }
+		            //make sure parent directory exists
+			        boolean created = f.getParentFile().mkdirs();
+			        if (created) {
+			            getLog().info("created missing schema target directory: " + f.getParent());
+			        }
 			    }
 			}
 			
