@@ -946,6 +946,18 @@
                         <updatePolicy>daily</updatePolicy>
                     </snapshots>
                 </pluginRepository>
+                <pluginRepository>
+                    <id>webdev-snapshot</id>
+                    <name>ejava webdev snapshot repository</name>
+                    <url>https://webdev.jhuep.com/~jcs/maven2-snapshot</url>
+                    <releases>
+                        <enabled>false</enabled>
+                    </releases>
+                    <snapshots>
+                        <enabled>true</enabled>
+                        <updatePolicy>daily</updatePolicy>
+                    </snapshots>
+                </pluginRepository>
             </pluginRepositories>
         </profile>
     </profiles>
