@@ -189,7 +189,7 @@
         <repository>
             <id>webdev</id>
             <name>ejava webdev repository</name>
-            <url>http://webdev.jhuep.com/~jcs/maven2</url>
+            <url>https://webdev.jhuep.com/~jcs/maven2</url>
             <releases>
                 <updatePolicy>never</updatePolicy>
             </releases>
@@ -200,7 +200,7 @@
         <repository>
             <id>webdev-snapshot</id>
             <name>ejava webdev snapshot repository</name>
-            <url>http://webdev.jhuep.com/~jcs/maven2-snapshot</url>
+            <url>https://webdev.jhuep.com/~jcs/maven2-snapshot</url>
             <releases>
                 <enabled>false</enabled>
             </releases>
