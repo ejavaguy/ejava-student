@@ -154,7 +154,7 @@
         
         <java.truststore>${jboss.home}/standalone/configuration/application.keystore</java.truststore>
         
-        <surefire.jvm.options>-Xmx1024m</surefire.jvm.options>
+        <surefire.jvm.options>-Xmx2048m</surefire.jvm.options>
         <surefire.argLine></surefire.argLine>
     </properties>
 
