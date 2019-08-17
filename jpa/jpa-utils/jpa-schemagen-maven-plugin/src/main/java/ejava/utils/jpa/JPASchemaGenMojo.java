@@ -68,6 +68,22 @@ public class JPASchemaGenMojo extends AbstractMojo {
     
     @Parameter( property = "scriptsAction", required=false, defaultValue="drop-and-create")
     private String scriptsAction;
+    
+    /**
+     * Alternate JDBC URL used only for schemagen plugin. Helps avoid DB locks
+     * for file-based, local databases.
+     */
+    @Parameter( property = "schemagenUrl", required=false, defaultValue="jdbc:h2:mem:")
+    private String schemagenUrl;
+    
+    @Parameter( property = "schemagenUser", required=false, defaultValue="")
+    private String schemagenUser;
+    
+    @Parameter( property = "schemagenPassword", required=false, defaultValue="")
+    private String schemagenPassword;
+    
+    @Parameter( property = "schemagenDriver", required=false, defaultValue="")
+    private String schemagenDriver;
 
     /**
      * Describes the entire project.
@@ -104,6 +120,12 @@ public class JPASchemaGenMojo extends AbstractMojo {
     		properties.put(AvailableSettings.HBM2DDL_SCRIPTS_DROP_TARGET, resolvePath(dropPath));
     		properties.put(AvailableSettings.HBM2DDL_DELIMITER, delimiter);
     		properties.put(AvailableSettings.FORMAT_SQL, new Boolean(format).toString());
+    		if (schemagenUrl!=null && !schemagenUrl.trim().isEmpty()) {
+    		    properties.put(AvailableSettings.JPA_JDBC_URL, schemagenUrl);
+                properties.put(AvailableSettings.JPA_JDBC_USER, schemagenUser);
+                properties.put(AvailableSettings.JPA_JDBC_PASSWORD, schemagenPassword);
+                properties.put(AvailableSettings.JPA_JDBC_DRIVER, schemagenDriver);
+    		}
     		return properties;
     }
     
@@ -147,10 +169,6 @@ public class JPASchemaGenMojo extends AbstractMojo {
 		} finally {
 			if (classLoader!=null) {
 				try { classLoader.close(); } catch (IOException e) {}
-			}
-			File lockFile=new File(project.getBasedir() + File.separator + "target/h2db/ejava.mv.db");
-			if (lockFile.exists()) {
-			    lockFile.delete();
 			}
 		}
     }
