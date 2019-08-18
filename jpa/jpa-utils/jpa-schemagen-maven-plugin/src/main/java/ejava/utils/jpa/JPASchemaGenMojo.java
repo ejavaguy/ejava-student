@@ -70,19 +70,33 @@ public class JPASchemaGenMojo extends AbstractMojo {
     private String scriptsAction;
     
     /**
-     * Alternate JDBC URL used only for schemagen plugin. Helps avoid DB locks
-     * for file-based, local databases.
+     * Alternate JDBC URL used only for schemagen plugin. For whatever reason, Hibernate
+     * requires a database connection when generating database schema to file and 
+     * unfortunately leaves a session hanging open and the database file locked when 
+     * using a file-based database. This setting helps avoid DB locks
+     * for file-based, local databases. The default is to use the H2 in-memory 
+     * database.
      */
     @Parameter( property = "schemagenUrl", required=false, defaultValue="jdbc:h2:mem:")
     private String schemagenUrl;
     
+    /**
+     * Username for the alternate DB referenced by schemagenUrl.
+     */
     @Parameter( property = "schemagenUser", required=false, defaultValue="")
     private String schemagenUser;
     
+    /**
+     * Password for the alternateDB referenced by schemagenUrl.
+     */
     @Parameter( property = "schemagenPassword", required=false, defaultValue="")
     private String schemagenPassword;
     
-    @Parameter( property = "schemagenDriver", required=false, defaultValue="")
+    /**
+     * JDBC driver for schemagen JDBC URL. Used only if schemagenUrl is supplied
+     * and will default to the driver appropriate for the default value of schemagenUrl.
+     */
+    @Parameter( property = "schemagenDriver", required=false, defaultValue="org.h2.Driver")
     private String schemagenDriver;
 
     /**
@@ -119,7 +133,7 @@ public class JPASchemaGenMojo extends AbstractMojo {
     		properties.put(AvailableSettings.HBM2DDL_SCRIPTS_CREATE_TARGET, resolvePath(createPath));
     		properties.put(AvailableSettings.HBM2DDL_SCRIPTS_DROP_TARGET, resolvePath(dropPath));
     		properties.put(AvailableSettings.HBM2DDL_DELIMITER, delimiter);
-    		properties.put(AvailableSettings.FORMAT_SQL, new Boolean(format).toString());
+    		properties.put(AvailableSettings.FORMAT_SQL, Boolean.valueOf(format).toString());
     		if (schemagenUrl!=null && !schemagenUrl.trim().isEmpty()) {
     		    properties.put(AvailableSettings.JPA_JDBC_URL, schemagenUrl);
                 properties.put(AvailableSettings.JPA_JDBC_USER, schemagenUser);
