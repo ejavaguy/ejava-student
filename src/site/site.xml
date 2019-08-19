@@ -7,7 +7,7 @@
         <href>${this.url}/index.html</href>
     </bannerLeft>
     <bannerRight>
-        <name>Fall 2018</name>
+        <name>Fall 2019</name>
         <src>${this.url}/coursedocs/content/html/images/semester-white.png</src>
         <href>http://ep.jhu.edu/</href>
     </bannerRight>
@@ -15,8 +15,8 @@
   <body>
     <links>
         <item name="Newsgroup" href="https://groups.yahoo.com/neo/groups/ejava_class/info" />
-        <item name="JavaSE" href="http://docs.oracle.com/javase/8/docs/api/"/>
-        <item name="JavaEE" href="http://download.oracle.com/javaee/7/api/"/>
+        <item name="JavaSE" href="https://docs.oracle.com/en/java/javase/11/docs/api/"/>
+        <item name="JavaEE" href="https://javaee.github.io/javaee-spec/javadocs/"/>
         <item name="JBoss" href="http://www.jboss.org/"/>
         <item name="Wildfly" href="http://www.wildfly.org/"/>
         <item name="Maven" href="http://maven.apache.org/maven2/"/>

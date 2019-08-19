@@ -123,11 +123,10 @@
                             <detectLinks>false</detectLinks>
                             <detectOfflineLinks>true</detectOfflineLinks>
                             <show>private</show>
-                            <source>1.8</source>
                             <additionalparam>-Xdoclint:none</additionalparam>
                             <failOnError>false</failOnError>
                             <links>
-                                <link>http://download.oracle.com/javase/8/docs/api/</link>
+                                <link>https://docs.oracle.com/en/java/javase/11/docs/api/</link>
                                 <link>https://javaee.github.io/javaee-spec/javadocs/</link>
                             </links>
                         </configuration>

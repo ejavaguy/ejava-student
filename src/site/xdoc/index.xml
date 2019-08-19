@@ -1,18 +1,20 @@
 <?xml version="1.0"?>
 <document>
   <properties>
-    <title>Enterprise Java (605.784.31) Fall 2018</title>
+    <title>Enterprise Java (605.784.31) Fall 2019</title>
     <author email="jim.stafford@jhu.edu">jim.stafford@jhu.edu</author>
   </properties>
   <body>
-    <section name="Enterprise Java (605.784.31) Fall 2018">
+    <section name="Enterprise Java (605.784.31) Fall 2019">
       <p>
       This is the course home page for the Enterprise Java Course
       (605.784), taught at John's Hopkins University, Engineering
       Programs for Professionals.  
-      This site will be populated as the
-      semester progresses and topics are addressed. If you are looking
-      for a version of the full content for ejava-javaee, refer to
+      This version of the site contains the in-progress draft material for Fall 2019
+      assembled prior to its cancellation. I am posting it so that the most current
+      material is accessible on-line in an obvious place. The most valuable updated 
+      content consists of the port of all development environment setup and examples to JDK 11.
+      If you are looking for a version of the full content for ejava-javaee, refer to
       <a href="http://webdev.jhuep.com/~jcs/legacy-ejava-javaee">
       http://webdev.jhuep.com/~jcs/legacy-ejava-javaee</a>.
       </p>
@@ -26,6 +28,7 @@
       </p>
       <subsection name="What's New" id="whatsnew">
       <ul>
+      <!--
           <li>2018-12-05: Posted Async TODOs</li>
           <li>2018-11-25: Posted JMS Notes and TODOs</li>
           <li>2018-11-25: Activated Async Example Modules</li>
@@ -43,29 +46,22 @@
           <li>2018-09-05: Activated project and jpa modules in root-level build</li>
           <li>2018-09-05: Posted Project 1 description and Business Logic TODOs</li>
           <li>2018-08-31: Fixed placement of week 1 TODOs</li>
-          <li>2018-08-21: Posted initial class site</li>
+          -->
+          <li>2019-08-21: Posted initial class site</li>
       </ul>
       </subsection>
       <subsection name="Class To Do" id="todo">
       <ul>
 
       <!-- week 13: Async 
-      -->
       <li><ul>
           <li>Implement an EJB Timer to perform scheduled work</li>
           <li>Implement an JavaEE Interceptor to perform validation work</li>
           <li>Test, cleanup, document, and turn in project 3</li> 
       </ul></li>
-
-
-      </ul>
-      </subsection>
-
-      <subsection name="Things you should have finished!" id="completed">
-      <ul>
+      -->
 
       <!-- week 12: JMS 
-      -->
       <li><ul> 
           <li>Security
               <ul>
@@ -99,9 +95,9 @@
               </ul>
           </li>
       </ul></li> 
+      -->
 
       <!-- week 11: Security 
-      -->
       <li><ul>
             <li>Project
                 <ul>
@@ -149,10 +145,10 @@
               </ul>
           </li>
       </ul></li>
+      -->
 
 
       <!-- week 10: Web 
-      -->
       <li><ul>
             <li>Examples
                 <ul>
@@ -181,9 +177,9 @@
                 </ul>
             </li>
       </ul></li>
+      -->
 
       <!-- week 09: Transactions 
-      -->
       <li><ul>
             <li>Exercises
                 <ul>
@@ -213,10 +209,10 @@
                 </ul>
             </li>
       </ul></li>
+      -->
 
 
       <!-- week 09: Session Beans 
-      -->
       <li><ul>
             <li>Exercises
                 <ul>
@@ -246,9 +242,9 @@
                 </ul>
             </li>
       </ul></li>
+      -->
 
       <!-- week 08: SQL Tuning and Session Beans 
-      -->
       <li><ul> 
             <li>Project 1
                 <ul>
@@ -288,9 +284,10 @@
                 </ul>
             </li>
       </ul></li>
+      -->
 
 
-      <!-- week 07: Project 1 Work -->
+      <!-- week 07: Project 1 Work 
       <li><ul> 
             <li>DAOs
                 <ul>
@@ -305,8 +302,9 @@
                 </ul>
             </li>
       </ul></li>
+      -->
 
-      <!-- week 06: JPAQL -->
+      <!-- week 06: JPAQL 
       <li><ul> 
             <li>Exercises
                 <ul>
@@ -328,8 +326,9 @@
                 </ul>
             </li>
       </ul></li>
+      -->
 
-      <!-- week 05: JPA Relationships -->
+      <!-- week 05: JPA Relationships 
       <li><ul> 
             <li>Exercises
                 <ul>
@@ -373,9 +372,10 @@
                 </ul>
             </li>
       </ul></li>
+      -->
 
 
-      <!-- week 04: JPA Core -->
+      <!-- week 04: JPA Core 
       <li><ul> 
             <li>Exercises
                 <ul>
@@ -432,9 +432,10 @@
                 </ul>
             </li>
       </ul></li>
+      -->
 
 
-      <!-- week 03: DAOs and EntityManager -->
+      <!-- week 03: DAOs and EntityManager 
       <li><ul> 
             <li>Project Sanity Check
             <ul>
@@ -521,8 +522,9 @@
             </ul>
             </li>
       </ul></li>
+      -->
 
-      <!-- week 02: DevEnv and Business Logic -->
+      <!-- week 02: DevEnv and Business Logic 
       <li><ul> 
             <li>Overall Project
                 <ul>
@@ -570,14 +572,23 @@
                 </ul>
             </li>
       </ul></li>
+      -->
 
-      <!-- week 01: Course Intro -->
+      <!-- week 01: Course Intro 
+      -->
       <li><ul> 
           <li>register for newsgroup and setup e-mail handling (all e-mails will have ejava_class in subject)</li>
           <li>post at least 1 test message to newsgroup</li>
           <li>setup development environment by going through exercises 0 and 1</li>
           <li>post your weekly newsgroup contribution based on development environment setup</li>
       </ul></li>
+
+
+      </ul>
+      </subsection>
+
+      <subsection name="Things you should have finished!" id="completed">
+      <ul>
 
 
       <li><ul>
