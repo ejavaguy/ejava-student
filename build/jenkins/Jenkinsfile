@@ -111,22 +111,9 @@ spec:
             }
         }
 
-        stage ('Build') {
-            parallel {
-                stage ('Build:Examples') {
-                    steps {
-                        mavenContainer {
-                           sh 'mvn clean install -s $MAVEN_SETTINGS_XML $IMPL_PROFILES $TARGET_PROFILES $MODULE_PROFILES \
-                            -Djava.truststore=`pwd`/servers/ejava-wildfly1701/src/main/resources/standalone/configuration/application.keystore'
-                        }
-                    }
-                    post {
-                        always {
-                            junit allowEmptyResults:true, testResults:'**/target/*-reports/TEST-*.xml'
-                        }
-                    }
-                }
-                
+ //       stage ('Build') {
+ //           parallel {
+
                 stage ('Build:Docs') {
                     when {
                         expression { env.SIBLING_DOCS_BRANCH }
@@ -144,8 +131,23 @@ spec:
                         }
                     }
                 }
-            }
-        }
+
+                stage ('Build:Examples') {
+                    steps {
+                        mavenContainer {
+                           sh 'mvn clean install -s $MAVEN_SETTINGS_XML $IMPL_PROFILES $TARGET_PROFILES $MODULE_PROFILES \
+                            -Djava.truststore=`pwd`/servers/ejava-wildfly1701/src/main/resources/standalone/configuration/application.keystore'
+                        }
+                    }
+                    post {
+                        always {
+                            junit allowEmptyResults:true, testResults:'**/target/*-reports/TEST-*.xml'
+                        }
+                    }
+                }
+                
+//            }
+//        }
         
         stage ('Generate Site') {
             when {
