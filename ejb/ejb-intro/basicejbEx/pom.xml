@@ -26,7 +26,7 @@
         <ejava.version>5.1.0-SNAPSHOT</ejava.version>
         <annotation-api.version>1.3.2</annotation-api.version>
         <javax.ejb-api.version>3.2.2</javax.ejb-api.version>
-        <junit.version>4.12</junit.version>
+        <junit.version>4.13.1</junit.version>
         <slf4j.version>1.7.25</slf4j.version>
         <log4j.version>1.2.17</log4j.version>
         <wildfly-controller-client.version>8.2.1.Final</wildfly-controller-client.version>
