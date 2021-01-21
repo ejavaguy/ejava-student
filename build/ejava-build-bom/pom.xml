@@ -31,7 +31,7 @@
         <interceptor-api.version>1.2.2</interceptor-api.version>
         <jandex.version>1.2.2.Final</jandex.version>
         <jackson.version>2.9.9</jackson.version>
-        <jackson-databind.version>2.9.9.2</jackson-databind.version>
+        <jackson-databind.version>2.9.10.7</jackson-databind.version>
         <javaee-api.version>8.0</javaee-api.version>
         <javax.persistence-api.version>2.2</javax.persistence-api.version>
         <javax.ejb-api.version>3.2.2</javax.ejb-api.version>
