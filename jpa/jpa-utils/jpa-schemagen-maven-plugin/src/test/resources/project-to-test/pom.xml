@@ -12,7 +12,7 @@
   
   <properties>
         <javax.persistence-api.version>2.2</javax.persistence-api.version>
-        <hibernate-entitymanager.version>5.3.1.Final</hibernate-entitymanager.version>
+        <hibernate-entitymanager.version>5.4.24.Final</hibernate-entitymanager.version>
   </properties>
   
   <dependencies>
