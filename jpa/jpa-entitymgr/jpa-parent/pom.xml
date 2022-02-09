@@ -37,7 +37,7 @@
         <h2db.version>1.4.197</h2db.version>
         <javax.persistence-api.version>2.2</javax.persistence-api.version>
         <jaxb-api.version>2.3.1</jaxb-api.version>
-        <hibernate-entitymanager.version>5.3.1.Final</hibernate-entitymanager.version>
+        <hibernate-entitymanager.version>5.4.24.Final</hibernate-entitymanager.version>
         <jpa-schemagen-maven-plugin.version>5.1.0-SNAPSHOT</jpa-schemagen-maven-plugin.version>
         <junit.version>4.12</junit.version>
         <log4j.version>1.2.17</log4j.version>
