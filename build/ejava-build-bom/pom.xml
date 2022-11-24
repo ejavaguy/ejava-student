@@ -21,7 +21,7 @@
         <faces-api.version>2.3</faces-api.version>
         <glassfish-json.version>1.1.2</glassfish-json.version>
         <h2db.version>1.4.197</h2db.version>
-        <hibernate-entitymanager.version>5.3.10.Final</hibernate-entitymanager.version>
+        <hibernate-entitymanager.version>5.3.20.Final</hibernate-entitymanager.version>
         <hibernate-validator.version>6.0.10.Final</hibernate-validator.version>
         <hsqldb.version>2.2.8</hsqldb.version>
         <httpclient.version>4.5.4</httpclient.version>
